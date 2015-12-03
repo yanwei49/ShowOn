@@ -7,18 +7,53 @@
 //
 
 #import "AppDelegate.h"
+#import "YWHomeViewController.h"
+#import "YWMovieViewController.h"
+#import "YWMineViewController.h"
+#import "YWNavigationController.h"
 
 @interface AppDelegate ()
 
 @end
 
 @implementation AppDelegate
-
+{
+    UITabBarController   *_tabBar;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor whiteColor];
+    
+    [self createTabBar];
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
+
+- (void)createTabBar {
+    _tabBar = [[UITabBarController alloc] init];
+    _tabBar.tabBar.tintColor = [UIColor orangeColor];
+    self.window.rootViewController = _tabBar;
+    NSArray *classNames = @[@"YWHomeViewController", @"YWMovieViewController", @"YWMineViewController"];
+    NSArray *titles = @[@"首页", @"影集", @"我的"];
+    NSArray *imageNames = @[@"", @"", @""];
+    NSArray *selectImageNames = @[@"", @"", @""];
+    for (NSInteger i=0; i<classNames.count; i++) {
+        [self createChildViewControllerWithClassName:classNames[i] title:titles[i] imageName:imageNames[i] selectImageName:selectImageNames[i]];
+    }
+}
+
+- (void)createChildViewControllerWithClassName:(NSString *)className title:(NSString *)title imageName:(NSString *)imageName selectImageName:(NSString *)selectImageName {
+    UIViewController *vc = [[NSClassFromString(className) alloc] init];
+    YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
+    vc.title = title;
+    nv.tabBarItem.title = title;
+    nv.tabBarItem.image = [UIImage imageNamed:imageName];
+    nv.tabBarItem.selectedImage = [UIImage imageNamed:selectImageName];
+    [_tabBar addChildViewController:nv];
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
