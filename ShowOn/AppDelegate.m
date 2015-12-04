@@ -12,13 +12,14 @@
 #import "YWMineViewController.h"
 #import "YWNavigationController.h"
 
-@interface AppDelegate ()
+@interface AppDelegate ()<UITabBarControllerDelegate>
 
 @end
 
 @implementation AppDelegate
 {
     UITabBarController   *_tabBar;
+    NSInteger             _tabBarLastSelectIndex;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -33,6 +34,7 @@
 
 - (void)createTabBar {
     _tabBar = [[UITabBarController alloc] init];
+    _tabBar.delegate = self;
     _tabBar.tabBar.tintColor = [UIColor orangeColor];
     self.window.rootViewController = _tabBar;
     NSArray *classNames = @[@"YWHomeViewController", @"YWMovieViewController", @"YWMineViewController"];
@@ -54,6 +56,19 @@
     [_tabBar addChildViewController:nv];
 }
 
+#pragma mark - UITabBarControllerDelegate
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+    if ([viewController isEqual:_tabBar.childViewControllers[1]]) {
+        _tabBar.tabBar.hidden = YES;
+    }else {
+        _tabBarLastSelectIndex = _tabBar.selectedIndex;
+    }
+}
+
+- (void)movieVCToBack {
+    _tabBar.tabBar.hidden = NO;
+    _tabBar.selectedIndex = _tabBarLastSelectIndex;
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

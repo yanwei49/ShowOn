@@ -6,8 +6,8 @@
 //  Copyright © 2015年 yanwei. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "YWBaseViewController.h"
 
-@interface YWTemplateViewController : UIViewController
+@interface YWTemplateViewController : YWBaseViewController
 
 @end

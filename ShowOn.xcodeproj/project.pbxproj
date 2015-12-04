@@ -21,6 +21,16 @@
 		56FE9A1C1C0FC242007BA29B /* YWFocusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE9A1B1C0FC242007BA29B /* YWFocusViewController.m */; };
 		56FE9A1F1C0FC24D007BA29B /* YWHotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE9A1E1C0FC24D007BA29B /* YWHotViewController.m */; };
 		56FE9A221C0FC2A2007BA29B /* YWCustomSegView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE9A211C0FC2A2007BA29B /* YWCustomSegView.m */; };
+		770EC2B81C10772600A4D2E9 /* YWHotCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2B71C10772600A4D2E9 /* YWHotCollectionViewCell.m */; };
+		770EC2BE1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2BD1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.m */; };
+		770EC2C11C10790000A4D2E9 /* YWFocusTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2C01C10790000A4D2E9 /* YWFocusTableViewCell.m */; };
+		770EC2C41C107AC600A4D2E9 /* YWBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2C31C107AC600A4D2E9 /* YWBaseViewController.m */; };
+		770EC2C71C1088E100A4D2E9 /* YWSearchCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2C61C1088E100A4D2E9 /* YWSearchCollectionReusableView.m */; };
+		770EC2CB1C108E2D00A4D2E9 /* YWMineTableHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2CA1C108E2D00A4D2E9 /* YWMineTableHeadView.m */; };
+		770EC2CE1C109FE500A4D2E9 /* YWUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2CD1C109FE500A4D2E9 /* YWUserModel.m */; };
+		77D0F0391C110A7A00134A17 /* YWTrendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0381C110A7A00134A17 /* YWTrendsViewController.m */; };
+		77D0F03C1C110B3300134A17 /* YWFollowingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F03B1C110B3300134A17 /* YWFollowingViewController.m */; };
+		77D0F0411C110BA600134A17 /* YWFollowingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0401C110BA600134A17 /* YWFollowingTableViewCell.m */; };
 		CE3B21BB20DA61FA1F44DBA0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FBD5358C72CBD7E36FE23EC /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -75,6 +85,26 @@
 		56FE9A211C0FC2A2007BA29B /* YWCustomSegView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCustomSegView.m; sourceTree = "<group>"; };
 		56FE9A231C0FC898007BA29B /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = /Users/davidyu/Desktop/ShowOn/ShowOn/PrefixHeader.pch; sourceTree = "<absolute>"; };
 		56FE9A241C0FCA4D007BA29B /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
+		770EC2B61C10772600A4D2E9 /* YWHotCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWHotCollectionViewCell.h; sourceTree = "<group>"; };
+		770EC2B71C10772600A4D2E9 /* YWHotCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWHotCollectionViewCell.m; sourceTree = "<group>"; };
+		770EC2BC1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTemplateCollectionViewCell.h; sourceTree = "<group>"; };
+		770EC2BD1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTemplateCollectionViewCell.m; sourceTree = "<group>"; };
+		770EC2BF1C10790000A4D2E9 /* YWFocusTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFocusTableViewCell.h; sourceTree = "<group>"; };
+		770EC2C01C10790000A4D2E9 /* YWFocusTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFocusTableViewCell.m; sourceTree = "<group>"; };
+		770EC2C21C107AC600A4D2E9 /* YWBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWBaseViewController.h; sourceTree = "<group>"; };
+		770EC2C31C107AC600A4D2E9 /* YWBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWBaseViewController.m; sourceTree = "<group>"; };
+		770EC2C51C1088E100A4D2E9 /* YWSearchCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWSearchCollectionReusableView.h; sourceTree = "<group>"; };
+		770EC2C61C1088E100A4D2E9 /* YWSearchCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWSearchCollectionReusableView.m; sourceTree = "<group>"; };
+		770EC2C91C108E2D00A4D2E9 /* YWMineTableHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWMineTableHeadView.h; sourceTree = "<group>"; };
+		770EC2CA1C108E2D00A4D2E9 /* YWMineTableHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWMineTableHeadView.m; sourceTree = "<group>"; };
+		770EC2CC1C109FE500A4D2E9 /* YWUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWUserModel.h; sourceTree = "<group>"; };
+		770EC2CD1C109FE500A4D2E9 /* YWUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWUserModel.m; sourceTree = "<group>"; };
+		77D0F0371C110A7A00134A17 /* YWTrendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTrendsViewController.h; sourceTree = "<group>"; };
+		77D0F0381C110A7A00134A17 /* YWTrendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTrendsViewController.m; sourceTree = "<group>"; };
+		77D0F03A1C110B3300134A17 /* YWFollowingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFollowingViewController.h; sourceTree = "<group>"; };
+		77D0F03B1C110B3300134A17 /* YWFollowingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFollowingViewController.m; sourceTree = "<group>"; };
+		77D0F03F1C110BA600134A17 /* YWFollowingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFollowingTableViewCell.h; sourceTree = "<group>"; };
+		77D0F0401C110BA600134A17 /* YWFollowingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFollowingTableViewCell.m; sourceTree = "<group>"; };
 		8C97BF3F733B43EAC44E94D0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -137,10 +167,13 @@
 		56FE99C81C0FBAB8007BA29B /* ShowOn */ = {
 			isa = PBXGroup;
 			children = (
+				77D0F0421C110CFB00134A17 /* catogory */,
 				56FE99CC1C0FBAB8007BA29B /* AppDelegate.h */,
 				56FE99CD1C0FBAB8007BA29B /* AppDelegate.m */,
 				56FE9A111C0FBCF2007BA29B /* YWNavigationController.h */,
 				56FE9A121C0FBCF2007BA29B /* YWNavigationController.m */,
+				770EC2C21C107AC600A4D2E9 /* YWBaseViewController.h */,
+				770EC2C31C107AC600A4D2E9 /* YWBaseViewController.m */,
 				56FE99FC1C0FBAE8007BA29B /* home */,
 				56FE99FD1C0FBAEF007BA29B /* movie */,
 				56FE99FE1C0FBAF7007BA29B /* mine */,
@@ -236,6 +269,8 @@
 			children = (
 				56FE9A0E1C0FBBA3007BA29B /* YWMineViewController.h */,
 				56FE9A0F1C0FBBA3007BA29B /* YWMineViewController.m */,
+				77D0F0361C110A6200134A17 /* trends */,
+				77D0F03D1C110B3A00134A17 /* focusOrFollow */,
 			);
 			name = viewcontroller;
 			sourceTree = "<group>";
@@ -257,6 +292,8 @@
 		56FE9A041C0FBB45007BA29B /* model */ = {
 			isa = PBXGroup;
 			children = (
+				770EC2CC1C109FE500A4D2E9 /* YWUserModel.h */,
+				770EC2CD1C109FE500A4D2E9 /* YWUserModel.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -264,6 +301,10 @@
 		56FE9A051C0FBB49007BA29B /* view */ = {
 			isa = PBXGroup;
 			children = (
+				770EC2C81C108BF200A4D2E9 /* searchHeadView */,
+				770EC2B91C10773300A4D2E9 /* hotCollectionViewCell */,
+				770EC2BB1C1078A400A4D2E9 /* templateCollectionViewCell */,
+				770EC2BA1C10788400A4D2E9 /* focusTableViewCell */,
 				56FE9A201C0FC2A2007BA29B /* YWCustomSegView.h */,
 				56FE9A211C0FC2A2007BA29B /* YWCustomSegView.m */,
 			);
@@ -280,6 +321,9 @@
 		56FE9A071C0FBB59007BA29B /* view */ = {
 			isa = PBXGroup;
 			children = (
+				770EC2C91C108E2D00A4D2E9 /* YWMineTableHeadView.h */,
+				770EC2CA1C108E2D00A4D2E9 /* YWMineTableHeadView.m */,
+				77D0F03E1C110B7400134A17 /* focusOrFollowTableViewCell */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -318,6 +362,76 @@
 				8C97BF3F733B43EAC44E94D0 /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		770EC2B91C10773300A4D2E9 /* hotCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				770EC2B61C10772600A4D2E9 /* YWHotCollectionViewCell.h */,
+				770EC2B71C10772600A4D2E9 /* YWHotCollectionViewCell.m */,
+			);
+			name = hotCollectionViewCell;
+			sourceTree = "<group>";
+		};
+		770EC2BA1C10788400A4D2E9 /* focusTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				770EC2BF1C10790000A4D2E9 /* YWFocusTableViewCell.h */,
+				770EC2C01C10790000A4D2E9 /* YWFocusTableViewCell.m */,
+			);
+			name = focusTableViewCell;
+			sourceTree = "<group>";
+		};
+		770EC2BB1C1078A400A4D2E9 /* templateCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				770EC2BC1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.h */,
+				770EC2BD1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.m */,
+			);
+			name = templateCollectionViewCell;
+			sourceTree = "<group>";
+		};
+		770EC2C81C108BF200A4D2E9 /* searchHeadView */ = {
+			isa = PBXGroup;
+			children = (
+				770EC2C51C1088E100A4D2E9 /* YWSearchCollectionReusableView.h */,
+				770EC2C61C1088E100A4D2E9 /* YWSearchCollectionReusableView.m */,
+			);
+			name = searchHeadView;
+			sourceTree = "<group>";
+		};
+		77D0F0361C110A6200134A17 /* trends */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0371C110A7A00134A17 /* YWTrendsViewController.h */,
+				77D0F0381C110A7A00134A17 /* YWTrendsViewController.m */,
+			);
+			name = trends;
+			sourceTree = "<group>";
+		};
+		77D0F03D1C110B3A00134A17 /* focusOrFollow */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F03A1C110B3300134A17 /* YWFollowingViewController.h */,
+				77D0F03B1C110B3300134A17 /* YWFollowingViewController.m */,
+			);
+			name = focusOrFollow;
+			sourceTree = "<group>";
+		};
+		77D0F03E1C110B7400134A17 /* focusOrFollowTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F03F1C110BA600134A17 /* YWFollowingTableViewCell.h */,
+				77D0F0401C110BA600134A17 /* YWFollowingTableViewCell.m */,
+			);
+			name = focusOrFollowTableViewCell;
+			sourceTree = "<group>";
+		};
+		77D0F0421C110CFB00134A17 /* catogory */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = catogory;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -486,13 +600,23 @@
 			files = (
 				56FE99CE1C0FBAB8007BA29B /* AppDelegate.m in Sources */,
 				56FE9A1C1C0FC242007BA29B /* YWFocusViewController.m in Sources */,
+				770EC2C71C1088E100A4D2E9 /* YWSearchCollectionReusableView.m in Sources */,
+				770EC2B81C10772600A4D2E9 /* YWHotCollectionViewCell.m in Sources */,
 				56FE9A131C0FBCF2007BA29B /* YWNavigationController.m in Sources */,
+				770EC2C11C10790000A4D2E9 /* YWFocusTableViewCell.m in Sources */,
 				56FE9A1F1C0FC24D007BA29B /* YWHotViewController.m in Sources */,
 				56FE9A0D1C0FBB95007BA29B /* YWMovieViewController.m in Sources */,
+				770EC2C41C107AC600A4D2E9 /* YWBaseViewController.m in Sources */,
 				56FE99CB1C0FBAB8007BA29B /* main.m in Sources */,
+				77D0F03C1C110B3300134A17 /* YWFollowingViewController.m in Sources */,
 				56FE9A101C0FBBA3007BA29B /* YWMineViewController.m in Sources */,
+				770EC2BE1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.m in Sources */,
+				77D0F0411C110BA600134A17 /* YWFollowingTableViewCell.m in Sources */,
 				56FE9A191C0FC234007BA29B /* YWTemplateViewController.m in Sources */,
 				56FE9A0A1C0FBB86007BA29B /* YWHomeViewController.m in Sources */,
+				770EC2CE1C109FE500A4D2E9 /* YWUserModel.m in Sources */,
+				770EC2CB1C108E2D00A4D2E9 /* YWMineTableHeadView.m in Sources */,
+				77D0F0391C110A7A00134A17 /* YWTrendsViewController.m in Sources */,
 				56FE9A221C0FC2A2007BA29B /* YWCustomSegView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
