@@ -9,6 +9,8 @@
 #import "YWFollowingViewController.h"
 #import "YWFollowingTableViewCell.h"
 
+#import "YWUserModel.h"
+
 @interface YWFollowingViewController ()<UITableViewDelegate, UITableViewDataSource, YWFollowingTableViewCellDelegate>
 
 @end
@@ -24,8 +26,22 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSource = [[NSMutableArray alloc] init];
-    
+    [self createBackLeftItem];
     [self createSubViews];
+    [self datatSource];
+}
+
+- (void)datatSource {
+    for (NSInteger i=0; i<10; i++) {
+        YWUserModel *model = [[YWUserModel alloc] init];
+        model.userAvator = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+        model.userId = [NSString stringWithFormat:@"%ld", i];
+        model.userName = [NSString stringWithFormat:@"测试账号%ld", i];
+        model.userRelationType = _isFocus?kBeFocus:kFocus;
+        
+        [_dataSource addObject:model];
+    }
+    [_tableView reloadData];
 }
 
 - (void)createSubViews {
@@ -52,13 +68,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YWFollowingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    
+    cell.delegate = self;
+    cell.user = _dataSource[indexPath.row];
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 50;
+    return 80;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

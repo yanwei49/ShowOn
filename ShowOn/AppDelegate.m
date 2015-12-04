@@ -11,6 +11,7 @@
 #import "YWMovieViewController.h"
 #import "YWMineViewController.h"
 #import "YWNavigationController.h"
+#import <RongIMKit/RongIMKit.h>
 
 @interface AppDelegate ()<UITabBarControllerDelegate>
 
@@ -26,6 +27,8 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     
+    [[RCIM sharedRCIM] initWithAppKey:@"25wehl3uwaqmw"];
+
     [self createTabBar];
     [self.window makeKeyAndVisible];
     

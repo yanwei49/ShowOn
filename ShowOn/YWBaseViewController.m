@@ -16,22 +16,44 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)createBackLeftItem {
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(10, 5, 70, 34)];
+    button.backgroundColor = [UIColor whiteColor];
+    [button setTitle:@"返回" forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:15];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(actionBack:) forControlEvents:UIControlEventTouchUpInside];
+    button.layer.masksToBounds = YES;
+    button.layer.cornerRadius = 5;
+    button.layer.borderWidth = 1;
+    button.layer.borderColor =[UIColor lightGrayColor].CGColor;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)actionBack:(UIButton *)button {
+    [self.navigationController popViewControllerAnimated:YES];
 }
-*/
+
+- (void)createBackRightItemWithTitle:(NSString *)title {
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth - 80, 5, 70, 34)];
+    button.backgroundColor = [UIColor whiteColor];
+    [button setTitle:title forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:15];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(actionRightItem:) forControlEvents:UIControlEventTouchUpInside];
+    button.layer.masksToBounds = YES;
+    button.layer.cornerRadius = 5;
+    button.layer.borderWidth = 1;
+    button.layer.borderColor =[UIColor lightGrayColor].CGColor;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+}
+
+- (void)actionRightItem:(UIButton *)button {
+
+}
 
 @end

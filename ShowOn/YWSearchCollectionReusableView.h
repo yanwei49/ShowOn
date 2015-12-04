@@ -8,8 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@class YWSearchCollectionReusableView;
+@protocol YWSearchCollectionReusableViewDelegate <NSObject>
+
+- (void)searchCollectionReusableView:(YWSearchCollectionReusableView *)view didSelectItemWithIndex:(NSInteger)index;
+
+@end
+
 @interface YWSearchCollectionReusableView : UICollectionReusableView
 
 @property (nonatomic, assign) BOOL itemShowState;
+@property (nonatomic, assign) id<YWSearchCollectionReusableViewDelegate> delegate;
 
 @end

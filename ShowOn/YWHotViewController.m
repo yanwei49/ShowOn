@@ -9,8 +9,9 @@
 #import "YWHotViewController.h"
 #import "YWHotCollectionViewCell.h"
 #import "YWSearchCollectionReusableView.h"
+#import "YWHotDetailViewController.h"
 
-@interface YWHotViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface YWHotViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWHotCollectionViewCellDelegate>
 
 @end
 
@@ -24,16 +25,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    
+    _dataSource = [[NSMutableArray alloc] init];
+
     [self createSubViews];
+    [self dataSource];
+}
+
+- (void)dataSource {
+    for (NSInteger i=0; i<10; i++) {
+        [_dataSource addObject:@""];
+    }
+    [_collectionView reloadData];
 }
 
 - (void)createSubViews {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake((kScreenWidth-1)/2, 150);
+    layout.itemSize = CGSizeMake((kScreenWidth-2)/2, 150);
     
     _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-    _collectionView.backgroundColor = [UIColor whiteColor];
+    _collectionView.backgroundColor = SeparatorColor;
     [_collectionView registerClass:[YWHotCollectionViewCell class] forCellWithReuseIdentifier:@"item"];
     [_collectionView registerClass:[YWSearchCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headView"];
     _collectionView.delegate = self;
@@ -51,16 +61,24 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     YWHotCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"item" forIndexPath:indexPath];
-
+    cell.delegate = self;
+    
     return cell;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    YWHotDetailViewController *vc = [[YWHotDetailViewController alloc] init];
+    vc.hidesBottomBarWhenPushed = YES;
+    NSLog(@"%@", self.nv);
+    [self.nv pushViewController:vc animated:YES];
+}
+
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 0;
+    return 2;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return 0;
+    return 2;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -78,6 +96,10 @@
     return CGSizeMake(kScreenWidth, 40);
 }
 
+#pragma mark - YWHotCollectionViewCellDelegate
+- (void)hotCollectionViewCellDidSelectSupport:(YWHotCollectionViewCell *)cell {
+    
+}
 
 
 @end

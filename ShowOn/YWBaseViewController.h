@@ -10,4 +10,10 @@
 
 @interface YWBaseViewController : UIViewController
 
+- (void)createBackLeftItem;
+- (void)actionBack:(UIButton *)button;
+
+- (void)createBackRightItemWithTitle:(NSString *)title;
+- (void)actionRightItem:(UIButton *)button;
+
 @end

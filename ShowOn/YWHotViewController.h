@@ -10,4 +10,6 @@
 
 @interface YWHotViewController : YWBaseViewController
 
+@property (nonatomic, strong) UINavigationController *nv;
+
 @end

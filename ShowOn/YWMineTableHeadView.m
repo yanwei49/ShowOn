@@ -27,7 +27,7 @@
         _buttonArrays = [[NSMutableArray alloc] init];
         
         _avatorImageView = [[UIImageView alloc] init];
-        _avatorImageView.backgroundColor = [UIColor whiteColor];
+        _avatorImageView.backgroundColor = [UIColor greenColor];
         _avatorImageView.layer.masksToBounds = YES;
         _avatorImageView.layer.cornerRadius = 30;
         [self addSubview:_avatorImageView];
@@ -55,6 +55,7 @@
             make.right.equalTo(self.mas_centerX);
             make.height.offset(20);
             make.left.offset(0);
+            make.top.equalTo(_nameLabel.mas_bottom);
         }];
         
         _authenticationLabel = [[UILabel alloc] init];
@@ -66,6 +67,7 @@
             make.left.equalTo(self.mas_centerX);
             make.height.offset(20);
             make.right.offset(0);
+            make.top.equalTo(_empiricalLabel.mas_top);
         }];
 
         _infosLabel = [[UILabel alloc] init];
@@ -101,6 +103,14 @@
                 make.width.offset((kScreenWidth-100)/4);
             }];
         }
+        
+        UIView *lineView = [[UIView alloc] init];
+        lineView.backgroundColor = [UIColor lightGrayColor];
+        [self addSubview:lineView];
+        [lineView makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.left.right.offset(0);
+            make.height.offset(1);
+        }];
     }
     
     return self;

@@ -31,6 +31,26 @@
 		77D0F0391C110A7A00134A17 /* YWTrendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0381C110A7A00134A17 /* YWTrendsViewController.m */; };
 		77D0F03C1C110B3300134A17 /* YWFollowingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F03B1C110B3300134A17 /* YWFollowingViewController.m */; };
 		77D0F0411C110BA600134A17 /* YWFollowingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0401C110BA600134A17 /* YWFollowingTableViewCell.m */; };
+		77D0F0C51C11B4F300134A17 /* YWCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0C41C11B4F300134A17 /* YWCollectionViewController.m */; };
+		77D0F0CA1C11C19C00134A17 /* YWTrendsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0C91C11C19C00134A17 /* YWTrendsTableViewCell.m */; };
+		77D0F0CD1C11C1B200134A17 /* YWCollectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0CC1C11C1B200134A17 /* YWCollectionTableViewCell.m */; };
+		77D0F0D61C11C39300134A17 /* YWATMeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0D51C11C39300134A17 /* YWATMeViewController.m */; };
+		77D0F0D91C11C3AA00134A17 /* YWCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0D81C11C3AA00134A17 /* YWCommentViewController.m */; };
+		77D0F0DC1C11C3C000134A17 /* YWSupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0DB1C11C3C000134A17 /* YWSupportViewController.m */; };
+		77D0F0DF1C11C3CE00134A17 /* YWMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0DE1C11C3CE00134A17 /* YWMessageViewController.m */; };
+		77D0F0E21C11C3E400134A17 /* YWExperienceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0E11C11C3E400134A17 /* YWExperienceViewController.m */; };
+		77D0F0E51C11C41F00134A17 /* YWDraftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0E41C11C41F00134A17 /* YWDraftViewController.m */; };
+		77D0F0EE1C11C50A00134A17 /* YWATMeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0ED1C11C50A00134A17 /* YWATMeTableViewCell.m */; };
+		77D0F0F11C11C52000134A17 /* YWCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0F01C11C52000134A17 /* YWCommentTableViewCell.m */; };
+		77D0F0F41C11C53700134A17 /* YWSupportTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0F31C11C53700134A17 /* YWSupportTableViewCell.m */; };
+		77D0F0F71C11C55600134A17 /* YWDraftCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0F61C11C55600134A17 /* YWDraftCollectionViewCell.m */; };
+		77D0F0FA1C11C6D500134A17 /* YWExperienceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0F91C11C6D500134A17 /* YWExperienceTableViewCell.m */; };
+		77D0F0FD1C11C8D700134A17 /* YWChatRoomViewComtroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0FC1C11C8D700134A17 /* YWChatRoomViewComtroller.m */; };
+		77D0F1011C11CABB00134A17 /* YWHttpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F1001C11CABB00134A17 /* YWHttpManager.m */; };
+		77D0F1041C11CAC900134A17 /* YWParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F1031C11CAC900134A17 /* YWParser.m */; };
+		77D0F1091C11CEFB00134A17 /* YWSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F1081C11CEFB00134A17 /* YWSettingViewController.m */; };
+		77D0F10C1C11DC4B00134A17 /* YWHotDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F10B1C11DC4B00134A17 /* YWHotDetailViewController.m */; };
+		77D0F10F1C11E5B000134A17 /* YWTranscribeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F10E1C11E5B000134A17 /* YWTranscribeViewController.m */; };
 		CE3B21BB20DA61FA1F44DBA0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FBD5358C72CBD7E36FE23EC /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -83,7 +103,6 @@
 		56FE9A1E1C0FC24D007BA29B /* YWHotViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWHotViewController.m; sourceTree = "<group>"; };
 		56FE9A201C0FC2A2007BA29B /* YWCustomSegView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCustomSegView.h; sourceTree = "<group>"; };
 		56FE9A211C0FC2A2007BA29B /* YWCustomSegView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCustomSegView.m; sourceTree = "<group>"; };
-		56FE9A231C0FC898007BA29B /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = /Users/davidyu/Desktop/ShowOn/ShowOn/PrefixHeader.pch; sourceTree = "<absolute>"; };
 		56FE9A241C0FCA4D007BA29B /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
 		770EC2B61C10772600A4D2E9 /* YWHotCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWHotCollectionViewCell.h; sourceTree = "<group>"; };
 		770EC2B71C10772600A4D2E9 /* YWHotCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWHotCollectionViewCell.m; sourceTree = "<group>"; };
@@ -105,6 +124,48 @@
 		77D0F03B1C110B3300134A17 /* YWFollowingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFollowingViewController.m; sourceTree = "<group>"; };
 		77D0F03F1C110BA600134A17 /* YWFollowingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFollowingTableViewCell.h; sourceTree = "<group>"; };
 		77D0F0401C110BA600134A17 /* YWFollowingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFollowingTableViewCell.m; sourceTree = "<group>"; };
+		77D0F0C11C11B36100134A17 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		77D0F0C31C11B4F300134A17 /* YWCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCollectionViewController.h; sourceTree = "<group>"; };
+		77D0F0C41C11B4F300134A17 /* YWCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCollectionViewController.m; sourceTree = "<group>"; };
+		77D0F0C81C11C19C00134A17 /* YWTrendsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTrendsTableViewCell.h; sourceTree = "<group>"; };
+		77D0F0C91C11C19C00134A17 /* YWTrendsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTrendsTableViewCell.m; sourceTree = "<group>"; };
+		77D0F0CB1C11C1B200134A17 /* YWCollectionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCollectionTableViewCell.h; sourceTree = "<group>"; };
+		77D0F0CC1C11C1B200134A17 /* YWCollectionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCollectionTableViewCell.m; sourceTree = "<group>"; };
+		77D0F0D41C11C39300134A17 /* YWATMeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWATMeViewController.h; sourceTree = "<group>"; };
+		77D0F0D51C11C39300134A17 /* YWATMeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWATMeViewController.m; sourceTree = "<group>"; };
+		77D0F0D71C11C3AA00134A17 /* YWCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCommentViewController.h; sourceTree = "<group>"; };
+		77D0F0D81C11C3AA00134A17 /* YWCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCommentViewController.m; sourceTree = "<group>"; };
+		77D0F0DA1C11C3C000134A17 /* YWSupportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWSupportViewController.h; sourceTree = "<group>"; };
+		77D0F0DB1C11C3C000134A17 /* YWSupportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWSupportViewController.m; sourceTree = "<group>"; };
+		77D0F0DD1C11C3CE00134A17 /* YWMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWMessageViewController.h; sourceTree = "<group>"; };
+		77D0F0DE1C11C3CE00134A17 /* YWMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWMessageViewController.m; sourceTree = "<group>"; };
+		77D0F0E01C11C3E400134A17 /* YWExperienceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWExperienceViewController.h; sourceTree = "<group>"; };
+		77D0F0E11C11C3E400134A17 /* YWExperienceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWExperienceViewController.m; sourceTree = "<group>"; };
+		77D0F0E31C11C41F00134A17 /* YWDraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWDraftViewController.h; sourceTree = "<group>"; };
+		77D0F0E41C11C41F00134A17 /* YWDraftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWDraftViewController.m; sourceTree = "<group>"; };
+		77D0F0EC1C11C50A00134A17 /* YWATMeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWATMeTableViewCell.h; sourceTree = "<group>"; };
+		77D0F0ED1C11C50A00134A17 /* YWATMeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWATMeTableViewCell.m; sourceTree = "<group>"; };
+		77D0F0EF1C11C52000134A17 /* YWCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCommentTableViewCell.h; sourceTree = "<group>"; };
+		77D0F0F01C11C52000134A17 /* YWCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCommentTableViewCell.m; sourceTree = "<group>"; };
+		77D0F0F21C11C53700134A17 /* YWSupportTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWSupportTableViewCell.h; sourceTree = "<group>"; };
+		77D0F0F31C11C53700134A17 /* YWSupportTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWSupportTableViewCell.m; sourceTree = "<group>"; };
+		77D0F0F51C11C55600134A17 /* YWDraftCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWDraftCollectionViewCell.h; sourceTree = "<group>"; };
+		77D0F0F61C11C55600134A17 /* YWDraftCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWDraftCollectionViewCell.m; sourceTree = "<group>"; };
+		77D0F0F81C11C6D500134A17 /* YWExperienceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWExperienceTableViewCell.h; sourceTree = "<group>"; };
+		77D0F0F91C11C6D500134A17 /* YWExperienceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWExperienceTableViewCell.m; sourceTree = "<group>"; };
+		77D0F0FB1C11C8D700134A17 /* YWChatRoomViewComtroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWChatRoomViewComtroller.h; sourceTree = "<group>"; };
+		77D0F0FC1C11C8D700134A17 /* YWChatRoomViewComtroller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWChatRoomViewComtroller.m; sourceTree = "<group>"; };
+		77D0F0FF1C11CABB00134A17 /* YWHttpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWHttpManager.h; sourceTree = "<group>"; };
+		77D0F1001C11CABB00134A17 /* YWHttpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWHttpManager.m; sourceTree = "<group>"; };
+		77D0F1021C11CAC900134A17 /* YWParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWParser.h; sourceTree = "<group>"; };
+		77D0F1031C11CAC900134A17 /* YWParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWParser.m; sourceTree = "<group>"; };
+		77D0F1051C11CCA400134A17 /* YWHttpGlobalDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWHttpGlobalDefine.h; sourceTree = "<group>"; };
+		77D0F1071C11CEFB00134A17 /* YWSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWSettingViewController.h; sourceTree = "<group>"; };
+		77D0F1081C11CEFB00134A17 /* YWSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWSettingViewController.m; sourceTree = "<group>"; };
+		77D0F10A1C11DC4B00134A17 /* YWHotDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWHotDetailViewController.h; sourceTree = "<group>"; };
+		77D0F10B1C11DC4B00134A17 /* YWHotDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWHotDetailViewController.m; sourceTree = "<group>"; };
+		77D0F10D1C11E5B000134A17 /* YWTranscribeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTranscribeViewController.h; sourceTree = "<group>"; };
+		77D0F10E1C11E5B000134A17 /* YWTranscribeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTranscribeViewController.m; sourceTree = "<group>"; };
 		8C97BF3F733B43EAC44E94D0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -167,6 +228,7 @@
 		56FE99C81C0FBAB8007BA29B /* ShowOn */ = {
 			isa = PBXGroup;
 			children = (
+				77D0F0FE1C11CA9D00134A17 /* comman */,
 				77D0F0421C110CFB00134A17 /* catogory */,
 				56FE99CC1C0FBAB8007BA29B /* AppDelegate.h */,
 				56FE99CD1C0FBAB8007BA29B /* AppDelegate.m */,
@@ -180,8 +242,8 @@
 				56FE99D51C0FBAB8007BA29B /* Assets.xcassets */,
 				56FE99D71C0FBAB8007BA29B /* LaunchScreen.storyboard */,
 				56FE99DA1C0FBAB8007BA29B /* Info.plist */,
-				56FE9A231C0FC898007BA29B /* PrefixHeader.pch */,
 				56FE9A241C0FCA4D007BA29B /* Header.h */,
+				77D0F0C11C11B36100134A17 /* PrefixHeader.pch */,
 				56FE99C91C0FBAB8007BA29B /* Supporting Files */,
 			);
 			path = ShowOn;
@@ -260,6 +322,8 @@
 			children = (
 				56FE9A0B1C0FBB95007BA29B /* YWMovieViewController.h */,
 				56FE9A0C1C0FBB95007BA29B /* YWMovieViewController.m */,
+				77D0F10D1C11E5B000134A17 /* YWTranscribeViewController.h */,
+				77D0F10E1C11E5B000134A17 /* YWTranscribeViewController.m */,
 			);
 			name = viewcontroller;
 			sourceTree = "<group>";
@@ -269,8 +333,16 @@
 			children = (
 				56FE9A0E1C0FBBA3007BA29B /* YWMineViewController.h */,
 				56FE9A0F1C0FBBA3007BA29B /* YWMineViewController.m */,
+				77D0F1061C11CED800134A17 /* setting */,
 				77D0F0361C110A6200134A17 /* trends */,
 				77D0F03D1C110B3A00134A17 /* focusOrFollow */,
+				77D0F0C21C11B4D200134A17 /* collection */,
+				77D0F0CE1C11C2A500134A17 /* @me */,
+				77D0F0CF1C11C2BA00134A17 /* comment */,
+				77D0F0D01C11C2C100134A17 /* support */,
+				77D0F0D11C11C2D200134A17 /* message */,
+				77D0F0D21C11C31B00134A17 /* experience */,
+				77D0F0D31C11C32100134A17 /* draft */,
 			);
 			name = viewcontroller;
 			sourceTree = "<group>";
@@ -321,9 +393,17 @@
 		56FE9A071C0FBB59007BA29B /* view */ = {
 			isa = PBXGroup;
 			children = (
+				77D0F0C71C11C17B00134A17 /* trendsTableViewCell */,
+				77D0F03E1C110B7400134A17 /* focusOrFollowTableViewCell */,
+				77D0F0C61C11C16900134A17 /* collectionTableViewCell */,
+				77D0F0EB1C11C48A00134A17 /* @meTabCell */,
+				77D0F0EA1C11C48700134A17 /* commenTabCell */,
+				77D0F0E91C11C48300134A17 /* supportTabCell */,
+				77D0F0E81C11C47D00134A17 /* messageTabCell */,
+				77D0F0E71C11C47800134A17 /* exprienceTabCell */,
+				77D0F0E61C11C47200134A17 /* draftTabCell */,
 				770EC2C91C108E2D00A4D2E9 /* YWMineTableHeadView.h */,
 				770EC2CA1C108E2D00A4D2E9 /* YWMineTableHeadView.m */,
-				77D0F03E1C110B7400134A17 /* focusOrFollowTableViewCell */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -333,6 +413,8 @@
 			children = (
 				56FE9A1D1C0FC24D007BA29B /* YWHotViewController.h */,
 				56FE9A1E1C0FC24D007BA29B /* YWHotViewController.m */,
+				77D0F10A1C11DC4B00134A17 /* YWHotDetailViewController.h */,
+				77D0F10B1C11DC4B00134A17 /* YWHotDetailViewController.m */,
 			);
 			name = "热门";
 			sourceTree = "<group>";
@@ -432,6 +514,162 @@
 			children = (
 			);
 			name = catogory;
+			sourceTree = "<group>";
+		};
+		77D0F0C21C11B4D200134A17 /* collection */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0C31C11B4F300134A17 /* YWCollectionViewController.h */,
+				77D0F0C41C11B4F300134A17 /* YWCollectionViewController.m */,
+			);
+			name = collection;
+			sourceTree = "<group>";
+		};
+		77D0F0C61C11C16900134A17 /* collectionTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0CB1C11C1B200134A17 /* YWCollectionTableViewCell.h */,
+				77D0F0CC1C11C1B200134A17 /* YWCollectionTableViewCell.m */,
+			);
+			name = collectionTableViewCell;
+			sourceTree = "<group>";
+		};
+		77D0F0C71C11C17B00134A17 /* trendsTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0C81C11C19C00134A17 /* YWTrendsTableViewCell.h */,
+				77D0F0C91C11C19C00134A17 /* YWTrendsTableViewCell.m */,
+			);
+			name = trendsTableViewCell;
+			sourceTree = "<group>";
+		};
+		77D0F0CE1C11C2A500134A17 /* @me */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0D41C11C39300134A17 /* YWATMeViewController.h */,
+				77D0F0D51C11C39300134A17 /* YWATMeViewController.m */,
+			);
+			name = "@me";
+			sourceTree = "<group>";
+		};
+		77D0F0CF1C11C2BA00134A17 /* comment */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0D71C11C3AA00134A17 /* YWCommentViewController.h */,
+				77D0F0D81C11C3AA00134A17 /* YWCommentViewController.m */,
+			);
+			name = comment;
+			sourceTree = "<group>";
+		};
+		77D0F0D01C11C2C100134A17 /* support */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0DA1C11C3C000134A17 /* YWSupportViewController.h */,
+				77D0F0DB1C11C3C000134A17 /* YWSupportViewController.m */,
+			);
+			name = support;
+			sourceTree = "<group>";
+		};
+		77D0F0D11C11C2D200134A17 /* message */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0DD1C11C3CE00134A17 /* YWMessageViewController.h */,
+				77D0F0DE1C11C3CE00134A17 /* YWMessageViewController.m */,
+				77D0F0FB1C11C8D700134A17 /* YWChatRoomViewComtroller.h */,
+				77D0F0FC1C11C8D700134A17 /* YWChatRoomViewComtroller.m */,
+			);
+			name = message;
+			sourceTree = "<group>";
+		};
+		77D0F0D21C11C31B00134A17 /* experience */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0E01C11C3E400134A17 /* YWExperienceViewController.h */,
+				77D0F0E11C11C3E400134A17 /* YWExperienceViewController.m */,
+			);
+			name = experience;
+			sourceTree = "<group>";
+		};
+		77D0F0D31C11C32100134A17 /* draft */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0E31C11C41F00134A17 /* YWDraftViewController.h */,
+				77D0F0E41C11C41F00134A17 /* YWDraftViewController.m */,
+			);
+			name = draft;
+			sourceTree = "<group>";
+		};
+		77D0F0E61C11C47200134A17 /* draftTabCell */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0F51C11C55600134A17 /* YWDraftCollectionViewCell.h */,
+				77D0F0F61C11C55600134A17 /* YWDraftCollectionViewCell.m */,
+			);
+			name = draftTabCell;
+			sourceTree = "<group>";
+		};
+		77D0F0E71C11C47800134A17 /* exprienceTabCell */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0F81C11C6D500134A17 /* YWExperienceTableViewCell.h */,
+				77D0F0F91C11C6D500134A17 /* YWExperienceTableViewCell.m */,
+			);
+			name = exprienceTabCell;
+			sourceTree = "<group>";
+		};
+		77D0F0E81C11C47D00134A17 /* messageTabCell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = messageTabCell;
+			sourceTree = "<group>";
+		};
+		77D0F0E91C11C48300134A17 /* supportTabCell */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0F21C11C53700134A17 /* YWSupportTableViewCell.h */,
+				77D0F0F31C11C53700134A17 /* YWSupportTableViewCell.m */,
+			);
+			name = supportTabCell;
+			sourceTree = "<group>";
+		};
+		77D0F0EA1C11C48700134A17 /* commenTabCell */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0EF1C11C52000134A17 /* YWCommentTableViewCell.h */,
+				77D0F0F01C11C52000134A17 /* YWCommentTableViewCell.m */,
+			);
+			name = commenTabCell;
+			sourceTree = "<group>";
+		};
+		77D0F0EB1C11C48A00134A17 /* @meTabCell */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F0EC1C11C50A00134A17 /* YWATMeTableViewCell.h */,
+				77D0F0ED1C11C50A00134A17 /* YWATMeTableViewCell.m */,
+			);
+			name = "@meTabCell";
+			sourceTree = "<group>";
+		};
+		77D0F0FE1C11CA9D00134A17 /* comman */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F1051C11CCA400134A17 /* YWHttpGlobalDefine.h */,
+				77D0F0FF1C11CABB00134A17 /* YWHttpManager.h */,
+				77D0F1001C11CABB00134A17 /* YWHttpManager.m */,
+				77D0F1021C11CAC900134A17 /* YWParser.h */,
+				77D0F1031C11CAC900134A17 /* YWParser.m */,
+			);
+			name = comman;
+			sourceTree = "<group>";
+		};
+		77D0F1061C11CED800134A17 /* setting */ = {
+			isa = PBXGroup;
+			children = (
+				77D0F1071C11CEFB00134A17 /* YWSettingViewController.h */,
+				77D0F1081C11CEFB00134A17 /* YWSettingViewController.m */,
+			);
+			name = setting;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -599,25 +837,45 @@
 			buildActionMask = 2147483647;
 			files = (
 				56FE99CE1C0FBAB8007BA29B /* AppDelegate.m in Sources */,
+				77D0F1011C11CABB00134A17 /* YWHttpManager.m in Sources */,
 				56FE9A1C1C0FC242007BA29B /* YWFocusViewController.m in Sources */,
 				770EC2C71C1088E100A4D2E9 /* YWSearchCollectionReusableView.m in Sources */,
+				77D0F0FA1C11C6D500134A17 /* YWExperienceTableViewCell.m in Sources */,
+				77D0F0F41C11C53700134A17 /* YWSupportTableViewCell.m in Sources */,
 				770EC2B81C10772600A4D2E9 /* YWHotCollectionViewCell.m in Sources */,
 				56FE9A131C0FBCF2007BA29B /* YWNavigationController.m in Sources */,
 				770EC2C11C10790000A4D2E9 /* YWFocusTableViewCell.m in Sources */,
 				56FE9A1F1C0FC24D007BA29B /* YWHotViewController.m in Sources */,
 				56FE9A0D1C0FBB95007BA29B /* YWMovieViewController.m in Sources */,
+				77D0F0F71C11C55600134A17 /* YWDraftCollectionViewCell.m in Sources */,
+				77D0F0E51C11C41F00134A17 /* YWDraftViewController.m in Sources */,
+				77D0F0CD1C11C1B200134A17 /* YWCollectionTableViewCell.m in Sources */,
 				770EC2C41C107AC600A4D2E9 /* YWBaseViewController.m in Sources */,
+				77D0F0F11C11C52000134A17 /* YWCommentTableViewCell.m in Sources */,
 				56FE99CB1C0FBAB8007BA29B /* main.m in Sources */,
 				77D0F03C1C110B3300134A17 /* YWFollowingViewController.m in Sources */,
 				56FE9A101C0FBBA3007BA29B /* YWMineViewController.m in Sources */,
 				770EC2BE1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.m in Sources */,
+				77D0F0CA1C11C19C00134A17 /* YWTrendsTableViewCell.m in Sources */,
+				77D0F0D61C11C39300134A17 /* YWATMeViewController.m in Sources */,
+				77D0F0DC1C11C3C000134A17 /* YWSupportViewController.m in Sources */,
+				77D0F0EE1C11C50A00134A17 /* YWATMeTableViewCell.m in Sources */,
 				77D0F0411C110BA600134A17 /* YWFollowingTableViewCell.m in Sources */,
 				56FE9A191C0FC234007BA29B /* YWTemplateViewController.m in Sources */,
 				56FE9A0A1C0FBB86007BA29B /* YWHomeViewController.m in Sources */,
+				77D0F0D91C11C3AA00134A17 /* YWCommentViewController.m in Sources */,
+				77D0F10C1C11DC4B00134A17 /* YWHotDetailViewController.m in Sources */,
 				770EC2CE1C109FE500A4D2E9 /* YWUserModel.m in Sources */,
 				770EC2CB1C108E2D00A4D2E9 /* YWMineTableHeadView.m in Sources */,
+				77D0F0FD1C11C8D700134A17 /* YWChatRoomViewComtroller.m in Sources */,
+				77D0F1091C11CEFB00134A17 /* YWSettingViewController.m in Sources */,
 				77D0F0391C110A7A00134A17 /* YWTrendsViewController.m in Sources */,
+				77D0F0C51C11B4F300134A17 /* YWCollectionViewController.m in Sources */,
+				77D0F10F1C11E5B000134A17 /* YWTranscribeViewController.m in Sources */,
+				77D0F1041C11CAC900134A17 /* YWParser.m in Sources */,
+				77D0F0DF1C11C3CE00134A17 /* YWMessageViewController.m in Sources */,
 				56FE9A221C0FC2A2007BA29B /* YWCustomSegView.m in Sources */,
+				77D0F0E21C11C3E400134A17 /* YWExperienceViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

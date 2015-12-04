@@ -55,7 +55,9 @@
 
 #pragma mark - YWCustomSegViewDelegate
 - (void)customSegView:(YWCustomSegView *)view didSelectItemWithIndex:(NSInteger)index {
-
+    if ([_delegate respondsToSelector:@selector(searchCollectionReusableView:didSelectItemWithIndex:)]) {
+        [_delegate searchCollectionReusableView:self didSelectItemWithIndex:index];
+    }
 }
 
 #pragma mark - UITextFieldDelegate

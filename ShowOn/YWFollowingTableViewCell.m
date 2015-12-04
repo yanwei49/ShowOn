@@ -23,7 +23,7 @@
         self.backgroundColor = [UIColor whiteColor];
         
         _avatorImageView = [[UIImageView alloc] init];
-        _avatorImageView.backgroundColor = [UIColor whiteColor];
+        _avatorImageView.backgroundColor = [UIColor greenColor];
         _avatorImageView.layer.masksToBounds = YES;
         _avatorImageView.layer.cornerRadius = 30;
         [self.contentView addSubview:_avatorImageView];
@@ -35,7 +35,7 @@
         
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.backgroundColor = [UIColor whiteColor];
-        _nameLabel.font = [UIFont systemFontOfSize:15];
+        _nameLabel.font = [UIFont systemFontOfSize:16];
         [self.contentView addSubview:_nameLabel];
         [_nameLabel makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.contentView.mas_centerY);
@@ -57,7 +57,7 @@
             make.centerY.equalTo(self.contentView.mas_centerY);
             make.right.offset(-20);
             make.width.offset(80);
-            make.height.offset(40);
+            make.height.offset(35);
         }];
     }
     
@@ -88,8 +88,8 @@
 }
 
 - (void)actionOnClick:(UIButton *)buttom {
-    if ([_gelegate respondsToSelector:@selector(followingTableViewCellDidSelectButton:)]) {
-        [_gelegate followingTableViewCellDidSelectButton:self];
+    if ([_delegate respondsToSelector:@selector(followingTableViewCellDidSelectButton:)]) {
+        [_delegate followingTableViewCellDidSelectButton:self];
     }
 }
 

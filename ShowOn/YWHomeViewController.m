@@ -28,10 +28,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationController.navigationBarHidden = YES;
     _showViewIndex = 0;
     
     [self createSubViews];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)createSubViews {
@@ -47,6 +56,7 @@
     }];
     
     _focusVC = [[YWFocusViewController alloc] init];
+    _focusVC.nv = self.navigationController;
     [self.view addSubview:_focusVC.view];
     [_focusVC.view makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_itemView.mas_bottom);
@@ -55,6 +65,7 @@
     }];
     
     _templateVC = [[YWTemplateViewController alloc] init];
+    _templateVC.nv = self.navigationController;
     [self.view addSubview:_templateVC.view];
     [_templateVC.view makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_itemView.mas_bottom);
@@ -63,6 +74,7 @@
     }];
     
     _hotVC = [[YWHotViewController alloc] init];
+    _hotVC.nv = self.navigationController;
     [self.view addSubview:_hotVC.view];
     [_hotVC.view makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_itemView.mas_bottom);

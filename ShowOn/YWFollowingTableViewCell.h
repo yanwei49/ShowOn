@@ -19,7 +19,7 @@
 @interface YWFollowingTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) YWUserModel  *user;
-@property (nonatomic, assign) id<YWFollowingTableViewCellDelegate> gelegate;
+@property (nonatomic, assign) id<YWFollowingTableViewCellDelegate> delegate;
 
 
 @end

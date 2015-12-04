@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class YWHotCollectionViewCell;
+@protocol YWHotCollectionViewCellDelegate <NSObject>
+
+- (void)hotCollectionViewCellDidSelectSupport:(YWHotCollectionViewCell *)cell;
+
+@end
+
 @interface YWHotCollectionViewCell : UICollectionViewCell
+
+@property (nonatomic, assign) id<YWHotCollectionViewCellDelegate> delegate;
 
 @end

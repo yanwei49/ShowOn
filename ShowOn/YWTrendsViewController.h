@@ -6,8 +6,9 @@
 //  Copyright © 2015年 yanwei. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "YWBaseViewController.h"
 
-@interface YWTrendsViewController : UIViewController
+@interface YWTrendsViewController : YWBaseViewController
+
 
 @end

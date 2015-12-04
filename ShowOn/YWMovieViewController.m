@@ -8,6 +8,7 @@
 
 #import "YWMovieViewController.h"
 #import "AppDelegate.h"
+#import "YWTranscribeViewController.h"
 
 @interface YWMovieViewController ()
 
@@ -81,7 +82,8 @@
 }
 
 - (void)actionTakePhoto:(UIButton *)button {
-    
+    YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 
