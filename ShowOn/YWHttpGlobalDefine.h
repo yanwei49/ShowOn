@@ -14,9 +14,11 @@
 #define TIME_OUT                              20
 #define VERSION_HEADER                        @"version"
 
-#define Register_Method                       @"LoginAndRegister/leaguerRegister?json"      //注册
-#define Login_Method                          @"LoginAndRegister/leaguerLogin?json"         //登录
-#define Reginster_Verification_Method         @"LoginAndRegister/getAuthCode?json"          //注册 手机获取验证码
+#define Register_Method                       @""         //注册
+#define Login_Method                          @""         //登录
+#define Reginster_Verification_Method         @""          //注册 获取验证码
+#define Reset_Password_Verification_Method    @""          //重置密码 获取验证码
+#define Reset_Password_Method                 @""          //重置密码
 
 
 #endif

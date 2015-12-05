@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		56F4AF1C1C125EE4008A6828 /* YWLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF1B1C125EE4008A6828 /* YWLoginViewController.m */; };
+		56F4AF1F1C12653F008A6828 /* YWRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF1E1C12653F008A6828 /* YWRegisterViewController.m */; };
+		56F4AF221C126550008A6828 /* YWForgetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF211C126550008A6828 /* YWForgetPasswordViewController.m */; };
+		56F4AF251C1279A1008A6828 /* NSString+isValidate.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF241C1279A1008A6828 /* NSString+isValidate.m */; };
 		56FE99CB1C0FBAB8007BA29B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE99CA1C0FBAB8007BA29B /* main.m */; };
 		56FE99CE1C0FBAB8007BA29B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE99CD1C0FBAB8007BA29B /* AppDelegate.m */; };
 		56FE99D61C0FBAB8007BA29B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56FE99D51C0FBAB8007BA29B /* Assets.xcassets */; };
@@ -74,6 +78,14 @@
 /* Begin PBXFileReference section */
 		1FBD5358C72CBD7E36FE23EC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28C9BEA80C5B71E2D4466F42 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		56F4AF1A1C125EE4008A6828 /* YWLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWLoginViewController.h; sourceTree = "<group>"; };
+		56F4AF1B1C125EE4008A6828 /* YWLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWLoginViewController.m; sourceTree = "<group>"; };
+		56F4AF1D1C12653F008A6828 /* YWRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWRegisterViewController.h; sourceTree = "<group>"; };
+		56F4AF1E1C12653F008A6828 /* YWRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWRegisterViewController.m; sourceTree = "<group>"; };
+		56F4AF201C126550008A6828 /* YWForgetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWForgetPasswordViewController.h; sourceTree = "<group>"; };
+		56F4AF211C126550008A6828 /* YWForgetPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWForgetPasswordViewController.m; sourceTree = "<group>"; };
+		56F4AF231C1279A1008A6828 /* NSString+isValidate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+isValidate.h"; sourceTree = "<group>"; };
+		56F4AF241C1279A1008A6828 /* NSString+isValidate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+isValidate.m"; sourceTree = "<group>"; };
 		56FE99C61C0FBAB8007BA29B /* ShowOn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShowOn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56FE99CA1C0FBAB8007BA29B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		56FE99CC1C0FBAB8007BA29B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -203,6 +215,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		56F4AF191C125ED0008A6828 /* login */ = {
+			isa = PBXGroup;
+			children = (
+				56F4AF1A1C125EE4008A6828 /* YWLoginViewController.h */,
+				56F4AF1B1C125EE4008A6828 /* YWLoginViewController.m */,
+				56F4AF1D1C12653F008A6828 /* YWRegisterViewController.h */,
+				56F4AF1E1C12653F008A6828 /* YWRegisterViewController.m */,
+				56F4AF201C126550008A6828 /* YWForgetPasswordViewController.h */,
+				56F4AF211C126550008A6828 /* YWForgetPasswordViewController.m */,
+			);
+			name = login;
+			sourceTree = "<group>";
+		};
 		56FE99BD1C0FBAB8007BA29B = {
 			isa = PBXGroup;
 			children = (
@@ -236,6 +261,7 @@
 				56FE9A121C0FBCF2007BA29B /* YWNavigationController.m */,
 				770EC2C21C107AC600A4D2E9 /* YWBaseViewController.h */,
 				770EC2C31C107AC600A4D2E9 /* YWBaseViewController.m */,
+				56F4AF191C125ED0008A6828 /* login */,
 				56FE99FC1C0FBAE8007BA29B /* home */,
 				56FE99FD1C0FBAEF007BA29B /* movie */,
 				56FE99FE1C0FBAF7007BA29B /* mine */,
@@ -512,6 +538,8 @@
 		77D0F0421C110CFB00134A17 /* catogory */ = {
 			isa = PBXGroup;
 			children = (
+				56F4AF231C1279A1008A6828 /* NSString+isValidate.h */,
+				56F4AF241C1279A1008A6828 /* NSString+isValidate.m */,
 			);
 			name = catogory;
 			sourceTree = "<group>";
@@ -850,8 +878,10 @@
 				77D0F0F71C11C55600134A17 /* YWDraftCollectionViewCell.m in Sources */,
 				77D0F0E51C11C41F00134A17 /* YWDraftViewController.m in Sources */,
 				77D0F0CD1C11C1B200134A17 /* YWCollectionTableViewCell.m in Sources */,
+				56F4AF1C1C125EE4008A6828 /* YWLoginViewController.m in Sources */,
 				770EC2C41C107AC600A4D2E9 /* YWBaseViewController.m in Sources */,
 				77D0F0F11C11C52000134A17 /* YWCommentTableViewCell.m in Sources */,
+				56F4AF251C1279A1008A6828 /* NSString+isValidate.m in Sources */,
 				56FE99CB1C0FBAB8007BA29B /* main.m in Sources */,
 				77D0F03C1C110B3300134A17 /* YWFollowingViewController.m in Sources */,
 				56FE9A101C0FBBA3007BA29B /* YWMineViewController.m in Sources */,
@@ -866,11 +896,13 @@
 				77D0F0D91C11C3AA00134A17 /* YWCommentViewController.m in Sources */,
 				77D0F10C1C11DC4B00134A17 /* YWHotDetailViewController.m in Sources */,
 				770EC2CE1C109FE500A4D2E9 /* YWUserModel.m in Sources */,
+				56F4AF1F1C12653F008A6828 /* YWRegisterViewController.m in Sources */,
 				770EC2CB1C108E2D00A4D2E9 /* YWMineTableHeadView.m in Sources */,
 				77D0F0FD1C11C8D700134A17 /* YWChatRoomViewComtroller.m in Sources */,
 				77D0F1091C11CEFB00134A17 /* YWSettingViewController.m in Sources */,
 				77D0F0391C110A7A00134A17 /* YWTrendsViewController.m in Sources */,
 				77D0F0C51C11B4F300134A17 /* YWCollectionViewController.m in Sources */,
+				56F4AF221C126550008A6828 /* YWForgetPasswordViewController.m in Sources */,
 				77D0F10F1C11E5B000134A17 /* YWTranscribeViewController.m in Sources */,
 				77D0F1041C11CAC900134A17 /* YWParser.m in Sources */,
 				77D0F0DF1C11C3CE00134A17 /* YWMessageViewController.m in Sources */,
@@ -1011,6 +1043,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ShowOn/PrefixHeader.pch";
 				INFOPLIST_FILE = ShowOn/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qunongzhuang.ShowOn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1024,6 +1057,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ShowOn/PrefixHeader.pch";
 				INFOPLIST_FILE = ShowOn/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qunongzhuang.ShowOn;
 				PRODUCT_NAME = "$(TARGET_NAME)";

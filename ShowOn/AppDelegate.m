@@ -12,6 +12,7 @@
 #import "YWMineViewController.h"
 #import "YWNavigationController.h"
 #import <RongIMKit/RongIMKit.h>
+#import "YWLoginViewController.h"
 
 @interface AppDelegate ()<UITabBarControllerDelegate>
 
@@ -26,13 +27,25 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:LoginSuccess object:nil];
     
     [[RCIM sharedRCIM] initWithAppKey:@"25wehl3uwaqmw"];
 
-    [self createTabBar];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"LoginState"]) {
+        [self createTabBar];
+    }else {
+        [self createLogin];
+    }
     [self.window makeKeyAndVisible];
     
     return YES;
+}
+
+- (void)createLogin {
+    YWLoginViewController *vc = [[YWLoginViewController alloc] init];
+    YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
+    self.window.rootViewController = nv;
+    nv.navigationBarHidden = YES;
 }
 
 - (void)createTabBar {
@@ -71,6 +84,10 @@
 - (void)movieVCToBack {
     _tabBar.tabBar.hidden = NO;
     _tabBar.selectedIndex = _tabBarLastSelectIndex;
+}
+
+- (void)loginSuccess:(NSNotification *)notification {
+    [self createTabBar];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
