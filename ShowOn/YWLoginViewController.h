@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-static NSString *LoginSuccess;
 @interface YWLoginViewController : UIViewController
 
 @end

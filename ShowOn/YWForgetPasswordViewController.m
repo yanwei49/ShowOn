@@ -8,6 +8,7 @@
 
 #import "YWForgetPasswordViewController.h"
 #import "NSString+isValidate.h"
+#import "YWHttpManager.h"
 
 @interface YWForgetPasswordViewController ()<UITextFieldDelegate>
 
@@ -178,28 +179,50 @@
 }
 
 - (void)actionSendVerification:(UIButton *)button {
-    if ([_verificationTextField.text isEqualToString:_verificationCode]) {
-        [self request];
+    if (_accountTextField.text && _accountTextField.text.length) {
+        [self requestVerification];
     }else {
-        if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
-            UIAlertController *alter = [UIAlertController alertControllerWithTitle:@"请输入正确的验证码" message:nil preferredStyle:UIAlertControllerStyleAlert];
-            [alter addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-            [self presentViewController:alter animated:YES completion:nil];
-        }else {
-            UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请输入正确的验证码" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
-            [alter show];
-        }
+        [self showErrorWithString:@"请输入正确的验证码"];
     }
 }
 
 - (void)actionReset:(UIButton *)button {
     [self setEditing:YES];
+    NSArray *message = @[@"请输入账号", @"请输入密码", @"请重新输入密码", @"请输入验证码", @"验证码错误"];
+    if (!_accountTextField.text || !_accountTextField.text.length) {
+        [self showErrorWithString:message[0]];
+    }else if (!_passwordTextField.text && !_passwordTextField.text.length) {
+        [self showErrorWithString:message[1]];
+    }else if (!_repeatPasswordTextField.text && !_repeatPasswordTextField.text.length) {
+        [self showErrorWithString:message[2]];
+    }else if (!_verificationTextField.text && _verificationTextField.text.length) {
+        [self showErrorWithString:message[3]];
+    }else if (!_verificationCode && ![_verificationCode isEqualToString:_verificationTextField.text]) {
+        [self showErrorWithString:message[4]];
+    }else {
+        [self requestReset];
+    }
 }
 
 #pragma mark - request
-- (void)request {
-    [SVProgressHUD showSuccessWithStatus:@"重置成功，请重新登录"];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+- (void)requestReset {
+    NSDictionary *parameters = @{@"account": _accountTextField.text, @"password": _passwordTextField.text};
+    [[YWHttpManager shareInstance] requestResetPassword:parameters success:^(id responseObject) {
+        [SVProgressHUD showSuccessWithStatus:@"重置成功，请重新登录"];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } otherFailure:^(id responseObject) {
+    } failure:^(NSError *error) {
+    }];
+}
+
+- (void)requestVerification {
+    NSDictionary *parameters = @{@"account": _accountTextField.text};
+    [[YWHttpManager shareInstance] requestVerification:parameters success:^(id responseObject) {
+        _verificationCode = responseObject[@"verificationCode"];
+        NSLog(@"=========%@", responseObject[@"verificationCode"]);
+    } otherFailure:^(id responseObject) {
+    } failure:^(NSError *error) {
+    }];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -229,11 +252,6 @@
         }else {
             [_verificationTextField resignFirstResponder];
         }
-    }else {
-        NSArray *tfs = @[_accountTextField, _passwordTextField, _repeatPasswordTextField, _verificationTextField];
-        NSArray *message = @[@"请输入账号", @"请输入密码", @"请重新确认新密码", @"请输入验证码"];
-        NSInteger index = [tfs indexOfObject:textField];
-        [self showErrorWithString:message[index]];
     }
 }
 

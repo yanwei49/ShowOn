@@ -8,6 +8,7 @@
 
 #import "YWRegisterViewController.h"
 #import "NSString+isValidate.h"
+#import "YWHttpManager.h"
 
 @interface YWRegisterViewController ()<UITextFieldDelegate>
 
@@ -21,6 +22,7 @@
     UITextField    *_verificationTextField;
     UIButton       *_sendVerificationButton;
     UIButton       *_registerButton;
+    NSString       *_verificationCode;
 }
 
 - (void)viewDidLoad {
@@ -176,16 +178,55 @@
 }
 
 - (void)actionSendVerification:(UIButton *)button {
-    
+    [self setEditing:YES];
+    if (_accountTextField.text && _accountTextField.text.length) {
+        [self requestVerification];
+    }else {
+        [self showErrorWithString:@"请输入登录账号"];
+    }
 }
 
 - (void)actionRegister:(UIButton *)button {
-    
+    [self setEditing:YES];
+    NSArray *message = @[@"请输入账号", @"请输入密码", @"请重新输入密码", @"请输入验证码", @"验证码错误"];
+    if (!_accountTextField.text || !_accountTextField.text.length) {
+        [self showErrorWithString:message[0]];
+    }else if (!_passwordTextField.text && !_passwordTextField.text.length) {
+        [self showErrorWithString:message[1]];
+    }else if (!_repeatPasswordTextField.text && !_repeatPasswordTextField.text.length) {
+        [self showErrorWithString:message[2]];
+    }else if (!_verificationTextField.text && _verificationTextField.text.length) {
+        [self showErrorWithString:message[3]];
+    }else if (!_verificationCode && ![_verificationCode isEqualToString:_verificationTextField.text]) {
+        [self showErrorWithString:message[4]];
+    }else {
+        [self requestRegister];
+    }
 }
 
-- (void)request {
-    [SVProgressHUD showSuccessWithStatus:@"重置成功，请重新登录"];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+#pragma mark - request
+- (void)requestVerification {
+    NSDictionary *parameters = @{@"account": _accountTextField.text};
+    [[YWHttpManager shareInstance] requestVerification:parameters success:^(id responseObject) {
+        _verificationCode = responseObject[@"verificationCode"];
+        NSLog(@"=========%@", responseObject[@"verificationCode"]);
+    } otherFailure:^(id responseObject) {
+    } failure:^(NSError *error) {
+    }];
+}
+
+- (void)requestRegister {
+    NSDictionary *parameters = @{@"account": _accountTextField.text, @"password": _passwordTextField.text};
+    [[YWHttpManager shareInstance] requestRegister:parameters success:^(id responseObject) {
+        [SVProgressHUD showSuccessWithStatus:@"注册成功"];
+        [self registerSuccess];
+    } otherFailure:^(id responseObject) {
+    } failure:^(NSError *error) {
+    }];
+}
+
+- (void)registerSuccess {
+    [[NSNotificationCenter defaultCenter] postNotificationName:LoginSuccess object:nil];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -215,11 +256,6 @@
         }else {
             [_verificationTextField resignFirstResponder];
         }
-    }else {
-        NSArray *tfs = @[_accountTextField, _passwordTextField, _repeatPasswordTextField, _verificationTextField];
-        NSArray *message = @[@"请输入账号", @"请输入密码", @"请重新输入密码", @"请输入验证码"];
-        NSInteger index = [tfs indexOfObject:textField];
-        [self showErrorWithString:message[index]];
     }
 }
 

@@ -64,6 +64,7 @@ static YWHttpManager * manager;
         case 400:
         {
             dispatch_async(dispatch_get_main_queue(), ^{
+                [SVProgressHUD showErrorWithStatus:resultDic[@"msg"]];
                 otherFailure(resultDic);
             });
         }
@@ -74,7 +75,7 @@ static YWHttpManager * manager;
 }
 
 
-- (void)requestRegisterVerification:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure{
+- (void)requestVerification:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure{
     [self setDefaultHeaders];
     [_httpManager POST:HOST_URL(Reginster_Verification_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
@@ -99,17 +100,6 @@ static YWHttpManager * manager;
 - (void)requestLogin:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
     [self setDefaultHeaders];
     [_httpManager POST:HOST_URL(Login_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            failure(error);
-        });
-    }];
-}
-
-- (void)requestResetPasswordVerification:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure{
-    [self setDefaultHeaders];
-    [_httpManager POST:HOST_URL(Reset_Password_Verification_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{

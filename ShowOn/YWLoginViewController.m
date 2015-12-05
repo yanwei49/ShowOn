@@ -10,8 +10,8 @@
 #import "YWRegisterViewController.h"
 #import "YWForgetPasswordViewController.h"
 #import "NSString+isValidate.h"
+#import "YWHttpManager.h"
 
-static NSString *LoginSuccess = @"Login_success";
 @interface YWLoginViewController ()<UITextFieldDelegate>
 
 @end
@@ -193,7 +193,7 @@ static NSString *LoginSuccess = @"Login_success";
 
 #pragma mark - action
 - (void)actionLogin:(UIButton *)button {
-    
+    [self requestLoginWithType:0];
 }
 
 - (void)actionRegister:(UIButton *)button {
@@ -239,8 +239,13 @@ static NSString *LoginSuccess = @"Login_success";
 }
 
 #pragma mark - request
-- (void)requestLoginWithType {
-
+- (void)requestLoginWithType:(NSInteger)type {
+    NSDictionary *parameters = @{@"accout":_accountTextField.text, @"password":_passwordTextField.text, @"type": @(type)};
+    [[YWHttpManager shareInstance] requestLogin:parameters success:^(id responseObject) {
+        [self loginSuccess];
+    } otherFailure:^(id responseObject) {
+    } failure:^(NSError *error) {
+    }];
 }
 
 #pragma mark - UITextFieldDelegate
