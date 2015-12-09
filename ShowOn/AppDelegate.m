@@ -13,6 +13,10 @@
 #import "YWNavigationController.h"
 #import <RongIMKit/RongIMKit.h>
 #import "YWLoginViewController.h"
+#import "UMSocial.h"
+#import "UMSocialWechatHandler.h"
+#import "UMSocialQQHandler.h"
+#import "UMSocialSinaHandler.h"
 
 @interface AppDelegate ()<UITabBarControllerDelegate>
 
@@ -28,8 +32,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:LoginSuccess object:nil];
-    
-    [[RCIM sharedRCIM] initWithAppKey:@"25wehl3uwaqmw"];
+    [self configureAPIKey];
 
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"LoginState"]) {
         [self createTabBar];
@@ -39,6 +42,18 @@
     [self.window makeKeyAndVisible];
     
     return YES;
+}
+
+- (void)configureAPIKey {
+    [UMSocialData setAppKey:YOUMENG_API_KEY];
+    [UMSocialWechatHandler setWXAppId:WECHAT_APP_ID appSecret:WECHAT_APP_SECRET url:WECHAT_APP_URL];
+    [UMSocialQQHandler setQQWithAppId:QQ_APP_ID appKey:QQ_APP_KEY url:QQ_APP_URL];
+    [UMSocialQQHandler setSupportWebView:YES];
+    [UMSocialSinaHandler openSSOWithRedirectURL:SINA_SSO_URL];
+    
+    [[RCIM sharedRCIM] initWithAppKey:@"25wehl3uwaqmw"];
+    [[IQKeyboardManager sharedManager] setEnable:NO];
+    [[IQKeyboardManager sharedManager] setEnableAutoToolbar:NO];
 }
 
 - (void)createLogin {
@@ -89,6 +104,23 @@
 - (void)loginSuccess:(NSNotification *)notification {
     [self createTabBar];
 }
+
+#pragma mark 实现授权回调
+-(void)didFinishGetUMSocialDataInViewController:(UMSocialResponseEntity *)response {
+    if (response.viewControllerType == UMSViewControllerOauth) {
+        [[UMSocialDataService defaultDataService] requestSnsInformation:UMShareToSina  completion:^(UMSocialResponseEntity *response){
+        }];
+    }
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return  [UMSocialSnsService handleOpenURL:url];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return  [UMSocialSnsService handleOpenURL:url];
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

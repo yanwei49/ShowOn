@@ -7,4 +7,4 @@ pod 'MJRefresh', '~> 2.4.4'
 pod 'KxMenu'
 pod 'Bugly'
 pod 'RongCloudIMKit'
-
+pod 'IQKeyboardManager'

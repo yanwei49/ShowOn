@@ -11,6 +11,9 @@
 #import "YWForgetPasswordViewController.h"
 #import "NSString+isValidate.h"
 #import "YWHttpManager.h"
+#import "UMSocial.h"
+#import "UMSocialSnsPlatformManager.h"
+#import "YWUserModel.h"
 
 @interface YWLoginViewController ()<UITextFieldDelegate>
 
@@ -24,13 +27,22 @@
     UIButton       *_registerButton;
     UIButton       *_forgetPasswordButton;
     UIView         *_otherLoginMethodBackgroundView;
+    YWUserModel    *_othersUser;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    [[IQKeyboardManager sharedManager] setEnable:YES];
+    [[IQKeyboardManager sharedManager] setEnableAutoToolbar:YES];
+
     [self createSubViews];
+}
+
+-(void)dealloc {
+    [[IQKeyboardManager sharedManager] setEnable:NO];
+    [[IQKeyboardManager sharedManager] setEnableAutoToolbar:NO];
 }
 
 - (void)createSubViews {
@@ -46,7 +58,7 @@
     _accountTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.view addSubview:_accountTextField];
     [_accountTextField makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_centerY);
+        make.top.equalTo(self.view.mas_centerY).offset(Is480Height?-20:0);
         make.centerX.equalTo(self.view.mas_centerX);
         make.height.offset(30);
         make.width.offset(kScreenWidth-80);
@@ -116,7 +128,7 @@
     _otherLoginMethodBackgroundView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_otherLoginMethodBackgroundView];
     [_otherLoginMethodBackgroundView makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.offset(-40);
+        make.bottom.offset(Is480Height?-20:-40);
         make.left.right.offset(0);
         make.height.offset(80);
     }];
@@ -164,7 +176,7 @@
     label.text = @"我就是角儿!";
     [self.view addSubview:label];
     [label makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_centerY).offset(-40);
+        make.bottom.equalTo(_accountTextField.mas_top).offset(Is480Height?-10:-40);
         make.height.offset(30);
         make.centerX.equalTo(self.view.mas_centerX);
     }];
@@ -173,10 +185,10 @@
     imageView.backgroundColor = [UIColor greenColor];
     [self.view addSubview:imageView];
     [imageView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(60);
+        make.top.offset(Is480Height?30:60);
         make.centerX.equalTo(self.view.mas_centerX);
         make.width.offset(200);
-        make.height.offset(100);
+        make.height.offset(Is480Height?80:100);
     }];
     
     UILabel  *label1 = [[UILabel alloc] init];
@@ -226,13 +238,49 @@
     
 }
 
-- (void)qqLogin {
-    
+- (void)weiboLogin
+{
+    UMSocialSnsPlatform *snsPlatform = [UMSocialSnsPlatformManager getSocialPlatformWithName:UMShareToSina];
+    snsPlatform.loginClickHandler(self,[UMSocialControllerService defaultControllerService],YES,^(UMSocialResponseEntity *response){
+        [[UMSocialDataService defaultDataService] requestSocialAccountWithCompletion:^(UMSocialResponseEntity *accountResponse){
+            NSDictionary *_socialDict = [accountResponse.data objectForKey:@"accounts"];
+            _othersUser.userId = [[_socialDict objectForKey:@"sina"] objectForKey:@"usid"];
+            if (_othersUser.userId) {
+                _othersUser.userSex = [[_socialDict objectForKey:@"sina"] objectForKey:@"gender"];
+                _othersUser.userId = [[_socialDict objectForKey:@"sina"] objectForKey:@"usid"];
+                _othersUser.userName = [[_socialDict objectForKey:@"sina"] objectForKey:@"username"];
+                _othersUser.userAvator = [[_socialDict objectForKey:@"sina"] objectForKey:@"icon"];
+                
+                [self actionLogin:nil];
+            }
+        }];
+    });
 }
 
-- (void)weiboLogin {
-    
+- (void)qqLogin
+{
+    UMSocialSnsPlatform *snsPlatform = [UMSocialSnsPlatformManager getSocialPlatformWithName:UMShareToQQ];
+    snsPlatform.loginClickHandler(self,[UMSocialControllerService defaultControllerService],YES,^(UMSocialResponseEntity *response){
+        [[UMSocialDataService defaultDataService] requestSocialAccountWithCompletion:^(UMSocialResponseEntity *accountResponse){
+            NSDictionary *_socialDict = [accountResponse.data objectForKey:@"accounts"];
+            _othersUser.userId = [[_socialDict objectForKey:@"qq"] objectForKey:@"openid"];
+            if (_othersUser.userId) {
+                _othersUser.userName = [[_socialDict objectForKey:@"qq"] objectForKey:@"username"];
+                if ([[[_socialDict objectForKey:@"qq"] objectForKey:@"gender"] isEqualToString:NSLocalizedString(@"male", nil)]) {
+                    _othersUser.userSex = @"1";
+                }else {
+                    _othersUser.userSex = @"0";
+                }
+                _othersUser.userAvator = [[_socialDict objectForKey:@"qq"] objectForKey:@"icon"];
+                
+                [self actionLogin:nil];
+            }
+        }];
+    });
+    //设置回调对象
+    [UMSocialControllerService defaultControllerService].socialUIDelegate = self;
 }
+
 
 - (void)loginSuccess {
     [[NSNotificationCenter defaultCenter] postNotificationName:LoginSuccess object:nil];

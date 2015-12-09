@@ -72,6 +72,12 @@
 #define COCOAPODS_VERSION_MINOR_FMDB_standard 5
 #define COCOAPODS_VERSION_PATCH_FMDB_standard 0
 
+// IQKeyboardManager
+#define COCOAPODS_POD_AVAILABLE_IQKeyboardManager
+#define COCOAPODS_VERSION_MAJOR_IQKeyboardManager 3
+#define COCOAPODS_VERSION_MINOR_IQKeyboardManager 3
+#define COCOAPODS_VERSION_PATCH_IQKeyboardManager 4
+
 // KxMenu
 #define COCOAPODS_POD_AVAILABLE_KxMenu
 #define COCOAPODS_VERSION_MAJOR_KxMenu 1

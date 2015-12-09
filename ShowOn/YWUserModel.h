@@ -18,6 +18,7 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, strong) NSString  *userId;
 @property (nonatomic, strong) NSString  *userAvator;
+@property (nonatomic, strong) NSString  *userSex; //0:女   1:男
 @property (nonatomic, strong) NSString  *userName;
 @property (nonatomic, strong) NSString  *userRank;
 @property (nonatomic, strong) NSString  *userEmpirical;                  //经验

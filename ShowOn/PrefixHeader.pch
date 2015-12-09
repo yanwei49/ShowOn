@@ -16,5 +16,6 @@
 
 #import "Header.h"
 #import "SVProgressHUD.h"
+#import "IQKeyboardManager.h"
 
 #endif /* PrefixHeader_pch */
