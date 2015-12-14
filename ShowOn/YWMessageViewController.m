@@ -16,7 +16,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.conversationListTableView.tableFooterView = [[UIView alloc] init];
 
-    [self createBackLeftItem];
+    
 }
 
 - (void)createBackLeftItem {

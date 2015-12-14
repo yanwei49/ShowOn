@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class YWCommentModel;
 @interface YWCommentTableViewCell : UITableViewCell
+
++ (CGFloat)cellHeightForMode:(YWCommentModel *)model;
 
 @end

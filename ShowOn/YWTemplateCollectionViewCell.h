@@ -10,4 +10,7 @@
 
 @interface YWTemplateCollectionViewCell : UICollectionViewCell
 
+@property(nonatomic, strong) UIFont *textFont;
+@property(nonatomic, assign) CGFloat viewAlpha;
+
 @end

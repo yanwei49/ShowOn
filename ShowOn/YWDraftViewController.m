@@ -22,9 +22,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = Subject_color;
     _dataSource = [[NSMutableArray alloc] init];
-    [self createBackLeftItem];
+    
     [self createSubViews];
     [self dataSource];
 }
@@ -43,10 +43,10 @@
 
 - (void)createSubViews {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake((kScreenWidth-2)/2, 120);
+    layout.itemSize = CGSizeMake((kScreenWidth-5)/2, 200);
     
     _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-    _collectionView.backgroundColor = SeparatorColor;
+    _collectionView.backgroundColor = Subject_color;
     [_collectionView registerClass:[YWDraftCollectionViewCell class] forCellWithReuseIdentifier:@"item"];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
@@ -74,11 +74,11 @@
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 2;
+    return 5;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return 2;
+    return 5;
 }
 
 

@@ -31,7 +31,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:LoginSuccess object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:LoginSuccess object:nil];
     [self configureAPIKey];
 
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"LoginState"]) {
@@ -66,7 +66,11 @@
 - (void)createTabBar {
     _tabBar = [[UITabBarController alloc] init];
     _tabBar.delegate = self;
-    _tabBar.tabBar.tintColor = [UIColor orangeColor];
+    _tabBar.tabBar.tintColor = [UIColor greenColor];
+    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 49)];
+    backView.backgroundColor = RGBColor(30, 30, 30);
+    [_tabBar.tabBar insertSubview:backView atIndex:0];
+    _tabBar.tabBar.opaque = YES;
     self.window.rootViewController = _tabBar;
     NSArray *classNames = @[@"YWHomeViewController", @"YWMovieViewController", @"YWMineViewController"];
     NSArray *titles = @[@"首页", @"影集", @"我的"];

@@ -22,7 +22,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = Subject_color;
         
         _searchBar = [[UISearchBar alloc] init];
         _searchBar.placeholder = @"搜索片名/用户名";
@@ -35,13 +35,14 @@
         
         NSArray  *titles = @[@"名人专场", @"视频分类", @"应用模板"];
         _itemView = [[YWCustomSegView alloc] initWithItemTitles:titles];
+        _itemView.hiddenLineView = NO;
         _itemView.delegate = self;
         [self addSubview:_itemView];
         [_itemView makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_searchBar.mas_bottom);
             make.left.offset(0);
             make.right.offset(0);
-            make.height.offset(30);
+            make.height.offset(40);
         }];
     }
     

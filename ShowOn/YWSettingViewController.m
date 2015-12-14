@@ -22,7 +22,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSource = [[NSMutableArray alloc] init];
-    [self createBackLeftItem];
+    
     [self createSubViews];
 }
 

@@ -27,9 +27,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = Subject_color;
     _showViewIndex = 0;
-    
+
     [self createSubViews];
 }
 
@@ -46,6 +46,10 @@
 - (void)createSubViews {
     NSArray *titles = @[@"热门", @"模板", @"关注"];
     _itemView = [[YWCustomSegView alloc] initWithItemTitles:titles];
+    _itemView.ywBackgroundColor = Subject_color;
+    _itemView.ywSelectBackgroundColor = Subject_color;
+    _itemView.ywTextColor = [UIColor whiteColor];
+    _itemView.ywSelectTextColor = [UIColor greenColor];
     _itemView.delegate = self;
     [self.view addSubview:_itemView];
     [_itemView makeConstraints:^(MASConstraintMaker *make) {

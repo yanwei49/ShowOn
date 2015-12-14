@@ -13,6 +13,7 @@
 #define kScreenHeight    [UIScreen mainScreen].bounds.size.height
 #define SeparatorColor   [UIColor colorWithRed:234/256.0 green:234/256.0 blue:234/256.0 alpha:1]
 #define RGBColor(r,g,b)  [UIColor colorWithRed:r/256.0 green:g/256.0 blue:b/256.0 alpha:1]
+
 #define LoginSuccess     @"Login_success"
 #define Is480Height      kScreenHeight == 480
 
@@ -32,5 +33,9 @@
 
 //Sina SSO url
 #define SINA_SSO_URL @"http://sns.whalecloud.com/sina2/callback"
+
+#define Subject_color    [UIColor colorWithRed:42/256.0 green:42/256.0 blue:42/256.0 alpha:1]
+#define CornerRadius     5
+
 
 #endif /* Header_h */

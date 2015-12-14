@@ -39,11 +39,12 @@
 }
 
 - (void)createSubViews {
-    _headView = [[YWMineTableHeadView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 180)];
+    _headView = [[YWMineTableHeadView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 200)];
     _headView.delegate = self;
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.backgroundColor = Subject_color;
+    _tableView.separatorColor = RGBColor(30, 30, 30);
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -70,7 +71,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    cell.backgroundColor = [UIColor whiteColor];
+    cell.backgroundColor = RGBColor(52, 52, 52);
+    cell.contentView.backgroundColor = RGBColor(52, 52, 52);
+    cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.text = _dataSource[indexPath.row];
     
     return cell;
@@ -89,24 +92,24 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-//设置分割线顶左
--(void)viewDidLayoutSubviews {
-    if ([_tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [_tableView setSeparatorInset:UIEdgeInsetsMake(0,0,0,0)];
-    }
-    if ([_tableView respondsToSelector:@selector(setLayoutMargins:)]) {
-        [_tableView setLayoutMargins:UIEdgeInsetsMake(0,0,0,0)];
-    }
-}
-
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-        [cell setSeparatorInset:UIEdgeInsetsZero];
-    }
-    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-        [cell setLayoutMargins:UIEdgeInsetsZero];
-    }
-}
+////设置分割线顶左
+//-(void)viewDidLayoutSubviews {
+//    if ([_tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+//        [_tableView setSeparatorInset:UIEdgeInsetsMake(0,0,0,0)];
+//    }
+//    if ([_tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+//        [_tableView setLayoutMargins:UIEdgeInsetsMake(0,0,0,0)];
+//    }
+//}
+//
+//-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+//        [cell setSeparatorInset:UIEdgeInsetsZero];
+//    }
+//    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+//        [cell setLayoutMargins:UIEdgeInsetsZero];
+//    }
+//}
 
 #pragma mark - YWMineTableHeadViewDelegate
 - (void)mineTableHeadViewDidSelectAvator {

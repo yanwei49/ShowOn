@@ -18,8 +18,10 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
-        
+        self.contentView.backgroundColor = Subject_color;
+        self.contentView.layer.masksToBounds = YES;
+        self.contentView.layer.cornerRadius = CornerRadius;;
+
         _imageView = [[UIImageView alloc] init];
         _imageView.backgroundColor = [UIColor greenColor];
         [self.contentView addSubview:_imageView];
@@ -28,26 +30,36 @@
             make.bottom.offset(-20);
         }];
         
+        UIView  *view = [[UIView alloc] init];
+        view.backgroundColor = RGBColor(30, 30, 30);
+        [self.contentView addSubview:view];
+        [view makeConstraints:^(MASConstraintMaker *make) {
+            make.left.bottom.right.offset(0);
+            make.height.offset(30);
+        }];
+        
         _timeLabel = [[UILabel alloc] init];
-        _timeLabel.backgroundColor = [UIColor whiteColor];
+        _timeLabel.textColor = [UIColor whiteColor];
         _timeLabel.textAlignment = NSTextAlignmentCenter;
         _timeLabel.text = @"2015-11-11";
         _timeLabel.font = [UIFont systemFontOfSize:14];
         [self.contentView addSubview:_timeLabel];
         [_timeLabel makeConstraints:^(MASConstraintMaker *make) {
             make.right.bottom.offset(0);
-            make.height.offset(20);
+            make.height.offset(30);
             make.width.equalTo(80);
         }];
         
         _nameLabel = [[UILabel alloc] init];
-        _nameLabel.backgroundColor = [UIColor whiteColor];
+        _nameLabel.text = @"模板名字";
+        _nameLabel.textColor = [UIColor whiteColor];
         _nameLabel.textAlignment = NSTextAlignmentCenter;
         _nameLabel.font = [UIFont systemFontOfSize:16];
         [self.contentView addSubview:_nameLabel];
         [_nameLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.left.bottom.offset(0);
-            make.height.offset(20);
+            make.left.offset(10);
+            make.bottom.offset(0);
+            make.height.offset(30);
             make.right.equalTo(_timeLabel.mas_left);
         }];
     }

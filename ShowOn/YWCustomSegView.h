@@ -20,11 +20,12 @@
 @property (nonatomic, assign) id<YWCustomSegViewDelegate> delegate;
 
 @property (nonatomic, assign) NSInteger  itemSelectIndex;
-@property (nonatomic, strong) UIColor   *backgroundColor;
-@property (nonatomic, strong) UIColor   *selectBackgroundColor;
-@property (nonatomic, strong) UIColor   *textColor;
-@property (nonatomic, strong) UIColor   *selectTextColor;
-@property (nonatomic, strong) UIFont    *textFont;
+@property (nonatomic, strong) UIColor   *ywBackgroundColor;
+@property (nonatomic, strong) UIColor   *ywSelectBackgroundColor;
+@property (nonatomic, strong) UIColor   *ywTextColor;
+@property (nonatomic, strong) UIColor   *ywSelectTextColor;
+@property (nonatomic, strong) UIFont    *ywTextFont;
+@property (nonatomic, assign) BOOL       hiddenLineView;
 
 - (instancetype)initWithItemTitles:(NSArray *)itemTitles;
 

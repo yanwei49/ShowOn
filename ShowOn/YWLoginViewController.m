@@ -288,6 +288,7 @@
 
 #pragma mark - request
 - (void)requestLoginWithType:(NSInteger)type {
+    [self loginSuccess];
     NSDictionary *parameters = @{@"accout":_accountTextField.text, @"password":_passwordTextField.text, @"type": @(type)};
     [[YWHttpManager shareInstance] requestLogin:parameters success:^(id responseObject) {
         [self loginSuccess];

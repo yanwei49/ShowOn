@@ -14,7 +14,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [self createBackLeftItem];
+    
 }
 
 - (void)createBackLeftItem {
