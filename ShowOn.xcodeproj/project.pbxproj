@@ -71,6 +71,9 @@
 		770EC2C71C1088E100A4D2E9 /* YWSearchCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2C61C1088E100A4D2E9 /* YWSearchCollectionReusableView.m */; };
 		770EC2CB1C108E2D00A4D2E9 /* YWMineTableHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2CA1C108E2D00A4D2E9 /* YWMineTableHeadView.m */; };
 		770EC2CE1C109FE500A4D2E9 /* YWUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2CD1C109FE500A4D2E9 /* YWUserModel.m */; };
+		7710ABB41C1F8A88006FF4EF /* YWUserDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7710ABB31C1F8A88006FF4EF /* YWUserDataViewController.m */; };
+		7710ABB71C20EB80006FF4EF /* YWMovieModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7710ABB61C20EB80006FF4EF /* YWMovieModel.m */; };
+		7710ABBA1C21BC56006FF4EF /* YWFocusCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7710ABB91C21BC56006FF4EF /* YWFocusCommentTableViewCell.m */; };
 		77AD0CAD1C1DA34800A1FD75 /* YWCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AD0CAC1C1DA34800A1FD75 /* YWCommentModel.m */; };
 		77D0F0391C110A7A00134A17 /* YWTrendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0381C110A7A00134A17 /* YWTrendsViewController.m */; };
 		77D0F03C1C110B3300134A17 /* YWFollowingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F03B1C110B3300134A17 /* YWFollowingViewController.m */; };
@@ -233,6 +236,12 @@
 		770EC2CA1C108E2D00A4D2E9 /* YWMineTableHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWMineTableHeadView.m; sourceTree = "<group>"; };
 		770EC2CC1C109FE500A4D2E9 /* YWUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWUserModel.h; sourceTree = "<group>"; };
 		770EC2CD1C109FE500A4D2E9 /* YWUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWUserModel.m; sourceTree = "<group>"; };
+		7710ABB21C1F8A88006FF4EF /* YWUserDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWUserDataViewController.h; sourceTree = "<group>"; };
+		7710ABB31C1F8A88006FF4EF /* YWUserDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWUserDataViewController.m; sourceTree = "<group>"; };
+		7710ABB51C20EB80006FF4EF /* YWMovieModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWMovieModel.h; sourceTree = "<group>"; };
+		7710ABB61C20EB80006FF4EF /* YWMovieModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWMovieModel.m; sourceTree = "<group>"; };
+		7710ABB81C21BC56006FF4EF /* YWFocusCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFocusCommentTableViewCell.h; sourceTree = "<group>"; };
+		7710ABB91C21BC56006FF4EF /* YWFocusCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFocusCommentTableViewCell.m; sourceTree = "<group>"; };
 		77AD0CAB1C1DA34800A1FD75 /* YWCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCommentModel.h; sourceTree = "<group>"; };
 		77AD0CAC1C1DA34800A1FD75 /* YWCommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCommentModel.m; sourceTree = "<group>"; };
 		77D0F0371C110A7A00134A17 /* YWTrendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTrendsViewController.h; sourceTree = "<group>"; };
@@ -639,6 +648,7 @@
 		56FE9A011C0FBB28007BA29B /* viewcontroller */ = {
 			isa = PBXGroup;
 			children = (
+				7710ABB11C1F8A50006FF4EF /* userData */,
 				56FE9A0E1C0FBBA3007BA29B /* YWMineViewController.h */,
 				56FE9A0F1C0FBBA3007BA29B /* YWMineViewController.m */,
 				77D0F1061C11CED800134A17 /* setting */,
@@ -665,6 +675,8 @@
 		56FE9A031C0FBB3F007BA29B /* model */ = {
 			isa = PBXGroup;
 			children = (
+				7710ABB51C20EB80006FF4EF /* YWMovieModel.h */,
+				7710ABB61C20EB80006FF4EF /* YWMovieModel.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -770,6 +782,8 @@
 			children = (
 				770EC2BF1C10790000A4D2E9 /* YWFocusTableViewCell.h */,
 				770EC2C01C10790000A4D2E9 /* YWFocusTableViewCell.m */,
+				7710ABB81C21BC56006FF4EF /* YWFocusCommentTableViewCell.h */,
+				7710ABB91C21BC56006FF4EF /* YWFocusCommentTableViewCell.m */,
 			);
 			name = focusTableViewCell;
 			sourceTree = "<group>";
@@ -790,6 +804,15 @@
 				770EC2C61C1088E100A4D2E9 /* YWSearchCollectionReusableView.m */,
 			);
 			name = searchHeadView;
+			sourceTree = "<group>";
+		};
+		7710ABB11C1F8A50006FF4EF /* userData */ = {
+			isa = PBXGroup;
+			children = (
+				7710ABB21C1F8A88006FF4EF /* YWUserDataViewController.h */,
+				7710ABB31C1F8A88006FF4EF /* YWUserDataViewController.m */,
+			);
+			name = userData;
 			sourceTree = "<group>";
 		};
 		77D0F0361C110A6200134A17 /* trends */ = {
@@ -1193,6 +1216,7 @@
 				770EC2C11C10790000A4D2E9 /* YWFocusTableViewCell.m in Sources */,
 				56FE9A1F1C0FC24D007BA29B /* YWHotViewController.m in Sources */,
 				56FE9A0D1C0FBB95007BA29B /* YWMovieViewController.m in Sources */,
+				7710ABB41C1F8A88006FF4EF /* YWUserDataViewController.m in Sources */,
 				56F5D3291C17AAFD008C33CA /* NSMutableAttributedString+NimbusKitAttributedLabel.m in Sources */,
 				77D0F0F71C11C55600134A17 /* YWDraftCollectionViewCell.m in Sources */,
 				77D0F0E51C11C41F00134A17 /* YWDraftViewController.m in Sources */,
@@ -1204,6 +1228,7 @@
 				56F4AF251C1279A1008A6828 /* NSString+isValidate.m in Sources */,
 				56FE99CB1C0FBAB8007BA29B /* main.m in Sources */,
 				56F5D3811C17CAE1008C33CA /* YWMoviePlayView.m in Sources */,
+				7710ABBA1C21BC56006FF4EF /* YWFocusCommentTableViewCell.m in Sources */,
 				77D0F03C1C110B3300134A17 /* YWFollowingViewController.m in Sources */,
 				56FE9A101C0FBBA3007BA29B /* YWMineViewController.m in Sources */,
 				770EC2BE1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.m in Sources */,
@@ -1229,6 +1254,7 @@
 				77D0F1041C11CAC900134A17 /* YWParser.m in Sources */,
 				77D0F0DF1C11C3CE00134A17 /* YWMessageViewController.m in Sources */,
 				56FE9A221C0FC2A2007BA29B /* YWCustomSegView.m in Sources */,
+				7710ABB71C20EB80006FF4EF /* YWMovieModel.m in Sources */,
 				77D0F0E21C11C3E400134A17 /* YWExperienceViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

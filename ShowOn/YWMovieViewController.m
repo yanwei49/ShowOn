@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "YWTranscribeViewController.h"
 #import "YWTemplateCollectionViewCell.h"
+#import "YWMoviePlayView.h"
 
 @interface YWMovieViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -17,9 +18,9 @@
 
 @implementation YWMovieViewController
 {
-    UIView      *_tooBar;
-    UIView      *_movie1;
-    UIView      *_movie2;
+    UIView             *_tooBar;
+    YWMoviePlayView    *_movie1;
+    YWMoviePlayView    *_movie2;
     UICollectionView   *_collectionView;
     NSMutableArray     *_dataSource;
 }
@@ -63,7 +64,7 @@
         make.width.offset(40);
     }];
     
-    _movie1 = [[UIView alloc] init];
+    _movie1 = [[YWMoviePlayView alloc] init];
     _movie1.backgroundColor = [UIColor greenColor];
     [self.view addSubview:_movie1];
     [_movie1 makeConstraints:^(MASConstraintMaker *make) {
@@ -73,7 +74,7 @@
         make.height.offset((kScreenHeight-((kScreenWidth-30)/5*2+10+64+49+10+10))/2);
     }];
     
-    _movie2 = [[UIView alloc] init];
+    _movie2 = [[YWMoviePlayView alloc] init];
     _movie2.backgroundColor = [UIColor greenColor];
     [self.view addSubview:_movie2];
     [_movie2 makeConstraints:^(MASConstraintMaker *make) {

@@ -26,6 +26,7 @@
 @property (nonatomic, strong) UIColor   *ywSelectTextColor;
 @property (nonatomic, strong) UIFont    *ywTextFont;
 @property (nonatomic, assign) BOOL       hiddenLineView;
+@property (nonatomic, assign) BOOL       hiddenBottomLineView;
 
 - (instancetype)initWithItemTitles:(NSArray *)itemTitles;
 

@@ -28,6 +28,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) NSString  *userTrendsNums;                 //动态数
 @property (nonatomic, strong) NSString  *userFollowsNums;                //粉丝数
 @property (nonatomic, strong) NSString  *userCollectNums;                //收藏数
+@property (nonatomic, strong) NSString  *userWorksNums;                //收藏数
 @property (nonatomic, assign) FriendRelationType  userRelationType;      //关系类型
 
 

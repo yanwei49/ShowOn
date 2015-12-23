@@ -54,6 +54,8 @@
         }];
         
         _avatorImageView = [[UIImageView alloc] init];
+        _avatorImageView.userInteractionEnabled = YES;
+        [_avatorImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionAvator)]];
         _avatorImageView.backgroundColor = [UIColor whiteColor];
         _avatorImageView.layer.masksToBounds = YES;
         _avatorImageView.layer.cornerRadius = 30;
@@ -116,6 +118,12 @@
 - (void)actionSupport:(UIButton *)button {
     if ([_delegate respondsToSelector:@selector(hotCollectionViewCellDidSelectSupport:)]) {
         [_delegate hotCollectionViewCellDidSelectSupport:self];
+    }
+}
+
+- (void)actionAvator {
+    if ([_delegate respondsToSelector:@selector(hotCollectionViewCellDidSelectAvator:)]) {
+        [_delegate hotCollectionViewCellDidSelectAvator:self];
     }
 }
 

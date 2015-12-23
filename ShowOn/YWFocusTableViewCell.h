@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class YWMovieModel;
 @interface YWFocusTableViewCell : UITableViewCell
+
++(CGFloat)cellHeightWithMovie:(YWMovieModel *)movie;
 
 @end

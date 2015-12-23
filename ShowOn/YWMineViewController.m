@@ -18,6 +18,7 @@
 #import "YWExperienceViewController.h"
 #import "YWDraftViewController.h"
 #import "YWSettingViewController.h"
+#import "YWUserDataViewController.h"
 
 @interface YWMineViewController ()<UITableViewDelegate, UITableViewDataSource, YWMineTableHeadViewDelegate>
 
@@ -39,7 +40,7 @@
 }
 
 - (void)createSubViews {
-    _headView = [[YWMineTableHeadView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 200)];
+    _headView = [[YWMineTableHeadView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 200) withUserIsSelf:YES];
     _headView.delegate = self;
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -58,9 +59,9 @@
 
 #pragma mark - action
 - (void)actionRightItem:(UIButton *)button {
-    YWSettingViewController *vc = [[YWSettingViewController alloc] init];
+    YWUserDataViewController *vc = [[YWUserDataViewController alloc] init];
     vc.hidesBottomBarWhenPushed = YES;
-    vc.title = @"设置";
+    vc.isSelf = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

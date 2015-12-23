@@ -7,17 +7,107 @@
 //
 
 #import "YWTrendsTableViewCell.h"
+#import "YWMoviePlayView.h"
 
 @implementation YWTrendsTableViewCell
+{
+    YWMoviePlayView   *_playMovie;
+    UILabel           *_contentLabel;
+    UIButton          *_supportButton;
+    UILabel           *_supportLabel;
+    UILabel           *_timeLabel;
+}
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
+        self.contentView.backgroundColor = RGBColor(30, 30, 30);
         
+        _playMovie = [[YWMoviePlayView alloc] init];
+        _playMovie.backgroundColor = [UIColor greenColor];
+        _playMovie.layer.masksToBounds = YES;
+        _playMovie.layer.cornerRadius = 5;
+        [self.contentView addSubview:_playMovie];
+        [_playMovie makeConstraints:^(MASConstraintMaker *make) {
+            make.top.left.offset(5);
+            make.right.offset(-5);
+            make.height.offset(200);
+        }];
+        
+        _contentLabel = [[UILabel alloc] init];
+        _contentLabel.numberOfLines = 0;
+        _contentLabel.text = @"这是搜大大难分难舍饭票千分疲惫非完全访问ufipbfiwq方碧平不i耳边风这是搜大大难分难舍饭票千分疲惫非完全访问ufipbfiwq方碧平不i耳边风";
+        _contentLabel.backgroundColor = RGBColor(30, 30, 30);
+        _contentLabel.textColor = [UIColor whiteColor];
+        _contentLabel.font = [UIFont systemFontOfSize:14];
+        [self.contentView addSubview:_contentLabel];
+        [_contentLabel makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_playMovie.mas_bottom).offset(5);
+            make.left.offset(10);
+            make.right.offset(-10);
+        }];
+        
+        UIButton *button = [[UIButton alloc] init];
+        button.backgroundColor = RGBColor(30, 30, 30);
+        [button addTarget:self action:@selector(actionSupport:) forControlEvents:UIControlEventTouchUpInside];
+        [self.contentView addSubview:button];
+        [button makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_contentLabel.mas_bottom).offset(5);
+            make.left.offset(10);
+            make.height.offset(20);
+            make.width.offset(80);
+        }];
+        
+        _supportButton = [[UIButton alloc] init];
+        _supportButton.backgroundColor = RGBColor(130, 130, 130);
+        [_supportButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [_supportButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+        [button addSubview:_supportButton];
+        [_supportButton makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.offset(0);
+            make.left.offset(5);
+            make.width.offset(20);
+        }];
+
+        _supportLabel = [[UILabel alloc] init];
+        _supportLabel.text = @"324";
+        _supportLabel.textColor = [UIColor whiteColor];
+        _supportLabel.font = [UIFont systemFontOfSize:13];
+        [button addSubview:_supportLabel];
+        [_supportLabel makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.offset(0);
+            make.left.equalTo(_supportButton.mas_right).offset(10);
+            make.width.offset(80);
+        }];
+        
+        _timeLabel = [[UILabel alloc] init];
+        _timeLabel.text = @"2014-01-21 09:20";
+        _timeLabel.textColor = [UIColor whiteColor];
+        _timeLabel.font = [UIFont systemFontOfSize:13];
+        [self.contentView addSubview:_timeLabel];
+        [_timeLabel makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.offset(0);
+            make.right.offset(-10);
+            make.height.offset(20);
+        }];
     }
     
     return self;
 }
+
+- (void)actionSupport:(UIButton *)button {
+    _supportButton.selected = !_supportButton.selected;
+}
+
++(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends {
+    CGFloat height = 200+20;
+    NSString *str = @"这是搜大大难分难舍饭票千分疲惫非完全访问ufipbfiwq方碧平不i耳边风这是搜大大难分难舍饭票千分疲惫非完全访问ufipbfiwq方碧平不i耳边风";
+    CGRect rect = [str boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
+    height += rect.size.height;
+    height += 20;
+    
+    return height;
+}
+
 
 @end

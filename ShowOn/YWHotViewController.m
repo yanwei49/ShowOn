@@ -10,6 +10,7 @@
 #import "YWHotCollectionViewCell.h"
 #import "YWSearchCollectionReusableView.h"
 #import "YWHotDetailViewController.h"
+#import "YWUserDataViewController.h"
 
 @interface YWHotViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWHotCollectionViewCellDelegate>
 
@@ -90,14 +91,19 @@
     return nil;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
-{
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     return CGSizeMake(kScreenWidth, 40);
 }
 
 #pragma mark - YWHotCollectionViewCellDelegate
 - (void)hotCollectionViewCellDidSelectSupport:(YWHotCollectionViewCell *)cell {
     
+}
+
+- (void)hotCollectionViewCellDidSelectAvator:(YWHotCollectionViewCell *)cell {
+    YWUserDataViewController *vc = [[YWUserDataViewController alloc] init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.nv pushViewController:vc animated:YES];
 }
 
 

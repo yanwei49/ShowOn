@@ -23,8 +23,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
- 
+    _dataSource = [[NSMutableArray alloc] init];
+    
     [self createSubViews];
+    [self dataSource];
+}
+
+- (void)dataSource {
+    for (NSInteger i=0; i<10; i++) {
+        [_dataSource addObject:@""];
+    }
+    [_tableView reloadData];
 }
 
 - (void)createSubViews {
@@ -33,6 +42,7 @@
 
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_tableView registerClass:[YWFocusTableViewCell class] forCellReuseIdentifier:@"cell"];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -56,7 +66,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 200;
+    return [YWFocusTableViewCell cellHeightWithMovie:nil];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

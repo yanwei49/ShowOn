@@ -19,13 +19,17 @@
     UILabel         *_infosLabel;
     UIImageView     *_rankImageView;
     NSMutableArray  *_buttonArrays;
+    UIButton        *_addFocusButton;
+    UIButton        *_sendMessageButton;
+    BOOL             _isSelf;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame withUserIsSelf:(BOOL)state {
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = Subject_color;
         _buttonArrays = [[NSMutableArray alloc] init];
+        _isSelf = state;
         
         _avatorImageView = [[UIImageView alloc] init];
         _avatorImageView.backgroundColor = [UIColor greenColor];
@@ -100,7 +104,7 @@
             make.right.offset(-20);
         }];
         
-        NSArray *titles = @[@"2001\n动态", @"111\n关注", @"213\n粉丝", @"42342\n收藏"];
+        NSArray *titles = state?@[@"2001\n动态", @"111\n关注", @"213\n粉丝", @"42342\n收藏"]:@[@"2001\n关注", @"111\n粉丝", @"213\n作品"];
         for (NSInteger i=0; i<titles.count; i++) {
             UIButton *button = [[UIButton alloc ] init];
             button.backgroundColor = Subject_color;
@@ -113,10 +117,43 @@
             [self addSubview:button];
             [_buttonArrays addObject:button];
             [button makeConstraints:^(MASConstraintMaker *make) {
-                make.left.offset(((kScreenWidth-100)/4+20)*i+20);
+                make.left.offset(((kScreenWidth-100)/titles.count+20)*i+20);
                 make.top.equalTo(_empiricalLabel.mas_bottom).offset(5);
                 make.bottom.equalTo(_infosLabel.mas_top).offset(-5);
-                make.width.offset((kScreenWidth-100)/4);
+                make.width.offset((kScreenWidth-100)/titles.count);
+            }];
+        }
+        
+        if (!state) {
+            _addFocusButton = [[UIButton alloc] init];
+            _addFocusButton.backgroundColor = [UIColor redColor];
+            _addFocusButton.layer.masksToBounds = YES;
+            _addFocusButton.layer.cornerRadius = 5;
+            _addFocusButton.titleLabel.font = [UIFont systemFontOfSize:14];
+            [_addFocusButton setTitle:@"+ 关注" forState:UIControlStateNormal];
+            [_addFocusButton addTarget:self action:@selector(actionFocus:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:_addFocusButton];
+            [_addFocusButton makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(_avatorImageView.mas_centerY);
+                make.width.offset(60);
+                make.height.offset(25);
+                make.right.equalTo(_avatorImageView.mas_left).offset(-30);
+            }];
+            
+            _sendMessageButton = [[UIButton alloc] init];
+            _sendMessageButton.layer.masksToBounds = YES;
+            _sendMessageButton.layer.cornerRadius = 5;
+            _sendMessageButton.titleLabel.font = [UIFont systemFontOfSize:14];
+            _sendMessageButton.backgroundColor = RGBColor(244, 244, 244);
+            [_sendMessageButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [_sendMessageButton setTitle:@"私信" forState:UIControlStateNormal];
+            [_sendMessageButton addTarget:self action:@selector(actionSendMessage:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:_sendMessageButton];
+            [_sendMessageButton makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(_avatorImageView.mas_centerY);
+                make.width.offset(60);
+                make.height.offset(25);
+                make.left.equalTo(_avatorImageView.mas_right).offset(30);
             }];
         }
     }
@@ -138,6 +175,18 @@
     }
 }
 
+- (void)actionFocus:(UIButton *)button {
+    if ([_delegate respondsToSelector:@selector(mineTableHeadViewDidSelectFocus)]) {
+        [_delegate mineTableHeadViewDidSelectFocus];
+    }
+}
+
+- (void)actionSendMessage:(UIButton *)button {
+    if ([_delegate respondsToSelector:@selector(mineTableHeadViewDidSelectSendMessage)]) {
+        [_delegate mineTableHeadViewDidSelectSendMessage];
+    }
+}
+
 - (void)setUser:(YWUserModel *)user {
     _user = user;
     [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:user.userAvator] placeholderImage:[UIImage imageNamed:@""]];
@@ -145,15 +194,60 @@
     _empiricalLabel.text = [NSString stringWithFormat:@"经验值 %@", user.userEmpirical];
     _authenticationLabel.text = user.userAuthentication;
     _infosLabel.text = user.userInfos;
-    NSArray *titles = @[@"动态", @"关注", @"粉丝", @"收藏"];
-    UIButton *button1 = _buttonArrays[0];
-    UIButton *button2 = _buttonArrays[0];
-    UIButton *button3 = _buttonArrays[0];
-    UIButton *button4 = _buttonArrays[0];
-    [button1 setTitle:[NSString stringWithFormat:@"%@%@", titles[0], user.userTrendsNums] forState:UIControlStateNormal];
-    [button2 setTitle:[NSString stringWithFormat:@"%@%@", titles[1], user.userFocusNums] forState:UIControlStateNormal];
-    [button3 setTitle:[NSString stringWithFormat:@"%@%@", titles[2], user.userFollowsNums] forState:UIControlStateNormal];
-    [button4 setTitle:[NSString stringWithFormat:@"%@%@", titles[3], user.userCollectNums] forState:UIControlStateNormal];
+    NSArray *titles = _isSelf?@[@"动态", @"关注", @"粉丝", @"收藏"]:@[@"关注", @"粉丝", @"作品"];
+    for (NSInteger i=0; i<titles.count; i++) {
+        UIButton *button = _buttonArrays[i];
+        NSString *count;
+        if (_isSelf) {
+            switch (i) {
+                case 0:
+                    count = user.userTrendsNums;
+                    break;
+                case 1:
+                    count = user.userFocusNums;
+                    break;
+                case 2:
+                    count = user.userFollowsNums;
+                    break;
+                case 3:
+                    count = user.userCollectNums;
+                    break;
+                default:
+                    break;
+            }
+        }else {
+            switch (i) {
+                case 0:
+                    count = user.userFocusNums;
+                    break;
+                case 1:
+                    count = user.userFollowsNums;
+                    break;
+                case 2:
+                    count = user.userWorksNums;
+                    break;
+                default:
+                    break;
+            }
+        }
+        [button setTitle:[NSString stringWithFormat:@"%@\n%@", count, titles[i]] forState:UIControlStateNormal];
+    }
+}
+
+- (void)reloadFoucsButtonState {
+    switch (_user.userRelationType) {
+        case kBeFocus:
+            
+            break;
+        case kFocus:
+            
+            break;
+        case kEachOtherFocus:
+            
+            break;
+        default:
+            break;
+    }
 }
 
 @end

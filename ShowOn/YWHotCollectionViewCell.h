@@ -12,6 +12,7 @@
 @protocol YWHotCollectionViewCellDelegate <NSObject>
 
 - (void)hotCollectionViewCellDidSelectSupport:(YWHotCollectionViewCell *)cell;
+- (void)hotCollectionViewCellDidSelectAvator:(YWHotCollectionViewCell *)cell;
 
 @end
 

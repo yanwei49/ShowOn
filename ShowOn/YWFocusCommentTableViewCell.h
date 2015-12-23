@@ -1,15 +1,15 @@
 //
-//  YWTrendsTableViewCell.h
+//  YWFocusCommentTableViewCell.h
 //  ShowOn
 //
-//  Created by 颜魏 on 15/12/4.
+//  Created by 颜魏 on 15/12/16.
 //  Copyright © 2015年 yanwei. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
 @class YWTrendsModel;
-@interface YWTrendsTableViewCell : UITableViewCell
+@interface YWFocusCommentTableViewCell : UITableViewCell
 
 +(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends;
 

@@ -49,7 +49,7 @@
             [button makeConstraints:^(MASConstraintMaker *make) {
                 make.left.offset(kScreenWidth/itemTitles.count*i);
                 make.bottom.offset(0);
-                make.top.offset(1);
+                make.top.offset(0);
                 make.width.offset(kScreenWidth/itemTitles.count);
             }];
             if (i != (itemTitles.count-1)) {
@@ -61,7 +61,7 @@
                 [lineView makeConstraints:^(MASConstraintMaker *make) {
                     make.right.equalTo(button.mas_right);
                     make.top.offset(10);
-                    make.top.offset(-10);
+                    make.bottom.offset(-10);
                     make.width.offset(1);
                 }];
             }
@@ -124,6 +124,12 @@
 - (void)setHiddenLineView:(BOOL)hiddenLineView {
     for (UIView *view in _lineViews) {
         view.hidden = hiddenLineView;
+    }
+}
+
+- (void)setHiddenBottomLineView:(BOOL)hiddenBottomLineView {
+    for (UIView *view in _views) {
+        view.hidden = hiddenBottomLineView;
     }
 }
 

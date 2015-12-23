@@ -12,7 +12,11 @@
 @class YWMineTableHeadView;
 @protocol YWMineTableHeadViewDelegate <NSObject>
 
+@optional
+- (void)mineTableHeadViewDidSelectSendMessage;
+- (void)mineTableHeadViewDidSelectFocus;
 - (void)mineTableHeadViewDidSelectAvator;
+@required
 - (void)mineTableHeadView:(YWMineTableHeadView *)view didSelectButtonWithIndex:(NSInteger)index;
 
 @end
@@ -21,5 +25,8 @@
 
 @property (nonatomic, strong) YWUserModel  *user;
 @property (nonatomic, assign) id<YWMineTableHeadViewDelegate> delegate;
+
+- (instancetype)initWithFrame:(CGRect)frame withUserIsSelf:(BOOL)state;
+- (void)reloadFoucsButtonState;
 
 @end
