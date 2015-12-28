@@ -8,8 +8,10 @@
 
 #import "YWBaseViewController.h"
 
+@class YWUserModel;
 @interface YWUserDataViewController : YWBaseViewController
 
 @property (nonatomic, assign) BOOL isSelf;
+@property (nonatomic, strong) YWUserModel *user;
 
 @end

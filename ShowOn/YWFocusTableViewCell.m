@@ -9,6 +9,9 @@
 #import "YWFocusTableViewCell.h"
 #import "YWMoviePlayView.h"
 #import "YWFocusCommentTableViewCell.h"
+#import "YWMovieModel.h"
+#import "YWUserModel.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface YWFocusTableViewCell()<UITableViewDelegate, UITableViewDataSource>
 
@@ -26,15 +29,16 @@
     UIButton         *_playButton;
     UIButton         *_cooperateButton;
     UITableView      *_tableView;
-    NSMutableArray   *_dataSource;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        UIView *selectView = [[UIView alloc] initWithFrame:self.contentView.bounds];
+        selectView.backgroundColor = RGBColor(70, 70, 70);
+        self.selectedBackgroundView = selectView;
         self.contentView.backgroundColor = RGBColor(30, 30, 30);
-        _dataSource = [[NSMutableArray alloc] init];
-        [_dataSource addObject:@""];
+        self.contentView.clipsToBounds = YES;
         
         UIView  *view = [[UIView alloc] init];
         view.backgroundColor = Subject_color;
@@ -56,7 +60,7 @@
         
         _userNameLabel = [[UILabel alloc] init];
         _userNameLabel.backgroundColor = Subject_color;
-        _userNameLabel.text = @"用户名+合作者";
+        _userNameLabel.text = @"";
         _userNameLabel.textColor = [UIColor whiteColor];
         _userNameLabel.font = [UIFont systemFontOfSize:16];
         [self.contentView addSubview:_userNameLabel];
@@ -68,7 +72,7 @@
         
         _timeLabel = [[UILabel alloc] init];
         _timeLabel.backgroundColor = Subject_color;
-        _timeLabel.text = @"1分30秒";
+        _timeLabel.text = @"";
         _timeLabel.textColor = RGBColor(142, 142, 142);
         _timeLabel.font = [UIFont systemFontOfSize:13];
         [self.contentView addSubview:_timeLabel];
@@ -80,7 +84,7 @@
         
         _numsLabel = [[UILabel alloc] init];
         _numsLabel.backgroundColor = Subject_color;
-        _numsLabel.text = @"播放2332次";
+        _numsLabel.text = @"";
         _numsLabel.textColor = RGBColor(142, 142, 142);
         _numsLabel.font = [UIFont systemFontOfSize:13];
         [self.contentView addSubview:_numsLabel];
@@ -136,7 +140,7 @@
         
         _contentLabel = [[UILabel alloc] init];
         _contentLabel.numberOfLines = 0;
-        _contentLabel.text = @"这是搜大大难分难舍饭票千分疲惫非完全访问ufipbfiwq方碧平不i耳边风这是搜大大难分难舍饭票千分疲惫非完全访问ufipbfiwq方碧平不i耳边风";
+        _contentLabel.text = @"";
         _contentLabel.backgroundColor = RGBColor(30, 30, 30);
         _contentLabel.textColor = [UIColor whiteColor];
         _contentLabel.font = [UIFont systemFontOfSize:14];
@@ -148,9 +152,10 @@
         }];
 
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.backgroundColor = RGBColor(30, 30, 30);
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = NO;
-        _tableView.separatorColor = RGBColor(30, 30, 30);
+        _tableView.userInteractionEnabled = NO;
         [_tableView registerClass:[YWFocusCommentTableViewCell class] forCellReuseIdentifier:@"cell"];
         _tableView.delegate = self;
         _tableView.dataSource = self;
@@ -165,37 +170,59 @@
 }
 
 - (void)actionCooperateButton:(UIButton *)button {
-    
+    if ([_delegate respondsToSelector:@selector(focusTableViewCellDidSelectCooperate:)]) {
+        [_delegate focusTableViewCellDidSelectCooperate:self];
+    }
 }
 
 - (void)actionPlay:(UIButton *)button {
-    
+    if ([_delegate respondsToSelector:@selector(focusTableViewCellDidSelectCooperate:)]) {
+        [_delegate focusTableViewCellDidSelectCooperate:self];
+    }
 }
 
-+(CGFloat)cellHeightWithMovie:(YWMovieModel *)movie {
+- (void)setMovie:(YWMovieModel *)movie {
+    _movie = movie;
+    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:movie.movieReleaseUser.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
+    NSMutableString *str = [NSMutableString string];
+    [str appendString:movie.movieReleaseUser.userName];
+    for (NSInteger i=0; i<movie.movieRecorderUsers.count; i++) {
+        [str appendString:@"+"];
+        [str appendString:[movie.movieRecorderUsers[i] userName]];
+    }
+    _userNameLabel.text = str;
+    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [movie.movieTime componentsSeparatedByString:@":"][0], [movie.movieTime componentsSeparatedByString:@":"][1]];
+    _contentLabel.text = movie.movieInfos;
+    _numsLabel.text = [NSString stringWithFormat:@"播放%@次", movie.moviePlayNumbers];
+
+}
+
++(CGFloat)cellHeightWithMovie:(YWMovieModel *)movie type:(MovieCellType)type {
     CGFloat height = 200+15+60;
-    NSString *str = @"这是搜大大难分难舍饭票千分疲惫非完全访问ufipbfiwq方碧平不i耳边风这是搜大大难分难舍饭票千分疲惫非完全访问ufipbfiwq方碧平不i耳边风";
-    CGRect rect = [str boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
+    CGRect rect = [movie.movieInfos boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
     height += rect.size.height;
-    height += [YWFocusCommentTableViewCell cellHeightWithTrends:nil];
+    if (type == kMovieListType && movie.movieComments.count) {
+        height += [YWFocusCommentTableViewCell cellHeightWithComment:movie.movieComments[0]];
+    }
     
     return height;
-
 }
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _dataSource.count;
+    return _movie.movieComments.count?1:0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YWFocusCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.comment = _movie.movieComments[indexPath.row];
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [YWFocusCommentTableViewCell cellHeightWithTrends:nil];
+    return [YWFocusCommentTableViewCell cellHeightWithComment:_movie.movieComments[indexPath.row]];
 }
 
 

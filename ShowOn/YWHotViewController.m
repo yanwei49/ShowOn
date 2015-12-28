@@ -11,6 +11,11 @@
 #import "YWSearchCollectionReusableView.h"
 #import "YWHotDetailViewController.h"
 #import "YWUserDataViewController.h"
+#import "YWHttpManager.h"
+#import "YWParser.h"
+
+#import "YWMovieModel.h"
+#import "YWUserModel.h"
 
 @interface YWHotViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWHotCollectionViewCellDelegate>
 
@@ -34,7 +39,17 @@
 
 - (void)dataSource {
     for (NSInteger i=0; i<10; i++) {
-        [_dataSource addObject:@""];
+        YWMovieModel *movie = [[YWMovieModel alloc] init];
+        movie.movieId = [NSString stringWithFormat:@"%ld", i];
+        movie.movieName = [NSString stringWithFormat:@"测试模板%ld", i+1];
+        movie.movieIsSupport = [NSString stringWithFormat:@"%d", arc4random()%2];
+        YWUserModel *user = [[YWUserModel alloc] init];
+        user.userId = [NSString stringWithFormat:@"%ld", i];
+        user.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+        user.userName = [NSString stringWithFormat:@"测试用户%ld", i+1];
+        movie.movieReleaseUser = user;
+        
+        [_dataSource addObject:movie];
     }
     [_collectionView reloadData];
 }
@@ -63,12 +78,14 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     YWHotCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"item" forIndexPath:indexPath];
     cell.delegate = self;
+    cell.movie = _dataSource[indexPath.row];
     
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     YWHotDetailViewController *vc = [[YWHotDetailViewController alloc] init];
+    vc.movie = _dataSource[indexPath.row];
     vc.hidesBottomBarWhenPushed = YES;
     [self.nv pushViewController:vc animated:YES];
 }
@@ -97,7 +114,11 @@
 
 #pragma mark - YWHotCollectionViewCellDelegate
 - (void)hotCollectionViewCellDidSelectSupport:(YWHotCollectionViewCell *)cell {
-    
+    if (false) {
+        
+    }else {
+        [self login];
+    }
 }
 
 - (void)hotCollectionViewCellDidSelectAvator:(YWHotCollectionViewCell *)cell {

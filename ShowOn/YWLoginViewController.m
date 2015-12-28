@@ -28,6 +28,7 @@
     UIButton       *_forgetPasswordButton;
     UIView         *_otherLoginMethodBackgroundView;
     YWUserModel    *_othersUser;
+    UIButton       *_backButton;
 }
 
 - (void)viewDidLoad {
@@ -46,6 +47,16 @@
 }
 
 - (void)createSubViews {
+    _backButton = [[UIButton alloc] init];
+    _backButton.backgroundColor = [UIColor greenColor];
+    [_backButton addTarget:self action:@selector(actionBack) forControlEvents:UIControlEventTouchUpInside];
+    _backButton.hidden = _backButtonHiddenState;
+    [self.view addSubview:_backButton];
+    [_backButton makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.offset(20);
+        make.width.height.offset(30);
+    }];
+    
     _accountTextField = [[UITextField alloc] init];
     _accountTextField.delegate = self;
     _accountTextField.backgroundColor = [UIColor whiteColor];
@@ -204,6 +215,10 @@
 }
 
 #pragma mark - action
+- (void)actionBack {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (void)actionLogin:(UIButton *)button {
     [self requestLoginWithType:0];
 }
@@ -249,7 +264,7 @@
                 _othersUser.userSex = [[_socialDict objectForKey:@"sina"] objectForKey:@"gender"];
                 _othersUser.userId = [[_socialDict objectForKey:@"sina"] objectForKey:@"usid"];
                 _othersUser.userName = [[_socialDict objectForKey:@"sina"] objectForKey:@"username"];
-                _othersUser.userAvator = [[_socialDict objectForKey:@"sina"] objectForKey:@"icon"];
+                _othersUser.portraitUri = [[_socialDict objectForKey:@"sina"] objectForKey:@"icon"];
                 
                 [self actionLogin:nil];
             }
@@ -271,7 +286,7 @@
                 }else {
                     _othersUser.userSex = @"0";
                 }
-                _othersUser.userAvator = [[_socialDict objectForKey:@"qq"] objectForKey:@"icon"];
+                _othersUser.portraitUri = [[_socialDict objectForKey:@"qq"] objectForKey:@"icon"];
                 
                 [self actionLogin:nil];
             }

@@ -189,7 +189,7 @@
 
 - (void)setUser:(YWUserModel *)user {
     _user = user;
-    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:user.userAvator] placeholderImage:[UIImage imageNamed:@""]];
+    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:[UIImage imageNamed:@""]];
     _nameLabel.text = [NSString stringWithFormat:@"%@       %@", user.userName, user.userRank];
     _empiricalLabel.text = [NSString stringWithFormat:@"经验值 %@", user.userEmpirical];
     _authenticationLabel.text = user.userAuthentication;

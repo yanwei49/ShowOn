@@ -25,7 +25,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>sina.549f6a2bfd98c54aaf000c6f</string>
+				<string>sina.55c8131667e58e98db000611</string>
 			</array>
 		</dict>
 		<dict>
@@ -33,7 +33,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>wxe08wxe0812af07356c37312af07356c373</string>
+				<string>wx1d8933e2e4464950</string>
 			</array>
 		</dict>
 		<dict>
@@ -41,7 +41,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>QQ41c5477d</string>
+				<string>QQ05FC5B14</string>
 			</array>
 		</dict>
 		<dict>
@@ -49,47 +49,47 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>tencent1103447933</string>
+				<string>tencent100424468</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>alipay</string>
-        <string>alipayshare</string>
-        <string>wechat</string>
-        <string>weixin</string>
-        <string>sinaweibohd</string>
-        <string>sinaweibo</string>
-        <string>sinaweibosso</string>
-        <string>weibosdk</string>
-        <string>weibosdk2.5</string>
-        <string>mqqapi</string>
-        <string>mqq</string>
-        <string>mqqOpensdkSSoLogin</string>
-        <string>mqqconnect</string>
-        <string>mqqopensdkdataline</string>
-        <string>mqqopensdkgrouptribeshare</string>
-        <string>mqqopensdkfriend</string>
-        <string>mqqopensdkapi</string>
-        <string>mqqopensdkapiV2</string>
-        <string>mqqopensdkapiV3</string>
-        <string>mqzoneopensdk</string>
-        <string>wtloginmqq</string>
-        <string>wtloginmqq2</string>
-        <string>mqqwpa</string>
-        <string>mqzone</string>
-        <string>mqzonev2</string>
-        <string>mqzoneshare</string>
-        <string>wtloginqzone</string>
-        <string>mqzonewx</string>
-        <string>mqzoneopensdkapiV2</string>
-        <string>mqzoneopensdkapi19</string>
-        <string>mqzoneopensdkapi</string>
-        <string>mqzoneopensdk</string>
-    </array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>alipay</string>
+		<string>alipayshare</string>
+		<string>wechat</string>
+		<string>weixin</string>
+		<string>sinaweibohd</string>
+		<string>sinaweibo</string>
+		<string>sinaweibosso</string>
+		<string>weibosdk</string>
+		<string>weibosdk2.5</string>
+		<string>mqqapi</string>
+		<string>mqq</string>
+		<string>mqqOpensdkSSoLogin</string>
+		<string>mqqconnect</string>
+		<string>mqqopensdkdataline</string>
+		<string>mqqopensdkgrouptribeshare</string>
+		<string>mqqopensdkfriend</string>
+		<string>mqqopensdkapi</string>
+		<string>mqqopensdkapiV2</string>
+		<string>mqqopensdkapiV3</string>
+		<string>mqzoneopensdk</string>
+		<string>wtloginmqq</string>
+		<string>wtloginmqq2</string>
+		<string>mqqwpa</string>
+		<string>mqzone</string>
+		<string>mqzonev2</string>
+		<string>mqzoneshare</string>
+		<string>wtloginqzone</string>
+		<string>mqzonewx</string>
+		<string>mqzoneopensdkapiV2</string>
+		<string>mqzoneopensdkapi19</string>
+		<string>mqzoneopensdkapi</string>
+		<string>mqzoneopensdk</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

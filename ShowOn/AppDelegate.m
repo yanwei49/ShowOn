@@ -30,11 +30,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.backgroundColor = Subject_color;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:LoginSuccess object:nil];
     [self configureAPIKey];
 
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"LoginState"]) {
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"LoginState"]) {
         [self createTabBar];
     }else {
         [self createLogin];
@@ -45,7 +45,7 @@
 }
 
 - (void)configureAPIKey {
-    [UMSocialData setAppKey:YOUMENG_API_KEY];
+    [UMSocialData setAppKey:UMengAppKey];
     [UMSocialWechatHandler setWXAppId:WECHAT_APP_ID appSecret:WECHAT_APP_SECRET url:WECHAT_APP_URL];
     [UMSocialQQHandler setQQWithAppId:QQ_APP_ID appKey:QQ_APP_KEY url:QQ_APP_URL];
     [UMSocialQQHandler setSupportWebView:YES];
@@ -58,6 +58,7 @@
 
 - (void)createLogin {
     YWLoginViewController *vc = [[YWLoginViewController alloc] init];
+    vc.backButtonHiddenState = YES;
     YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
     self.window.rootViewController = nv;
     nv.navigationBarHidden = YES;

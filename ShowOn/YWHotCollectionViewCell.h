@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+@class YWMovieModel;
 @class YWHotCollectionViewCell;
 @protocol YWHotCollectionViewCellDelegate <NSObject>
 
@@ -19,5 +20,6 @@
 @interface YWHotCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, assign) id<YWHotCollectionViewCellDelegate> delegate;
+@property (nonatomic, strong) YWMovieModel *movie;
 
 @end

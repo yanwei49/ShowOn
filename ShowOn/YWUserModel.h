@@ -17,8 +17,12 @@ typedef enum : NSUInteger {
 @interface YWUserModel : NSObject
 
 @property (nonatomic, strong) NSString  *userId;
-@property (nonatomic, strong) NSString  *userAvator;
-@property (nonatomic, strong) NSString  *userSex; //0:女   1:男
+@property (nonatomic, strong) NSString  *userType;                     //登陆方式(0:手机账号   1：第三方账号)
+@property (nonatomic, strong) NSString  *userAccount;                  //账号
+@property (nonatomic, strong) NSString  *userPassword;                 //密码
+@property (nonatomic, strong) NSString  *userToken;                    //token
+@property (nonatomic, strong) NSString  *portraitUri;
+@property (nonatomic, strong) NSString  *userSex;                       //0:女   1:男
 @property (nonatomic, strong) NSString  *userName;
 @property (nonatomic, strong) NSString  *userRank;
 @property (nonatomic, strong) NSString  *userEmpirical;                  //经验
@@ -28,7 +32,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) NSString  *userTrendsNums;                 //动态数
 @property (nonatomic, strong) NSString  *userFollowsNums;                //粉丝数
 @property (nonatomic, strong) NSString  *userCollectNums;                //收藏数
-@property (nonatomic, strong) NSString  *userWorksNums;                //收藏数
+@property (nonatomic, strong) NSString  *userWorksNums;                  //收藏数
 @property (nonatomic, assign) FriendRelationType  userRelationType;      //关系类型
 
 

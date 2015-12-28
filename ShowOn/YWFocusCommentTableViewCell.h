@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class YWTrendsModel;
+@class YWCommentModel;
 @interface YWFocusCommentTableViewCell : UITableViewCell
 
-+(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends;
+@property (nonatomic, strong) YWCommentModel *comment;
+
++(CGFloat)cellHeightWithComment:(YWCommentModel *)comment;
 
 @end

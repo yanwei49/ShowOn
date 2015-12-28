@@ -246,7 +246,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (!_itemSelectIndex) {
         UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
         [cell.accessoryView becomeFirstResponder];

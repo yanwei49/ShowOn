@@ -8,6 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum : NSUInteger {
+    kCommentMovieType,
+    kCommentCommentType
+} CommentType;
+
+@class YWUserModel;
 @interface YWCommentModel : NSObject
+
+@property (nonatomic, strong) YWUserModel *commentUser;     //发布该评论的用户
+@property (nonatomic, strong) YWUserModel *beCommentUser;   //被评论的用户
+@property (nonatomic, assign) CommentType  commentType;     //评论的类型（0：评论视频   1：评论别人的评论）
+@property (nonatomic, strong) NSString    *commentId;       //评论的ID
+@property (nonatomic, strong) NSString    *relationId;      //评论关联的另一方的ID
+@property (nonatomic, strong) NSString    *isSupport;       //当前登录用户是否点赞 (0：否   1：是)
+@property (nonatomic, strong) NSString    *commentTime;     //评论时间
+@property (nonatomic, strong) NSString    *commentContent;  //评论内容
 
 @end

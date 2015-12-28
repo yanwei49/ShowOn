@@ -34,7 +34,7 @@
 - (void)datatSource {
     for (NSInteger i=0; i<10; i++) {
         YWUserModel *model = [[YWUserModel alloc] init];
-        model.userAvator = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+        model.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
         model.userId = [NSString stringWithFormat:@"%ld", i];
         model.userName = [NSString stringWithFormat:@"测试账号%ld", i];
         model.userRelationType = _isFocus?kBeFocus:kFocus;
@@ -79,7 +79,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 #pragma mark - YWFollowingTableViewCellDelegate

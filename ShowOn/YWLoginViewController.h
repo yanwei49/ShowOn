@@ -10,4 +10,7 @@
 
 @interface YWLoginViewController : UIViewController
 
+@property (nonatomic, assign) BOOL backButtonHiddenState;
+
 @end
+

@@ -10,10 +10,14 @@
 
 @interface YWBaseViewController : UIViewController
 
-- (void)createBackLeftItem;
-- (void)actionBack:(UIButton *)button;
+- (void)createLeftItemWithTitle:(NSString *)title;
+- (void)actionLeftItem:(UIButton *)button;
 
-- (void)createBackRightItemWithTitle:(NSString *)title;
+- (void)createRightItemWithTitle:(NSString *)title;
 - (void)actionRightItem:(UIButton *)button;
+
+- (void)createRightItemWithImage:(NSString *)imageName;
+//跳转到登录页面
+- (void)login;
 
 @end

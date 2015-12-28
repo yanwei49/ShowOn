@@ -30,7 +30,7 @@
     self.view.backgroundColor = Subject_color;
     self.title = @"模板名称";
     _dataSource = [[NSMutableArray alloc] init];
-    [self createBackLeftItem];
+    [self createLeftItemWithTitle:@"返回"];
     [self createSubViews];
     [self dataSource];
 }
@@ -102,7 +102,7 @@
 }
 
 #pragma mark - action
-- (void)actionBack:(UIButton *)button {
+- (void)actionLeftItem:(UIButton *)button {
     AppDelegate *application = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [application movieVCToBack];
 }

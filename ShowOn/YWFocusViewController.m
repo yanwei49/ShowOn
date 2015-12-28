@@ -8,8 +8,13 @@
 
 #import "YWFocusViewController.h"
 #import "YWFocusTableViewCell.h"
+#import "YWHotDetailViewController.h"
 
-@interface YWFocusViewController ()<UITableViewDelegate, UITableViewDataSource>
+#import "YWMovieModel.h"
+#import "YWUserModel.h"
+#import "YWCommentModel.h"
+
+@interface YWFocusViewController ()<UITableViewDelegate, UITableViewDataSource, YWFocusTableViewCellCellDelegate>
 
 @end
 
@@ -31,7 +36,26 @@
 
 - (void)dataSource {
     for (NSInteger i=0; i<10; i++) {
-        [_dataSource addObject:@""];
+        YWMovieModel *movie = [[YWMovieModel alloc] init];
+        movie.movieId = [NSString stringWithFormat:@"%ld", i];
+        movie.moviePlayNumbers = @"221";
+        movie.movieTime = @"02:12";
+        movie.movieName = [NSString stringWithFormat:@"测试模板%ld", i+1];
+        movie.movieIsSupport = [NSString stringWithFormat:@"%d", arc4random()%2];
+        YWUserModel *user = [[YWUserModel alloc] init];
+        user.userId = [NSString stringWithFormat:@"%ld", i];
+        user.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+        user.userName = [NSString stringWithFormat:@"测试用户%ld", i+1];
+        movie.movieReleaseUser = user;
+        YWCommentModel *comment = [[YWCommentModel alloc] init];
+        comment.commentId = [NSString stringWithFormat:@"%ld", i];
+        comment.commentTime = @"2015-10-20 03:21";
+        comment.commentContent = @"为己任内容我i让我去让我琼海请让我后悔千万人千万人薄荷问无人区普i人";
+        comment.commentUser = user;
+        comment.isSupport = @"1";
+        movie.movieComments = @[comment, comment];
+        
+        [_dataSource addObject:movie];
     }
     [_tableView reloadData];
 }
@@ -41,7 +65,7 @@
     _searchBar.placeholder = @"搜索片名/用户名";
 
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.backgroundColor = Subject_color;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_tableView registerClass:[YWFocusTableViewCell class] forCellReuseIdentifier:@"cell"];
     _tableView.delegate = self;
@@ -61,19 +85,40 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YWFocusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    cell.delegate = self;
+    cell.movie = _dataSource[indexPath.row];
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [YWFocusTableViewCell cellHeightWithMovie:nil];
+    return [YWFocusTableViewCell cellHeightWithMovie:_dataSource[indexPath.row] type:kMovieListType];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    YWHotDetailViewController *vc = [[YWHotDetailViewController alloc] init];
+    vc.movie = _dataSource[indexPath.row];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.nv pushViewController:vc animated:YES];
 }
 
+#pragma mark - YWFocusTableViewCellCellDelegate
+- (void)focusTableViewCellDidSelectCooperate:(YWFocusTableViewCell *)cell {
+    if (false) {
+        
+    }else {
+        [self login];
+    }
+}
+
+- (void)focusTableViewCellDidSelectPlay:(YWFocusTableViewCell *)cell {
+    if (false) {
+        
+    }else {
+        [self login];
+    }
+}
 
 
 @end

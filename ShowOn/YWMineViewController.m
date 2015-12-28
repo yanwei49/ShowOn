@@ -35,7 +35,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSource = [[NSMutableArray alloc] initWithArray:@[@"@我的", @"评论", @"赞", @"私信", @"经验值", @"草稿箱"]];
-    [self createBackRightItemWithTitle:@"设置"];
+    [self createRightItemWithTitle:@"设置"];
     [self createSubViews];
 }
 
@@ -76,6 +76,15 @@
     cell.contentView.backgroundColor = RGBColor(52, 52, 52);
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.text = _dataSource[indexPath.row];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
+    view.backgroundColor = [UIColor greenColor];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    label.backgroundColor = [UIColor redColor];
+    [view addSubview:label];
+    UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(3-0, 0, 10, 20)];
+    img.backgroundColor = [UIColor redColor];
+    [view addSubview:img];
+    cell.accessoryView = view;
     
     return cell;
 }
@@ -85,7 +94,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     NSArray *className = @[@"YWATMeViewController", @"YWCommentViewController", @"YWSupportViewController", @"YWMessageViewController", @"YWExperienceViewController", @"YWDraftViewController"];
     UIViewController *vc = [[NSClassFromString(className[indexPath.row]) alloc] init];
     vc.title = _dataSource[indexPath.row];

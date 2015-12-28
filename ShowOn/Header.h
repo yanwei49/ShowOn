@@ -9,6 +9,9 @@
 #ifndef Header_h
 #define Header_h
 
+#define RK_LOG_ENABLED YES
+#define DebugLog( s, ... ) if ( RK_LOG_ENABLED ) NSLog( @"\n\n<%p %@:(%d)> %@", self, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
+
 #define kScreenWidth     [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight    [UIScreen mainScreen].bounds.size.height
 #define SeparatorColor   [UIColor colorWithRed:234/256.0 green:234/256.0 blue:234/256.0 alpha:1]
@@ -18,24 +21,24 @@
 #define Is480Height      kScreenHeight == 480
 
 //友盟KEY
-#define YOUMENG_API_KEY @"54602473fd98c50587000692"
-#define GAODE_API_KEY @"9098ae519a1257ed1c61415aa9cae45b"
+#define UMengAppKey @"55c8131667e58e98db000611"
 
 //微信appId，appSecret，url
-#define WECHAT_APP_ID @"wxe0812af07356c373"
-#define WECHAT_APP_SECRET @"470d32383ad311964ee6261ff161de7e"
-#define WECHAT_APP_URL @"http://www.triphare.com"
+#define WECHAT_APP_ID @"wx1d8933e2e4464950"
+#define WECHAT_APP_SECRET @"ba13e560c481c7dacb0ab692672d0535"
+#define WECHAT_APP_URL @"http://www.umeng.com/social"
 
 //QQ appId，appKey，url
-#define QQ_APP_ID @"1103447933"
-#define QQ_APP_KEY @"4zYnK0dIpDbFTuE"
-#define QQ_APP_URL @"http://www.triphare.com"
+#define QQ_APP_ID @"100424468"
+#define QQ_APP_KEY @"c7394704798a158208a74ab60104f0ba"
+#define QQ_APP_URL @"http://www.umeng.com/social"
 
 //Sina SSO url
 #define SINA_SSO_URL @"http://sns.whalecloud.com/sina2/callback"
 
 #define Subject_color    [UIColor colorWithRed:42/256.0 green:42/256.0 blue:42/256.0 alpha:1]
 #define CornerRadius     5
+#define kPlaceholderUserAvatorImage  [UIImage imageNamed:@""]
 
 
 #endif /* Header_h */

@@ -66,7 +66,7 @@
 
 - (void)setUser:(YWUserModel *)user {
     _user = user;
-    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:user.userAvator] placeholderImage:[UIImage imageNamed:@""]];
+    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
     _nameLabel.text = user.userName;
     [self changeFriendRelationType];
 }

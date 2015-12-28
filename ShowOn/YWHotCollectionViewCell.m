@@ -8,6 +8,8 @@
 
 #import "YWHotCollectionViewCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "YWMovieModel.h"
+#import "YWUserModel.h"
 
 @implementation YWHotCollectionViewCell
 {
@@ -27,7 +29,7 @@
         self.contentView.layer.cornerRadius = CornerRadius;;
 
         _imageView = [[UIImageView alloc] init];
-        _imageView.backgroundColor = [UIColor greenColor];
+        _imageView.backgroundColor = RGBColor(70, 70, 70);
         _imageView.layer.masksToBounds = YES;
         _imageView.layer.cornerRadius = 5;
         [self.contentView addSubview:_imageView];
@@ -35,15 +37,6 @@
             make.top.left.right.offset(0);
             make.bottom.offset(-20);
         }];
-        
-//        UIImageView *playImageView = [[UIImageView alloc] init];
-//        playImageView.backgroundColor = [UIColor greenColor];
-//        playImageView.image = [UIImage imageNamed:@""];
-//        [self.contentView addSubview:playImageView];
-//        [playImageView makeConstraints:^(MASConstraintMaker *make) {
-//            make.center.equalTo(_imageView.center);
-//            make.width.height.offset(40);
-//        }];
         
         UIView  *view = [[UIView alloc] init];
         view.backgroundColor = RGBColor(30, 30, 30);
@@ -78,7 +71,7 @@
         }];
         
         _supportButton = [[UIButton alloc] init];
-        [_supportButton setImage:[UIImage imageNamed:@"actionbar_location_icon@3x"] forState:UIControlStateNormal];
+        [_supportButton setImage:[UIImage imageNamed:@"actionbar_location_icon.png"] forState:UIControlStateNormal];
         [_supportButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
         [_supportButton addTarget:self action:@selector(actionSupport:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_supportButton];
@@ -89,7 +82,7 @@
         }];
         
         _userNameLabel = [[UILabel alloc] init];
-        _userNameLabel.text = @"用户名称";
+        _userNameLabel.text = @"";
         _userNameLabel.textColor = [UIColor whiteColor];
         _userNameLabel.font = [UIFont systemFontOfSize:16];
         [self.contentView addSubview:_userNameLabel];
@@ -100,7 +93,7 @@
         }];
         
         _nameLabel = [[UILabel alloc] init];
-        _nameLabel.text = @"模板名称";
+        _nameLabel.text = @"";
         _nameLabel.textColor = [UIColor whiteColor];
         _nameLabel.font = [UIFont systemFontOfSize:15];
         [self.contentView addSubview:_nameLabel];
@@ -126,5 +119,14 @@
         [_delegate hotCollectionViewCellDidSelectAvator:self];
     }
 }
+
+- (void)setMovie:(YWMovieModel *)movie {
+    _movie = movie;
+    _nameLabel.text = movie.movieName;
+    _supportLabel.text = movie.movieSupports;
+    _userNameLabel.text = movie.movieReleaseUser.userName;
+    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:movie.movieReleaseUser.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
+}
+
 
 @end
