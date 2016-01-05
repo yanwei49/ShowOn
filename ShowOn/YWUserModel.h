@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 
 typedef enum : NSUInteger {
-    kBeFocus,         //粉丝
-    kFocus,           //关注的人
-    kEachOtherFocus,  //相互关注
+    kEachOtherNoFocus,      //无关系
+    kBeFocus,               //粉丝
+    kFocus,                 //关注的人
+    kEachOtherFocus,        //相互关注
+    kBlackList              //黑名单
 }FriendRelationType;
 
 @interface YWUserModel : NSObject

@@ -1,0 +1,254 @@
+1.
+/***
+ *   注册
+*/
+//参数：
+{
+    "userAccount": ""         //账号
+    "userLoginType": ""       //注册方式 （1.手机  2.第三方平台）
+    "userNickName": ""         //昵称（第三方可能有）
+    "userAge": ""              //年龄（第三方可能有）
+    "userSex": ""              //性别（第三方可能有）（1.男   0.女）
+    "userInfos": ""            //简介（第三方可能有）（签名）
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "verificationCode": ""   //验证码
+}
+
+2.
+/***
+ *   找回密码
+ */
+//参数：
+{
+    "userAccount": ""         //账号
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "verificationCode": ""   //验证码
+}
+
+3.
+/***
+ *   登录
+ */
+//参数：
+{
+    "userAccount": ""         //账号
+    "userPassword": ""        //密码
+    "userLoginType": ""       //登录方式 （1.手机  2.第三方平台）
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "user": {
+        "userId": ""               //用户Id
+        "userNickName": ""         //昵称
+        "userAge": ""              //年龄
+        "userSex": ""              //性别（1.男   0.女）
+        "userInfos": ""            //简介（签名）
+        "userExperience": ""       //经验
+        "userTrendsNums": ""       //动态数
+        "userFocusNums": ""        //关注数
+        "userFansNums": ""         //粉丝数
+        "userCollectNums": ""      //收藏数
+        "userAuthorInfos": ""      //认证信息
+        "userATMeNums": ""         //@我的数量
+        "userCommentNums": ""      //评论数
+        "userSupportNums": ""      //点赞数
+    }
+}
+
+
+4.
+/***
+ *   获取自己资料
+ */
+//参数：
+{
+    "userId": ""         //
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "user": {
+        "userId": ""               //用户Id
+        "userToken": ""            //用户登录token（融云获取）
+        "portraitUri": ""          //用户头像
+        "userNickName": ""         //昵称
+        "userAge": ""              //年龄
+        "userSex": ""              //性别（1.男   0.女）
+        "userInfos": ""            //简介（签名）
+        "userExperience": ""       //经验
+        "userTrendsNums": ""       //动态数
+        "userFocusNums": ""        //关注数
+        "userFansNums": ""         //粉丝数
+        "userCollectNums": ""      //收藏数
+        "userAuthorInfos": ""      //认证信息
+        "userATMeNums": ""         //@我的数量
+        "userCommentNums": ""      //评论数
+        "userSupportNums": ""      //点赞数
+    }
+}
+
+
+5.
+/***
+ *   获取好友资料
+ */
+//参数：
+{
+    "userId": ""
+    "loginUserId": ""      //登录用户ID（登录了就传，没登陆默认空字符串）
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "user": {
+        "userNickName": ""         //昵称
+        "userAge": ""              //年龄
+        "userSex": ""              //性别（1.男   0.女）
+        "userInfos": ""            //简介（签名）
+        "userAddress": ""          //居住地
+        "userExperience": ""       //经验
+        "userFocusNums": ""        //关注数
+        "userFansNums": ""         //粉丝数
+        "userWorksNums": ""        //作品数
+        "userAuthorInfos": ""      //认证信息
+        "userConstellation": ""    //星座
+        "userStature": ""          //身高
+        "userMensurations": ""     //三围
+        "userRelationType": ""     //关系类型（0.无关系    1.粉丝    2.关注的人    3.相互关注）
+        "userTrends": [{
+                       "movieId": ""                //视频ID
+                       "movieName": ""              //视频名称
+                       "movieRecorderType": ""      //视频录制时的类型（0：原创   1：合演   2：转发   3：通告）
+                       "movieInfos": ""             //视频简介
+                       "movieSupports": ""          //点赞数
+                       "movieReleaseTime": ""       //视频发布时间
+                       "movieIsSupport": ""         //当前登录用户是否点赞（0：未， 1：是）
+        }]
+    }
+}
+
+
+6.
+/***
+ *   举报
+ */
+//参数：
+{
+    "relationId": ""           //举报关联的ID（）
+    "relationType": ""         //举报类型（1.用户  2.视频）
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+}
+
+
+7.
+/***
+ *   拉黑
+ */
+//参数：
+{
+    "userId": ""              //用户ID
+    "blackState": ""          //拉黑状态（0.拉黑  1.未拉黑）
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+}
+
+
+8.
+/***
+ *   加关注（取消）
+ */
+//参数：
+{
+    "userId": ""               //当前登录用户ID
+    "otherUserId": ""          //另一方用户ID
+    "relationType": ""         //关系类型（1.关注  0.取消关注）
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+}
+
+
+9.
+/***
+ *   关注、粉丝、黑名单列表
+ */
+//参数：
+{
+    "userId": ""               //当前登录用户ID
+    "userRelationType": ""     //关系类型（0.无关系    1.粉丝    2.关注的人    3.相互关注    4.拉黑）
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "userList": [{
+                 "userId": ""               //用户Id
+                 "portraitUri": ""          //用户头像
+                 "userNickName": ""         //昵称
+                 }]
+}
+
+
+10.
+/***
+ *   保存到草稿箱
+ */
+//参数：
+{
+    "userId": ""               //当前登录用户ID
+    "movieData": ""            //视频数据
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+}
+
+
+11.
+/***
+ *   我的草稿箱
+ */
+//参数：
+{
+    "userId": ""               //当前登录用户ID
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "msg": [{
+            "movieId": ""                //视频ID
+            "movieName": ""              //视频名称
+            "movieReleaseTime": ""       //视频发布时间
+    }]
+}
+
+
+/*======================================== <一> ====================================================*/
+
+
+
+
+

@@ -34,7 +34,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:LoginSuccess object:nil];
     [self configureAPIKey];
 
-    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"LoginState"]) {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"LoginState"]) {
         [self createTabBar];
     }else {
         [self createLogin];
