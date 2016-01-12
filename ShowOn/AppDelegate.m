@@ -17,14 +17,18 @@
 #import "UMSocialWechatHandler.h"
 #import "UMSocialQQHandler.h"
 #import "UMSocialSinaHandler.h"
+#import "YWCustomTabBarViewController.h"
 
-@interface AppDelegate ()<UITabBarControllerDelegate>
+
+#import "YWHotView.h"
+
+@interface AppDelegate ()<UITabBarControllerDelegate, YWCustomTabBarViewControllerDelegate>
 
 @end
 
 @implementation AppDelegate
 {
-    UITabBarController   *_tabBar;
+    YWCustomTabBarViewController   *_tabBar;
     NSInteger             _tabBarLastSelectIndex;
 }
 
@@ -33,9 +37,11 @@
     self.window.backgroundColor = Subject_color;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:LoginSuccess object:nil];
     [self configureAPIKey];
+    _tabBarLastSelectIndex = -1;
 
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"LoginState"]) {
         [self createTabBar];
+        
     }else {
         [self createLogin];
     }
@@ -65,44 +71,44 @@
 }
 
 - (void)createTabBar {
-    _tabBar = [[UITabBarController alloc] init];
-    _tabBar.delegate = self;
-    _tabBar.tabBar.tintColor = [UIColor greenColor];
-    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 49)];
-    backView.backgroundColor = RGBColor(30, 30, 30);
-    [_tabBar.tabBar insertSubview:backView atIndex:0];
-    _tabBar.tabBar.opaque = YES;
+    _tabBar = [[YWCustomTabBarViewController alloc] init];
+    _tabBar.itemNums = 3;
+    _tabBar.itemDelegate = self;
     self.window.rootViewController = _tabBar;
     NSArray *classNames = @[@"YWHomeViewController", @"YWMovieViewController", @"YWMineViewController"];
     NSArray *titles = @[@"首页", @"影集", @"我的"];
     NSArray *imageNames = @[@"", @"", @""];
     NSArray *selectImageNames = @[@"", @"", @""];
+    _tabBar.titles = titles;
+    _tabBar.imageNames = imageNames;
+    _tabBar.selectImageNames = selectImageNames;
     for (NSInteger i=0; i<classNames.count; i++) {
-        [self createChildViewControllerWithClassName:classNames[i] title:titles[i] imageName:imageNames[i] selectImageName:selectImageNames[i]];
+        [self createChildViewControllerWithClassName:classNames[i] title:titles[i]];
     }
 }
 
-- (void)createChildViewControllerWithClassName:(NSString *)className title:(NSString *)title imageName:(NSString *)imageName selectImageName:(NSString *)selectImageName {
+- (void)createChildViewControllerWithClassName:(NSString *)className title:(NSString *)title {
     UIViewController *vc = [[NSClassFromString(className) alloc] init];
     YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
     vc.title = title;
-    nv.tabBarItem.title = title;
-    nv.tabBarItem.image = [UIImage imageNamed:imageName];
-    nv.tabBarItem.selectedImage = [UIImage imageNamed:selectImageName];
     [_tabBar addChildViewController:nv];
 }
 
-#pragma mark - UITabBarControllerDelegate
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-    if ([viewController isEqual:_tabBar.childViewControllers[1]]) {
-        _tabBar.tabBar.hidden = YES;
+#pragma mark - YWCustomTabBarViewControllerDelegate
+- (void)customTabBarViewControllerDidSelectWithIndex:(NSInteger)index {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"HiddenHotView" object:nil];
+    if (index == 1) {
+        _tabBar.hiddenState = YES;
     }else {
+        _tabBar.hiddenState = NO;
         _tabBarLastSelectIndex = _tabBar.selectedIndex;
     }
+    _tabBar.selectedIndex = index;
+    _tabBar.hiddenState = NO;
 }
 
 - (void)movieVCToBack {
-    _tabBar.tabBar.hidden = NO;
+    _tabBar.hiddenState = NO;
     _tabBar.selectedIndex = _tabBarLastSelectIndex;
 }
 

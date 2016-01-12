@@ -1,40 +1,54 @@
 //
-//  YWHotViewController.m
+//  YWHotView.m
 //  ShowOn
 //
-//  Created by David Yu on 3/12/15.
-//  Copyright © 2015年 yanwei. All rights reserved.
+//  Created by David Yu on 12/1/16.
+//  Copyright © 2016年 yanwei. All rights reserved.
 //
 
-#import "YWHotViewController.h"
+#import "YWHotView.h"
+
 #import "YWHotCollectionViewCell.h"
 #import "YWSearchCollectionReusableView.h"
-#import "YWHotDetailViewController.h"
 #import "YWUserDataViewController.h"
 #import "YWHttpManager.h"
 #import "YWParser.h"
+#import "YWHotListViewController.h"
 
 #import "YWMovieModel.h"
 #import "YWUserModel.h"
 
-@interface YWHotViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWHotCollectionViewCellDelegate>
+@interface YWHotView ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWHotCollectionViewCellDelegate>
 
 @end
 
-@implementation YWHotViewController
+@implementation YWHotView
 {
     NSMutableArray      *_dataSource;
     UICollectionView    *_collectionView;
     UISearchBar         *_searchBar;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.view.backgroundColor = Subject_color;
-    _dataSource = [[NSMutableArray alloc] init];
++ (YWHotView *)shareInstance {
+    static YWHotView *hotVC;
+    if (!hotVC) {
+        hotVC = [[YWHotView alloc] init];
+    }
+    
+    return hotVC;
+}
 
-    [self createSubViews];
-    [self dataSource];
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.backgroundColor = Subject_color;
+        _dataSource = [[NSMutableArray alloc] init];
+        
+        [self createSubViews];
+        [self dataSource];
+
+    }
+    return self;
 }
 
 - (void)dataSource {
@@ -61,10 +75,11 @@
     _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
     _collectionView.backgroundColor = Subject_color;
     [_collectionView registerClass:[YWHotCollectionViewCell class] forCellWithReuseIdentifier:@"item"];
-    [_collectionView registerClass:[YWSearchCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headView"];
+    //    [_collectionView registerClass:[YWSearchCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headView"];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
-    [self.view addSubview:_collectionView];
+    _collectionView.bounces = NO;
+    [self addSubview:_collectionView];
     [_collectionView makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.offset(0);
     }];
@@ -84,10 +99,7 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    YWHotDetailViewController *vc = [[YWHotDetailViewController alloc] init];
-    vc.movie = _dataSource[indexPath.row];
-    vc.hidesBottomBarWhenPushed = YES;
-    [self.nv pushViewController:vc animated:YES];
+
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
@@ -98,34 +110,15 @@
     return 5;
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    if (kind == UICollectionElementKindSectionHeader) {
-        YWSearchCollectionReusableView *headView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"headView" forIndexPath:indexPath];
-        headView.itemShowState = YES;
-
-        return headView;
-    }
-    return nil;
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(kScreenWidth, 40);
-}
-
 #pragma mark - YWHotCollectionViewCellDelegate
 - (void)hotCollectionViewCellDidSelectSupport:(YWHotCollectionViewCell *)cell {
-    if (false) {
-        
-    }else {
-        [self login];
-    }
+
 }
 
 - (void)hotCollectionViewCellDidSelectAvator:(YWHotCollectionViewCell *)cell {
-    YWUserDataViewController *vc = [[YWUserDataViewController alloc] init];
-    vc.hidesBottomBarWhenPushed = YES;
-    [self.nv pushViewController:vc animated:YES];
+
 }
+
 
 
 @end

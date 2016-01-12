@@ -51,7 +51,7 @@
     _movie = [[YWMovieModel alloc] init];
     _movie.movieId = @"1";
     _movie.moviePlayNumbers = @"221";
-    _movie.movieTime = @"02:12";
+    _movie.movieTimeLength = @"02:12";
     _movie.movieName = @"测试模板1";
     _movie.movieRecorderType = @"1";
     _movie.movieIsSupport = [NSString stringWithFormat:@"%d", arc4random()%2];

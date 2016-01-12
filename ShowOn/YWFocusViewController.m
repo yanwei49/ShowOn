@@ -39,7 +39,7 @@
         YWMovieModel *movie = [[YWMovieModel alloc] init];
         movie.movieId = [NSString stringWithFormat:@"%ld", i];
         movie.moviePlayNumbers = @"221";
-        movie.movieTime = @"02:12";
+        movie.movieTimeLength = @"02:12";
         movie.movieName = [NSString stringWithFormat:@"测试模板%ld", i+1];
         movie.movieIsSupport = [NSString stringWithFormat:@"%d", arc4random()%2];
         YWUserModel *user = [[YWUserModel alloc] init];

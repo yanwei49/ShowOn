@@ -7,106 +7,68 @@
 //
 
 #import "YWHomeViewController.h"
-#import "YWCustomSegView.h"
-#import "YWHotViewController.h"
-#import "YWTemplateViewController.h"
-#import "YWFocusViewController.h"
+#import "YWCustomTabBarViewController.h"
+#import "YWHotView.h"
 
-@interface YWHomeViewController ()<YWCustomSegViewDelegate>
+@interface YWHomeViewController ()
 
 @end
 
 @implementation YWHomeViewController
 {
-    YWCustomSegView             *_itemView;
-    YWHotViewController         *_hotVC;
-    YWTemplateViewController    *_templateVC;
-    YWFocusViewController       *_focusVC;
-    NSInteger                    _showViewIndex;
+    YWHotView       *_hotView;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
-    _showViewIndex = 0;
+    self.title = @"图文";
+    [self createLeftItemWithTitle:@"返回"];
 
-    [self createSubViews];
+    [self createHotView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenHotView) name:@"HiddenHotView" object:nil];
+}
+
+- (void)hiddenHotView {
+    self.navigationController.navigationBarHidden = NO;
+    _hotView.hidden = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
+    YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    tabBar.hiddenState = NO;
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    self.navigationController.navigationBarHidden = NO;
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    tabBar.hiddenState = YES;
 }
 
-- (void)createSubViews {
-    NSArray *titles = @[@"热门", @"模板", @"关注"];
-    _itemView = [[YWCustomSegView alloc] initWithItemTitles:titles];
-    _itemView.ywBackgroundColor = Subject_color;
-    _itemView.ywSelectBackgroundColor = Subject_color;
-    _itemView.ywTextColor = [UIColor whiteColor];
-    _itemView.ywSelectTextColor = [UIColor greenColor];
-    _itemView.delegate = self;
-    [self.view addSubview:_itemView];
-    [_itemView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(20);
-        make.left.offset(0);
-        make.right.offset(0);
-        make.height.offset(44);
-    }];
-    
-    _focusVC = [[YWFocusViewController alloc] init];
-    _focusVC.nv = self.navigationController;
-    [self.view addSubview:_focusVC.view];
-    [_focusVC.view makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_itemView.mas_bottom);
-        make.left.right.offset(0);
-        make.bottom.offset(-49);
-    }];
-    
-    _templateVC = [[YWTemplateViewController alloc] init];
-    _templateVC.nv = self.navigationController;
-    [self.view addSubview:_templateVC.view];
-    [_templateVC.view makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_itemView.mas_bottom);
-        make.left.right.offset(0);
-        make.bottom.offset(-49);
-    }];
-    
-    _hotVC = [[YWHotViewController alloc] init];
-    _hotVC.nv = self.navigationController;
-    [self.view addSubview:_hotVC.view];
-    [_hotVC.view makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_itemView.mas_bottom);
-        make.left.right.offset(0);
-        make.bottom.offset(-49);
-    }];
+- (void)actionLeftItem:(UIButton *)button {
+    [self createHotView];
+    YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    tabBar.itemSelectIndex = -1;
 }
 
-- (void)changeShowView {
-    switch (_showViewIndex) {
-        case 0:
-            [self .view bringSubviewToFront:_hotVC.view];
-            break;
-        case 1:
-            [self .view bringSubviewToFront:_templateVC.view];
-            break;
-        case 2:
-            [self .view bringSubviewToFront:_focusVC.view];
-            break;
-        default:
-            break;
+- (void)createHotView {
+    if (_hotView) {
+        _hotView.hidden = NO;
+        self.navigationController.navigationBarHidden = YES;
+    }else {
+        _hotView = [[YWHotView alloc] init];
+        self.navigationController.navigationBarHidden = YES;
+        _hotView.backgroundColor = [UIColor greenColor];
+        [self.view addSubview:_hotView];
+        [_hotView makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(0);
+            make.left.offset(0);
+            make.right.offset(0);
+            make.bottom.offset(0);
+        }];
     }
 }
 
-#pragma mark - YWCustomSegViewDelegate
-- (void)customSegView:(YWCustomSegView *)view didSelectItemWithIndex:(NSInteger)index {
-    _showViewIndex = index;
-    [self changeShowView];
-}
 
 @end

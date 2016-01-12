@@ -19,6 +19,8 @@
 #import "YWDraftViewController.h"
 #import "YWSettingViewController.h"
 #import "YWUserDataViewController.h"
+#import "YWCustomTabBarViewController.h"
+#import "YWHotView.h"
 
 @interface YWMineViewController ()<UITableViewDelegate, UITableViewDataSource, YWMineTableHeadViewDelegate>
 
@@ -29,14 +31,59 @@
     NSMutableArray      *_dataSource;
     UITableView         *_tableView;
     YWMineTableHeadView *_headView;
+    YWHotView           *_hotView;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"我的";
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSource = [[NSMutableArray alloc] initWithArray:@[@"@我的", @"评论", @"赞", @"私信", @"经验值", @"草稿箱"]];
     [self createRightItemWithTitle:@"设置"];
+    [self createLeftItemWithTitle:@"返回"];
+    
     [self createSubViews];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenHotView) name:@"HiddenHotView" object:nil];
+}
+
+- (void)hiddenHotView {
+    self.navigationController.navigationBarHidden = NO;
+    _hotView.hidden = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    tabBar.hiddenState = NO;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    tabBar.hiddenState = YES;
+}
+
+- (void)actionLeftItem:(UIButton *)button {
+    [self createHotView];
+    YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    tabBar.itemSelectIndex = -1;
+}
+
+- (void)createHotView {
+    if (_hotView) {
+        _hotView.hidden = NO;
+        self.navigationController.navigationBarHidden = YES;
+    }else {
+        _hotView = [[YWHotView alloc] init];
+        self.navigationController.navigationBarHidden = YES;
+        [self.view addSubview:_hotView];
+        [_hotView makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(20);
+            make.left.offset(0);
+            make.right.offset(0);
+            make.bottom.offset(0);
+        }];
+    }
 }
 
 - (void)createSubViews {
@@ -60,7 +107,6 @@
 #pragma mark - action
 - (void)actionRightItem:(UIButton *)button {
     YWUserDataViewController *vc = [[YWUserDataViewController alloc] init];
-    vc.hidesBottomBarWhenPushed = YES;
     vc.isSelf = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -131,7 +177,6 @@
         case 0:
         {
             YWTrendsViewController *vc = [[YWTrendsViewController alloc] init];
-            vc.hidesBottomBarWhenPushed = YES;
             vc.title = @"动态";
             [self.navigationController pushViewController:vc animated:YES];
         }
@@ -139,7 +184,6 @@
         case 1:
         {
             YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
-            vc.hidesBottomBarWhenPushed = YES;
             vc.isFocus = YES;
             vc.title = @"关注";
             [self.navigationController pushViewController:vc animated:YES];
@@ -148,7 +192,6 @@
         case 2:
         {
             YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
-            vc.hidesBottomBarWhenPushed = YES;
             vc.isFocus = NO;
             vc.title = @"粉丝";
             [self.navigationController pushViewController:vc animated:YES];
@@ -157,7 +200,6 @@
         case 3:
         {
             YWCollectionViewController *vc = [[YWCollectionViewController alloc] init];
-            vc.hidesBottomBarWhenPushed = YES;
             vc.title = @"收藏";
             [self.navigationController pushViewController:vc animated:YES];
         }

@@ -8,6 +8,9 @@
 
 #import "YWBaseViewController.h"
 
+@class YWHotViewController;
 @interface YWHomeViewController : YWBaseViewController
+
+@property (nonatomic, strong) YWHotViewController *hotVC;
 
 @end

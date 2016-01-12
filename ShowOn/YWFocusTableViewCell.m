@@ -191,7 +191,7 @@
         [str appendString:[movie.movieRecorderUsers[i] userName]];
     }
     _userNameLabel.text = str;
-    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [movie.movieTime componentsSeparatedByString:@":"][0], [movie.movieTime componentsSeparatedByString:@":"][1]];
+    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [movie.movieTimeLength componentsSeparatedByString:@":"][0], [movie.movieTimeLength componentsSeparatedByString:@":"][1]];
     _contentLabel.text = movie.movieInfos;
     _numsLabel.text = [NSString stringWithFormat:@"播放%@次", movie.moviePlayNumbers];
 

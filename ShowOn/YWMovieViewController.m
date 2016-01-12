@@ -11,6 +11,8 @@
 #import "YWTranscribeViewController.h"
 #import "YWTemplateCollectionViewCell.h"
 #import "YWMoviePlayView.h"
+#import "YWHotView.h"
+#import "YWCustomTabBarViewController.h"
 
 @interface YWMovieViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -23,16 +25,30 @@
     YWMoviePlayView    *_movie2;
     UICollectionView   *_collectionView;
     NSMutableArray     *_dataSource;
+    YWHotView           *_hotView;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
-    self.title = @"模板名称";
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenHotView) name:@"HiddenHotView" object:nil];
+//    self.title = @"模板名称";
     _dataSource = [[NSMutableArray alloc] init];
-    [self createLeftItemWithTitle:@"返回"];
+//    [self createLeftItemWithTitle:@"返回"];
+    self.navigationController.navigationBarHidden = YES;
     [self createSubViews];
     [self dataSource];
+}
+
+- (void)hiddenHotView {
+    _hotView.hidden = YES;
+    YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    tabBar.hiddenState = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self hiddenHotView];
 }
 
 - (void)dataSource {
@@ -50,7 +66,7 @@
         make.bottom.left.right.offset(0);
         make.height.offset(60);
     }];
-
+    
     UIButton *takePhotoButton = [[UIButton alloc] init];
     takePhotoButton.backgroundColor = [UIColor redColor];
     takePhotoButton.layer.cornerRadius = 20;
@@ -62,6 +78,19 @@
         make.centerX.equalTo(_tooBar.mas_centerX);
         make.height.offset(40);
         make.width.offset(40);
+    }];
+    
+    UIButton *backButton = [[UIButton alloc] init];
+    backButton.backgroundColor = [UIColor redColor];
+    backButton.layer.cornerRadius = 20;
+    backButton.layer.masksToBounds = YES;
+    [backButton addTarget:self action:@selector(actionBack:) forControlEvents:UIControlEventTouchUpInside];
+    [_tooBar addSubview:backButton];
+    [backButton makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(_tooBar.mas_centerY);
+        make.left.offset(20);
+        make.height.offset(30);
+        make.width.offset(50);
     }];
     
     _movie1 = [[YWMoviePlayView alloc] init];
@@ -101,10 +130,29 @@
     }];
 }
 
+- (void)createHotView {
+    if (_hotView) {
+        _hotView.hidden = NO;
+    }else {
+        _hotView = [[YWHotView alloc] init];
+        [self.view addSubview:_hotView];
+        [_hotView makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(20);
+            make.left.offset(0);
+            make.right.offset(0);
+            make.bottom.offset(0);
+        }];
+    }
+    YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    tabBar.itemSelectIndex = -1;
+    tabBar.hiddenState = NO;
+}
+
 #pragma mark - action
-- (void)actionLeftItem:(UIButton *)button {
-    AppDelegate *application = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [application movieVCToBack];
+- (void)actionBack:(UIButton *)button {
+    [self createHotView];
+//    AppDelegate *application = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    [application movieVCToBack];
 }
 
 - (void)actionTakePhoto:(UIButton *)button {
