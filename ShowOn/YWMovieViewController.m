@@ -13,8 +13,9 @@
 #import "YWMoviePlayView.h"
 #import "YWHotView.h"
 #import "YWCustomTabBarViewController.h"
+#import "YWHotItemViewController.h"
 
-@interface YWMovieViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface YWMovieViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWHotViewDelegate>
 
 @end
 
@@ -26,29 +27,46 @@
     UICollectionView   *_collectionView;
     NSMutableArray     *_dataSource;
     YWHotView           *_hotView;
+    BOOL             _isPushHotItem;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenHotView) name:@"HiddenHotView" object:nil];
-//    self.title = @"模板名称";
+    self.title = @"模板名称";
     _dataSource = [[NSMutableArray alloc] init];
-//    [self createLeftItemWithTitle:@"返回"];
-    self.navigationController.navigationBarHidden = YES;
+    [self createLeftItemWithTitle:@"首页"];
     [self createSubViews];
     [self dataSource];
 }
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenHotView) name:@"HiddenHotView" object:nil];
+    }
+    return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"HiddenHotView" object:nil];
+}
+
 - (void)hiddenHotView {
+    self.navigationController.navigationBarHidden = NO;
     _hotView.hidden = YES;
-    YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
-    tabBar.hiddenState = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self hiddenHotView];
+    if (_isPushHotItem) {
+        [self createHotView];
+        _isPushHotItem = NO;
+    }
+}
+
+- (void)actionLeftItem:(UIButton *)button {
+    [self createHotView];
 }
 
 - (void)dataSource {
@@ -131,10 +149,12 @@
 }
 
 - (void)createHotView {
+    self.navigationController.navigationBarHidden = YES;
     if (_hotView) {
         _hotView.hidden = NO;
     }else {
         _hotView = [[YWHotView alloc] init];
+        _hotView.delegate = self;
         [self.view addSubview:_hotView];
         [_hotView makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(20);
@@ -151,8 +171,6 @@
 #pragma mark - action
 - (void)actionBack:(UIButton *)button {
     [self createHotView];
-//    AppDelegate *application = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//    [application movieVCToBack];
 }
 
 - (void)actionTakePhoto:(UIButton *)button {
@@ -160,6 +178,15 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+#pragma mark - YWHotViewDelegate
+- (void)hotViewDidSelectItemWithIndex:(NSInteger)index {
+    NSLog(@"========index");
+    YWHotItemViewController *vc = [[YWHotItemViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+    _isPushHotItem = YES;
+    YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    tabBar.hiddenState = YES;
+}
 
 #pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {

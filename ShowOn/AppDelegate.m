@@ -104,12 +104,6 @@
         _tabBarLastSelectIndex = _tabBar.selectedIndex;
     }
     _tabBar.selectedIndex = index;
-    _tabBar.hiddenState = NO;
-}
-
-- (void)movieVCToBack {
-    _tabBar.hiddenState = NO;
-    _tabBar.selectedIndex = _tabBarLastSelectIndex;
 }
 
 - (void)loginSuccess:(NSNotification *)notification {

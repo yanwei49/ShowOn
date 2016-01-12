@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class YWHotView;
+@protocol YWHotViewDelegate <NSObject>
+
+- (void)hotViewDidSelectItemWithIndex:(NSInteger)index;
+
+@end
 @interface YWHotView : UIView
 
+@property (nonatomic, assign) id<YWHotViewDelegate> delegate;
 + (YWHotView *)shareInstance;
 
 @end

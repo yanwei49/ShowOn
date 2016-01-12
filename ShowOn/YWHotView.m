@@ -99,7 +99,9 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-
+    if ([_delegate respondsToSelector:@selector(hotViewDidSelectItemWithIndex:)]) {
+        [_delegate hotViewDidSelectItemWithIndex:indexPath.row];
+    }
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {

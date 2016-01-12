@@ -21,8 +21,9 @@
 #import "YWUserDataViewController.h"
 #import "YWCustomTabBarViewController.h"
 #import "YWHotView.h"
+#import "YWHotItemViewController.h"
 
-@interface YWMineViewController ()<UITableViewDelegate, UITableViewDataSource, YWMineTableHeadViewDelegate>
+@interface YWMineViewController ()<UITableViewDelegate, UITableViewDataSource, YWMineTableHeadViewDelegate, YWHotViewDelegate>
 
 @end
 
@@ -32,6 +33,7 @@
     UITableView         *_tableView;
     YWMineTableHeadView *_headView;
     YWHotView           *_hotView;
+    BOOL             _isPushHotItem;
 }
 
 - (void)viewDidLoad {
@@ -40,7 +42,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSource = [[NSMutableArray alloc] initWithArray:@[@"@我的", @"评论", @"赞", @"私信", @"经验值", @"草稿箱"]];
     [self createRightItemWithTitle:@"设置"];
-    [self createLeftItemWithTitle:@"返回"];
+    [self createLeftItemWithTitle:@"首页"];
     
     [self createSubViews];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenHotView) name:@"HiddenHotView" object:nil];
@@ -53,6 +55,16 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    if (_isPushHotItem) {
+        [self createHotView];
+        _isPushHotItem = NO;
+    }
+    YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    tabBar.hiddenState = NO;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     tabBar.hiddenState = NO;
 }
@@ -76,6 +88,7 @@
     }else {
         _hotView = [[YWHotView alloc] init];
         self.navigationController.navigationBarHidden = YES;
+        _hotView.delegate = self;
         [self.view addSubview:_hotView];
         [_hotView makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(20);
@@ -109,6 +122,14 @@
     YWUserDataViewController *vc = [[YWUserDataViewController alloc] init];
     vc.isSelf = YES;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - YWHotViewDelegate
+- (void)hotViewDidSelectItemWithIndex:(NSInteger)index {
+    NSLog(@"========index");
+    YWHotItemViewController *vc = [[YWHotItemViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+    _isPushHotItem = YES;
 }
 
 #pragma mark - UITableViewDelegate

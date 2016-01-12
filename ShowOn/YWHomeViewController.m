@@ -9,24 +9,26 @@
 #import "YWHomeViewController.h"
 #import "YWCustomTabBarViewController.h"
 #import "YWHotView.h"
+#import "YWHotItemViewController.h"
 
-@interface YWHomeViewController ()
+@interface YWHomeViewController ()<YWHotViewDelegate>
 
 @end
 
 @implementation YWHomeViewController
 {
     YWHotView       *_hotView;
+    BOOL             _isPushHotItem;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenHotView) name:@"HiddenHotView" object:nil];
     self.view.backgroundColor = Subject_color;
     self.title = @"图文";
-    [self createLeftItemWithTitle:@"返回"];
+    [self createLeftItemWithTitle:@"首页"];
 
     [self createHotView];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenHotView) name:@"HiddenHotView" object:nil];
 }
 
 - (void)hiddenHotView {
@@ -36,6 +38,16 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    if (_isPushHotItem) {
+        [self createHotView];
+        _isPushHotItem = NO;
+    }
+    YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    tabBar.hiddenState = NO;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     tabBar.hiddenState = NO;
 }
@@ -58,6 +70,7 @@
         self.navigationController.navigationBarHidden = YES;
     }else {
         _hotView = [[YWHotView alloc] init];
+        _hotView.delegate = self;
         self.navigationController.navigationBarHidden = YES;
         _hotView.backgroundColor = [UIColor greenColor];
         [self.view addSubview:_hotView];
@@ -70,5 +83,13 @@
     }
 }
 
+
+#pragma mark - YWHotViewDelegate
+- (void)hotViewDidSelectItemWithIndex:(NSInteger)index {
+    NSLog(@"========index");
+    YWHotItemViewController *vc = [[YWHotItemViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+    _isPushHotItem = YES;
+}
 
 @end
