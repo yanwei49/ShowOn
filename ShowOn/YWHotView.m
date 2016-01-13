@@ -7,25 +7,23 @@
 //
 
 #import "YWHotView.h"
-
-#import "YWHotCollectionViewCell.h"
+#import "YWHotTableViewCell.h"
 #import "YWSearchCollectionReusableView.h"
 #import "YWUserDataViewController.h"
 #import "YWHttpManager.h"
 #import "YWParser.h"
 #import "YWHotListViewController.h"
 
-#import "YWMovieModel.h"
-#import "YWUserModel.h"
+#import "YWMouldModel.h"
 
-@interface YWHotView ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWHotCollectionViewCellDelegate>
+@interface YWHotView ()<UITableViewDataSource, UITableViewDelegate>
 
 @end
 
 @implementation YWHotView
 {
     NSMutableArray      *_dataSource;
-    UICollectionView    *_collectionView;
+    UITableView         *_tableView;
     UISearchBar         *_searchBar;
 }
 
@@ -53,74 +51,59 @@
 
 - (void)dataSource {
     for (NSInteger i=0; i<10; i++) {
-        YWMovieModel *movie = [[YWMovieModel alloc] init];
-        movie.movieId = [NSString stringWithFormat:@"%ld", i];
-        movie.movieName = [NSString stringWithFormat:@"测试模板%ld", i+1];
-        movie.movieIsSupport = [NSString stringWithFormat:@"%d", arc4random()%2];
-        YWUserModel *user = [[YWUserModel alloc] init];
-        user.userId = [NSString stringWithFormat:@"%ld", i];
-        user.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-        user.userName = [NSString stringWithFormat:@"测试用户%ld", i+1];
-        movie.movieReleaseUser = user;
+        YWMouldModel *movie = [[YWMouldModel alloc] init];
+        movie.mouldId = [NSString stringWithFormat:@"%ld", i];
+        movie.mouldName = [NSString stringWithFormat:@"测试模板%ld", i+1];
+        movie.mouldCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+        movie.mouldShootNums = @"120";
+        movie.mouldTimeLength = @"1分20秒";
         
         [_dataSource addObject:movie];
     }
-    [_collectionView reloadData];
+    [_tableView reloadData];
 }
 
 - (void)createSubViews {
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake((kScreenWidth-5)/2, 200);
-    
-    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-    _collectionView.backgroundColor = Subject_color;
-    [_collectionView registerClass:[YWHotCollectionViewCell class] forCellWithReuseIdentifier:@"item"];
-    //    [_collectionView registerClass:[YWSearchCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headView"];
-    _collectionView.delegate = self;
-    _collectionView.dataSource = self;
-    _collectionView.bounces = NO;
-    [self addSubview:_collectionView];
-    [_collectionView makeConstraints:^(MASConstraintMaker *make) {
+    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    _tableView.backgroundColor = Subject_color;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.bounces = NO;
+    [self addSubview:_tableView];
+    [_tableView makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.offset(0);
     }];
 }
 
-#pragma mark - UICollectionViewDelegate
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+#pragma mark - UITableViewDelegate
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _dataSource.count;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    YWHotCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"item" forIndexPath:indexPath];
-    cell.delegate = self;
-    cell.movie = _dataSource[indexPath.row];
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    YWHotTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    if (!cell) {
+        cell = [[YWHotTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        UIView *view = [[UIView alloc] initWithFrame:cell.contentView.bounds];
+        view.backgroundColor = Subject_color;
+        cell.selectedBackgroundView = view;
+    }
+    cell.mould = _dataSource[indexPath.row];
+
     return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if ([_delegate respondsToSelector:@selector(hotViewDidSelectItemWithIndex:)]) {
         [_delegate hotViewDidSelectItemWithIndex:indexPath.row];
     }
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 5;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 200;
 }
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return 5;
-}
-
-#pragma mark - YWHotCollectionViewCellDelegate
-- (void)hotCollectionViewCellDidSelectSupport:(YWHotCollectionViewCell *)cell {
-
-}
-
-- (void)hotCollectionViewCellDidSelectAvator:(YWHotCollectionViewCell *)cell {
-
-}
-
 
 
 @end

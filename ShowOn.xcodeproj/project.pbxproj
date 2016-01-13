@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		566AE2741C3DE19900781A7E /* YWCustomTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566AE2731C3DE19900781A7E /* YWCustomTabBarViewController.m */; };
+		566E41051C45CAAE008D5F1E /* YWMouldModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 566E41041C45CAAE008D5F1E /* YWMouldModel.m */; };
 		5689DBCC1C4476080095936F /* YWHotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689DBCB1C4476080095936F /* YWHotView.m */; };
 		5695F2D11C3F312800655D73 /* YWHotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5695F2D01C3F312800655D73 /* YWHotListViewController.m */; };
 		56F4AF1C1C125EE4008A6828 /* YWLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF1B1C125EE4008A6828 /* YWLoginViewController.m */; };
@@ -66,7 +67,7 @@
 		56FE9A191C0FC234007BA29B /* YWTemplateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE9A181C0FC234007BA29B /* YWTemplateViewController.m */; };
 		56FE9A1C1C0FC242007BA29B /* YWFocusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE9A1B1C0FC242007BA29B /* YWFocusViewController.m */; };
 		56FE9A221C0FC2A2007BA29B /* YWCustomSegView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE9A211C0FC2A2007BA29B /* YWCustomSegView.m */; };
-		770EC2B81C10772600A4D2E9 /* YWHotCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2B71C10772600A4D2E9 /* YWHotCollectionViewCell.m */; };
+		770EC2B81C10772600A4D2E9 /* YWHotTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2B71C10772600A4D2E9 /* YWHotTableViewCell.m */; };
 		770EC2BE1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2BD1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.m */; };
 		770EC2C11C10790000A4D2E9 /* YWFocusTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2C01C10790000A4D2E9 /* YWFocusTableViewCell.m */; };
 		770EC2C41C107AC600A4D2E9 /* YWBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2C31C107AC600A4D2E9 /* YWBaseViewController.m */; };
@@ -131,6 +132,8 @@
 		56679BC31C3B393700272C44 /* json.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = json.geojson; sourceTree = "<group>"; };
 		566AE2721C3DE19900781A7E /* YWCustomTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCustomTabBarViewController.h; sourceTree = "<group>"; };
 		566AE2731C3DE19900781A7E /* YWCustomTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCustomTabBarViewController.m; sourceTree = "<group>"; };
+		566E41031C45CAAE008D5F1E /* YWMouldModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWMouldModel.h; sourceTree = "<group>"; };
+		566E41041C45CAAE008D5F1E /* YWMouldModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWMouldModel.m; sourceTree = "<group>"; };
 		5689DBCA1C4476080095936F /* YWHotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWHotView.h; sourceTree = "<group>"; };
 		5689DBCB1C4476080095936F /* YWHotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWHotView.m; sourceTree = "<group>"; };
 		5695F2CF1C3F312800655D73 /* YWHotListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWHotListViewController.h; sourceTree = "<group>"; };
@@ -234,8 +237,8 @@
 		56FE9A201C0FC2A2007BA29B /* YWCustomSegView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCustomSegView.h; sourceTree = "<group>"; };
 		56FE9A211C0FC2A2007BA29B /* YWCustomSegView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCustomSegView.m; sourceTree = "<group>"; };
 		56FE9A241C0FCA4D007BA29B /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
-		770EC2B61C10772600A4D2E9 /* YWHotCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWHotCollectionViewCell.h; sourceTree = "<group>"; };
-		770EC2B71C10772600A4D2E9 /* YWHotCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWHotCollectionViewCell.m; sourceTree = "<group>"; };
+		770EC2B61C10772600A4D2E9 /* YWHotTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWHotTableViewCell.h; sourceTree = "<group>"; };
+		770EC2B71C10772600A4D2E9 /* YWHotTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWHotTableViewCell.m; sourceTree = "<group>"; };
 		770EC2BC1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTemplateCollectionViewCell.h; sourceTree = "<group>"; };
 		770EC2BD1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTemplateCollectionViewCell.m; sourceTree = "<group>"; };
 		770EC2BF1C10790000A4D2E9 /* YWFocusTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFocusTableViewCell.h; sourceTree = "<group>"; };
@@ -695,6 +698,8 @@
 		56FE9A021C0FBB2D007BA29B /* model */ = {
 			isa = PBXGroup;
 			children = (
+				566E41031C45CAAE008D5F1E /* YWMouldModel.h */,
+				566E41041C45CAAE008D5F1E /* YWMouldModel.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -803,8 +808,8 @@
 		770EC2B91C10773300A4D2E9 /* hotCollectionViewCell */ = {
 			isa = PBXGroup;
 			children = (
-				770EC2B61C10772600A4D2E9 /* YWHotCollectionViewCell.h */,
-				770EC2B71C10772600A4D2E9 /* YWHotCollectionViewCell.m */,
+				770EC2B61C10772600A4D2E9 /* YWHotTableViewCell.h */,
+				770EC2B71C10772600A4D2E9 /* YWHotTableViewCell.m */,
 			);
 			name = hotCollectionViewCell;
 			sourceTree = "<group>";
@@ -1255,9 +1260,10 @@
 				5689DBCC1C4476080095936F /* YWHotView.m in Sources */,
 				770EC2C71C1088E100A4D2E9 /* YWSearchCollectionReusableView.m in Sources */,
 				56F5D38A1C17D44F008C33CA /* YWToolboxPlay.m in Sources */,
+				566E41051C45CAAE008D5F1E /* YWMouldModel.m in Sources */,
 				77D0F0FA1C11C6D500134A17 /* YWExperienceTableViewCell.m in Sources */,
 				77D0F0F41C11C53700134A17 /* YWSupportTableViewCell.m in Sources */,
-				770EC2B81C10772600A4D2E9 /* YWHotCollectionViewCell.m in Sources */,
+				770EC2B81C10772600A4D2E9 /* YWHotTableViewCell.m in Sources */,
 				56FE9A131C0FBCF2007BA29B /* YWNavigationController.m in Sources */,
 				774A1E541C2F7BEB00671945 /* YWMovieOtherInfosTableViewCell.m in Sources */,
 				56F5D3281C17AAFD008C33CA /* NIAttributedLabel.m in Sources */,

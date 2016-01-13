@@ -22,6 +22,7 @@
 #import "YWCustomTabBarViewController.h"
 #import "YWHotView.h"
 #import "YWHotItemViewController.h"
+#import "YWFocusViewController.h"
 
 @interface YWMineViewController ()<UITableViewDelegate, UITableViewDataSource, YWMineTableHeadViewDelegate, YWHotViewDelegate>
 
@@ -40,7 +41,7 @@
     [super viewDidLoad];
     self.title = @"我的";
     self.view.backgroundColor = [UIColor whiteColor];
-    _dataSource = [[NSMutableArray alloc] initWithArray:@[@"@我的", @"评论", @"赞", @"私信", @"经验值", @"草稿箱"]];
+    _dataSource = [[NSMutableArray alloc] initWithArray:@[@"@我的", @"评论", @"赞", @"私信", @"好友动态", @"经验值", @"草稿箱"]];
     [self createRightItemWithTitle:@"设置"];
     [self createLeftItemWithTitle:@"首页"];
     
@@ -162,10 +163,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    NSArray *className = @[@"YWATMeViewController", @"YWCommentViewController", @"YWSupportViewController", @"YWMessageViewController", @"YWExperienceViewController", @"YWDraftViewController"];
+    NSArray *className = @[@"YWATMeViewController", @"YWCommentViewController", @"YWSupportViewController", @"YWMessageViewController", @"YWFocusViewController", @"YWExperienceViewController", @"YWDraftViewController"];
     UIViewController *vc = [[NSClassFromString(className[indexPath.row]) alloc] init];
     vc.title = _dataSource[indexPath.row];
-    vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

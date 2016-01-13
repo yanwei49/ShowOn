@@ -42,6 +42,7 @@
         movie.movieTimeLength = @"02:12";
         movie.movieName = [NSString stringWithFormat:@"测试模板%ld", i+1];
         movie.movieIsSupport = [NSString stringWithFormat:@"%d", arc4random()%2];
+        movie.movieInfos = @"为己任内容我i让我去让我琼海请让我后悔千万人千万人薄荷问无人区普i人e王企鹅号叫恶趣味金额去维护去问恶趣味建行卡气温将客户而且我";
         YWUserModel *user = [[YWUserModel alloc] init];
         user.userId = [NSString stringWithFormat:@"%ld", i];
         user.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
@@ -99,7 +100,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     YWHotDetailViewController *vc = [[YWHotDetailViewController alloc] init];
     vc.movie = _dataSource[indexPath.row];
-    vc.hidesBottomBarWhenPushed = YES;
     [self.nv pushViewController:vc animated:YES];
 }
 

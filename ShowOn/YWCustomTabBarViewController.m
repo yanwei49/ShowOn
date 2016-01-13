@@ -20,10 +20,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.tabBar.tintColor = RGBColor(146, 146, 146);
-//    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 49)];
-//    self.tabBar.backgroundColor = RGBColor(30, 30, 30);
-//    [self.tabBar insertSubview:backView atIndex:0];
     self.tabBar.hidden = YES;
     _items = [[NSMutableArray alloc] init];
     
