@@ -221,7 +221,7 @@
     imageView.layer.masksToBounds = YES;
     imageView.layer.cornerRadius = 20;
     imageView.backgroundColor = [UIColor whiteColor];
-    [imageView sd_setImageWithURL:[NSURL URLWithString:[_movie.moviePlayers[indexPath.row] portraitUri]] placeholderImage:kPlaceholderUserAvatorImage];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:[_movie.moviePlayers[indexPath.row] portraitUri]] placeholderImage:kPlaceholderMoiveImage];
     [cell.contentView addSubview:imageView];
     [imageView makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.bottom.offset(0);

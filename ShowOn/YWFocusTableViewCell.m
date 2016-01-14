@@ -183,7 +183,7 @@
 
 - (void)setMovie:(YWMovieModel *)movie {
     _movie = movie;
-    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:movie.movieReleaseUser.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
+    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:movie.movieReleaseUser.portraitUri] placeholderImage:kPlaceholderMoiveImage];
     NSMutableString *str = [NSMutableString string];
     [str appendString:movie.movieReleaseUser.userName];
     for (NSInteger i=0; i<movie.movieRecorderUsers.count; i++) {

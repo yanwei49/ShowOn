@@ -39,6 +39,7 @@
 #define Subject_color    [UIColor colorWithRed:42/256.0 green:42/256.0 blue:42/256.0 alpha:1]
 #define CornerRadius     5
 #define kPlaceholderUserAvatorImage  [UIImage imageNamed:@""]
+#define kPlaceholderMoiveImage  [UIImage imageNamed:@""]
 
 
 #endif /* Header_h */

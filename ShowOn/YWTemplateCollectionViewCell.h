@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class YWMouldTypeModel;
 @interface YWTemplateCollectionViewCell : UICollectionViewCell
 
-@property(nonatomic, strong) UIFont *textFont;
-@property(nonatomic, assign) CGFloat viewAlpha;
+@property (nonatomic, strong) UIFont *textFont;
+@property (nonatomic, assign) CGFloat viewAlpha;
+@property (nonatomic, strong) YWMouldTypeModel *moudlType;
 
 @end

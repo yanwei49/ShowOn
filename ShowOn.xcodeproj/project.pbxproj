@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		566AE2741C3DE19900781A7E /* YWCustomTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566AE2731C3DE19900781A7E /* YWCustomTabBarViewController.m */; };
+		566BF5EB1C4717CF002C5591 /* YWTemplateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566BF5EA1C4717CF002C5591 /* YWTemplateListViewController.m */; };
+		566BF5EE1C47191F002C5591 /* YWTemplateListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 566BF5ED1C47191F002C5591 /* YWTemplateListTableViewCell.m */; };
+		566BF5F11C471F77002C5591 /* YWMouldTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 566BF5F01C471F77002C5591 /* YWMouldTypeModel.m */; };
 		566E41051C45CAAE008D5F1E /* YWMouldModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 566E41041C45CAAE008D5F1E /* YWMouldModel.m */; };
 		5689DBCC1C4476080095936F /* YWHotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689DBCB1C4476080095936F /* YWHotView.m */; };
 		5695F2D11C3F312800655D73 /* YWHotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5695F2D01C3F312800655D73 /* YWHotListViewController.m */; };
@@ -132,6 +135,12 @@
 		56679BC31C3B393700272C44 /* json.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = json.geojson; sourceTree = "<group>"; };
 		566AE2721C3DE19900781A7E /* YWCustomTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCustomTabBarViewController.h; sourceTree = "<group>"; };
 		566AE2731C3DE19900781A7E /* YWCustomTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCustomTabBarViewController.m; sourceTree = "<group>"; };
+		566BF5E91C4717CF002C5591 /* YWTemplateListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTemplateListViewController.h; sourceTree = "<group>"; };
+		566BF5EA1C4717CF002C5591 /* YWTemplateListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTemplateListViewController.m; sourceTree = "<group>"; };
+		566BF5EC1C47191F002C5591 /* YWTemplateListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTemplateListTableViewCell.h; sourceTree = "<group>"; };
+		566BF5ED1C47191F002C5591 /* YWTemplateListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTemplateListTableViewCell.m; sourceTree = "<group>"; };
+		566BF5EF1C471F77002C5591 /* YWMouldTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWMouldTypeModel.h; sourceTree = "<group>"; };
+		566BF5F01C471F77002C5591 /* YWMouldTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWMouldTypeModel.m; sourceTree = "<group>"; };
 		566E41031C45CAAE008D5F1E /* YWMouldModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWMouldModel.h; sourceTree = "<group>"; };
 		566E41041C45CAAE008D5F1E /* YWMouldModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWMouldModel.m; sourceTree = "<group>"; };
 		5689DBCA1C4476080095936F /* YWHotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWHotView.h; sourceTree = "<group>"; };
@@ -700,6 +709,8 @@
 			children = (
 				566E41031C45CAAE008D5F1E /* YWMouldModel.h */,
 				566E41041C45CAAE008D5F1E /* YWMouldModel.m */,
+				566BF5EF1C471F77002C5591 /* YWMouldTypeModel.h */,
+				566BF5F01C471F77002C5591 /* YWMouldTypeModel.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -729,7 +740,7 @@
 			children = (
 				774A1E4E1C2F708500671945 /* movieDetail */,
 				770EC2C81C108BF200A4D2E9 /* searchHeadView */,
-				770EC2B91C10773300A4D2E9 /* hotCollectionViewCell */,
+				770EC2B91C10773300A4D2E9 /* hotTableViewCell */,
 				770EC2BB1C1078A400A4D2E9 /* templateCollectionViewCell */,
 				770EC2BA1C10788400A4D2E9 /* focusTableViewCell */,
 				56FE9A201C0FC2A2007BA29B /* YWCustomSegView.h */,
@@ -783,6 +794,8 @@
 			children = (
 				56FE9A171C0FC234007BA29B /* YWTemplateViewController.h */,
 				56FE9A181C0FC234007BA29B /* YWTemplateViewController.m */,
+				566BF5E91C4717CF002C5591 /* YWTemplateListViewController.h */,
+				566BF5EA1C4717CF002C5591 /* YWTemplateListViewController.m */,
 			);
 			name = "模板";
 			sourceTree = "<group>";
@@ -805,13 +818,13 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		770EC2B91C10773300A4D2E9 /* hotCollectionViewCell */ = {
+		770EC2B91C10773300A4D2E9 /* hotTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
 				770EC2B61C10772600A4D2E9 /* YWHotTableViewCell.h */,
 				770EC2B71C10772600A4D2E9 /* YWHotTableViewCell.m */,
 			);
-			name = hotCollectionViewCell;
+			name = hotTableViewCell;
 			sourceTree = "<group>";
 		};
 		770EC2BA1C10788400A4D2E9 /* focusTableViewCell */ = {
@@ -830,6 +843,8 @@
 			children = (
 				770EC2BC1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.h */,
 				770EC2BD1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.m */,
+				566BF5EC1C47191F002C5591 /* YWTemplateListTableViewCell.h */,
+				566BF5ED1C47191F002C5591 /* YWTemplateListTableViewCell.m */,
 			);
 			name = templateCollectionViewCell;
 			sourceTree = "<group>";
@@ -1267,10 +1282,12 @@
 				56FE9A131C0FBCF2007BA29B /* YWNavigationController.m in Sources */,
 				774A1E541C2F7BEB00671945 /* YWMovieOtherInfosTableViewCell.m in Sources */,
 				56F5D3281C17AAFD008C33CA /* NIAttributedLabel.m in Sources */,
+				566BF5EE1C47191F002C5591 /* YWTemplateListTableViewCell.m in Sources */,
 				770EC2C11C10790000A4D2E9 /* YWFocusTableViewCell.m in Sources */,
 				774A1E571C2FC9C600671945 /* YWWriteCommentViewController.m in Sources */,
 				56FE9A0D1C0FBB95007BA29B /* YWMovieViewController.m in Sources */,
 				7710ABB41C1F8A88006FF4EF /* YWUserDataViewController.m in Sources */,
+				566BF5EB1C4717CF002C5591 /* YWTemplateListViewController.m in Sources */,
 				56F5D3291C17AAFD008C33CA /* NSMutableAttributedString+NimbusKitAttributedLabel.m in Sources */,
 				77D0F0F71C11C55600134A17 /* YWDraftCollectionViewCell.m in Sources */,
 				77D0F0E51C11C41F00134A17 /* YWDraftViewController.m in Sources */,
@@ -1300,6 +1317,7 @@
 				77D0F10C1C11DC4B00134A17 /* YWHotDetailViewController.m in Sources */,
 				770EC2CE1C109FE500A4D2E9 /* YWUserModel.m in Sources */,
 				56F4AF1F1C12653F008A6828 /* YWRegisterViewController.m in Sources */,
+				566BF5F11C471F77002C5591 /* YWMouldTypeModel.m in Sources */,
 				770EC2CB1C108E2D00A4D2E9 /* YWMineTableHeadView.m in Sources */,
 				77D0F0FD1C11C8D700134A17 /* YWChatRoomViewComtroller.m in Sources */,
 				77D0F1091C11CEFB00134A17 /* YWSettingViewController.m in Sources */,

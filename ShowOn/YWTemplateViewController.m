@@ -9,6 +9,9 @@
 #import "YWTemplateViewController.h"
 #import "YWTemplateCollectionViewCell.h"
 #import "YWSearchCollectionReusableView.h"
+#import "YWTemplateListViewController.h"
+
+#import "YWMouldTypeModel.h"
 
 @interface YWTemplateViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWSearchCollectionReusableViewDelegate>
 
@@ -26,12 +29,18 @@
     _dataSource = [[NSMutableArray alloc] init];
     
     [self createSubViews];
-    [self dataSource];
+    [self dataSourceWithIndex:10];
 }
 
-- (void)dataSource {
-    for (NSInteger i=0; i<10; i++) {
-        [_dataSource addObject:@""];
+- (void)dataSourceWithIndex:(NSInteger)index {
+    for (NSInteger i=0; i<index; i++) {
+        YWMouldTypeModel *mouldType = [[YWMouldTypeModel alloc] init];
+        mouldType.mouldTypeId = @"1";
+        mouldType.mouldType = arc4random()%3;
+        mouldType.mouldTypeName = [NSString stringWithFormat:@"名称%ld", (long)i];
+        mouldType.mouldTypeImageUrl = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+
+        [_dataSource addObject:mouldType];
     }
     [_collectionView reloadData];
 }
@@ -59,6 +68,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     YWTemplateCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"item" forIndexPath:indexPath];
+    cell.moudlType = _dataSource[indexPath.row];
     
     return cell;
 }
@@ -82,9 +92,14 @@
     return nil;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
-{
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     return CGSizeMake(kScreenWidth, 90);
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    YWTemplateListViewController *vc = [[YWTemplateListViewController alloc] init];
+    vc.mouldType = _dataSource[indexPath.row];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - YWSearchCollectionReusableViewDelegate
@@ -92,21 +107,15 @@
     switch (index) {
         case 0:
             [_dataSource removeAllObjects];
-            for (NSInteger i=0; i<10; i++) {
-                [_dataSource addObject:@""];
-            }
+            [self dataSourceWithIndex:10];
             break;
         case 1:
             [_dataSource removeAllObjects];
-            for (NSInteger i=0; i<4; i++) {
-                [_dataSource addObject:@""];
-            }
+            [self dataSourceWithIndex:4];
             break;
         case 2:
             [_dataSource removeAllObjects];
-            for (NSInteger i=0; i<7; i++) {
-                [_dataSource addObject:@""];
-            }
+            [self dataSourceWithIndex:7];
             break;
         default:
             break;

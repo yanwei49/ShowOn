@@ -101,7 +101,7 @@
     _nameLabel.text = mould.mouldName;
     _timeLabel.text = [NSString stringWithFormat:@"时长%@", mould.mouldTimeLength];
     _numsLabel.text = [NSString stringWithFormat:@"拍摄次数%@", mould.mouldShootNums];
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:mould.mouldCoverImage] placeholderImage:kPlaceholderUserAvatorImage];
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:mould.mouldCoverImage] placeholderImage:kPlaceholderMoiveImage];
 }
 
 
