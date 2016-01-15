@@ -12,6 +12,7 @@
 		566BF5EE1C47191F002C5591 /* YWTemplateListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 566BF5ED1C47191F002C5591 /* YWTemplateListTableViewCell.m */; };
 		566BF5F11C471F77002C5591 /* YWMouldTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 566BF5F01C471F77002C5591 /* YWMouldTypeModel.m */; };
 		566E41051C45CAAE008D5F1E /* YWMouldModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 566E41041C45CAAE008D5F1E /* YWMouldModel.m */; };
+		566F0DA01C48716500353311 /* YWTrendsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 566F0D9F1C48716500353311 /* YWTrendsModel.m */; };
 		5689DBCC1C4476080095936F /* YWHotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689DBCB1C4476080095936F /* YWHotView.m */; };
 		5695F2D11C3F312800655D73 /* YWHotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5695F2D01C3F312800655D73 /* YWHotListViewController.m */; };
 		56F4AF1C1C125EE4008A6828 /* YWLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF1B1C125EE4008A6828 /* YWLoginViewController.m */; };
@@ -143,6 +144,8 @@
 		566BF5F01C471F77002C5591 /* YWMouldTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWMouldTypeModel.m; sourceTree = "<group>"; };
 		566E41031C45CAAE008D5F1E /* YWMouldModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWMouldModel.h; sourceTree = "<group>"; };
 		566E41041C45CAAE008D5F1E /* YWMouldModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWMouldModel.m; sourceTree = "<group>"; };
+		566F0D9E1C48716500353311 /* YWTrendsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTrendsModel.h; sourceTree = "<group>"; };
+		566F0D9F1C48716500353311 /* YWTrendsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTrendsModel.m; sourceTree = "<group>"; };
 		5689DBCA1C4476080095936F /* YWHotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWHotView.h; sourceTree = "<group>"; };
 		5689DBCB1C4476080095936F /* YWHotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWHotView.m; sourceTree = "<group>"; };
 		5695F2CF1C3F312800655D73 /* YWHotListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWHotListViewController.h; sourceTree = "<group>"; };
@@ -731,6 +734,8 @@
 				770EC2CD1C109FE500A4D2E9 /* YWUserModel.m */,
 				77AD0CAB1C1DA34800A1FD75 /* YWCommentModel.h */,
 				77AD0CAC1C1DA34800A1FD75 /* YWCommentModel.m */,
+				566F0D9E1C48716500353311 /* YWTrendsModel.h */,
+				566F0D9F1C48716500353311 /* YWTrendsModel.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -1295,6 +1300,7 @@
 				56F4AF1C1C125EE4008A6828 /* YWLoginViewController.m in Sources */,
 				770EC2C41C107AC600A4D2E9 /* YWBaseViewController.m in Sources */,
 				56F5D3861C17CBCF008C33CA /* YWMovieRecorder.m in Sources */,
+				566F0DA01C48716500353311 /* YWTrendsModel.m in Sources */,
 				77D0F0F11C11C52000134A17 /* YWCommentTableViewCell.m in Sources */,
 				56F4AF251C1279A1008A6828 /* NSString+isValidate.m in Sources */,
 				56FE99CB1C0FBAB8007BA29B /* main.m in Sources */,

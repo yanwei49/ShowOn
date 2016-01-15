@@ -23,7 +23,8 @@
 @property (nonatomic, strong) NSString     *movieTimeLength;      //视频时间长度
 @property (nonatomic, strong) NSString     *movieReleaseTime;     //视频发布时间
 @property (nonatomic, strong) NSString     *movieImageUrl;        //视频封面图的url
-@property (nonatomic, strong) NSString     *moviePlayArrayUrl;    //每个视频片段的url数组
+@property (nonatomic, strong) NSString     *movieSceneMovies;     //分景别视频片段数组
+@property (nonatomic, strong) NSString     *movieOrderMovies;     //分顺序视频片段数组
 @property (nonatomic, strong) NSArray      *moviePlayers;         //发布过该视频的用户数组
 @property (nonatomic, strong) NSArray      *movieComments;        //该视频的评论数组
 @property (nonatomic, strong) NSString     *movieCollects;        //收藏数
