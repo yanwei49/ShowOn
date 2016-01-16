@@ -40,6 +40,7 @@
 #define CornerRadius     5
 #define kPlaceholderUserAvatorImage  [UIImage imageNamed:@""]
 #define kPlaceholderMoiveImage  [UIImage imageNamed:@""]
+#define kPlaceholderArticleImage  [UIImage imageNamed:@""]
 
 
 #endif /* Header_h */

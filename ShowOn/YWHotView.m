@@ -12,7 +12,6 @@
 #import "YWUserDataViewController.h"
 #import "YWHttpManager.h"
 #import "YWParser.h"
-//#import "YWHotListViewController.h"
 
 #import "YWMouldModel.h"
 
