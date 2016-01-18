@@ -15,5 +15,6 @@
 @property (nonatomic, strong) NSString   *articleAuthorName;       //文章作者名字
 @property (nonatomic, strong) NSString   *articleCoverImage;       //文章封面图片
 @property (nonatomic, strong) NSString   *articleUrl;              //文章HTML链接
+@property (nonatomic, strong) NSString   *articleTime;             //发布时间
 
 @end

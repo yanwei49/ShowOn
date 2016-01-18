@@ -156,6 +156,7 @@
 		568D286D1C49CDCA00DAA9B9 /* YWArticleDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWArticleDetailViewController.m; sourceTree = "<group>"; };
 		568D286F1C49CF2D00DAA9B9 /* YWArticleListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWArticleListTableViewCell.h; sourceTree = "<group>"; };
 		568D28701C49CF2D00DAA9B9 /* YWArticleListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWArticleListTableViewCell.m; sourceTree = "<group>"; };
+		5695FFD51C4C61600070544A /* Directions.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = Directions.geojson; sourceTree = "<group>"; };
 		56F4AF1A1C125EE4008A6828 /* YWLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWLoginViewController.h; sourceTree = "<group>"; };
 		56F4AF1B1C125EE4008A6828 /* YWLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWLoginViewController.m; sourceTree = "<group>"; };
 		56F4AF1D1C12653F008A6828 /* YWRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWRegisterViewController.h; sourceTree = "<group>"; };
@@ -621,6 +622,7 @@
 		56FE99C81C0FBAB8007BA29B /* ShowOn */ = {
 			isa = PBXGroup;
 			children = (
+				5695FFD51C4C61600070544A /* Directions.geojson */,
 				56679BC31C3B393700272C44 /* json.geojson */,
 				56F5D3201C17AAE2008C33CA /* other */,
 				77D0F0FE1C11CA9D00134A17 /* comman */,

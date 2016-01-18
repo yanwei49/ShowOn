@@ -1,0 +1,93 @@
+{
+    
+    #用户表
+    userId    '用户ID',
+    account   '帐号',
+    password  '密码',
+    nickname  '呢称',
+    sex       '性别 : 1 男，2 女',
+    district  '地区',
+    birthday  '生日',
+    constellation  '星座',
+    height         '身高',
+    bwh            '三围',
+    accountTypeId  '帐号类型ID 1、普通帐号,2、QQ,3、微信,4、微博',
+    authenticationInformation '认证信息',
+    grade         '等级',
+    introduction '用户简介'
+    empiricalValue                    //经验
+    headPortrait                    //头像
+    token                    //登录token
+    
+    #用户关系表
+    userId         '用户ID',
+    friendId       '朋友ID',
+    relationTypeId '用户关系类型ID 1、关注,2、粉丝,3、黑名单,4、相互关注'
+    
+    
+    #动态表
+    dynamicId         '动态ID',
+    userId            '用户ID',
+    dynamicContent    '动态内容',
+    videoUrl          '视频URL',
+    templateId        '模版ID',
+    pubdate           '动态发布时间',
+    playCount         '播放次数',
+    forwardComments   '转发评论',
+    dynamicTypeId     '动态类型ID 1、原创,2、合演,3、转发'
+    
+    
+    #收藏表
+    collectionId        '收藏ID',
+    collectionTargetId  '被收藏的目标ID',
+    collectionTypeId    '收藏类型ID 1、动态,2、评论'
+    
+    
+    #评论表
+    commentsId        '评论ID',
+    commentsContent   '评论内容',
+    userId            '用户ID',
+    commentsTargetId  '被评论的目标ID',
+    editTime          '评论时间',
+    commentsTypeId    '评论类型ID 1、动态,2、评论'
+    
+    
+    #点赞表
+    praiseId         '点赞ID',
+    praiseTargetId   '被点赞的目标ID',
+    praiseTypeId     '点赞类型ID 1、动态,2、评论'
+    
+    
+    #图文表
+    teletextId '图文ID',
+    title      '标题',
+    article    '文章',
+    audioUrl   '音频URL',
+    videoUrl   '视频URL',
+    author     '作者',
+    pubdate    '图文发布时间'
+    articlePicture            //文章封面图片
+    
+    #举报信息表
+    userId          '举报人',
+    informTypeId    '举报类型ID', (举报类型待定)
+    informTargetId  '被举报的目标ID'
+    
+    #模版表
+    templateId       '模版ID',
+    templateName     '模版名称',
+    videoUrl         '视频URL',
+    templateTypeId   '模版类型ID 1、名人专场,2、视频分类,3、应用模版',(二级类型待定)
+    dateTimeOriginal '拍摄时长',
+    shootTime        '拍摄次数'
+    
+    #分段视频表
+    subsectionVideoId      '分段视频ID',
+    videoUrl               '视频URL',
+    templateId             '模版ID',
+    sort                   '序号',
+    userId                 '用户ID',
+    subsectionVideoTypeId  '分段视频类型ID 1、顺序模式(3、近景,4、中景,5、远景,),2、景别模式(6、特写,7、中景,8、远景)',
+    performanceStatusId    '演出状态ID 1、已演,2、未演'
+
+}
