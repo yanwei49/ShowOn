@@ -37,6 +37,7 @@
     dynamicTypeId     '动态类型ID 1、原创,2、合演,3、转发'
     
     
+    
     #收藏表
     collectionId        '收藏ID',
     collectionTargetId  '被收藏的目标ID',
@@ -80,6 +81,8 @@
     templateTypeId   '模版类型ID 1、名人专场,2、视频分类,3、应用模版',(二级类型待定)
     dateTimeOriginal '拍摄时长',
     shootTime        '拍摄次数'
+                //模板封面图片
+
     
     #分段视频表
     subsectionVideoId      '分段视频ID',

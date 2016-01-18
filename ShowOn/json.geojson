@@ -4,12 +4,12 @@
 */
 //参数：
 {
-    "userAccount": ""         //账号
-    "userLoginType": ""       //注册方式 （1.手机  2.第三方平台）
-    "userNickName": ""         //昵称（第三方可能有）
-    "userAge": ""              //年龄（第三方可能有）
-    "userSex": ""              //性别（第三方可能有）（1.男   0.女）
-    "userInfos": ""            //简介（第三方可能有）（签名）
+    "account": ""               //账号
+    "accountTypeId": ""         //注册方式 （1.手机  2.第三方平台）
+    "nickname": ""              //昵称（第三方可能有）
+    "birthday": ""              //年龄（第三方可能有）
+    "sex": ""                   //性别（第三方可能有）（1.男   0.女）
+    "introduction": ""          //简介（第三方可能有）（签名）
 }
 //返回值：
 {
@@ -24,7 +24,7 @@
  */
 //参数：
 {
-    "userAccount": ""         //账号
+    "account": ""         //账号
 }
 //返回值：
 {
@@ -39,29 +39,30 @@
  */
 //参数：
 {
-    "userAccount": ""         //账号
-    "userPassword": ""        //密码
-    "userLoginType": ""       //登录方式 （1.手机  2.第三方平台）
+    "account": ""               //账号
+    "password": ""              //密码
+    "accountTypeId": ""         //登录方式 （1.手机  2.第三方平台）
 }
 //返回值：
 {
     "code": "",
     "msg": "",
     "user": {
-        "userId": ""               //用户Id
-        "userNickName": ""         //昵称
-        "userAge": ""              //年龄
-        "userSex": ""              //性别（1.男   0.女）
-        "userInfos": ""            //简介（签名）
-        "userExperience": ""       //经验
-        "userTrendsNums": ""       //动态数
-        "userFocusNums": ""        //关注数
-        "userFansNums": ""         //粉丝数
-        "userCollectNums": ""      //收藏数
-        "userAuthorInfos": ""      //认证信息
-        "userATMeNums": ""         //@我的数量
-        "userCommentNums": ""      //评论数
-        "userSupportNums": ""      //点赞数
+        "userId": ""                //用户Id
+        "nickname": ""              //昵称
+        "birthday": ""              //年龄
+        "headPortrait": ""          //头像
+        "sex": ""                   //性别（1.男   0.女）
+        "introduction": ""          //简介（签名）
+        "empiricalValue": ""        //经验
+        "authenticationInformation": ""       //认证信息
+        "userTrendsNums": ""        //动态数
+        "userFocusNums": ""         //关注数
+        "userFansNums": ""          //粉丝数
+        "userCollectNums": ""       //收藏数
+        "userATMeNums": ""          //@我的数量
+        "userCommentNums": ""       //评论数
+        "userSupportNums": ""       //点赞数
     }
 }
 
@@ -79,22 +80,22 @@
     "code": "",
     "msg": "",
     "user": {
-        "userId": ""               //用户Id
-        "userToken": ""            //用户登录token（融云获取）
-        "portraitUri": ""          //用户头像
-        "userNickName": ""         //昵称
-        "userAge": ""              //年龄
-        "userSex": ""              //性别（1.男   0.女）
-        "userInfos": ""            //简介（签名）
-        "userExperience": ""       //经验
-        "userTrendsNums": ""       //动态数
-        "userFocusNums": ""        //关注数
-        "userFansNums": ""         //粉丝数
-        "userCollectNums": ""      //收藏数
-        "userAuthorInfos": ""      //认证信息
-        "userATMeNums": ""         //@我的数量
-        "userCommentNums": ""      //评论数
-        "userSupportNums": ""      //点赞数
+        "userId": ""                //用户Id
+        "nickname": ""              //昵称
+        "birthday": ""              //年龄
+        "headPortrait": ""          //头像
+        "sex": ""                   //性别（1.男   0.女）
+        "introduction": ""          //简介（签名）
+        "empiricalValue": ""        //经验
+        "authenticationInformation": ""       //认证信息
+        "token"                     //登录后融云的token
+        "userTrendsNums": ""        //动态数
+        "userFocusNums": ""         //关注数
+        "userFansNums": ""          //粉丝数
+        "userCollectNums": ""       //收藏数
+        "userATMeNums": ""          //@我的数量
+        "userCommentNums": ""       //评论数
+        "userSupportNums": ""       //点赞数
     }
 }
 
@@ -113,28 +114,33 @@
     "code": "",
     "msg": "",
     "user": {
-        "userNickName": ""         //昵称
-        "userAge": ""              //年龄
-        "userSex": ""              //性别（1.男   0.女）
-        "userInfos": ""            //简介（签名）
-        "userAddress": ""          //居住地
-        "userExperience": ""       //经验
+        "nickname": ""         //昵称
+        "birthday": ""              //年龄
+        "sex": ""              //性别（1.男   0.女）
+        "introduction": ""            //简介（签名）
+        "district": ""          //居住地
+        "empiricalValue": ""       //经验
         "userFocusNums": ""        //关注数
         "userFansNums": ""         //粉丝数
         "userWorksNums": ""        //作品数
-        "userAuthorInfos": ""      //认证信息
-        "userConstellation": ""    //星座
-        "userStature": ""          //身高
-        "userMensurations": ""     //三围
-        "userRelationType": ""     //关系类型（0.无关系    1.粉丝    2.关注的人    3.相互关注    4.黑名单）
+        "authenticationInformation": ""      //认证信息
+        "constellation": ""    //星座
+        "height": ""          //身高
+        "bwh": ""     //三围
+        "relationTypeId": ""     //关系类型（0.无关系    1.粉丝    2.关注的人    3.相互关注    4.黑名单）
         "userTrends": [{
-                       "movieId": ""                //视频ID
-                       "movieName": ""              //视频名称
-                       "movieRecorderType": ""      //视频录制时的类型（0：原创   1：合演   2：转发   3：通告）
-                       "movieInfos": ""             //视频简介
-                       "movieSupports": ""          //点赞数
-                       "movieReleaseTime": ""       //视频发布时间
-                       "movieIsSupport": ""         //当前登录用户是否点赞（0：未， 1：是）
+                       "dynamicId": ""           //'动态ID'
+                       "dynamicContent": ""      //'动态内容'
+                       "pubdate": ""             //'动态发布时间'
+                       "playCount": ""           //'播放次数'
+                       "forwardComments": ""     //转发评论'
+                       "dynamicTypeId": ""       //'动态类型ID 1、原创,2、合演,3、转发'
+                       "dynamicSuppotNumbers": ""//'动态点赞数'
+                       "dynamicIsSupport": ""    //当前登录用户是否点赞（0：未， 1：是）
+                       "dynamicMovie": {
+/*======这个值要锤敲======*/                        "movieId": ""                //视频ID
+                            "videoUrl": ""               //'视频播放URL',
+                       }
         }]
     }
 }
@@ -146,8 +152,9 @@
  */
 //参数：
 {
-    "relationId": ""           //举报关联的ID（）
-    "relationType": ""         //举报类型（1.用户  2.视频）
+    "userId": ""               //举报人id
+    "informTypeId": ""         //举报类型（1.用户  2.视频）
+    "informTargetId": ""       //举报关联的ID（）
 }
 //返回值：
 {
@@ -196,17 +203,17 @@
 //参数：
 {
     "userId": ""               //当前登录用户ID
-    "userRelationType": ""     //关系类型（0.无关系    1.粉丝    2.关注的人    3.相互关注    4.拉黑）
+    "relationTypeId": ""       //关系类型（1、关注,2、粉丝,3、黑名单,4、相互关注'）
 }
 //返回值：
 {
     "code": "",
     "msg": "",
     "userList": [{
-                 "userId": ""               //用户Id
-                 "portraitUri": ""          //用户头像
-                 "userNickName": ""         //昵称
-                 }]
+         "userId": ""               //用户Id
+         "headPortrait": ""         //用户头像
+         "nickname": ""             //昵称
+    }]
 }
 
 
@@ -218,6 +225,8 @@
 {
     "userId": ""               //当前登录用户ID
     "movieData": ""            //视频数据
+    "movieCoverImage": ""      //视频封面
+    "movieContent": ""         //视频内容
 }
 //返回值：
 {
@@ -238,10 +247,11 @@
 {
     "code": "",
     "msg": "",
-    "msg": [{
-            "movieId": ""                //视频ID
-            "movieName": ""              //视频名称
-            "movieReleaseTime": ""       //视频发布时间
+    "draftList": [{
+          "movieId": ""                //视频ID
+          "movieName": ""              //视频名称
+          "movieReleaseTime": ""       //视频存储时间
+          "movieCoverImage": ""        //视频封面
     }]
 }
 
@@ -258,16 +268,345 @@
 {
     "code": "",
     "msg": "",
-    "msg": [{
-            "movieId": ""                //视频ID
-            "movieName": ""              //视频名称
-            "movieReleaseTime": ""       //视频发布时间
-            }]
+    "mouldList": [{
+          "templateId": ""                //模版ID
+          "templateName": ""              //模版名称
+          "videoUrl": ""                  //视频URL
+          "dateTimeOriginal": ""          //拍摄时长
+          "shootTime": ""                 //拍摄次数
+          "templateCoverImage": ""        //模板封面图片
+    }]
 }
 
 
 
+/***
+ *   模板详情
+ */
+//参数：
+{
+    "userId": ""               //当前登录用户ID
+    "templateId": ""           //模板ID
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "templateId":
+    "templateId": ""                //模版ID
+    "templateName": ""              //模版名称
+    "videoUrl": ""                  //视频URL
+    "dateTimeOriginal": ""          //拍摄时长
+    "shootTime": ""                 //拍摄次数
+    "templateCoverImage": ""        //模板封面图片
+    "recordeRanklist": [{
+            "trendsId": ""          //动态id
+            "trendsMovie": {
+                    "movieId": ""                //视频ID
+                    "movieName": ""              //视频名称
+                    "movieReleaseTime": ""       //视频存储时间
+                    "movieCoverImage": ""        //视频封面
+            }
+    }]
+    "commentList": [{
+            "commentsId"        //'评论ID',
+            "commentsContent"   //'评论内容',
+            "commentsTargetId"  //'被评论的目标ID',
+            "editTime"          //'评论时间',
+            "commentsTypeId"    //'评论类型ID 1、动态,2、评论'
+            "user": {
+                "userId": ""               //用户Id
+                "headPortrait": ""         //用户头像
+                "nickname": ""             //昵称
+            }
+            "commentsTargetUserId": {
+                "userId": ""               //用户Id
+                "headPortrait": ""         //用户头像
+                "nickname": ""             //昵称
+            }  //'被评论的目标的发布者id',
+    }]
+}
+
+/***
+ *   图文列表
+ */
+//参数：
+{
+    "userId": ""               //当前登录用户ID
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "articleList": [{
+            "teletextId": ""            //图文ID
+            "title": ""                 //标题
+            "pubdate": ""               //图文发布时间
+            "articlePicture": ""        //文章封面图片
+    }]
+}
+
+
+/***
+ *   收藏
+ */
+//参数：
+{
+    "userId": ""               //当前登录用户ID
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "collectList": [{
+            "trendsId": ""                  //动态id
+            "dynamicContent": ""            //动态内容
+            "pubdate": ""                   //动态发布时间
+            "playCount": ""                 //播放次数
+            "forwardComments": ""           //转发评论
+            "dynamicTypeId": ""             //动态类型ID 1、原创,2、合演,3、转发
+            "dynamicIsSupport": ""          //当前登录用户是否点赞
+            "user": {
+                "userId": ""               //用户Id
+                "headPortrait": ""         //用户头像
+                "nickname": ""             //昵称
+            }
+            "trendsMovie": {
+                    "movieId": ""                //视频ID
+                    "movieName": ""              //视频名称
+                    "movieReleaseTime": ""       //视频存储时间
+                    "movieCoverImage": ""        //视频封面
+            }
+    }]
+}
+
+
+/***
+ *   动态列表
+ */
+//参数：
+{
+    "userId": ""               //当前登录用户ID
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "trendsList": [{
+        "dynamicId": ""           //'动态ID'
+        "dynamicContent": ""      //'动态内容'
+        "pubdate": ""             //'动态发布时间'
+        "playCount": ""           //'播放次数'
+        "forwardComments": ""     //转发评论'
+        "dynamicTypeId": ""       //'动态类型ID 1、原创,2、合演,3、转发'
+        "dynamicSuppotNumbers": ""//'动态点赞数'
+        "dynamicIsSupport": ""    //当前登录用户是否点赞（0：未， 1：是）
+        "user": {
+           "userId": ""               //用户Id
+           "headPortrait": ""         //用户头像
+           "nickname": ""             //昵称
+        }
+        "dynamicMovie": {
+            "movieId": ""                //视频ID
+            "videoUrl": ""               //'视频播放URL',
+            "movieCoverImage"            //视频封面图片
+        }
+        "commentList": [{
+                "commentsId"        //'评论ID',
+                "commentsContent"   //'评论内容',
+                "commentsTargetId"  //'被评论的目标ID',
+                "editTime"          //'评论时间',
+                "commentsTypeId"    //'评论类型ID 1、动态,2、评论'
+                "user": {
+                    "userId": ""               //用户Id
+                    "headPortrait": ""         //用户头像
+                    "nickname": ""             //昵称
+                }
+                "commentsTargetUserId": { //(评论类型为评论是这个属性才有值)
+                    "userId": ""               //用户Id
+                    "headPortrait": ""         //用户头像
+                    "nickname": ""             //昵称
+                }  //'被评论的目标的发布者id',
+        }]
+   }]
+}
+
+/***
+ *   动态详情(未完成)
+ */
+//参数：
+{
+    "userId": ""               //当前登录用户ID
+    "trendsId": ""             //动态id
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "trends": {
+        "dynamicContent": ""      //'动态内容'
+        "pubdate": ""             //'动态发布时间'
+        "playCount": ""           //'播放次数'
+        "forwardComments": ""     //转发评论'
+        "dynamicTypeId": ""       //'动态类型ID 1、原创,2、合演,3、转发'
+        "dynamicSuppotNumbers": ""//'动态点赞数'
+        "dynamicIsSupport": ""    //当前登录用户是否点赞（0：未， 1：是）
+        "user": {
+            "userId": ""               //用户Id
+            "headPortrait": ""         //用户头像
+            "nickname": ""             //昵称
+        }
+        "dynamicMovie": {
+            "movieId": ""                //视频ID
+            "videoUrl": ""               //'视频播放URL',
+            "movieCoverImage"            //视频封面图片
+        }
+        "commentList": [{
+                "commentsId"        //'评论ID',
+                "commentsContent"   //'评论内容',
+                "commentsTargetId"  //'被评论的目标ID',
+                "editTime"          //'评论时间',
+                "commentsTypeId"    //'评论类型ID 1、动态,2、评论'
+                "user": {
+                    "userId": ""               //用户Id
+                    "headPortrait": ""         //用户头像
+                    "nickname": ""             //昵称
+                }
+                "commentsTargetUserId": { //(评论类型为评论是这个属性才有值)
+                    "userId": ""               //用户Id
+                    "headPortrait": ""         //用户头像
+                    "nickname": ""             //昵称
+                }  //'被评论的目标的发布者id',
+        }]
+    }
+}
 
 
 
+/***
+ *    @我的
+ */
+//参数：
+{
+    "userId": ""               //当前登录用户ID
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "aiTeList": [{
+        "aiTeType": ""      //类型（1.动态      2.评论）
+         "trends": {
+                 "dynamicId"     //'动态ID'
+                 "dynamicMovie": {
+                     "movieId": ""                //视频ID
+                     "videoUrl": ""               //'视频播放URL',
+                     "movieCoverImage"            //视频封面图片
+                 }
+         }
+         "comment": {
+             "commentsId"        //'评论ID',
+             "commentsContent"   //'评论内容',
+             "commentsTargetId"  //'被评论的目标ID',
+             "editTime"          //'评论时间',
+             "commentsTypeId"    //'评论类型ID 1、动态,2、评论'
+             "user": {
+                 "userId": ""               //用户Id
+                 "headPortrait": ""         //用户头像
+                 "nickname": ""             //昵称
+             }
+             "trends": {
+                 "dynamicId"     //'动态ID'
+                 "dynamicMovie": {
+                     "movieId": ""                //视频ID
+                     "videoUrl": ""               //'视频播放URL',
+                     "movieCoverImage"            //视频封面图片
+                 }
+             }
+         }
+    }]
+}
 
+
+/***
+ *    评论
+ */
+//参数：
+{
+    "userId": ""               //当前登录用户ID
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "commentList": [{
+            "commentsId"        //'评论ID',
+            "commentsContent"   //'评论内容',
+            "commentsTargetId"  //'被评论的目标ID',
+            "editTime"          //'评论时间',
+            "commentsTypeId"    //'评论类型ID 1、动态,2、评论'
+            "user": {
+                "userId": ""               //用户Id
+                "headPortrait": ""         //用户头像
+                "nickname": ""             //昵称
+            }
+            "commentsTargetUserId": { //(评论类型为评论是这个属性才有值)
+                "userId": ""               //用户Id
+                "headPortrait": ""         //用户头像
+                "nickname": ""             //昵称
+            }  //'被评论的目标的发布者id',
+            "trends": {
+                "dynamicId"     //'动态ID'
+                "dynamicMovie": {
+                    "movieId": ""                //视频ID
+                    "videoUrl": ""               //'视频播放URL',
+                    "movieCoverImage"            //视频封面图片
+                }
+            }
+    }]
+}
+
+
+/***
+ *    赞
+ */
+//参数：
+{
+    "userId": ""               //当前登录用户ID
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "supportList": [{
+        "supportType": ""      //类型（1.动态      2.评论）
+        "trends": {
+            "dynamicId"     //'动态ID'
+            "dynamicMovie": {
+                "movieId": ""                //视频ID
+                "videoUrl": ""               //'视频播放URL',
+                "movieCoverImage"            //视频封面图片
+            }
+        }
+        "comment": {
+            "commentsId"        //'评论ID',
+            "commentsContent"   //'评论内容',
+            "commentsTargetId"  //'被评论的目标ID',
+            "editTime"          //'评论时间',
+            "commentsTypeId"    //'评论类型ID 1、动态,2、评论'
+            "user": {
+                "userId": ""               //用户Id
+                "headPortrait": ""         //用户头像
+                "nickname": ""             //昵称
+            }
+            "trends": {
+                "dynamicId"     //'动态ID'
+                "dynamicMovie": {
+                    "movieId": ""                //视频ID
+                    "videoUrl": ""               //'视频播放URL',
+                    "movieCoverImage"            //视频封面图片
+                }
+            }
+        }
+    }]
+}

@@ -63,7 +63,7 @@
     YWTrendsModel *trends = [[YWTrendsModel alloc] init];
     trends.trendsId = [dict objectForKey:@"dynamicId"];
     trends.trendsUser = [self userWithDict:[dict objectForKey:@"user"]];
-    trends.trends = [dict objectForKey:@"dynamicContent"];
+    trends.trendsId = [dict objectForKey:@"dynamicContent"];
     trends.trendsId = [dict objectForKey:@""];
     trends.trendsId = [dict objectForKey:@""];
     trends.trendsId = [dict objectForKey:@""];
