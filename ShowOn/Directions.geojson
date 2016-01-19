@@ -73,6 +73,7 @@
     userId          '举报人',
     informTypeId    '举报类型ID', (举报类型待定)
     informTargetId  '被举报的目标ID'
+                            //举报的内容
     
     #模版表
     templateId       '模版ID',
