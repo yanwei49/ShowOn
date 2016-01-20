@@ -14,6 +14,11 @@
 
 @property (nonatomic, strong) NSString      *trendsId;                  //动态id
 @property (nonatomic, strong) NSString      *trendsType;                //动态类型(1、原创,2、合演,3、转发)
+@property (nonatomic, strong) NSString      *trendsPubdate;             //动态发布时间
+@property (nonatomic, strong) NSString      *trendsSuppotNumbers;       //动态点赞数
+@property (nonatomic, strong) NSString      *trendsCollectionNumbers;   //动态收藏数
+@property (nonatomic, strong) NSString      *trendsIsSupport;           //当前登录用户是否点赞（0：未， 1：是）
+@property (nonatomic, strong) NSArray       *trendsComments;            //动态评论数组
 @property (nonatomic, strong) YWUserModel   *trendsUser;                //发布的用户
 @property (nonatomic, strong) YWMovieModel  *trendsMovie;               //发布的视频
 @property (nonatomic, strong) NSString      *trendsContent;             //发布的文字内容

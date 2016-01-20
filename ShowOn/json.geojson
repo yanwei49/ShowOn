@@ -567,6 +567,7 @@
                 "commentsContent"   //'评论内容',
                 "commentsTargetId"  //'被评论的目标ID',
                 "editTime"          //'评论时间',
+                "commentIsSupport": ""     //是否点赞
                 "commentsTypeId"    //'评论类型ID 1、动态,2、评论'
                 "user": {
                     "userId": ""               //用户Id
@@ -596,7 +597,7 @@
     "code": "",
     "msg": "",
     "aiTeList": [{
-        "aiTeType": ""      //类型（1.动态      2.评论）
+         "aiTeType": ""      //类型（1.动态      2.评论）
          "trends": {
                  "dynamicId"     //'动态ID'
                  "dynamicMovie": {
@@ -650,6 +651,7 @@
             "commentsContent"   //'评论内容',
             "commentsTargetId"  //'被评论的目标ID',
             "editTime"          //'评论时间',
+            "commentIsSupport": ""  //评论是否被当前登录用户点赞过
             "commentsTypeId"    //'评论类型ID 1、动态,2、评论'
             "user": {
                 "userId": ""               //用户Id
@@ -677,7 +679,7 @@
 
 24.
 /***
- *    赞
+ *    赞列表
  */
 //参数：
 {
@@ -710,7 +712,7 @@
                 "headPortrait": ""         //用户头像
                 "nickname": ""             //昵称
             }
-            "trends": {
+            "trends": { //被评论的动态
                 "dynamicId"     //'动态ID'
                 "dynamicMovie": {
                     "videoUrl": ""               //'视频播放URL',
@@ -719,6 +721,10 @@
                         "templateId": ""            //模板id
                     }
                 }
+            }
+            "comment": { //被评论的评论
+                "commentsId"        //'评论ID',
+                "commentsContent"   //'评论内容',
             }
         }
     }]
@@ -760,7 +766,7 @@
 
 27.
 /***
- *    发表批评
+ *    发表评论
  */
 //参数：
 {
