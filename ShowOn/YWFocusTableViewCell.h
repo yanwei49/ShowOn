@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 typedef enum : NSUInteger {
-    kMovieListType,
-    kMovieDetailType
-} MovieCellType;
+    kTrendsListType,
+    kTrendsDetailType
+} TrendsCellType;
 
-@class YWMovieModel;
+@class YWTrendsModel;
 @class YWFocusTableViewCell;
 @protocol YWFocusTableViewCellCellDelegate <NSObject>
 
@@ -25,8 +25,8 @@ typedef enum : NSUInteger {
 @interface YWFocusTableViewCell : UITableViewCell
 
 @property (nonatomic, assign) id<YWFocusTableViewCellCellDelegate> delegate;
-@property (nonatomic, strong) YWMovieModel  *movie;
+@property (nonatomic, strong) YWTrendsModel  *trends;
 
-+(CGFloat)cellHeightWithMovie:(YWMovieModel *)movie type:(MovieCellType)type;
++(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends type:(TrendsCellType)type;
 
 @end

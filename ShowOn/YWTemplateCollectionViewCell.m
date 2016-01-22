@@ -7,7 +7,7 @@
 //
 
 #import "YWTemplateCollectionViewCell.h"
-#import "YWMouldTypeModel.h"
+#import "YWMovieTemplateModel.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @implementation YWTemplateCollectionViewCell
@@ -64,10 +64,11 @@
     _blackView.alpha = viewAlpha;
 }
 
-- (void)setMoudlType:(YWMouldTypeModel *)moudlType {
-    _moudlType = moudlType;
-    _nameLabel.text = moudlType.mouldTypeName;
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:moudlType.mouldTypeImageUrl] placeholderImage:kPlaceholderMoiveImage];
+- (void)setTemplate:(YWMovieTemplateModel *)template {
+    _template = template;
+    _nameLabel.text = template.templateName;
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:template.templateVideoCoverImage] placeholderImage:kPlaceholderMoiveImage];
 }
+
 
 @end

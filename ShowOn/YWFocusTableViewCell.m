@@ -11,6 +11,8 @@
 #import "YWFocusCommentTableViewCell.h"
 #import "YWMovieModel.h"
 #import "YWUserModel.h"
+#import "YWTrendsModel.h"
+#import "YWMovieTemplateModel.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface YWFocusTableViewCell()<UITableViewDelegate, UITableViewDataSource>
@@ -181,28 +183,33 @@
     }
 }
 
-- (void)setMovie:(YWMovieModel *)movie {
-    _movie = movie;
-    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:movie.movieReleaseUser.portraitUri] placeholderImage:kPlaceholderMoiveImage];
-    NSMutableString *str = [NSMutableString string];
-    [str appendString:movie.movieReleaseUser.userName];
-    for (NSInteger i=0; i<movie.movieRecorderUsers.count; i++) {
-        [str appendString:@"+"];
-        [str appendString:[movie.movieRecorderUsers[i] userName]];
+- (void)setTrends:(YWTrendsModel *)trends {
+    _trends = trends;
+    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsUser.portraitUri] placeholderImage:kPlaceholderMoiveImage];
+    if (trends.trendsType.integerValue == 2) {
+//        NSMutableString *str = [NSMutableString string];
+//        [str appendString:movie.movieReleaseUser.userName];
+//        for (NSInteger i=0; i<movie.movieRecorderUsers.count; i++) {
+//            [str appendString:@"+"];
+//            [str appendString:[movie.movieRecorderUsers[i] userName]];
+//        }
+//        _userNameLabel.text = str;
+    }else if (trends.trendsType.integerValue == 1) {
+        _userNameLabel.text = trends.trendsUser.userName;
     }
-    _userNameLabel.text = str;
-    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [movie.movieTimeLength componentsSeparatedByString:@":"][0], [movie.movieTimeLength componentsSeparatedByString:@":"][1]];
-    _contentLabel.text = movie.movieInfos;
-    _numsLabel.text = [NSString stringWithFormat:@"播放%@次", movie.moviePlayNumbers];
+    _timeLabel.text = trends.trendsMovie.movieTemplate.templateVideoTime;
+//    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [movie.movieTimeLength componentsSeparatedByString:@":"][0], [movie.movieTimeLength componentsSeparatedByString:@":"][1]];
+    _contentLabel.text = trends.trendsContent;
+    _numsLabel.text = [NSString stringWithFormat:@"播放%@次", trends.trendsMoviePlayCount];
 
 }
 
-+(CGFloat)cellHeightWithMovie:(YWMovieModel *)movie type:(MovieCellType)type {
++(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends type:(TrendsCellType)type {
     CGFloat height = 200+15+60;
-    CGRect rect = [movie.movieInfos boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
+    CGRect rect = [trends.trendsContent boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
     height += rect.size.height;
-    if (type == kMovieListType && movie.movieComments.count) {
-        height += [YWFocusCommentTableViewCell cellHeightWithComment:movie.movieComments[0]];
+    if (type == kTrendsListType && trends.trendsComments.count) {
+        height += [YWFocusCommentTableViewCell cellHeightWithComment:trends.trendsComments[0]];
     }
     
     return height;
@@ -210,19 +217,19 @@
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _movie.movieComments.count?1:0;
+    return _trends.trendsComments.count?1:0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YWFocusCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.comment = _movie.movieComments[indexPath.row];
+    cell.comment = _trends.trendsComments[indexPath.row];
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [YWFocusCommentTableViewCell cellHeightWithComment:_movie.movieComments[indexPath.row]];
+    return [YWFocusCommentTableViewCell cellHeightWithComment:_trends.trendsComments[indexPath.row]];
 }
 
 

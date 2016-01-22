@@ -7,7 +7,7 @@
 //
 
 #import "YWTemplateListTableViewCell.h"
-#import "YWMouldModel.h"
+#import "YWMovieTemplateModel.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @implementation YWTemplateListTableViewCell
@@ -66,10 +66,11 @@
     return self;
 }
 
-- (void)setMould:(YWMouldModel *)mould {
-    _mould = mould;
-    _nameLabel.text = _mould.mouldName;
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:_mould.mouldCoverImage] placeholderImage:kPlaceholderMoiveImage];
+- (void)setTemplate:(YWMovieTemplateModel *)template {
+    _template = template;
+    _nameLabel.text = template.templateName;
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:template.templateVideoCoverImage] placeholderImage:kPlaceholderMoiveImage];
 }
+
 
 @end

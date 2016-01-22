@@ -8,9 +8,9 @@
 
 #import "YWBaseViewController.h"
 
-@class YWMouldTypeModel;
+@class YWMovieTemplateModel;
 @interface YWTemplateListViewController : YWBaseViewController
 
-@property (nonatomic, strong) YWMouldTypeModel *mouldType;
+@property (nonatomic, strong) YWMovieTemplateModel *template;
 
 @end

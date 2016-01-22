@@ -10,9 +10,12 @@
 #import "YWFocusTableViewCell.h"
 #import "YWHotDetailViewController.h"
 
+#import "YWTrendsModel.h"
 #import "YWMovieModel.h"
+#import "YWMovieTemplateModel.h"
 #import "YWUserModel.h"
 #import "YWCommentModel.h"
+#import "YWSubsectionVideoModel.h"
 
 @interface YWFocusViewController ()<UITableViewDelegate, UITableViewDataSource, YWFocusTableViewCellCellDelegate>
 
@@ -36,28 +39,54 @@
 
 - (void)dataSource {
     for (NSInteger i=0; i<10; i++) {
-        YWMovieModel *movie = [[YWMovieModel alloc] init];
-        movie.movieId = [NSString stringWithFormat:@"%ld", i];
-        movie.moviePlayNumbers = @"221";
-        movie.movieTimeLength = @"02:12";
-        movie.movieName = [NSString stringWithFormat:@"测试模板%ld", i+1];
-        movie.movieIsSupport = [NSString stringWithFormat:@"%d", arc4random()%2];
-        movie.movieImageUrl = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-        movie.movieInfos = @"为己任内容我i让我去让我琼海请让我后悔千万人千万人薄荷问无人区普i人e王企鹅号叫恶趣味金额去维护去问恶趣味建行卡气温将客户而且我";
+        YWTrendsModel *trends = [[YWTrendsModel alloc] init];
+        trends.trendsId = [NSString stringWithFormat:@"%ld", i];
+        trends.trendsType = [NSString stringWithFormat:@"%ld", (long)arc4random()%3+1];
+        trends.trendsPubdate = @"2015-01-10";
+        trends.trendsMoviePlayCount = @"100";
+        trends.trendsContent = @"为己任内容我i让我去让我琼海请让我后悔千万人千万人薄荷问无人区普i人e王企鹅号叫恶趣味金额去维护去问恶趣味建行卡气温将客户而且我";
+        trends.trendsIsSupport = @"1";
+        
         YWUserModel *user = [[YWUserModel alloc] init];
         user.userId = [NSString stringWithFormat:@"%ld", i];
         user.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
         user.userName = [NSString stringWithFormat:@"测试用户%ld", i+1];
-        movie.movieReleaseUser = user;
+        trends.trendsUser = user;
+        
+        YWMovieModel *movie = [[YWMovieModel alloc] init];
+        movie.movieCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+        movie.movieUrl = @"";
+        trends.trendsMovie = movie;
+        
+        YWMovieTemplateModel *template = [[YWMovieTemplateModel alloc] init];
+        template.templateId = [NSString stringWithFormat:@"%ld", i];
+        template.templateName = [NSString stringWithFormat:@"模板%ld", i];
+        template.templateVideoUrl = @"";
+        template.templateVideoTime = @"1分20秒";
+        template.templateVideoCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+        template.templateTypeId = [NSString stringWithFormat:@"%ld", (long)arc4random()%3+1];
+        template.templatePlayUsers = @[user, user];
+        
+        YWSubsectionVideoModel *subsection = [[YWSubsectionVideoModel alloc] init];
+        subsection.subsectionVideoId = [NSString stringWithFormat:@"%ld", i];
+        subsection.subsectionVideoUrl = @"";
+        subsection.subsectionVideoCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+        subsection.subsectionVideoSort = subsection.subsectionVideoId;
+        subsection.subsectionVideoType = subsection.subsectionVideoId;
+        subsection.subsectionVideoPerformanceStatus = @"1";
+        subsection.subsectionVideoPlayUser = user;
+        subsection.subsectionVideoTemplate = template;
+        template.templateSubsectionVideos = @[subsection, subsection];
+        
         YWCommentModel *comment = [[YWCommentModel alloc] init];
         comment.commentId = [NSString stringWithFormat:@"%ld", i];
         comment.commentTime = @"2015-10-20 03:21";
         comment.commentContent = @"为己任内容我i让我去让我琼海请让我后悔千万人千万人薄荷问无人区普i人";
         comment.commentUser = user;
         comment.isSupport = @"1";
-        movie.movieComments = @[comment, comment];
+        trends.trendsComments = @[comment, comment];
         
-        [_dataSource addObject:movie];
+        [_dataSource addObject:trends];
     }
     [_tableView reloadData];
 }
@@ -88,19 +117,19 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YWFocusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     cell.delegate = self;
-    cell.movie = _dataSource[indexPath.row];
+    cell.trends = _dataSource[indexPath.row];
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [YWFocusTableViewCell cellHeightWithMovie:_dataSource[indexPath.row] type:kMovieListType];
+    return [YWFocusTableViewCell cellHeightWithTrends:_dataSource[indexPath.row] type:kTrendsListType];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     YWHotDetailViewController *vc = [[YWHotDetailViewController alloc] init];
-    vc.movie = _dataSource[indexPath.row];
+    vc.trends = _dataSource[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

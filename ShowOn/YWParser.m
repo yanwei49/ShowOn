@@ -11,7 +11,8 @@
 #import "YWMovieModel.h"
 #import "YWCommentModel.h"
 #import "YWArticleModel.h"
-#import "YWMouldModel.h"
+#import "YWMovieTemplateModel.h"
+#import "YWSubsectionVideoModel.h"
 #import "YWTrendsModel.h"
 
 @implementation YWParser
@@ -52,11 +53,33 @@
     return movie;
 }
 
-- (YWMouldModel *)mouldWithDict:(NSDictionary *)dict {
-    YWMouldModel *mould = [[YWMouldModel alloc] init];
+- (YWMovieTemplateModel *)templateWithDict:(NSDictionary *)dict {
+    YWMovieTemplateModel *template = [[YWMovieTemplateModel alloc] init];
+    template.templateId = [dict objectForKey:@""];
+    template.templateName = [dict objectForKey:@""];
+    template.templateVideoUrl = [dict objectForKey:@""];
+    template.templateVideoTime = [dict objectForKey:@""];
+    template.templateVideoCoverImage = [dict objectForKey:@""];
+    template.templateTypeId = [dict objectForKey:@""];
+    template.templatePlayUserNumbers = [dict objectForKey:@""];
+    template.templatePlayUsers = [dict objectForKey:@""];
+    template.templateSubsectionVideos = [dict objectForKey:@""];
     
+    return template;
+}
+
+- (YWSubsectionVideoModel *)subsectionVideoWithDict:(NSDictionary *)dict {
+    YWSubsectionVideoModel *subsectionVideo = [[YWSubsectionVideoModel alloc] init];
+    subsectionVideo.subsectionVideoId = [dict objectForKey:@""];
+    subsectionVideo.subsectionVideoUrl = [dict objectForKey:@""];
+    subsectionVideo.subsectionVideoCoverImage = [dict objectForKey:@""];
+    subsectionVideo.subsectionVideoSort = [dict objectForKey:@""];
+    subsectionVideo.subsectionVideoType = [dict objectForKey:@""];
+    subsectionVideo.subsectionVideoPerformanceStatus = [dict objectForKey:@""];
+    subsectionVideo.subsectionVideoPlayUser = [dict objectForKey:@""];
+    subsectionVideo.subsectionVideoTemplate = [dict objectForKey:@""];
     
-    return mould;
+    return subsectionVideo;
 }
 
 - (YWTrendsModel *)trendsWithDict:(NSDictionary *)dict {

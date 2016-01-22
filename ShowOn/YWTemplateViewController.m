@@ -11,7 +11,7 @@
 #import "YWSearchCollectionReusableView.h"
 #import "YWTemplateListViewController.h"
 
-#import "YWMouldTypeModel.h"
+#import "YWMovieTemplateModel.h"
 
 @interface YWTemplateViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWSearchCollectionReusableViewDelegate>
 
@@ -34,13 +34,13 @@
 
 - (void)dataSourceWithIndex:(NSInteger)index {
     for (NSInteger i=0; i<index; i++) {
-        YWMouldTypeModel *mouldType = [[YWMouldTypeModel alloc] init];
-        mouldType.mouldTypeId = @"1";
-        mouldType.mouldType = arc4random()%3;
-        mouldType.mouldTypeName = [NSString stringWithFormat:@"名称%ld", (long)i];
-        mouldType.mouldTypeImageUrl = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+        YWMovieTemplateModel *template = [[YWMovieTemplateModel alloc] init];
+        template.templateId = @"1";
+        template.templateTypeId = @"1";
+        template.templateName = [NSString stringWithFormat:@"名称%ld", (long)i];
+        template.templateVideoCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
 
-        [_dataSource addObject:mouldType];
+        [_dataSource addObject:template];
     }
     [_collectionView reloadData];
 }
@@ -68,7 +68,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     YWTemplateCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"item" forIndexPath:indexPath];
-    cell.moudlType = _dataSource[indexPath.row];
+    cell.template = _dataSource[indexPath.row];
     
     return cell;
 }
@@ -98,7 +98,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     YWTemplateListViewController *vc = [[YWTemplateListViewController alloc] init];
-    vc.mouldType = _dataSource[indexPath.row];
+    vc.template = _dataSource[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

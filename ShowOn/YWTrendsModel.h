@@ -18,7 +18,9 @@
 @property (nonatomic, strong) NSString      *trendsSuppotNumbers;       //动态点赞数
 @property (nonatomic, strong) NSString      *trendsCollectionNumbers;   //动态收藏数
 @property (nonatomic, strong) NSString      *trendsIsSupport;           //当前登录用户是否点赞（0：未， 1：是）
+@property (nonatomic, strong) NSString      *trendsIsCollect;           //当前登录用户是否收藏（0：未， 1：是）
 @property (nonatomic, strong) NSArray       *trendsComments;            //动态评论数组
+@property (nonatomic, strong) NSArray       *trendsOtherPlayUsers;      //该动态视频的其他表演者
 @property (nonatomic, strong) YWUserModel   *trendsUser;                //发布的用户
 @property (nonatomic, strong) YWMovieModel  *trendsMovie;               //发布的视频
 @property (nonatomic, strong) NSString      *trendsContent;             //发布的文字内容

@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class YWMouldTypeModel;
+@class YWMovieTemplateModel;
 @interface YWTemplateCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIFont *textFont;
 @property (nonatomic, assign) CGFloat viewAlpha;
-@property (nonatomic, strong) YWMouldTypeModel *moudlType;
+@property (nonatomic, strong) YWMovieTemplateModel *template;
 
 @end

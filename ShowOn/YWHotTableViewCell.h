@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class YWMouldModel;
+@class YWMovieTemplateModel;
 @interface YWHotTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) YWMouldModel *mould;
+@property (nonatomic, strong) YWMovieTemplateModel *template;
 
 @end

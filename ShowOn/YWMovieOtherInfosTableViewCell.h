@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class YWMovieModel;
+@class YWTrendsModel;
 @class YWUserModel;
 @class YWMovieOtherInfosTableViewCell;
 @protocol YWMovieOtherInfosTableViewCellDelegate <NSObject>
@@ -21,7 +21,7 @@
 @end
 @interface YWMovieOtherInfosTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) YWMovieModel *movie;
+@property (nonatomic, strong) YWTrendsModel *trends;
 @property (nonatomic, assign) id<YWMovieOtherInfosTableViewCellDelegate> delegate;
 
 @end

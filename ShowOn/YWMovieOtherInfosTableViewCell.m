@@ -8,6 +8,7 @@
 
 #import "YWMovieOtherInfosTableViewCell.h"
 #import "YWMovieModel.h"
+#import "YWTrendsModel.h"
 #import "YWUserModel.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -201,17 +202,17 @@
     }
 }
 
-- (void)setMovie:(YWMovieModel *)movie {
-    _movie = movie;
-    _supportButton.selected = movie.movieIsSupport;
-    _collectButton.selected = movie.movieIsCollect;
-    _supportLabel.text = movie.movieSupports;
+- (void)setTrends:(YWTrendsModel *)trends {
+    _trends = trends;
+    _supportButton.selected = trends.trendsIsSupport;
+    _collectButton.selected = trends.trendsIsCollect;
+    _supportLabel.text = trends.trendsSuppotNumbers;
     [_collectionView reloadData];
 }
 
 #pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _movie.moviePlayers.count>4?4:_movie.moviePlayers.count;
+    return _trends.trendsOtherPlayUsers.count>4?4:_trends.trendsOtherPlayUsers.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -221,7 +222,7 @@
     imageView.layer.masksToBounds = YES;
     imageView.layer.cornerRadius = 20;
     imageView.backgroundColor = [UIColor whiteColor];
-    [imageView sd_setImageWithURL:[NSURL URLWithString:[_movie.moviePlayers[indexPath.row] portraitUri]] placeholderImage:kPlaceholderMoiveImage];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:[_trends.trendsOtherPlayUsers[indexPath.row] portraitUri]] placeholderImage:kPlaceholderMoiveImage];
     [cell.contentView addSubview:imageView];
     [imageView makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.bottom.offset(0);
@@ -233,7 +234,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([_delegate respondsToSelector:@selector(movieOtherInfosTableViewCell:didSelectUserAvator:)]) {
-        [_delegate movieOtherInfosTableViewCell:self didSelectUserAvator:_movie.moviePlayers[indexPath.row]];
+        [_delegate movieOtherInfosTableViewCell:self didSelectUserAvator:_trends.trendsOtherPlayUsers[indexPath.row]];
     }
 }
 

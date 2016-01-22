@@ -13,7 +13,7 @@
 #import "YWHttpManager.h"
 #import "YWParser.h"
 
-#import "YWMouldModel.h"
+#import "YWMovieTemplateModel.h"
 
 @interface YWHotView ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -50,14 +50,15 @@
 
 - (void)dataSource {
     for (NSInteger i=0; i<10; i++) {
-        YWMouldModel *movie = [[YWMouldModel alloc] init];
-        movie.mouldId = [NSString stringWithFormat:@"%ld", i];
-        movie.mouldName = [NSString stringWithFormat:@"测试模板%ld", i+1];
-        movie.mouldCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-        movie.mouldShootNums = @"120";
-        movie.mouldTimeLength = @"1分20秒";
+        YWMovieTemplateModel *template = [[YWMovieTemplateModel alloc] init];
+        template.templateId = [NSString stringWithFormat:@"%ld", i];
+        template.templateName = [NSString stringWithFormat:@"模板%ld", i];
+        template.templateVideoUrl = @"";
+        template.templateVideoTime = @"1分20秒";
+        template.templateVideoCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+        template.templateTypeId = [NSString stringWithFormat:@"%ld", (long)arc4random()%3+1];
         
-        [_dataSource addObject:movie];
+        [_dataSource addObject:template];
     }
     [_tableView reloadData];
 }
@@ -88,7 +89,7 @@
         view.backgroundColor = Subject_color;
         cell.selectedBackgroundView = view;
     }
-    cell.mould = _dataSource[indexPath.row];
+    cell.template = _dataSource[indexPath.row];
 
     return cell;
 }

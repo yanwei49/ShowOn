@@ -21,6 +21,8 @@
 
 #import "YWUserModel.h"
 #import "YWCommentModel.h"
+#import "YWTrendsModel.h"
+#import "YWMovieTemplateModel.h"
 
 @interface YWHotDetailViewController()<UITableViewDataSource, UITableViewDelegate, YWFocusTableViewCellCellDelegate, YWMovieCommentTableViewCellDelegate, YWMovieOtherInfosTableViewCellDelegate>
 
@@ -35,11 +37,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = _movie.movieName;
+    self.title = _trends.trendsMovie.movieTemplate.templateName;
     [self createRightItemWithTitle:@"..."];
     
     [self createSubViews];
-    [self dataSource];
+//    [self dataSource];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -47,46 +49,46 @@
     self.navigationController.navigationBarHidden = NO;
 }
 
-- (void)dataSource {
-    _movie = [[YWMovieModel alloc] init];
-    _movie.movieId = @"1";
-    _movie.moviePlayNumbers = @"221";
-    _movie.movieTimeLength = @"02:12";
-    _movie.movieName = @"测试模板1";
-    _movie.movieRecorderType = @"1";
-    _movie.movieIsSupport = [NSString stringWithFormat:@"%d", arc4random()%2];
-    YWUserModel *user = [[YWUserModel alloc] init];
-    user.userId = @"1";
-    user.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-    user.userName = @"用户1";
-    YWUserModel *user1 = [[YWUserModel alloc] init];
-    user1.userId = @"2";
-    user1.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-    user1.userName = @"用户2";
-    YWUserModel *user2 = [[YWUserModel alloc] init];
-    user2.userId = @"3";
-    user2.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-    user2.userName = @"用户3";
-    _movie.movieReleaseUser = user;
-    _movie.movieRecorderState = @"1";
-    _movie.moviePlayers = @[user1, user2];
-    _movie.movieIsSupport = @"1";
-    _movie.movieIsCollect = @"1";
-    _movie.movieSupports = @"211";
-    NSMutableArray *comments = [NSMutableArray array];
-    for (NSInteger i=0; i<4; i++) {
-        YWCommentModel *comment = [[YWCommentModel alloc] init];
-        comment.commentId = @"1";
-        comment.commentUser = user1;
-        comment.commentTime = @"2015-10-02 03:21";
-        comment.commentContent = @"E区 俄武器和全文请二位ii恶趣味哦i恶趣味哦恶趣味  阿胶去我i我去额偶王企鹅我企鹅";
-        comment.isSupport = @"1";
-        [comments addObject:comment];
-    }
-    _movie.movieComments = comments;
-    
-    [_tableView reloadData];
-}
+//- (void)dataSource {
+//    _movie = [[YWMovieModel alloc] init];
+//    _movie.movieId = @"1";
+//    _movie.moviePlayNumbers = @"221";
+//    _movie.movieTimeLength = @"02:12";
+//    _movie.movieName = @"测试模板1";
+//    _movie.movieRecorderType = @"1";
+//    _movie.movieIsSupport = [NSString stringWithFormat:@"%d", arc4random()%2];
+//    YWUserModel *user = [[YWUserModel alloc] init];
+//    user.userId = @"1";
+//    user.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+//    user.userName = @"用户1";
+//    YWUserModel *user1 = [[YWUserModel alloc] init];
+//    user1.userId = @"2";
+//    user1.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+//    user1.userName = @"用户2";
+//    YWUserModel *user2 = [[YWUserModel alloc] init];
+//    user2.userId = @"3";
+//    user2.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+//    user2.userName = @"用户3";
+//    _movie.movieReleaseUser = user;
+//    _movie.movieRecorderState = @"1";
+//    _movie.moviePlayers = @[user1, user2];
+//    _movie.movieIsSupport = @"1";
+//    _movie.movieIsCollect = @"1";
+//    _movie.movieSupports = @"211";
+//    NSMutableArray *comments = [NSMutableArray array];
+//    for (NSInteger i=0; i<4; i++) {
+//        YWCommentModel *comment = [[YWCommentModel alloc] init];
+//        comment.commentId = @"1";
+//        comment.commentUser = user1;
+//        comment.commentTime = @"2015-10-02 03:21";
+//        comment.commentContent = @"E区 俄武器和全文请二位ii恶趣味哦i恶趣味哦恶趣味  阿胶去我i我去额偶王企鹅我企鹅";
+//        comment.isSupport = @"1";
+//        [comments addObject:comment];
+//    }
+//    _movie.movieComments = comments;
+//    
+//    [_tableView reloadData];
+//}
 
 - (void)createSubViews {
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -167,7 +169,7 @@
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2+_movie.movieComments.count;
+    return 2+_trends.trendsComments.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -176,7 +178,7 @@
         {
             YWFocusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
             cell.delegate = self;
-            cell.movie = _movie;
+            cell.trends = _trends;
             
             return cell;
         }
@@ -186,7 +188,7 @@
             YWMovieOtherInfosTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"sCell"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.delegate = self;
-            cell.movie = _movie;
+            cell.trends = _trends;
 
             return cell;
         }
@@ -195,7 +197,7 @@
         {
             YWMovieCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"commentCell"];
             cell.delegate = self;
-            cell.comment = _movie.movieComments[indexPath.row-2];
+            cell.comment = _trends.trendsComments[indexPath.row-2];
 
             return cell;
         }
@@ -206,13 +208,13 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.row) {
         case 0:
-            return [YWFocusTableViewCell cellHeightWithMovie:_movie type:kMovieDetailType];
+            return [YWFocusTableViewCell cellHeightWithTrends:_trends type:kTrendsDetailType];
             break;
         case 1:
             return 100;
             break;
         default:
-            return [YWMovieCommentTableViewCell cellHeightWithComment:_movie.movieComments[indexPath.row-2]];
+            return [YWMovieCommentTableViewCell cellHeightWithComment:_trends.trendsComments[indexPath.row-2]];
             break;
     }
 }
@@ -243,7 +245,7 @@
     if (true) {
         [UMSocialSnsService presentSnsIconSheetView:self appKey:UMengAppKey shareText:@"来自【角儿】" shareImage:nil shareToSnsNames:@[UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQzone,UMShareToSina,UMShareToQQ] delegate:nil];
         NSString *url = @"http://www.baidu.com";
-        NSString *title = _movie.movieInfos>0?_movie.movieInfos:@"";
+        NSString *title = _trends.trendsContent.length>0?_trends.trendsContent:@"";
         [UMSocialData defaultData].extConfig.qqData.url = url;
         [UMSocialData defaultData].extConfig.qzoneData.url =  url;
         [UMSocialData defaultData].extConfig.qqData.title =  title;

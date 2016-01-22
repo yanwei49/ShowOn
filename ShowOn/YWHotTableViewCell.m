@@ -8,7 +8,7 @@
 
 #import "YWHotTableViewCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import "YWMouldModel.h"
+#import "YWMovieTemplateModel.h"
 
 @implementation YWHotTableViewCell
 {
@@ -96,12 +96,12 @@
 
 }
 
-- (void)setMould:(YWMouldModel *)mould {
-    _mould = mould;
-    _nameLabel.text = mould.mouldName;
-    _timeLabel.text = [NSString stringWithFormat:@"时长%@", mould.mouldTimeLength];
-    _numsLabel.text = [NSString stringWithFormat:@"拍摄次数%@", mould.mouldShootNums];
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:mould.mouldCoverImage] placeholderImage:kPlaceholderMoiveImage];
+- (void)setTemplate:(YWMovieTemplateModel *)template {
+    _template = template;
+    _nameLabel.text = template.templateName;
+    _timeLabel.text = [NSString stringWithFormat:@"时长%@", template.templateVideoTime];
+    _numsLabel.text = [NSString stringWithFormat:@"拍摄次数%@", template.templatePlayUserNumbers];
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:template.templateVideoCoverImage] placeholderImage:kPlaceholderMoiveImage];
 }
 
 

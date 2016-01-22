@@ -8,9 +8,8 @@
 
 #import "YWTemplateListViewController.h"
 #import "YWTemplateListTableViewCell.h"
-#import "YWMouldTypeModel.h"
 
-#import "YWMouldModel.h"
+#import "YWMovieTemplateModel.h"
 
 @interface YWTemplateListViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -25,7 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
-    self.title = _mouldType.mouldTypeName;
+    self.title = _template.templateName;
     _dataSource = [[NSMutableArray alloc] init];
     
     [self createSubViews];
@@ -34,12 +33,12 @@
 
 - (void)dataSource {
     for (NSInteger i=0; i<10; i++) {
-        YWMouldModel *mould = [[YWMouldModel alloc] init];
-        mould.mouldId = @"1";
-        mould.mouldName = [NSString stringWithFormat:@"模板%ld", (long)i];
-        mould.mouldCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+        YWMovieTemplateModel *template = [[YWMovieTemplateModel alloc] init];
+        template.templateId = @"1";
+        template.templateName = [NSString stringWithFormat:@"模板%ld", (long)i];
+        template.templateVideoCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
         
-        [_dataSource addObject:mould];
+        [_dataSource addObject:template];
     }
     [_tableView reloadData];
 }
@@ -67,7 +66,7 @@
     if (!cell) {
         cell = [[YWTemplateListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
-    cell.mould = _dataSource[indexPath.row];
+    cell.template = _dataSource[indexPath.row];
     
     return cell;
 }

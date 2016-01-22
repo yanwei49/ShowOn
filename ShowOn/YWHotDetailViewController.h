@@ -8,9 +8,9 @@
 
 #import "YWBaseViewController.h"
 
-@class YWMovieModel;
+@class YWTrendsModel;
 @interface YWHotDetailViewController : YWBaseViewController
 
-@property (nonatomic, strong) YWMovieModel *movie;
+@property (nonatomic, strong) YWTrendsModel *trends;
 
 @end
