@@ -36,7 +36,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = Subject_color;
     self.title = _trends.trendsMovie.movieTemplate.templateName;
     [self createRightItemWithTitle:@"..."];
     

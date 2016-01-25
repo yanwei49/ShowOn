@@ -158,6 +158,7 @@
 #pragma mark - YWHotViewDelegate
 - (void)hotViewDidSelectItemWithIndex:(NSInteger)index {
     YWHotItemViewController *vc = [[YWHotItemViewController alloc] init];
+    vc.template = _dataSource[index];
     [self.navigationController pushViewController:vc animated:YES];
     _isPushHotItem = YES;
 }

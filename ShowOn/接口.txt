@@ -1,0 +1,35 @@
+1注册
+http://120.25.146.161/juer/user/register?json
+
+2获取验证码
+http://120.25.146.161/juer/user/getVerificationCode?json
+
+3重置密码
+http://120.25.146.161/juer/user/resetPassword?json
+
+4登录
+http://120.25.146.161/juer/user/login?json
+
+5获取用户资料
+http://120.25.146.161/juer/user/getUserInfo?json
+
+6获取好友资料
+
+7举报
+http://120.25.146.161/juer/user/inform?json
+
+8点赞
+http://120.25.146.161/juer/dynamic/praise?json
+
+9收藏
+http://120.25.146.161/juer/dynamic/collection?json
+
+10分享/转发 /*============（接口待定）============*/
+
+11拉黑（更改好友关系类型）
+http://120.25.146.161/juer/user/updateRelationType?json
+
+12加关注（取消）
+
+13 关注、粉丝、黑名单列表
+http://120.25.146.161/juer/user/getFriendList?json

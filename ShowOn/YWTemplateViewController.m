@@ -25,7 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = Subject_color;
     _dataSource = [[NSMutableArray alloc] init];
     
     [self createSubViews];
