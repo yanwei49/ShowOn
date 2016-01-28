@@ -8,7 +8,8 @@
 
 #import "YWFollowingViewController.h"
 #import "YWFollowingTableViewCell.h"
-
+#import "YWHttpManager.h"
+#import "YWParser.h"
 #import "YWUserModel.h"
 
 @interface YWFollowingViewController ()<UITableViewDelegate, UITableViewDataSource, YWFollowingTableViewCellDelegate>
@@ -20,13 +21,15 @@
     NSMutableArray      *_dataSource;
     UITableView         *_tableView;
     UISearchBar         *_searchBar;
+    YWHttpManager       *_httpManager;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSource = [[NSMutableArray alloc] init];
-    
+    _httpManager = [YWHttpManager shareInstance];
+
     [self createSubViews];
     [self datatSource];
 }
@@ -37,7 +40,7 @@
         model.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
         model.userId = [NSString stringWithFormat:@"%ld", i];
         model.userName = [NSString stringWithFormat:@"测试账号%ld", i];
-        model.userRelationType = _isFocus?kBeFocus:kFocus;
+        model.userRelationType = _relationType?kBeFocus:kFocus;
         
         [_dataSource addObject:model];
     }
@@ -58,6 +61,21 @@
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.offset(0);
+    }];
+}
+
+#pragma mark - request
+- (void)requestUserList {
+    NSDictionary *parameters = @{@"relationTypeId": @(_relationType), @"userId": @""};
+    [_httpManager requestUserList:parameters success:^(id responseObject) {
+        YWParser *parser = [[YWParser alloc] init];
+        NSArray *array = [parser userWithArray:responseObject[@"userList"]];
+        [_dataSource addObjectsFromArray:array];
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
     }];
 }
 

@@ -224,7 +224,7 @@
                     count = user.userFollowsNums;
                     break;
                 case 2:
-                    count = user.userWorksNums;
+                    count = user.userTrendsNums;
                     break;
                 default:
                     break;

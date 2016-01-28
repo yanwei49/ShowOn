@@ -23,21 +23,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
-    [self createRightItemWithTitle:@"存入草稿箱"];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"存入草稿箱" style:UIBarButtonItemStyleDone target:self action:@selector(actionRightItem)];
 
+    [self createSubViews];
 }
 
 - (void)createSubViews {
     UIButton *releaseButton = [[UIButton alloc] init];
     releaseButton.backgroundColor = RGBColor(30, 30, 30);
     releaseButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    releaseButton.layer.masksToBounds = YES;
+    releaseButton.layer.cornerRadius = 5;
     [releaseButton setTitle:@"发布" forState:UIControlStateNormal];
     [releaseButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [releaseButton addTarget:self action:@selector(actionRelease:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:releaseButton];
     [releaseButton makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.right.offset(0);
-        make.height.offset(30);
+        make.left.offset(20);
+        make.bottom.right.offset(-20);
+        make.height.offset(40);
     }];
     
     _coverImageView = [[UIImageView alloc] init];
@@ -63,6 +67,8 @@
     _contentTextView = [[UITextView alloc] init];
     _contentTextView.backgroundColor = [UIColor whiteColor];
     _contentTextView.delegate = self;
+    _contentTextView.layer.masksToBounds = YES;
+    _contentTextView.layer.cornerRadius = 5;
     _contentTextView.font = [UIFont systemFontOfSize:15];
     [self.view addSubview:_contentTextView];
     [_contentTextView makeConstraints:^(MASConstraintMaker *make) {
@@ -74,16 +80,17 @@
     
     _placeholderLabel = [[UILabel alloc] init];
     _placeholderLabel.font = [UIFont systemFontOfSize:14];
+    _placeholderLabel.textColor = [UIColor lightGrayColor];
     _placeholderLabel.text = @"写点什么吧...";
     [self.view addSubview:_placeholderLabel];
     [_placeholderLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_templateNameLabel.mas_bottom);
-        make.left.offset(10);
+        make.top.equalTo(_templateNameLabel.mas_bottom).offset(5);
+        make.left.offset(16);
         make.right.offset(-10);
         make.height.offset(20);
     }];
     
-    NSArray *titles = @[@"", @""];
+    NSArray *titles = @[@"发起合演", @"尽自己可见"];
     NSArray *images = @[@"", @""];
     NSArray *selectImages = @[@"", @""];
     for (NSInteger i=0; i<2; i++) {
@@ -105,8 +112,8 @@
 }
 
 #pragma mark - action
-- (void)actionRightItem:(UIButton *)button {
-
+- (void)actionRightItem {
+    
 }
 
 - (void)actionRelease:(UIButton *)button {

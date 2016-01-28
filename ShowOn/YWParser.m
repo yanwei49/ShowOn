@@ -14,6 +14,8 @@
 #import "YWMovieTemplateModel.h"
 #import "YWSubsectionVideoModel.h"
 #import "YWTrendsModel.h"
+#import "YWAiTeModel.h"
+#import "YWSupportModel.h"
 
 @implementation YWParser
 
@@ -23,9 +25,9 @@
     user.userType = [dict objectForKey:@"accountTypeId"];
     user.userAccount = [dict objectForKey:@"account"];
     user.userPassword = [dict objectForKey:@"password"];
-    user.userToken = [dict objectForKey:@""];
-    user.portraitUri = [dict objectForKey:@""];
-    user.userEmpirical = [dict objectForKey:@""];
+    user.userToken = [dict objectForKey:@"token"];
+    user.portraitUri = [dict objectForKey:@"headPortrait"];
+    user.userEmpirical = [dict objectForKey:@"empiricalValue"];
     user.userSex = [dict objectForKey:@"sex"];
     user.userName = [dict objectForKey:@"nickname"];
     user.userRank = [dict objectForKey:@"grade"];
@@ -35,11 +37,13 @@
     user.userConstellation = [dict objectForKey:@"constellation"];
     user.userAuthentication = [dict objectForKey:@"authenticationInformation"];
     user.userInfos = [dict objectForKey:@"introduction"];
-    user.userFocusNums = [dict objectForKey:@""];
-    user.userTrendsNums = [dict objectForKey:@""];
-    user.userFollowsNums = [dict objectForKey:@""];
-    user.userCollectNums = [dict objectForKey:@""];
-    user.userWorksNums = [dict objectForKey:@""];
+    user.userFocusNums = [dict objectForKey:@"userFocusNums"];
+    user.userTrendsNums = [dict objectForKey:@"userTrendsNums"];
+    user.userFollowsNums = [dict objectForKey:@"userFocusNums"];
+    user.userCollectNums = [dict objectForKey:@"userCollectNums"];
+    user.userATMeNums = [dict objectForKey:@"userATMeNums"];
+    user.userCommentNums = [dict objectForKey:@"userCommentNums"];
+    user.userSupportNums = [dict objectForKey:@"userSupportNums"];
     user.userDistrict = [dict objectForKey:@"district"];
     user.userRelationType = [[dict objectForKey:@"relationTypeId"] integerValue];
     
@@ -48,36 +52,40 @@
 
 - (YWMovieModel *)movieWithDict:(NSDictionary *)dict {
     YWMovieModel *movie = [[YWMovieModel alloc] init];
-    
+    movie.movieUrl = [dict objectForKey:@"videoUrl"];
+    movie.movieName = [dict objectForKey:@"videoName"];
+    movie.movieCoverImage = [dict objectForKey:@"videoCoverImage"];
+    movie.movieTemplate = [self templateWithDict:[dict objectForKey:@"movieTemplate"]];
     
     return movie;
 }
 
 - (YWMovieTemplateModel *)templateWithDict:(NSDictionary *)dict {
     YWMovieTemplateModel *template = [[YWMovieTemplateModel alloc] init];
-    template.templateId = [dict objectForKey:@""];
-    template.templateName = [dict objectForKey:@""];
-    template.templateVideoUrl = [dict objectForKey:@""];
-    template.templateVideoTime = [dict objectForKey:@""];
-    template.templateVideoCoverImage = [dict objectForKey:@""];
-    template.templateTypeId = [dict objectForKey:@""];
-    template.templatePlayUserNumbers = [dict objectForKey:@""];
-    template.templatePlayUsers = [dict objectForKey:@""];
-    template.templateSubsectionVideos = [dict objectForKey:@""];
-    
+    template.templateId = [dict objectForKey:@"templateId"];
+    template.templateName = [dict objectForKey:@"templateName"];
+    template.templateVideoUrl = [dict objectForKey:@"videoUrl"];
+    template.templateVideoTime = [dict objectForKey:@"dateTimeOriginal"];
+    template.templateVideoCoverImage = [dict objectForKey:@"templateCoverImage"];
+    template.templateTypeId = [dict objectForKey:@"templateTypeId"];
+    template.templatePlayUserNumbers = [dict objectForKey:@"templatePlayUserNumbers"];
+    template.templatePlayUsers = [self userWithArray:[dict objectForKey:@"templatePlayUsers"]];
+    template.templateSubsectionVideos = [self subsectionVideoWithArray:[dict objectForKey:@"templateSubsectionVideos"]];
+    template.templateTrends = [self trendsWithArray:[dict objectForKey:@"recordeRanklist"]];
+    template.templateComments = [self commentsWithArray:[dict objectForKey:@"commentList"]];
     return template;
 }
 
 - (YWSubsectionVideoModel *)subsectionVideoWithDict:(NSDictionary *)dict {
     YWSubsectionVideoModel *subsectionVideo = [[YWSubsectionVideoModel alloc] init];
-    subsectionVideo.subsectionVideoId = [dict objectForKey:@""];
-    subsectionVideo.subsectionVideoUrl = [dict objectForKey:@""];
+    subsectionVideo.subsectionVideoId = [dict objectForKey:@"subsectionVideoId"];
+    subsectionVideo.subsectionVideoUrl = [dict objectForKey:@"videoUrl"];
     subsectionVideo.subsectionVideoCoverImage = [dict objectForKey:@""];
-    subsectionVideo.subsectionVideoSort = [dict objectForKey:@""];
-    subsectionVideo.subsectionVideoType = [dict objectForKey:@""];
-    subsectionVideo.subsectionVideoPerformanceStatus = [dict objectForKey:@""];
-    subsectionVideo.subsectionVideoPlayUser = [dict objectForKey:@""];
-    subsectionVideo.subsectionVideoTemplate = [dict objectForKey:@""];
+    subsectionVideo.subsectionVideoSort = [dict objectForKey:@"sort"];
+    subsectionVideo.subsectionVideoType = [dict objectForKey:@"subsectionVideoTypeId"];
+    subsectionVideo.subsectionVideoPerformanceStatus = [dict objectForKey:@"performanceStatusId"];
+    subsectionVideo.subsectionVideoPlayUserId = [dict objectForKey:@"userId"];
+    subsectionVideo.subsectionVideoTemplateId = [dict objectForKey:@"templateId"];
     
     return subsectionVideo;
 }
@@ -86,29 +94,35 @@
     YWTrendsModel *trends = [[YWTrendsModel alloc] init];
     trends.trendsId = [dict objectForKey:@"dynamicId"];
     trends.trendsUser = [self userWithDict:[dict objectForKey:@"user"]];
-    trends.trendsId = [dict objectForKey:@"dynamicContent"];
-    trends.trendsId = [dict objectForKey:@""];
-    trends.trendsId = [dict objectForKey:@""];
-    trends.trendsId = [dict objectForKey:@""];
-    trends.trendsId = [dict objectForKey:@""];
-    trends.trendsId = [dict objectForKey:@""];
-    trends.trendsId = [dict objectForKey:@""];
-    trends.trendsId = [dict objectForKey:@""];
-    trends.trendsId = [dict objectForKey:@""];
-    
+    trends.trendsType = [dict objectForKey:@"dynamicTypeId"];
+    trends.trendsPubdate = [dict objectForKey:@"pubdate"];
+    trends.trendsSuppotNumbers = [dict objectForKey:@"dynamicSuppotNumbers"];
+    trends.trendsCollectionNumbers = [dict objectForKey:@"dynamicCollectionNumbers"];
+    trends.trendsIsSupport = [dict objectForKey:@"dynamicIsSupport"];
+    trends.trendsIsCollect = [dict objectForKey:@""];
+    trends.trendsComments = [self commentsWithArray:[dict objectForKey:@"commentList"]];
+    trends.trendsMovieCooperateUsers = [self userWithArray:[dict objectForKey:@"trendsMovieCooperateUsers"]];
+    trends.trendsSubsectionVideos = [self subsectionVideoWithArray:[dict objectForKey:@"trendsSubsectionVideos"]];
+    trends.trendsOtherPlayUsers = [self userWithArray:[dict objectForKey:@"trendsOtherPlayUsers"]];
+    trends.trendsMovie = [self movieWithDict:[dict objectForKey:@"dynamicMovie"]];
+    trends.trendsContent = [dict objectForKey:@"dynamicContent"];
+    trends.trendsMoviePlayCount = [dict objectForKey:@"playCount"];
+    trends.trendsForwardComments = [dict objectForKey:@"forwardComments"];
+
     return trends;
 }
 
 - (YWCommentModel *)commentWithDict:(NSDictionary *)dict {
     YWCommentModel *comment = [[YWCommentModel alloc] init];
     comment.commentUser = [self userWithDict:[dict objectForKey:@"user"]];
-    comment.beCommentUser = [self userWithDict:[dict objectForKey:@"beCommentUser"]];
+    comment.beCommentUser = [self userWithDict:[dict objectForKey:@"commentsTargetUser"]];
     comment.commentType = [[dict objectForKey:@"commentsTypeId"] integerValue];
     comment.commentId = [dict objectForKey:@"commentsId"];
-    comment.relationId = [dict objectForKey:@"user"];
-    comment.isSupport = [dict objectForKey:@"user"];
+    comment.isSupport = [dict objectForKey:@""];
     comment.commentTime = [dict objectForKey:@"editTime"];
     comment.commentContent = [dict objectForKey:@"commentsContent"];
+    comment.commentsTargetId = [dict objectForKey:@"commentsTargetId"];
+    comment.commentTrends = [self trendsWithDict:[dict objectForKey:@"trends"]];
     
     return comment;
 }
@@ -118,13 +132,102 @@
     article.articleId = [dict objectForKey:@"teletextId"];
     article.articleTitle = [dict objectForKey:@"title"];
     article.articleAuthorName = [dict objectForKey:@"author"];
-    article.articleCoverImage = [dict objectForKey:@""];
+    article.articleCoverImage = [dict objectForKey:@"coverImage"];
     article.articleTime = [dict objectForKey:@"pubdate"];
-    article.articleUrl = [dict objectForKey:@""];             
+    article.articleUrl = [dict objectForKey:@""];
     
     return article;
 }
 
+- (YWAiTeModel *)aiTesWithDict:(NSDictionary *)dict {
+    YWAiTeModel *aite = [[YWAiTeModel alloc] init];
+    aite.aiTeType = [dict objectForKey:@"teletextId"];
+    aite.trends = [self trendsWithDict:[dict objectForKey:@"trends"]];
+    aite.comment = [self commentWithDict:[dict objectForKey:@"comment"]];
+    
+    return aite;
+}
+
+- (YWSupportModel *)supportWithDict:(NSDictionary *)dict {
+    YWSupportModel *support = [[YWSupportModel alloc] init];
+    support.supportType = [dict objectForKey:@"supportType"];
+    support.trends = [self trendsWithDict:[dict objectForKey:@"trends"]];
+    support.comment = [self commentWithDict:[dict objectForKey:@"comment"]];
+    
+    return support;
+}
+
+- (NSArray *)subsectionVideoWithArray:(NSArray *)array {
+    NSMutableArray *subsectionVideos = [NSMutableArray array];
+    [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [subsectionVideos addObject:[self subsectionVideoWithDict:obj]];
+    }];
+    
+    return subsectionVideos;
+}
+
+- (NSArray *)trendsWithArray:(NSArray *)array {
+    NSMutableArray *trends = [NSMutableArray array];
+    [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [trends addObject:[self trendsWithDict:obj]];
+    }];
+    
+    return trends;
+}
+
+- (NSArray *)commentsWithArray:(NSArray *)array {
+    NSMutableArray *comments = [NSMutableArray array];
+    [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [comments addObject:[self commentWithDict:obj]];
+    }];
+    
+    return comments;
+}
+
+- (NSArray *)userWithArray:(NSArray *)array {
+    NSMutableArray *users = [NSMutableArray array];
+    [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [users addObject:[self userWithDict:obj]];
+    }];
+    
+    return users;
+}
+
+- (NSArray *)templateWithArray:(NSArray *)array {
+    NSMutableArray *templates = [NSMutableArray array];
+    [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [templates addObject:[self templateWithDict:obj]];
+    }];
+    
+    return templates;
+}
+
+- (NSArray *)articleWithArray:(NSArray *)array {
+    NSMutableArray *articles = [NSMutableArray array];
+    [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [articles addObject:[self articleWithDict:obj]];
+    }];
+    
+    return articles;
+}
+
+- (NSArray *)aiTeWithArray:(NSArray *)array {
+    NSMutableArray *aiTis = [NSMutableArray array];
+    [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [aiTis addObject:[self aiTesWithDict:obj]];
+    }];
+    
+    return aiTis;
+}
+
+- (NSArray *)supportWithArray:(NSArray *)array {
+    NSMutableArray *supports = [NSMutableArray array];
+    [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [supports addObject:[self aiTesWithDict:obj]];
+    }];
+    
+    return supports;
+}
 
 
 @end

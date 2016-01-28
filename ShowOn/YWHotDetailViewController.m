@@ -17,11 +17,13 @@
 #import "UMSocialSnsService.h"
 #import "UMSocialData.h"
 #import "UMSocial.h"
-
-
-#import "YWUserModel.h"
-#import "YWCommentModel.h"
 #import "YWTrendsModel.h"
+#import "YWHttpManager.h"
+#import "YWParser.h"
+#import "YWUserModel.h"
+
+
+#import "YWCommentModel.h"
 #import "YWMovieTemplateModel.h"
 
 @interface YWHotDetailViewController()<UITableViewDataSource, UITableViewDelegate, YWFocusTableViewCellCellDelegate, YWMovieCommentTableViewCellDelegate, YWMovieOtherInfosTableViewCellDelegate>
@@ -32,6 +34,7 @@
 {
     UITableView         *_tableView;
     UIButton            *_commentView;
+    YWHttpManager       *_httpManager;
 }
 
 - (void)viewDidLoad {
@@ -39,6 +42,7 @@
     self.view.backgroundColor = Subject_color;
     self.title = _trends.trendsMovie.movieTemplate.templateName;
     [self createRightItemWithTitle:@"..."];
+    _httpManager = [YWHttpManager shareInstance];
     
     [self createSubViews];
 //    [self dataSource];
@@ -165,6 +169,20 @@
     YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
     nv.title = @"写评论";
     [self presentViewController:nv animated:YES completion:nil];
+}
+
+#pragma mark - request
+- (void)requestTrendsList {
+    NSDictionary *parameters = @{@"userId": @"", @"trendsId": _trends.trendsId};
+    [_httpManager requestTrendsDetail:parameters success:^(id responseObject) {
+        YWParser *parser = [[YWParser alloc] init];
+        _trends = [parser trendsWithDict:responseObject[@"trends"]];
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 #pragma mark - UITableViewDelegate

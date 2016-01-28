@@ -8,6 +8,9 @@
 
 #import "YWSupportViewController.h"
 #import "YWSupportTableViewCell.h"
+#import "YWParser.h"
+#import "YWHttpManager.h"
+#import "YWUserModel.h"
 
 @interface YWSupportViewController()<UITableViewDataSource, UITableViewDelegate>
 
@@ -17,13 +20,15 @@
 {
     NSMutableArray      *_dataSource;
     UITableView         *_tableView;
+    YWHttpManager       *_httpManager;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSource = [[NSMutableArray alloc] init];
-    
+    _httpManager = [YWHttpManager shareInstance];
+
     [self createSubViews];
     [self dataSource];
 }
@@ -47,6 +52,21 @@
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.offset(0);
+    }];
+}
+
+#pragma mark - request
+- (void)requestSupportList {
+    NSDictionary *parameters = @{@"userId": @""};
+    [_httpManager requestSupportList:parameters success:^(id responseObject) {
+        YWParser *parser = [[YWParser alloc] init];
+        NSArray *array = [parser supportWithArray:responseObject[@"supportList"]];
+        [_dataSource addObjectsFromArray:array];
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
     }];
 }
 

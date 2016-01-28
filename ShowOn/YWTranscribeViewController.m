@@ -51,6 +51,8 @@
     NSArray  *titles = @[@"取消", @"完成"];
     _itemView = [[YWCustomSegView alloc] initWithItemTitles:titles];
     _itemView.hiddenLineView = NO;
+    _itemView.itemSelectIndex = 1;
+    _itemView.hiddenBottomLineView = YES;
     _itemView.ywSelectTextColor = [UIColor orangeColor];
     _itemView.delegate = self;
     [self.view addSubview:_itemView];
@@ -60,30 +62,42 @@
     }];
 
     _playView = [[YWMoviePlayView alloc] init];
-    _playView.backgroundColor = [UIColor greenColor];
+    _playView.backgroundColor = Subject_color;
+    _playView.layer.masksToBounds = YES;
+    _playView.layer.cornerRadius = 5;
+    _playView.layer.borderColor = RGBColor(30, 30, 30).CGColor;
+    _playView.layer.borderWidth = 1;
     [_backgroundSV addSubview:_playView];
     [_playView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.offset(0);
+        make.top.left.offset(5);
+        make.width.offset(kScreenWidth-10);
         make.height.offset(200);
     }];
     
     _recorderView = [[YWMovieRecorder alloc] init];
-    _recorderView.backgroundColor = [UIColor greenColor];
+    _recorderView.backgroundColor = Subject_color;
+    _recorderView.layer.masksToBounds = YES;
+    _recorderView.layer.cornerRadius = 5;
+    _recorderView.layer.borderColor = RGBColor(30, 30, 30).CGColor;
+    _recorderView.layer.borderWidth = 1;
     [_backgroundSV addSubview:_recorderView];
     [_recorderView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.offset(0);
-        make.top.equalTo(_playView.mas_bottom);
+        make.left.offset(5);
+        make.width.offset(kScreenWidth-10);
+        make.top.equalTo(_playView.mas_bottom).offset(5);
         make.height.offset(200);
     }];
     
     NSArray  *modelTitles = @[@"顺序模式", @"景别模式"];
     _modelItemView = [[YWCustomSegView alloc] initWithItemTitles:modelTitles];
     _modelItemView.hiddenLineView = NO;
+    _modelItemView.hiddenBottomLineView = YES;
     _modelItemView.ywSelectTextColor = [UIColor orangeColor];
     _modelItemView.delegate = self;
     [_backgroundSV addSubview:_modelItemView];
     [_modelItemView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(0);
+        make.left.equalTo(0);
+        make.width.offset(kScreenWidth);
         make.height.offset(20);
         make.top.equalTo(_recorderView.mas_bottom);
     }];
@@ -92,7 +106,8 @@
     _orderModelBackgroundView.backgroundColor = Subject_color;
     [_backgroundSV addSubview:_orderModelBackgroundView];
     [_orderModelBackgroundView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.offset(0);
+        make.left.offset(0);
+        make.width.offset(kScreenWidth);
         make.height.offset(300);
         make.top.equalTo(_modelItemView.mas_bottom);
     }];
@@ -102,8 +117,9 @@
     _shootScaleModelBackgroundView.hidden = YES;
     [_backgroundSV addSubview:_shootScaleModelBackgroundView];
     [_shootScaleModelBackgroundView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.offset(0);
+        make.left.offset(0);
         make.height.offset(300);
+        make.width.offset(kScreenWidth);
         make.top.equalTo(_modelItemView.mas_bottom);
     }];
 

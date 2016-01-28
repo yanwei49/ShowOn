@@ -9,6 +9,9 @@
 #import "YWDraftViewController.h"
 #import "YWDraftCollectionViewCell.h"
 #import "YWTranscribeViewController.h"
+#import "YWParser.h"
+#import "YWHttpManager.h"
+#import "YWUserModel.h"
 
 @interface YWDraftViewController()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -18,13 +21,15 @@
 {
     NSMutableArray      *_dataSource;
     UICollectionView    *_collectionView;
+    YWHttpManager       *_httpManager;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
     _dataSource = [[NSMutableArray alloc] init];
-    
+    _httpManager = [YWHttpManager shareInstance];
+
     [self createSubViews];
     [self dataSource];
 }
@@ -53,6 +58,22 @@
     [self.view addSubview:_collectionView];
     [_collectionView makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.offset(0);
+    }];
+}
+
+
+#pragma mark - request
+- (void)requestSupportList {
+    NSDictionary *parameters = @{@"userId": @""};
+    [_httpManager requestDraftList:parameters success:^(id responseObject) {
+        YWParser *parser = [[YWParser alloc] init];
+        NSArray *array = [parser trendsWithArray:responseObject[@"draftList"]];
+        [_dataSource addObjectsFromArray:array];
+        [_collectionView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
     }];
 }
 

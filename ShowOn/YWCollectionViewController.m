@@ -8,6 +8,9 @@
 
 #import "YWCollectionViewController.h"
 #import "YWCollectionTableViewCell.h"
+#import "YWParser.h"
+#import "YWHttpManager.h"
+#import "YWUserModel.h"
 
 @interface YWCollectionViewController()<UITableViewDelegate, UITableViewDataSource>
 
@@ -17,12 +20,14 @@
 {
     NSMutableArray      *_dataSource;
     UITableView         *_tableView;
+    YWHttpManager       *_httpManager;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSource = [[NSMutableArray alloc] init];
+    _httpManager = [YWHttpManager shareInstance];
     
     [self createSubViews];
 }
@@ -38,6 +43,22 @@
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.offset(0);
     }];
+}
+
+#pragma mark - request
+- (void)requestCollectList {
+    NSDictionary *parameters = @{@"userId": @""};
+    [_httpManager requestCollectList:parameters success:^(id responseObject) {
+        YWParser *parser = [[YWParser alloc] init];
+        NSArray *array = [parser trendsWithArray:responseObject[@"collectList"]];
+        [_dataSource addObjectsFromArray:array];
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+    
 }
 
 #pragma mark - UITableViewDelegate

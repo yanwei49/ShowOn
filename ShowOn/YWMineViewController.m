@@ -22,7 +22,6 @@
 #import "YWCustomTabBarViewController.h"
 #import "YWHotView.h"
 #import "YWHotItemViewController.h"
-#import "YWFocusViewController.h"
 
 @interface YWMineViewController ()<UITableViewDelegate, UITableViewDataSource, YWMineTableHeadViewDelegate, YWHotViewDelegate>
 
@@ -34,7 +33,7 @@
     UITableView         *_tableView;
     YWMineTableHeadView *_headView;
     YWHotView           *_hotView;
-    BOOL             _isPushHotItem;
+    BOOL                 _isPushHotItem;
 }
 
 - (void)viewDidLoad {
@@ -89,6 +88,7 @@
     }else {
         _hotView = [[YWHotView alloc] init];
         self.navigationController.navigationBarHidden = YES;
+        _hotView.dataSource = _dataSource;
         _hotView.delegate = self;
         [self.view addSubview:_hotView];
         [_hotView makeConstraints:^(MASConstraintMaker *make) {
@@ -126,9 +126,9 @@
 }
 
 #pragma mark - YWHotViewDelegate
-- (void)hotViewDidSelectItemWithIndex:(NSInteger)index {
+- (void)hotViewDidSelectItemWithTemplate:(YWMovieTemplateModel *)template {
     YWHotItemViewController *vc = [[YWHotItemViewController alloc] init];
-    vc.template = _dataSource[index];
+    vc.template = template;
     [self.navigationController pushViewController:vc animated:YES];
     _isPushHotItem = YES;
 }

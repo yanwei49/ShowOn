@@ -12,6 +12,8 @@
 #import "YWHotItemViewController.h"
 #import "YWArticleListTableViewCell.h"
 #import "YWArticleDetailViewController.h"
+#import "YWHttpManager.h"
+#import "YWParser.h"
 
 #import "YWArticleModel.h"
 
@@ -25,6 +27,7 @@
     BOOL             _isPushHotItem;
     UITableView     *_tableView;
     NSMutableArray  *_dataSource;
+    YWHttpManager   *_httpManager;
 }
 
 - (void)viewDidLoad {
@@ -34,11 +37,26 @@
     self.title = @"图文";
     [self createLeftItemWithTitle:@"首页"];
     _dataSource = [[NSMutableArray alloc] init];
+    _httpManager = [YWHttpManager shareInstance];
 
     [self createSubViews];
     [self createHotView];
     [self dataSource];
 }
+
+- (void)dataSource {
+    for (NSInteger i=0; i<10; i++) {
+        YWArticleModel *article = [[YWArticleModel alloc] init];
+        article.articleId = @"1";
+        article.articleAuthorName = @"作者11";
+        article.articleTitle = @"标题11";
+        article.articleCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+        article.articleUrl = @"http://www.baidu.com";
+        [_dataSource addObject:article];
+    }
+    [_tableView reloadData];
+}
+
 
 #pragma mark - NSNotification
 - (void)hiddenHotView {
@@ -70,31 +88,6 @@
     [super viewWillDisappear:animated];
     YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     tabBar.hiddenState = YES;
-}
-
-#pragma mark - request
-- (void)requestArticle {
-    
-}
-
-- (void)dataSource {
-    for (NSInteger i=0; i<10; i++) {
-        YWArticleModel *article = [[YWArticleModel alloc] init];
-        article.articleId = @"1";
-        article.articleAuthorName = @"作者11";
-        article.articleTitle = @"标题11";
-        article.articleCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-        article.articleUrl = @"http://www.baidu.com";
-        [_dataSource addObject:article];
-    }
-    [_tableView reloadData];
-}
-
-#pragma mark - action
-- (void)actionLeftItem:(UIButton *)button {
-    [self createHotView];
-    YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
-    tabBar.itemSelectIndex = -1;
 }
 
 #pragma mark - create
@@ -132,6 +125,28 @@
     }
 }
 
+#pragma mark - action
+- (void)actionLeftItem:(UIButton *)button {
+    [self createHotView];
+    YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    tabBar.itemSelectIndex = -1;
+}
+
+#pragma mark - request
+- (void)requestArticleList {
+    NSDictionary *parameters = @{@"userId": @""};
+    [_httpManager requestTemplateList:parameters success:^(id responseObject) {
+        YWParser *parser = [[YWParser alloc] init];
+        NSArray *array = [parser articleWithArray:responseObject[@"articleList"]];
+        [_dataSource addObjectsFromArray:array];
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _dataSource.count;
@@ -156,9 +171,9 @@
 }
 
 #pragma mark - YWHotViewDelegate
-- (void)hotViewDidSelectItemWithIndex:(NSInteger)index {
+- (void)hotViewDidSelectItemWithTemplate:(YWMovieTemplateModel *)template {
     YWHotItemViewController *vc = [[YWHotItemViewController alloc] init];
-    vc.template = _dataSource[index];
+    vc.template = template;
     [self.navigationController pushViewController:vc animated:YES];
     _isPushHotItem = YES;
 }

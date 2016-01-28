@@ -189,9 +189,9 @@
 }
 
 #pragma mark - YWHotViewDelegate
-- (void)hotViewDidSelectItemWithIndex:(NSInteger)index {
+- (void)hotViewDidSelectItemWithTemplate:(YWMovieTemplateModel *)template {
     YWHotItemViewController *vc = [[YWHotItemViewController alloc] init];
-    vc.template = _dataSource[index];
+    vc.template = template;
     [self.navigationController pushViewController:vc animated:YES];
     _isPushHotItem = YES;
     YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;

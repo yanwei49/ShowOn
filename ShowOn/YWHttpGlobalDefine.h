@@ -19,6 +19,17 @@
 #define Reginster_Verification_Method         @""          //注册 获取验证码
 #define Reset_Password_Verification_Method    @""          //重置密码 获取验证码
 #define Reset_Password_Method                 @""          //重置密码
+#define Template_List_Method                  @""          //模板列表
+#define Template_Detail_Method                @""          //模板详情
+#define Trends_List_Method                    @""          //动态列表
+#define Trends_Detail_Method                  @""          //动态详情
+#define User_Detail_Method                    @""          //用户详情
+#define User_List_Method                      @""          //用户列表
+#define Collect_List_Method                   @""          //收藏列表
+#define AiTe_List_Method                      @""          //@我列表
+#define Comment_List_Method                   @""          //评论列表
+#define Support_List_Method                   @""          //点赞列表
+#define Draft_List_Method                     @""          //草稿箱列表
 
 
 #endif

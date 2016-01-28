@@ -11,6 +11,9 @@
 #import "YWCustomSegView.h"
 #import "YWChatRoomViewComtroller.h"
 #import "YWTrendsTableViewCell.h"
+#import "YWHttpManager.h"
+#import "YWParser.h"
+#import "YWUserModel.h"
 
 @interface YWUserDataViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YWMineTableHeadViewDelegate, YWCustomSegViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 
@@ -30,11 +33,13 @@
     UIView                 *_dataPickerBackView;
     UIDatePicker           *_dataPicker;
     UIPickerView           *_pickerView;
+    YWHttpManager          *_httpManager;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
+    _httpManager = [YWHttpManager shareInstance];
     _dataSource = [[NSMutableArray alloc] initWithArray:@[@"个人签名", @"性别", @"地区", @"年龄", @"星座", @"身高", @"三围"]];
     _sexArray = @[@"男", @"女"];
     _constellationArray = @[@"白羊座", @"金牛座", @"双子座", @"巨蟹座", @"狮子座", @"处女座", @"天秤座", @"天蝎座", @"射手座", @"摩羯座", @"水瓶座", @"双鱼座"];
@@ -179,6 +184,20 @@
     [formatter setLocale:[NSLocale currentLocale]];
     [formatter setDateFormat:@"yyyy-MM-dd"];
     tf.text = [formatter stringFromDate:_dataPicker.date];
+}
+
+#pragma mark - request
+- (void)requestUserDetails {
+    NSDictionary *parameters = @{@"userId": _user.userId};
+    [_httpManager requestUserDetail:parameters success:^(id responseObject) {
+        YWParser *parser = [[YWParser alloc] init];
+        _user = [parser userWithDict:responseObject[@"user"]];
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 #pragma mark - UIPickerViewDataSource

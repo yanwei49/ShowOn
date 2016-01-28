@@ -18,8 +18,8 @@
 @property (nonatomic, strong) NSString *subsectionVideoSort;                    //分段视频序号
 @property (nonatomic, strong) NSString *subsectionVideoType;                    //分段视频类型（ 1、顺序模式(3、近景,4、中景,5、远景,),2、景别模式(6、特写,7、中景,8、远景)）
 @property (nonatomic, strong) NSString *subsectionVideoPerformanceStatus;       //分段视频演出状态（1、已演,2、未演）
-@property (nonatomic, strong) YWUserModel *subsectionVideoPlayUser;             //分段视频表演用户
-@property (nonatomic, strong) YWMovieTemplateModel *subsectionVideoTemplate;    //分段视频所属模板
+@property (nonatomic, strong) NSString *subsectionVideoTemplateId;              //分段视频所属模板id
+@property (nonatomic, strong) NSString *subsectionVideoPlayUserId;              //分段视频表演用户id
 
 
 @end

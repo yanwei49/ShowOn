@@ -9,14 +9,16 @@
 #import <UIKit/UIKit.h>
 
 @class YWHotView;
+@class YWMovieTemplateModel;
 @protocol YWHotViewDelegate <NSObject>
 
-- (void)hotViewDidSelectItemWithIndex:(NSInteger)index;
+- (void)hotViewDidSelectItemWithTemplate:(YWMovieTemplateModel *)template;
 
 @end
 @interface YWHotView : UIView
 
 @property (nonatomic, assign) id<YWHotViewDelegate> delegate;
+@property (nonatomic, strong) NSArray  *dataSource;
 + (YWHotView *)shareInstance;
 
 @end

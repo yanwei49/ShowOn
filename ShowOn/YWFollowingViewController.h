@@ -10,6 +10,6 @@
 
 @interface YWFollowingViewController : YWBaseViewController
 
-@property (nonatomic, assign) BOOL isFocus;
+@property (nonatomic, assign) NSInteger relationType;
 
 @end

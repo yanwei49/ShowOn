@@ -29,6 +29,7 @@
     UIView         *_otherLoginMethodBackgroundView;
     YWUserModel    *_othersUser;
     UIButton       *_backButton;
+    NSInteger       _loginType;
 }
 
 - (void)viewDidLoad {
@@ -220,7 +221,8 @@
 }
 
 - (void)actionLogin:(UIButton *)button {
-    [self requestLoginWithType:0];
+    _loginType = 1;
+    [self requestLogin];
 }
 
 - (void)actionRegister:(UIButton *)button {
@@ -250,7 +252,22 @@
 }
 
 - (void)weixinLogin {
-    
+    [[UMSocialDataService defaultDataService] requestSnsInformation:UMShareToWechatSession  completion:^(UMSocialResponseEntity *response){
+        //        NSLog(@"SnsInformation is %@",response.data);
+    }];
+    UMSocialSnsPlatform *snsPlatform = [UMSocialSnsPlatformManager getSocialPlatformWithName:UMShareToWechatSession];
+    snsPlatform.loginClickHandler(self,[UMSocialControllerService defaultControllerService],YES,^(UMSocialResponseEntity *response){
+        if (response.responseCode == UMSResponseCodeSuccess) {
+            UMSocialAccountEntity *snsAccount = [[UMSocialAccountManager socialAccountDictionary]valueForKey:UMShareToWechatSession];
+            //            NSLog(@"username is %@, uid is %@, token is %@ url is %@",snsAccount.userName,snsAccount.usid,snsAccount.accessToken,snsAccount.iconURL);
+            _othersUser.userName = snsAccount.userName;
+            _othersUser.portraitUri = snsAccount.iconURL;
+            _loginType = 3;
+            
+            [self requestLogin];
+        }
+        
+    });
 }
 
 - (void)weiboLogin
@@ -266,7 +283,8 @@
                 _othersUser.userName = [[_socialDict objectForKey:@"sina"] objectForKey:@"username"];
                 _othersUser.portraitUri = [[_socialDict objectForKey:@"sina"] objectForKey:@"icon"];
                 
-                [self actionLogin:nil];
+                _loginType = 4;
+                [self requestLogin];
             }
         }];
     });
@@ -288,12 +306,13 @@
                 }
                 _othersUser.portraitUri = [[_socialDict objectForKey:@"qq"] objectForKey:@"icon"];
                 
-                [self actionLogin:nil];
+                _loginType = 2;
+                [self requestLogin];
             }
         }];
     });
-    //设置回调对象
-    [UMSocialControllerService defaultControllerService].socialUIDelegate = self;
+//    //设置回调对象
+//    [UMSocialControllerService defaultControllerService].socialUIDelegate = self;
 }
 
 
@@ -302,9 +321,8 @@
 }
 
 #pragma mark - request
-- (void)requestLoginWithType:(NSInteger)type {
-    [self loginSuccess];
-    NSDictionary *parameters = @{@"accout":_accountTextField.text, @"password":_passwordTextField.text, @"type": @(type)};
+- (void)requestLogin {
+    NSDictionary *parameters = @{@"accout":_accountTextField.text, @"password":_passwordTextField.text, @"type": @(_loginType)};
     [[YWHttpManager shareInstance] requestLogin:parameters success:^(id responseObject) {
         [self loginSuccess];
     } otherFailure:^(id responseObject) {

@@ -9,6 +9,9 @@
 #import "YWHotItemViewController.h"
 #import "YWMovieCommentTableViewCell.h"
 #import "YWHotTableViewCell.h"
+#import "YWHttpManager.h"
+#import "YWMovieTemplateModel.h"
+#import "YWParser.h"
 
 @interface YWHotItemViewController ()<UITableViewDataSource, UITableViewDelegate, YWMovieCommentTableViewCellDelegate>
 
@@ -21,6 +24,7 @@
     NSMutableArray      *_dataSource;
     NSMutableArray      *_trends;
     NSMutableArray      *_comments;
+    YWHttpManager       *_httpManager;
 }
 
 - (void)viewDidLoad {
@@ -36,10 +40,12 @@
     _dataSource = [[NSMutableArray alloc] init];
     _trends = [[NSMutableArray alloc] init];
     _comments = [[NSMutableArray alloc] init];
+    _httpManager = [YWHttpManager shareInstance];
     
     [self createSubViews];
 }
 
+#pragma mark - private
 - (void)createSubViews {
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     _tableView.backgroundColor = Subject_color;
@@ -65,6 +71,22 @@
         [_dataSource addObjectsFromArray:_comments];
     }
     [_tableView reloadData];
+}
+
+#pragma mark - request
+- (void)requestTemplateDetail {
+    NSDictionary *parameters = @{@"userId": @"", @"templateId": _template.templateId};
+    [_httpManager requestTemplateDetail:parameters success:^(id responseObject) {
+        YWParser *parser = [[YWParser alloc] init];
+        _template = [parser templateWithDict:responseObject[@"template"]];
+        [_trends addObjectsFromArray:_template.templateTrends];
+        [_comments addObjectsFromArray:_template.templateComments];
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 #pragma nmark - UITableViewDelegate
@@ -114,7 +136,7 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (!_segmentedControl.selectedSegmentIndex && !section) {
+    if (!_segmentedControl.selectedSegmentIndex && section) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 30)];
         view.backgroundColor = Subject_color;
         UILabel *label = [[UILabel alloc] init];
@@ -135,7 +157,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (!_segmentedControl.selectedSegmentIndex && !section) {
+    if (!_segmentedControl.selectedSegmentIndex && section) {
         return 30;
     }else {
         return 0.00001;

@@ -13,15 +13,12 @@
 #import "YWHttpManager.h"
 #import "YWParser.h"
 
-#import "YWMovieTemplateModel.h"
-
 @interface YWHotView ()<UITableViewDataSource, UITableViewDelegate>
 
 @end
 
 @implementation YWHotView
 {
-    NSMutableArray      *_dataSource;
     UITableView         *_tableView;
     UISearchBar         *_searchBar;
 }
@@ -39,27 +36,15 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = Subject_color;
-        _dataSource = [[NSMutableArray alloc] init];
         
         [self createSubViews];
-        [self dataSource];
 
     }
     return self;
 }
 
-- (void)dataSource {
-    for (NSInteger i=0; i<10; i++) {
-        YWMovieTemplateModel *template = [[YWMovieTemplateModel alloc] init];
-        template.templateId = [NSString stringWithFormat:@"%ld", i];
-        template.templateName = [NSString stringWithFormat:@"模板%ld", i];
-        template.templateVideoUrl = @"";
-        template.templateVideoTime = @"1分20秒";
-        template.templateVideoCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-        template.templateTypeId = [NSString stringWithFormat:@"%ld", (long)arc4random()%3+1];
-        
-        [_dataSource addObject:template];
-    }
+- (void)setDataSource:(NSArray *)dataSource {
+    _dataSource = dataSource;
     [_tableView reloadData];
 }
 
@@ -96,8 +81,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ([_delegate respondsToSelector:@selector(hotViewDidSelectItemWithIndex:)]) {
-        [_delegate hotViewDidSelectItemWithIndex:indexPath.row];
+    if ([_delegate respondsToSelector:@selector(hotViewDidSelectItemWithTemplate:)]) {
+        [_delegate hotViewDidSelectItemWithTemplate:_dataSource[indexPath.row]];
     }
 }
 

@@ -134,6 +134,8 @@
 		568DC0D51C5619DB00CFD1BC /* 对话框@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 568DC0651C5619DA00CFD1BC /* 对话框@2x.png */; };
 		568DC0D61C5619DB00CFD1BC /* 对话框@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 568DC0661C5619DA00CFD1BC /* 对话框@3x.png */; };
 		568DC0D81C5619F300CFD1BC /* 接口.txt in Resources */ = {isa = PBXBuildFile; fileRef = 568DC0D71C5619F300CFD1BC /* 接口.txt */; };
+		56A6BFAE1C59CA8800AEA490 /* YWAiTeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A6BFAD1C59CA8800AEA490 /* YWAiTeModel.m */; };
+		56A6BFB11C59CE0700AEA490 /* YWSupportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A6BFB01C59CE0700AEA490 /* YWSupportModel.m */; };
 		56F4AF1C1C125EE4008A6828 /* YWLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF1B1C125EE4008A6828 /* YWLoginViewController.m */; };
 		56F4AF1F1C12653F008A6828 /* YWRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF1E1C12653F008A6828 /* YWRegisterViewController.m */; };
 		56F4AF221C126550008A6828 /* YWForgetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF211C126550008A6828 /* YWForgetPasswordViewController.m */; };
@@ -188,7 +190,7 @@
 		56FE9A101C0FBBA3007BA29B /* YWMineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE9A0F1C0FBBA3007BA29B /* YWMineViewController.m */; };
 		56FE9A131C0FBCF2007BA29B /* YWNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE9A121C0FBCF2007BA29B /* YWNavigationController.m */; };
 		56FE9A191C0FC234007BA29B /* YWTemplateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE9A181C0FC234007BA29B /* YWTemplateViewController.m */; };
-		56FE9A1C1C0FC242007BA29B /* YWFocusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE9A1B1C0FC242007BA29B /* YWFocusViewController.m */; };
+		56FE9A1C1C0FC242007BA29B /* YWTrendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE9A1B1C0FC242007BA29B /* YWTrendsViewController.m */; };
 		56FE9A221C0FC2A2007BA29B /* YWCustomSegView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE9A211C0FC2A2007BA29B /* YWCustomSegView.m */; };
 		770EC2B81C10772600A4D2E9 /* YWHotTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2B71C10772600A4D2E9 /* YWHotTableViewCell.m */; };
 		770EC2BE1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 770EC2BD1C1078EC00A4D2E9 /* YWTemplateCollectionViewCell.m */; };
@@ -206,7 +208,6 @@
 		774A1E5A1C2FCD5600671945 /* YWDataBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 774A1E591C2FCD5600671945 /* YWDataBaseManager.m */; };
 		77927B471C4541F0001ED99B /* YWHotItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77927B461C4541F0001ED99B /* YWHotItemViewController.m */; };
 		77AD0CAD1C1DA34800A1FD75 /* YWCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AD0CAC1C1DA34800A1FD75 /* YWCommentModel.m */; };
-		77D0F0391C110A7A00134A17 /* YWTrendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0381C110A7A00134A17 /* YWTrendsViewController.m */; };
 		77D0F03C1C110B3300134A17 /* YWFollowingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F03B1C110B3300134A17 /* YWFollowingViewController.m */; };
 		77D0F0411C110BA600134A17 /* YWFollowingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0401C110BA600134A17 /* YWFollowingTableViewCell.m */; };
 		77D0F0C51C11B4F300134A17 /* YWCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D0F0C41C11B4F300134A17 /* YWCollectionViewController.m */; };
@@ -395,6 +396,10 @@
 		568DC0661C5619DA00CFD1BC /* 对话框@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "对话框@3x.png"; sourceTree = "<group>"; };
 		568DC0D71C5619F300CFD1BC /* 接口.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "接口.txt"; sourceTree = "<group>"; };
 		5695FFD51C4C61600070544A /* Directions.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = Directions.geojson; sourceTree = "<group>"; };
+		56A6BFAC1C59CA8800AEA490 /* YWAiTeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWAiTeModel.h; sourceTree = "<group>"; };
+		56A6BFAD1C59CA8800AEA490 /* YWAiTeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWAiTeModel.m; sourceTree = "<group>"; };
+		56A6BFAF1C59CE0700AEA490 /* YWSupportModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWSupportModel.h; sourceTree = "<group>"; };
+		56A6BFB01C59CE0700AEA490 /* YWSupportModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWSupportModel.m; sourceTree = "<group>"; };
 		56F4AF1A1C125EE4008A6828 /* YWLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWLoginViewController.h; sourceTree = "<group>"; };
 		56F4AF1B1C125EE4008A6828 /* YWLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWLoginViewController.m; sourceTree = "<group>"; };
 		56F4AF1D1C12653F008A6828 /* YWRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWRegisterViewController.h; sourceTree = "<group>"; };
@@ -489,8 +494,8 @@
 		56FE9A121C0FBCF2007BA29B /* YWNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWNavigationController.m; sourceTree = "<group>"; };
 		56FE9A171C0FC234007BA29B /* YWTemplateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTemplateViewController.h; sourceTree = "<group>"; };
 		56FE9A181C0FC234007BA29B /* YWTemplateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTemplateViewController.m; sourceTree = "<group>"; };
-		56FE9A1A1C0FC242007BA29B /* YWFocusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFocusViewController.h; sourceTree = "<group>"; };
-		56FE9A1B1C0FC242007BA29B /* YWFocusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFocusViewController.m; sourceTree = "<group>"; };
+		56FE9A1A1C0FC242007BA29B /* YWTrendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTrendsViewController.h; sourceTree = "<group>"; };
+		56FE9A1B1C0FC242007BA29B /* YWTrendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTrendsViewController.m; sourceTree = "<group>"; };
 		56FE9A201C0FC2A2007BA29B /* YWCustomSegView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCustomSegView.h; sourceTree = "<group>"; };
 		56FE9A211C0FC2A2007BA29B /* YWCustomSegView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCustomSegView.m; sourceTree = "<group>"; };
 		56FE9A241C0FCA4D007BA29B /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
@@ -526,8 +531,6 @@
 		77927B461C4541F0001ED99B /* YWHotItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWHotItemViewController.m; sourceTree = "<group>"; };
 		77AD0CAB1C1DA34800A1FD75 /* YWCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCommentModel.h; sourceTree = "<group>"; };
 		77AD0CAC1C1DA34800A1FD75 /* YWCommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCommentModel.m; sourceTree = "<group>"; };
-		77D0F0371C110A7A00134A17 /* YWTrendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTrendsViewController.h; sourceTree = "<group>"; };
-		77D0F0381C110A7A00134A17 /* YWTrendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTrendsViewController.m; sourceTree = "<group>"; };
 		77D0F03A1C110B3300134A17 /* YWFollowingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFollowingViewController.h; sourceTree = "<group>"; };
 		77D0F03B1C110B3300134A17 /* YWFollowingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFollowingViewController.m; sourceTree = "<group>"; };
 		77D0F03F1C110BA600134A17 /* YWFollowingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFollowingTableViewCell.h; sourceTree = "<group>"; };
@@ -1162,6 +1165,10 @@
 				77AD0CAC1C1DA34800A1FD75 /* YWCommentModel.m */,
 				566F0D9E1C48716500353311 /* YWTrendsModel.h */,
 				566F0D9F1C48716500353311 /* YWTrendsModel.m */,
+				56A6BFAC1C59CA8800AEA490 /* YWAiTeModel.h */,
+				56A6BFAD1C59CA8800AEA490 /* YWAiTeModel.m */,
+				56A6BFAF1C59CE0700AEA490 /* YWSupportModel.h */,
+				56A6BFB01C59CE0700AEA490 /* YWSupportModel.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -1235,8 +1242,6 @@
 		56FE9A161C0FC1AB007BA29B /* 关注 */ = {
 			isa = PBXGroup;
 			children = (
-				56FE9A1A1C0FC242007BA29B /* YWFocusViewController.h */,
-				56FE9A1B1C0FC242007BA29B /* YWFocusViewController.m */,
 			);
 			name = "关注";
 			sourceTree = "<group>";
@@ -1313,8 +1318,8 @@
 		77D0F0361C110A6200134A17 /* trends */ = {
 			isa = PBXGroup;
 			children = (
-				77D0F0371C110A7A00134A17 /* YWTrendsViewController.h */,
-				77D0F0381C110A7A00134A17 /* YWTrendsViewController.m */,
+				56FE9A1A1C0FC242007BA29B /* YWTrendsViewController.h */,
+				56FE9A1B1C0FC242007BA29B /* YWTrendsViewController.m */,
 			);
 			name = trends;
 			sourceTree = "<group>";
@@ -1816,7 +1821,7 @@
 				774A1E511C2F709D00671945 /* YWMovieCommentTableViewCell.m in Sources */,
 				56FE99CE1C0FBAB8007BA29B /* AppDelegate.m in Sources */,
 				77D0F1011C11CABB00134A17 /* YWHttpManager.m in Sources */,
-				56FE9A1C1C0FC242007BA29B /* YWFocusViewController.m in Sources */,
+				56FE9A1C1C0FC242007BA29B /* YWTrendsViewController.m in Sources */,
 				5689DBCC1C4476080095936F /* YWHotView.m in Sources */,
 				770EC2C71C1088E100A4D2E9 /* YWSearchCollectionReusableView.m in Sources */,
 				56F5D38A1C17D44F008C33CA /* YWToolboxPlay.m in Sources */,
@@ -1830,8 +1835,10 @@
 				566BF5EE1C47191F002C5591 /* YWTemplateListTableViewCell.m in Sources */,
 				770EC2C11C10790000A4D2E9 /* YWFocusTableViewCell.m in Sources */,
 				774A1E571C2FC9C600671945 /* YWWriteCommentViewController.m in Sources */,
+				56A6BFB11C59CE0700AEA490 /* YWSupportModel.m in Sources */,
 				56FE9A0D1C0FBB95007BA29B /* YWMovieViewController.m in Sources */,
 				7710ABB41C1F8A88006FF4EF /* YWUserDataViewController.m in Sources */,
+				56A6BFAE1C59CA8800AEA490 /* YWAiTeModel.m in Sources */,
 				566BF5EB1C4717CF002C5591 /* YWTemplateListViewController.m in Sources */,
 				56F5D3291C17AAFD008C33CA /* NSMutableAttributedString+NimbusKitAttributedLabel.m in Sources */,
 				77D0F0F71C11C55600134A17 /* YWDraftCollectionViewCell.m in Sources */,
@@ -1868,7 +1875,6 @@
 				770EC2CB1C108E2D00A4D2E9 /* YWMineTableHeadView.m in Sources */,
 				77D0F0FD1C11C8D700134A17 /* YWChatRoomViewComtroller.m in Sources */,
 				77D0F1091C11CEFB00134A17 /* YWSettingViewController.m in Sources */,
-				77D0F0391C110A7A00134A17 /* YWTrendsViewController.m in Sources */,
 				77D0F0C51C11B4F300134A17 /* YWCollectionViewController.m in Sources */,
 				774A1E5A1C2FCD5600671945 /* YWDataBaseManager.m in Sources */,
 				568DBF671C55BE2000CFD1BC /* YWSearchViewController.m in Sources */,

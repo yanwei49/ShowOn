@@ -33,29 +33,35 @@
     UIButton *downButton = [[UIButton alloc] init];
     downButton.backgroundColor = RGBColor(30, 30, 30);
     downButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    downButton.layer.masksToBounds = YES;
+    downButton.layer.cornerRadius = 5;
     [downButton setTitle:@"完成" forState:UIControlStateNormal];
     [downButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [downButton addTarget:self action:@selector(actionDown:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:downButton];
     [downButton makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.right.offset(0);
-        make.height.offset(30);
+        make.left.offset(20);
+        make.bottom.right.offset(-20);
+        make.height.offset(40);
     }];
     
     _seg = [[UISegmentedControl alloc] initWithItems:@[@"截图海报", @"自拍海报"]];
     _seg.backgroundColor = RGBColor(30, 30, 30);
     [_seg addTarget:self action:@selector(actionValueChange) forControlEvents:UIControlEventValueChanged];
+    _seg.selectedSegmentIndex = 0;
     _seg.tintColor = [UIColor orangeColor];
     [self.view addSubview:_seg];
     [_seg makeConstraints:^(MASConstraintMaker *make) {
-        make.height.offset(20);
+        make.height.offset(34);
         make.width.offset(160);
         make.centerX.equalTo(self.view.mas_centerX);
-        make.top.offset(10);
+        make.top.offset(64+10);
     }];
     
     _coverImageView = [[UIImageView alloc] init];
-    _coverImageView.backgroundColor = Subject_color;
+    _coverImageView.backgroundColor = RGBColor(30, 30, 30);
+    _coverImageView.layer.masksToBounds = YES;
+    _coverImageView.layer.cornerRadius = 5;
     _coverImageView.image = nil;
     [self.view addSubview:_coverImageView];
     [_coverImageView makeConstraints:^(MASConstraintMaker *make) {

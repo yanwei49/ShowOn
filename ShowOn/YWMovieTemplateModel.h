@@ -19,5 +19,7 @@
 @property (nonatomic, strong) NSString *templatePlayUserNumbers;    //模板表演的用户数量
 @property (nonatomic, strong) NSArray  *templatePlayUsers;          //模板表演的用户
 @property (nonatomic, strong) NSArray  *templateSubsectionVideos;   //模板分段视频数组
+@property (nonatomic, strong) NSArray  *templateTrends;             //模板视频被表演过的动态数组
+@property (nonatomic, strong) NSArray  *templateComments;           //模板评论数组
 
 @end
