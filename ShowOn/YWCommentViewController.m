@@ -11,8 +11,10 @@
 #import "YWParser.h"
 #import "YWHttpManager.h"
 #import "YWUserModel.h"
+#import "YWHotDetailViewController.h"
+#import "YWDataBaseManager.h"
 
-@interface YWCommentViewController()<UITableViewDataSource, UITableViewDelegate>
+@interface YWCommentViewController()<UITableViewDataSource, UITableViewDelegate, YWCommentTableViewCellDelegate>
 
 @end
 
@@ -30,16 +32,21 @@
     _httpManager = [YWHttpManager shareInstance];
 
     [self createSubViews];
-    [self dataSource];
+//    [self dataSource];
 }
 
-- (void)dataSource {
-    for (NSInteger i=0; i<10; i++) {
-        [_dataSource addObject:@""];
-    }
-    
-    [_tableView reloadData];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self requestCommentList];
 }
+
+//- (void)dataSource {
+//    for (NSInteger i=0; i<10; i++) {
+//        [_dataSource addObject:@""];
+//    }
+//    
+//    [_tableView reloadData];
+//}
 
 - (void)createSubViews {
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -57,7 +64,7 @@
 
 #pragma mark - request
 - (void)requestCommentList {
-    NSDictionary *parameters = @{@"userId": @""};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
     [_httpManager requestCommentList:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser aiTeWithArray:responseObject[@"aiTeList"]];
@@ -77,7 +84,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YWCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    
+    cell.comment = _dataSource[indexPath.row];
     
     return cell;
 }
@@ -88,7 +95,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    YWHotDetailViewController *hotVC = [[YWHotDetailViewController alloc] init];
+    hotVC.trends = [_dataSource[indexPath.row] trends];
+    [self.navigationController pushViewController:hotVC animated:YES];
 }
 
+#pragma mark - YWCommentTableViewCellDelegate
+- (void)commentTableViewCellDidSelectPlay:(YWCommentTableViewCell *)cell {
+
+}
 
 @end

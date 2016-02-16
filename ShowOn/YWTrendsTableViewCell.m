@@ -8,6 +8,7 @@
 
 #import "YWTrendsTableViewCell.h"
 #import "YWMoviePlayView.h"
+#import "YWTrendsModel.h"
 
 @implementation YWTrendsTableViewCell
 {
@@ -96,7 +97,17 @@
 }
 
 - (void)actionSupport:(UIButton *)button {
-    _supportButton.selected = !_supportButton.selected;
+    if ([_delegate respondsToSelector:@selector(trendsTableViewCellDidSelectSupportButton:)]) {
+        [_delegate trendsTableViewCellDidSelectSupportButton:self];
+    }
+}
+
+- (void)setTrends:(YWTrendsModel *)trends {
+    _trends = trends;
+    _supportButton.selected = trends.trendsIsSupport;
+    _contentLabel.text = trends.trendsContent;
+    _supportLabel.text = trends.trendsSuppotNumbers;
+    _timeLabel.text = trends.trendsPubdate;
 }
 
 +(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends {

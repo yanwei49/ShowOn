@@ -21,12 +21,13 @@
 #import "YWHttpManager.h"
 #import "YWParser.h"
 #import "YWUserModel.h"
+#import "YWDataBaseManager.h"
 
 
 #import "YWCommentModel.h"
 #import "YWMovieTemplateModel.h"
 
-@interface YWHotDetailViewController()<UITableViewDataSource, UITableViewDelegate, YWFocusTableViewCellCellDelegate, YWMovieCommentTableViewCellDelegate, YWMovieOtherInfosTableViewCellDelegate>
+@interface YWHotDetailViewController()<UITableViewDataSource, UITableViewDelegate, YWFocusTableViewCellDelegate, YWMovieCommentTableViewCellDelegate, YWMovieOtherInfosTableViewCellDelegate>
 
 @end
 
@@ -173,7 +174,7 @@
 
 #pragma mark - request
 - (void)requestTrendsList {
-    NSDictionary *parameters = @{@"userId": @"", @"trendsId": _trends.trendsId};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"trendsId": _trends.trendsId};
     [_httpManager requestTrendsDetail:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         _trends = [parser trendsWithDict:responseObject[@"trends"]];
@@ -241,9 +242,9 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
-#pragma mark - YWFocusTableViewCellCellDelegate
+#pragma mark - YWFocusTableViewCellDelegate
 - (void)focusTableViewCellDidSelectCooperate:(YWFocusTableViewCell *)cell {
-    if (false) {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
 
     }else {
         [self login];
@@ -251,7 +252,7 @@
 }
 
 - (void)focusTableViewCellDidSelectPlay:(YWFocusTableViewCell *)cell {
-    if (false) {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
         
     }else {
         [self login];
@@ -260,7 +261,7 @@
 
 #pragma mark - YWMovieOtherInfosTableViewCellDelegate
 - (void)movieOtherInfosTableViewCellDidSelectShare:(YWMovieOtherInfosTableViewCell *)cell {
-    if (true) {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
         [UMSocialSnsService presentSnsIconSheetView:self appKey:UMengAppKey shareText:@"来自【角儿】" shareImage:nil shareToSnsNames:@[UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQzone,UMShareToSina,UMShareToQQ] delegate:nil];
         NSString *url = @"http://www.baidu.com";
         NSString *title = _trends.trendsContent.length>0?_trends.trendsContent:@"";
@@ -278,7 +279,7 @@
 }
 
 - (void)movieOtherInfosTableViewCellDidSelectSupport:(YWMovieOtherInfosTableViewCell *)cell {
-    if (false) {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
         
     }else {
         [self login];
@@ -286,7 +287,7 @@
 }
 
 - (void)movieOtherInfosTableViewCellDidSelectCollect:(YWMovieOtherInfosTableViewCell *)cell {
-    if (false) {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
         
     }else {
         [self login];
@@ -301,7 +302,7 @@
 
 #pragma mark - YWMovieCommentTableViewCellDelegate
 - (void)movieCommentTableViewCellDidSelectSupport:(YWMovieCommentTableViewCell *)cell {
-    if (false) {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
         
     }else {
         [self login];

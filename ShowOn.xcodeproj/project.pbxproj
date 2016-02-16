@@ -11,6 +11,8 @@
 		566BF5EB1C4717CF002C5591 /* YWTemplateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566BF5EA1C4717CF002C5591 /* YWTemplateListViewController.m */; };
 		566BF5EE1C47191F002C5591 /* YWTemplateListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 566BF5ED1C47191F002C5591 /* YWTemplateListTableViewCell.m */; };
 		566F0DA01C48716500353311 /* YWTrendsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 566F0D9F1C48716500353311 /* YWTrendsModel.m */; };
+		567C151C1C731761006A365D /* YWKeyboardHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 567C151B1C731761006A365D /* YWKeyboardHeadView.m */; };
+		567C151F1C7322AB006A365D /* YWWeiBoFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 567C151E1C7322AB006A365D /* YWWeiBoFriendsViewController.m */; };
 		56843F821C4F03C50062F7DF /* YWMovieTemplateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56843F811C4F03C50062F7DF /* YWMovieTemplateModel.m */; };
 		56843F851C4F05080062F7DF /* YWSubsectionVideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56843F841C4F05080062F7DF /* YWSubsectionVideoModel.m */; };
 		5689DBCC1C4476080095936F /* YWHotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689DBCB1C4476080095936F /* YWHotView.m */; };
@@ -136,6 +138,7 @@
 		568DC0D81C5619F300CFD1BC /* 接口.txt in Resources */ = {isa = PBXBuildFile; fileRef = 568DC0D71C5619F300CFD1BC /* 接口.txt */; };
 		56A6BFAE1C59CA8800AEA490 /* YWAiTeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A6BFAD1C59CA8800AEA490 /* YWAiTeModel.m */; };
 		56A6BFB11C59CE0700AEA490 /* YWSupportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A6BFB01C59CE0700AEA490 /* YWSupportModel.m */; };
+		56B72F391C73099E00E3ACE6 /* YWTrendsCategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B72F381C73099E00E3ACE6 /* YWTrendsCategoryView.m */; };
 		56F4AF1C1C125EE4008A6828 /* YWLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF1B1C125EE4008A6828 /* YWLoginViewController.m */; };
 		56F4AF1F1C12653F008A6828 /* YWRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF1E1C12653F008A6828 /* YWRegisterViewController.m */; };
 		56F4AF221C126550008A6828 /* YWForgetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF211C126550008A6828 /* YWForgetPasswordViewController.m */; };
@@ -262,6 +265,10 @@
 		566BF5ED1C47191F002C5591 /* YWTemplateListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTemplateListTableViewCell.m; sourceTree = "<group>"; };
 		566F0D9E1C48716500353311 /* YWTrendsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTrendsModel.h; sourceTree = "<group>"; };
 		566F0D9F1C48716500353311 /* YWTrendsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTrendsModel.m; sourceTree = "<group>"; };
+		567C151A1C731761006A365D /* YWKeyboardHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWKeyboardHeadView.h; sourceTree = "<group>"; };
+		567C151B1C731761006A365D /* YWKeyboardHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWKeyboardHeadView.m; sourceTree = "<group>"; };
+		567C151D1C7322AB006A365D /* YWWeiBoFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWWeiBoFriendsViewController.h; sourceTree = "<group>"; };
+		567C151E1C7322AB006A365D /* YWWeiBoFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWWeiBoFriendsViewController.m; sourceTree = "<group>"; };
 		56843F801C4F03C50062F7DF /* YWMovieTemplateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWMovieTemplateModel.h; sourceTree = "<group>"; };
 		56843F811C4F03C50062F7DF /* YWMovieTemplateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWMovieTemplateModel.m; sourceTree = "<group>"; };
 		56843F831C4F05080062F7DF /* YWSubsectionVideoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWSubsectionVideoModel.h; sourceTree = "<group>"; };
@@ -400,6 +407,8 @@
 		56A6BFAD1C59CA8800AEA490 /* YWAiTeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWAiTeModel.m; sourceTree = "<group>"; };
 		56A6BFAF1C59CE0700AEA490 /* YWSupportModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWSupportModel.h; sourceTree = "<group>"; };
 		56A6BFB01C59CE0700AEA490 /* YWSupportModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWSupportModel.m; sourceTree = "<group>"; };
+		56B72F371C73099E00E3ACE6 /* YWTrendsCategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTrendsCategoryView.h; sourceTree = "<group>"; };
+		56B72F381C73099E00E3ACE6 /* YWTrendsCategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTrendsCategoryView.m; sourceTree = "<group>"; };
 		56F4AF1A1C125EE4008A6828 /* YWLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWLoginViewController.h; sourceTree = "<group>"; };
 		56F4AF1B1C125EE4008A6828 /* YWLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWLoginViewController.m; sourceTree = "<group>"; };
 		56F4AF1D1C12653F008A6828 /* YWRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWRegisterViewController.h; sourceTree = "<group>"; };
@@ -1003,10 +1012,6 @@
 				568DC0D71C5619F300CFD1BC /* 接口.txt */,
 				5695FFD51C4C61600070544A /* Directions.geojson */,
 				56679BC31C3B393700272C44 /* json.geojson */,
-				568DBFF61C5619DA00CFD1BC /* resouce */,
-				56F5D3201C17AAE2008C33CA /* other */,
-				77D0F0FE1C11CA9D00134A17 /* comman */,
-				77D0F0421C110CFB00134A17 /* catogory */,
 				56FE99CC1C0FBAB8007BA29B /* AppDelegate.h */,
 				56FE99CD1C0FBAB8007BA29B /* AppDelegate.m */,
 				56FE9A111C0FBCF2007BA29B /* YWNavigationController.h */,
@@ -1015,6 +1020,10 @@
 				770EC2C31C107AC600A4D2E9 /* YWBaseViewController.m */,
 				566AE2721C3DE19900781A7E /* YWCustomTabBarViewController.h */,
 				566AE2731C3DE19900781A7E /* YWCustomTabBarViewController.m */,
+				568DBFF61C5619DA00CFD1BC /* resouce */,
+				56F5D3201C17AAE2008C33CA /* other */,
+				77D0F0FE1C11CA9D00134A17 /* comman */,
+				77D0F0421C110CFB00134A17 /* catogory */,
 				56F4AF191C125ED0008A6828 /* login */,
 				56FE99FC1C0FBAE8007BA29B /* home */,
 				568D28651C49CC4200DAA9B9 /* article */,
@@ -1096,7 +1105,6 @@
 				568DBF641C55BE0E00CFD1BC /* 搜索 */,
 				56FE9A141C0FC18D007BA29B /* 热门 */,
 				56FE9A151C0FC197007BA29B /* 模板 */,
-				56FE9A161C0FC1AB007BA29B /* 关注 */,
 			);
 			name = viewcontroller;
 			sourceTree = "<group>";
@@ -1121,6 +1129,8 @@
 			children = (
 				56FE9A0E1C0FBBA3007BA29B /* YWMineViewController.h */,
 				56FE9A0F1C0FBBA3007BA29B /* YWMineViewController.m */,
+				567C151D1C7322AB006A365D /* YWWeiBoFriendsViewController.h */,
+				567C151E1C7322AB006A365D /* YWWeiBoFriendsViewController.m */,
 				7710ABB11C1F8A50006FF4EF /* userData */,
 				77D0F1061C11CED800134A17 /* setting */,
 				77D0F0361C110A6200134A17 /* trends */,
@@ -1186,6 +1196,8 @@
 				56FE9A211C0FC2A2007BA29B /* YWCustomSegView.m */,
 				5689DBCA1C4476080095936F /* YWHotView.h */,
 				5689DBCB1C4476080095936F /* YWHotView.m */,
+				567C151A1C731761006A365D /* YWKeyboardHeadView.h */,
+				567C151B1C731761006A365D /* YWKeyboardHeadView.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -1211,6 +1223,8 @@
 				77D0F0E61C11C47200134A17 /* draftTabCell */,
 				770EC2C91C108E2D00A4D2E9 /* YWMineTableHeadView.h */,
 				770EC2CA1C108E2D00A4D2E9 /* YWMineTableHeadView.m */,
+				56B72F371C73099E00E3ACE6 /* YWTrendsCategoryView.h */,
+				56B72F381C73099E00E3ACE6 /* YWTrendsCategoryView.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -1237,13 +1251,6 @@
 				566BF5EA1C4717CF002C5591 /* YWTemplateListViewController.m */,
 			);
 			name = "模板";
-			sourceTree = "<group>";
-		};
-		56FE9A161C0FC1AB007BA29B /* 关注 */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "关注";
 			sourceTree = "<group>";
 		};
 		633C4F8F77FB0DA0579932AD /* Pods */ = {
@@ -1524,6 +1531,7 @@
 				56FE99C31C0FBAB8007BA29B /* Frameworks */,
 				56FE99C41C0FBAB8007BA29B /* Resources */,
 				38DE3500F76BB2B4A3E5C4DD /* Copy Pods Resources */,
+				5EEB7EDAED6C5525106C98E9 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1811,6 +1819,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		5EEB7EDAED6C5525106C98E9 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1838,6 +1861,7 @@
 				56A6BFB11C59CE0700AEA490 /* YWSupportModel.m in Sources */,
 				56FE9A0D1C0FBB95007BA29B /* YWMovieViewController.m in Sources */,
 				7710ABB41C1F8A88006FF4EF /* YWUserDataViewController.m in Sources */,
+				567C151F1C7322AB006A365D /* YWWeiBoFriendsViewController.m in Sources */,
 				56A6BFAE1C59CA8800AEA490 /* YWAiTeModel.m in Sources */,
 				566BF5EB1C4717CF002C5591 /* YWTemplateListViewController.m in Sources */,
 				56F5D3291C17AAFD008C33CA /* NSMutableAttributedString+NimbusKitAttributedLabel.m in Sources */,
@@ -1847,11 +1871,13 @@
 				77D0F0CD1C11C1B200134A17 /* YWCollectionTableViewCell.m in Sources */,
 				56F4AF1C1C125EE4008A6828 /* YWLoginViewController.m in Sources */,
 				770EC2C41C107AC600A4D2E9 /* YWBaseViewController.m in Sources */,
+				56B72F391C73099E00E3ACE6 /* YWTrendsCategoryView.m in Sources */,
 				56F5D3861C17CBCF008C33CA /* YWMovieRecorder.m in Sources */,
 				568DBF6B1C55C0AC00CFD1BC /* YWSearchTemplateTableViewCell.m in Sources */,
 				568D286E1C49CDCA00DAA9B9 /* YWArticleDetailViewController.m in Sources */,
 				566F0DA01C48716500353311 /* YWTrendsModel.m in Sources */,
 				77D0F0F11C11C52000134A17 /* YWCommentTableViewCell.m in Sources */,
+				567C151C1C731761006A365D /* YWKeyboardHeadView.m in Sources */,
 				56F4AF251C1279A1008A6828 /* NSString+isValidate.m in Sources */,
 				56FE99CB1C0FBAB8007BA29B /* main.m in Sources */,
 				56F5D3811C17CAE1008C33CA /* YWMoviePlayView.m in Sources */,

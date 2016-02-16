@@ -11,8 +11,10 @@
 #import "YWParser.h"
 #import "YWHttpManager.h"
 #import "YWUserModel.h"
+#import "YWHotDetailViewController.h"
+#import "YWDataBaseManager.h"
 
-@interface YWCollectionViewController()<UITableViewDelegate, UITableViewDataSource>
+@interface YWCollectionViewController()<UITableViewDelegate, UITableViewDataSource, YWCollectionTableViewCellDelegate>
 
 @end
 
@@ -32,6 +34,11 @@
     [self createSubViews];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self requestCollectList];
+}
+
 - (void)createSubViews {
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     _tableView.backgroundColor = [UIColor whiteColor];
@@ -47,7 +54,7 @@
 
 #pragma mark - request
 - (void)requestCollectList {
-    NSDictionary *parameters = @{@"userId": @""};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
     [_httpManager requestCollectList:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser trendsWithArray:responseObject[@"collectList"]];
@@ -68,17 +75,38 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YWCollectionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    
+    cell.delegate = self;
+    cell.trends = _dataSource[indexPath.row];
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 50;
+    return [YWCollectionTableViewCell cellHeightWithTrends:_dataSource[indexPath.row]];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    YWHotDetailViewController *hotVC = [[YWHotDetailViewController alloc] init];
+    hotVC.trends = _dataSource[indexPath.row];
+    [self.navigationController pushViewController:hotVC animated:YES];
+}
+
+#pragma mark - YWCollectionTableViewCellDelegate
+- (void)collectionTableViewCellDidSelectCooperate:(YWCollectionTableViewCell *)cell {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
+        
+    }else {
+        [self login];
+    }
+}
+
+- (void)collectionTableViewCellDidSelectPlay:(YWCollectionTableViewCell *)cell {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
+        
+    }else {
+        [self login];
+    }
 }
 
 

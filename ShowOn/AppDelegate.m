@@ -19,9 +19,6 @@
 #import "UMSocialSinaHandler.h"
 #import "YWCustomTabBarViewController.h"
 
-
-#import "YWHotView.h"
-
 @interface AppDelegate ()<UITabBarControllerDelegate, YWCustomTabBarViewControllerDelegate>
 
 @end

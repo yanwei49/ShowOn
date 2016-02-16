@@ -8,3 +8,5 @@ pod 'KxMenu'
 pod 'Bugly'
 pod 'RongCloudIMKit'
 pod 'IQKeyboardManager'
+pod "WeiboSDK", :git => "https://github.com/sinaweibosdk/weibo_ios_sdk.git" 
+

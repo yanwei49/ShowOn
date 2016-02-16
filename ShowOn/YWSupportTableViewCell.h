@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class YWSupportModel;
 @interface YWSupportTableViewCell : UITableViewCell
+
+@property (nonatomic, strong) YWSupportModel *support;
 
 @end

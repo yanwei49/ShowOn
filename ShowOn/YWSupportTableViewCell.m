@@ -7,6 +7,11 @@
 //
 
 #import "YWSupportTableViewCell.h"
+#import "YWSupportModel.h"
+#import "YWTrendsModel.h"
+#import "YWCommentModel.h"
+#import "YWUserModel.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @implementation YWSupportTableViewCell
 {
@@ -93,7 +98,7 @@
         _playButton = [[UIButton alloc] init];
         _playButton.backgroundColor = Subject_color;
         [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-        [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+//        [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
         [_playButton addTarget:self action:@selector(actionOnClick:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_playButton];
         [_playButton makeConstraints:^(MASConstraintMaker *make) {
@@ -108,6 +113,26 @@
 
 - (void)actionOnClick:(UIButton *)button {
     
+}
+
+- (void)setSupport:(YWSupportModel *)support {
+    _support = support;
+    if (support.supportType.integerValue == 1) {
+        [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:support.trends.trendsUser.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
+        _contentLabel.text = support.trends.trendsContent;
+        _timeLabel.text = support.trends.trendsPubdate;
+        NSMutableString *name = [NSMutableString stringWithString:support.trends.trendsUser.userName];
+        for (YWUserModel *user in support.trends.trendsMovieCooperateUsers) {
+            [name appendFormat:@"+"];
+            [name appendFormat:@"%@", user.userName];
+        }
+        _userNameLabel.text = name;
+    }else {
+        [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:support.comment.commentUser.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
+        _contentLabel.text = support.comment.commentContent;
+        _timeLabel.text = support.comment.commentTime;
+        _userNameLabel.text = support.comment.commentUser.userName;
+    }
 }
 
 //+ (CGFloat)cellHeightForMode:(YWCommentModel *)model {

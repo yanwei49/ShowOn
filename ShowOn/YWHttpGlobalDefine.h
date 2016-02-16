@@ -30,6 +30,8 @@
 #define Comment_List_Method                   @""          //评论列表
 #define Support_List_Method                   @""          //点赞列表
 #define Draft_List_Method                     @""          //草稿箱列表
+#define Support_Method                        @""          //点赞
+#define Change_Relation_Type_Method           @""          //修改用户类型
 
 
 #endif

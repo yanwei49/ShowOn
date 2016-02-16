@@ -11,6 +11,8 @@
 #import "YWParser.h"
 #import "YWHttpManager.h"
 #import "YWUserModel.h"
+#import "YWHotDetailViewController.h"
+#import "YWDataBaseManager.h"
 
 @interface YWSupportViewController()<UITableViewDataSource, UITableViewDelegate>
 
@@ -30,16 +32,21 @@
     _httpManager = [YWHttpManager shareInstance];
 
     [self createSubViews];
-    [self dataSource];
+//    [self dataSource];
 }
 
-- (void)dataSource {
-    for (NSInteger i=0; i<10; i++) {
-        [_dataSource addObject:@""];
-    }
-    
-    [_tableView reloadData];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self requestSupportList];
 }
+
+//- (void)dataSource {
+//    for (NSInteger i=0; i<10; i++) {
+//        [_dataSource addObject:@""];
+//    }
+//    
+//    [_tableView reloadData];
+//}
 
 - (void)createSubViews {
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -57,7 +64,7 @@
 
 #pragma mark - request
 - (void)requestSupportList {
-    NSDictionary *parameters = @{@"userId": @""};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
     [_httpManager requestSupportList:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser supportWithArray:responseObject[@"supportList"]];
@@ -88,6 +95,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    YWHotDetailViewController *hotVC = [[YWHotDetailViewController alloc] init];
+    hotVC.trends = [_dataSource[indexPath.row] trends];
+    [self.navigationController pushViewController:hotVC animated:YES];
 }
 
 

@@ -12,6 +12,8 @@
 #import "YWHttpManager.h"
 #import "YWMovieTemplateModel.h"
 #import "YWParser.h"
+#import "YWDataBaseManager.h"
+#import "YWUserModel.h"
 
 @interface YWHotItemViewController ()<UITableViewDataSource, UITableViewDelegate, YWMovieCommentTableViewCellDelegate>
 
@@ -75,7 +77,7 @@
 
 #pragma mark - request
 - (void)requestTemplateDetail {
-    NSDictionary *parameters = @{@"userId": @"", @"templateId": _template.templateId};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"templateId": _template.templateId};
     [_httpManager requestTemplateDetail:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         _template = [parser templateWithDict:responseObject[@"template"]];
@@ -167,7 +169,7 @@
 
 #pragma mark - YWMovieCommentTableViewCellDelegate
 - (void)movieCommentTableViewCellDidSelectSupport:(YWMovieCommentTableViewCell *)cell {
-    if (false) {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
         
     }else {
         [self login];

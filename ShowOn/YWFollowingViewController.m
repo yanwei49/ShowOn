@@ -11,8 +11,10 @@
 #import "YWHttpManager.h"
 #import "YWParser.h"
 #import "YWUserModel.h"
+#import "YWSearchViewController.h"
+#import "YWDataBaseManager.h"
 
-@interface YWFollowingViewController ()<UITableViewDelegate, UITableViewDataSource, YWFollowingTableViewCellDelegate>
+@interface YWFollowingViewController ()<UITableViewDelegate, UITableViewDataSource, YWFollowingTableViewCellDelegate, UISearchBarDelegate>
 
 @end
 
@@ -31,24 +33,30 @@
     _httpManager = [YWHttpManager shareInstance];
 
     [self createSubViews];
-    [self datatSource];
+//    [self datatSource];
 }
 
-- (void)datatSource {
-    for (NSInteger i=0; i<10; i++) {
-        YWUserModel *model = [[YWUserModel alloc] init];
-        model.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-        model.userId = [NSString stringWithFormat:@"%ld", i];
-        model.userName = [NSString stringWithFormat:@"测试账号%ld", i];
-        model.userRelationType = _relationType?kBeFocus:kFocus;
-        
-        [_dataSource addObject:model];
-    }
-    [_tableView reloadData];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self requestUserList];
 }
+
+//- (void)datatSource {
+//    for (NSInteger i=0; i<10; i++) {
+//        YWUserModel *model = [[YWUserModel alloc] init];
+//        model.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
+//        model.userId = [NSString stringWithFormat:@"%ld", i];
+//        model.userName = [NSString stringWithFormat:@"测试账号%ld", i];
+//        model.userRelationType = _relationType?kBeFocus:kFocus;
+//        
+//        [_dataSource addObject:model];
+//    }
+//    [_tableView reloadData];
+//}
 
 - (void)createSubViews {
     _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 40)];
+    _searchBar.delegate = self;
     _searchBar.placeholder = @"搜索片名/用户名";
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -66,12 +74,44 @@
 
 #pragma mark - request
 - (void)requestUserList {
-    NSDictionary *parameters = @{@"relationTypeId": @(_relationType), @"userId": @""};
+    NSDictionary *parameters = @{@"relationTypeId": @(_relationType), @"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
     [_httpManager requestUserList:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser userWithArray:responseObject[@"userList"]];
         [_dataSource addObjectsFromArray:array];
         [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)requestAddFollowWithUser:(YWUserModel *)user {
+    NSInteger state = 0;
+    switch (user.userRelationType) {
+        case kEachOtherNoFocus:
+            state = kFocus;
+            break;
+        case kFocus:
+            state = kEachOtherNoFocus;
+            break;
+        case kBeFocus:
+            state = kEachOtherFocus;
+            break;
+        case kBlackList:
+            state = kEachOtherNoFocus;
+            break;
+        case kEachOtherFocus:
+            state = kBeFocus;
+            break;
+        default:
+            break;
+    }
+    NSDictionary *parameters = @{@"state": @(state), @"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
+    [_httpManager requestChangeRelationType:parameters success:^(id responseObject) {
+        user.userRelationType = state;
+        [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_dataSource indexOfObject:user] inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     } otherFailure:^(id responseObject) {
         
     } failure:^(NSError *error) {
@@ -102,7 +142,13 @@
 
 #pragma mark - YWFollowingTableViewCellDelegate
 - (void)followingTableViewCellDidSelectButton:(YWFollowingTableViewCell *)cell {
+    [self requestAddFollowWithUser:cell.user];
+}
 
+#pragma mark - UISearchBarDelegate
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    YWSearchViewController *searchVC = [[YWSearchViewController alloc] init];
+    [self.navigationController pushViewController:searchVC animated:YES];
 }
 
 @end

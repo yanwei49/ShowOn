@@ -7,6 +7,10 @@
 //
 
 #import "YWATMeTableViewCell.h"
+#import "YWAiTeModel.h"
+#import "YWTrendsModel.h"
+#import "YWCommentModel.h"
+#import "YWUserModel.h"
 
 @implementation YWATMeTableViewCell
 {
@@ -93,7 +97,6 @@
         _playButton = [[UIButton alloc] init];
         _playButton.backgroundColor = Subject_color;
         [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-        [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
         [_playButton addTarget:self action:@selector(actionOnClick:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_playButton];
         [_playButton makeConstraints:^(MASConstraintMaker *make) {
@@ -107,8 +110,27 @@
 }
 
 - (void)actionOnClick:(UIButton *)button {
-    
+    if ([_delegate respondsToSelector:@selector(aTMeTableViewCellDidSelectPlay:)]) {
+        [_delegate aTMeTableViewCellDidSelectPlay:self];
+    }
 }
 
+- (void)setAiTe:(YWAiTeModel *)aiTe {
+    _aiTe = aiTe;
+    if (aiTe.aiTeType.integerValue) {
+        NSMutableString *name = [NSMutableString stringWithString:aiTe.trends.trendsUser.userName];
+        for (YWUserModel *user in aiTe.trends.trendsMovieCooperateUsers) {
+            [name appendFormat:@"+"];
+            [name appendFormat:@"%@", user.userName];
+        }
+        _userNameLabel.text = name;
+        _contentLabel.text = aiTe.trends.trendsContent;
+        _timeLabel.text = aiTe.trends.trendsPubdate;
+    }else {
+        _userNameLabel.text = aiTe.comment.commentUser.userName;
+        _contentLabel.text = aiTe.comment.commentContent;
+        _timeLabel.text = aiTe.comment.commentTime;
+    }
+}
 
 @end

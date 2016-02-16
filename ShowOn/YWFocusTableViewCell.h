@@ -15,7 +15,7 @@ typedef enum : NSUInteger {
 
 @class YWTrendsModel;
 @class YWFocusTableViewCell;
-@protocol YWFocusTableViewCellCellDelegate <NSObject>
+@protocol YWFocusTableViewCellDelegate <NSObject>
 
 - (void)focusTableViewCellDidSelectCooperate:(YWFocusTableViewCell *)cell;
 - (void)focusTableViewCellDidSelectPlay:(YWFocusTableViewCell *)cell;
@@ -24,7 +24,7 @@ typedef enum : NSUInteger {
 
 @interface YWFocusTableViewCell : UITableViewCell
 
-@property (nonatomic, assign) id<YWFocusTableViewCellCellDelegate> delegate;
+@property (nonatomic, assign) id<YWFocusTableViewCellDelegate> delegate;
 @property (nonatomic, strong) YWTrendsModel  *trends;
 
 +(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends type:(TrendsCellType)type;

@@ -14,6 +14,8 @@
 #import "YWArticleDetailViewController.h"
 #import "YWHttpManager.h"
 #import "YWParser.h"
+#import "YWDataBaseManager.h"
+#import "YWUserModel.h"
 
 #import "YWArticleModel.h"
 
@@ -134,7 +136,7 @@
 
 #pragma mark - request
 - (void)requestArticleList {
-    NSDictionary *parameters = @{@"userId": @""};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
     [_httpManager requestTemplateList:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser articleWithArray:responseObject[@"articleList"]];

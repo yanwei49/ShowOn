@@ -82,6 +82,12 @@
         case kEachOtherFocus:
             [_friendTypeButton setTitle:@"相互关注" forState:UIControlStateNormal];
             break;
+        case kBlackList:
+            [_friendTypeButton setTitle:@"取消黑名单" forState:UIControlStateNormal];
+            break;
+        case kWeiboUser:
+            [_friendTypeButton setTitle:@"邀请" forState:UIControlStateNormal];
+            break;
         default:
             break;
     }

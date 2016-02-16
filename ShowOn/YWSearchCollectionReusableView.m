@@ -8,6 +8,7 @@
 
 #import "YWSearchCollectionReusableView.h"
 #import "YWCustomSegView.h"
+#import "YWSearchViewController.h"
 
 @interface YWSearchCollectionReusableView ()<UISearchBarDelegate, YWCustomSegViewDelegate>
 
@@ -25,6 +26,7 @@
         self.backgroundColor = Subject_color;
         
         _searchBar = [[UISearchBar alloc] init];
+        _searchBar.delegate = self;
         _searchBar.placeholder = @"搜索片名/用户名";
         _searchBar.delegate = self;
         [self addSubview:_searchBar];
@@ -70,5 +72,6 @@
     [_searchBar resignFirstResponder];
     
 }
+
 
 @end

@@ -9,6 +9,7 @@
 #import "YWCommentTableViewCell.h"
 #import "YWCommentModel.h"
 #import "YWUserModel.h"
+#import "YWTrendsModel.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @implementation YWCommentTableViewCell
@@ -110,7 +111,7 @@
         _playButton = [[UIButton alloc] init];
         _playButton.backgroundColor = Subject_color;
         [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-        [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+//        [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
         [_playButton addTarget:self action:@selector(actionOnClick:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_playButton];
         [_playButton makeConstraints:^(MASConstraintMaker *make) {
@@ -124,7 +125,28 @@
 }
 
 - (void)actionOnClick:(UIButton *)button {
-    
+    if ([_delegate respondsToSelector:@selector(commentTableViewCellDidSelectPlay:)]) {
+        [_delegate commentTableViewCellDidSelectPlay:self];
+    }
+}
+
+- (void)setComment:(YWCommentModel *)comment {
+    _comment = comment;
+    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:comment.commentTrends.trendsUser.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
+    _replyLabel.text = comment.commentContent;
+    _timeLabel.text = comment.commentTime;
+    _contentLabel.text = comment.beCommentContent;
+    if (comment.commentType == 1) {
+        NSMutableString *name = [NSMutableString stringWithString:comment.commentTrends.trendsUser.userName];
+        for (YWUserModel *user in comment.commentTrends.trendsMovieCooperateUsers) {
+            [name appendFormat:@"+"];
+            [name appendFormat:@"%@", user.userName];
+        }
+        _userNameLabel.text = name;
+    }else {
+        _userNameLabel.text = comment.beCommentUser.userName;
+    }
+
 }
 
 + (CGFloat)cellHeightForMode:(YWCommentModel *)model {

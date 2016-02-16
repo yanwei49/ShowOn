@@ -178,8 +178,8 @@
 }
 
 - (void)actionPlay:(UIButton *)button {
-    if ([_delegate respondsToSelector:@selector(focusTableViewCellDidSelectCooperate:)]) {
-        [_delegate focusTableViewCellDidSelectCooperate:self];
+    if ([_delegate respondsToSelector:@selector(focusTableViewCellDidSelectPlay:)]) {
+        [_delegate focusTableViewCellDidSelectPlay:self];
     }
 }
 

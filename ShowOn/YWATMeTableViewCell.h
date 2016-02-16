@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@class YWAiTeModel;
+@class YWATMeTableViewCell;
+@protocol YWATMeTableViewCellDelegate <NSObject>
+
+- (void)aTMeTableViewCellDidSelectPlay:(YWATMeTableViewCell *)cell;
+
+@end
 @interface YWATMeTableViewCell : UITableViewCell
+
+@property (nonatomic, strong) YWAiTeModel *aiTe;
+@property (nonatomic, strong) id<YWATMeTableViewCellDelegate> delegate;
 
 @end

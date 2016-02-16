@@ -13,7 +13,8 @@ typedef enum : NSUInteger {
     kFocus,                 //关注的人
     kBeFocus,               //粉丝
     kBlackList,             //黑名单
-    kEachOtherFocus         //相互关注
+    kEachOtherFocus,        //相互关注
+    kWeiboUser              //邀请（微博用户）
 }FriendRelationType;
 
 @interface YWUserModel : NSObject
@@ -42,6 +43,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) NSString  *userATMeNums;                   //@我的数量
 @property (nonatomic, strong) NSString  *userCommentNums;                //评论数
 @property (nonatomic, strong) NSString  *userSupportNums;                //点赞数
+@property (nonatomic, strong) NSArray   *userTrends;                     //用户动态列表
 @property (nonatomic, assign) FriendRelationType  userRelationType;      //关系类型
 
 

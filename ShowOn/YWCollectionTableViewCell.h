@@ -8,6 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
+@class YWTrendsModel;
+@class YWCollectionTableViewCell;
+@protocol YWCollectionTableViewCellDelegate <NSObject>
+
+- (void)collectionTableViewCellDidSelectCooperate:(YWCollectionTableViewCell *)cell;
+- (void)collectionTableViewCellDidSelectPlay:(YWCollectionTableViewCell *)cell;
+
+@end
+
 @interface YWCollectionTableViewCell : UITableViewCell
+
+@property (nonatomic, assign) id<YWCollectionTableViewCellDelegate> delegate;
+@property (nonatomic, strong) YWTrendsModel  *trends;
+
++(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends;
 
 @end

@@ -45,6 +45,7 @@
     user.userCommentNums = [dict objectForKey:@"userCommentNums"];
     user.userSupportNums = [dict objectForKey:@"userSupportNums"];
     user.userDistrict = [dict objectForKey:@"district"];
+    user.userTrends = [self trendsWithArray:[dict objectForKey:@"userTrends"]];
     user.userRelationType = [[dict objectForKey:@"relationTypeId"] integerValue];
     
     return user;
@@ -223,7 +224,7 @@
 - (NSArray *)supportWithArray:(NSArray *)array {
     NSMutableArray *supports = [NSMutableArray array];
     [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [supports addObject:[self aiTesWithDict:obj]];
+        [supports addObject:[self supportWithDict:obj]];
     }];
     
     return supports;

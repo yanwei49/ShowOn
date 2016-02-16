@@ -14,8 +14,11 @@
 #import "YWHttpManager.h"
 #import "YWParser.h"
 #import "YWUserModel.h"
+#import "YWTrendsModel.h"
+#import "YWHotDetailViewController.h"
+#import "YWTrendsCategoryView.h"
 
-@interface YWUserDataViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YWMineTableHeadViewDelegate, YWCustomSegViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+@interface YWUserDataViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YWMineTableHeadViewDelegate, YWCustomSegViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, YWTrendsTableViewCellDelegate, YWTrendsCategoryViewDelegate>
 
 @end
 
@@ -26,6 +29,7 @@
     YWCustomSegView        *_itemView;
     NSMutableArray         *_dataSource;
     NSMutableArray         *_trendsArray;
+    NSMutableArray         *_allTrendsArray;
     NSInteger               _itemSelectIndex;
     NSArray                *_constellationArray;
     NSArray                *_sexArray;
@@ -34,6 +38,8 @@
     UIDatePicker           *_dataPicker;
     UIPickerView           *_pickerView;
     YWHttpManager          *_httpManager;
+    NSInteger               _trendsType;
+    YWTrendsCategoryView   *_categoryView;
 }
 
 - (void)viewDidLoad {
@@ -44,6 +50,7 @@
     _sexArray = @[@"男", @"女"];
     _constellationArray = @[@"白羊座", @"金牛座", @"双子座", @"巨蟹座", @"狮子座", @"处女座", @"天秤座", @"天蝎座", @"射手座", @"摩羯座", @"水瓶座", @"双鱼座"];
     _trendsArray = [[NSMutableArray alloc] init];
+    _allTrendsArray = [[NSMutableArray alloc] init];
     _itemSelectIndex = 0;
 
     [[IQKeyboardManager sharedManager] setEnable:YES];
@@ -55,7 +62,7 @@
 
 - (void)dataSource {
     for (NSInteger i=0; i<5; i++) {
-        [_trendsArray addObject:@""];
+        [_allTrendsArray addObject:@""];
     }
     [_tableView reloadData];
 }
@@ -186,13 +193,47 @@
     tf.text = [formatter stringFromDate:_dataPicker.date];
 }
 
+- (void)actionTrendsCategoryOnClick:(UIButton *)button {
+    if (_categoryView) {
+        _categoryView.hidden = !_categoryView.hidden;
+    }else {
+        _categoryView = [[YWTrendsCategoryView alloc] init];
+        NSArray *array = @[@"全部", @"原创", @"合作", @"转发"];
+        _categoryView.delegate = self;
+        _categoryView.categoryArray = array;
+        [self.view addSubview:_categoryView];
+        [_categoryView makeConstraints:^(MASConstraintMaker *make) {
+            make.width.offset(100);
+            make.height.offset(array.count*30);
+            make.top.equalTo(button.mas_bottom);
+            make.centerX.equalTo(button.mas_centerX);
+        }];
+    }
+}
+
 #pragma mark - request
 - (void)requestUserDetails {
     NSDictionary *parameters = @{@"userId": _user.userId};
     [_httpManager requestUserDetail:parameters success:^(id responseObject) {
+        [_allTrendsArray removeAllObjects];
+        [_trendsArray removeAllObjects];
         YWParser *parser = [[YWParser alloc] init];
         _user = [parser userWithDict:responseObject[@"user"]];
+        [_allTrendsArray addObjectsFromArray:_user.userTrends];
+        [_trendsArray addObjectsFromArray:_allTrendsArray];
         [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)requestSupportWithTrends:(YWTrendsModel *)trends {
+    NSDictionary *parameters = @{@"userId": _user.userId, @"state": trends.trendsIsSupport?@"0":@"1"};
+    [_httpManager requestSupport:parameters success:^(id responseObject) {
+        trends.trendsIsSupport = trends.trendsIsSupport?@"0":@"1";
+        [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_trendsArray indexOfObject:trends] inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     } otherFailure:^(id responseObject) {
         
     } failure:^(NSError *error) {
@@ -255,6 +296,7 @@
         return cell;
     }else {
         YWTrendsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell1"];
+        cell.trends = _trendsArray[indexPath.row];
         
         return cell;
     }
@@ -264,12 +306,48 @@
     return !_itemSelectIndex?50:[YWTrendsTableViewCell cellHeightWithTrends:nil];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (!_itemSelectIndex) {
+        return 0.00001;
+    }else {
+        return 30;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (!_itemSelectIndex) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 30)];
+        view.backgroundColor = Subject_color;
+        UIButton *button = [[UIButton alloc] init];
+        button.backgroundColor = Subject_color;
+        NSArray *array = @[@"全部", @"原创", @"合作", @"转发"];
+        [button setTitle:[NSString stringWithFormat:@"%@ %ld", array[_trendsType], _trendsArray.count] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        button.titleLabel.font = [UIFont systemFontOfSize:13];
+        [button addTarget:self action:@selector(actionTrendsCategoryOnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:button];
+        [button makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.offset(0);
+            make.width.offset(100);
+            make.right.offset(-20);
+        }];
+        
+        return view;
+    }else {
+        return nil;
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (!_itemSelectIndex) {
         UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
         [cell.accessoryView becomeFirstResponder];
         [self didSelectCellWithIndex:indexPath.row];
+    }else {
+        YWHotDetailViewController *hotVC = [[YWHotDetailViewController alloc] init];
+        hotVC.trends = _trendsArray[indexPath.row];
+        [self.navigationController pushViewController:hotVC animated:YES];
     }
 }
 
@@ -297,11 +375,28 @@
     return YES;
 }
 
+#pragma mark - YWTrendsCategoryViewDelegate
+- (void)trendsCategoryViewDidSelectCategoryWithIndex:(NSInteger)index {
+    _trendsType = index;
+    [_trendsArray removeAllObjects];
+    for (YWTrendsModel *trends in _allTrendsArray) {
+        if (trends.trendsType.integerValue == index || !index) {
+            [_trendsArray addObject:trends];
+        }
+    }
+    [_tableView reloadData];
+}
+
 #pragma mark - YWCustomSegViewDelegate
 - (void)customSegView:(YWCustomSegView *)view didSelectItemWithIndex:(NSInteger)index {
     _itemSelectIndex = index;
     [self hiddenPickView];
     [_tableView reloadData];
+}
+
+#pragma mark - YWTrendsTableViewCellDelegate
+- (void)trendsTableViewCellDidSelectSupportButton:(YWTrendsTableViewCell *)cell {
+    [self requestSupportWithTrends:cell.trends];
 }
 
 #pragma mark - YWMineTableHeadViewDelegate

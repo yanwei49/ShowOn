@@ -12,6 +12,7 @@
 #import "YWParser.h"
 #import "YWHttpManager.h"
 #import "YWUserModel.h"
+#import "YWDataBaseManager.h"
 
 @interface YWDraftViewController()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -31,7 +32,7 @@
     _httpManager = [YWHttpManager shareInstance];
 
     [self createSubViews];
-    [self dataSource];
+//    [self dataSource];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -39,13 +40,18 @@
     self.navigationController.navigationBarHidden = NO;
 }
 
-- (void)dataSource {
-    for (NSInteger i=0; i<10; i++) {
-        [_dataSource addObject:@""];
-    }
-    [_collectionView reloadData];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self requestDraftList];
 }
 
+//- (void)dataSource {
+//    for (NSInteger i=0; i<10; i++) {
+//        [_dataSource addObject:@""];
+//    }
+//    [_collectionView reloadData];
+//}
+//
 - (void)createSubViews {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake((kScreenWidth-5)/2, 200);
@@ -63,8 +69,8 @@
 
 
 #pragma mark - request
-- (void)requestSupportList {
-    NSDictionary *parameters = @{@"userId": @""};
+- (void)requestDraftList {
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
     [_httpManager requestDraftList:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser trendsWithArray:responseObject[@"draftList"]];
@@ -84,6 +90,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     YWDraftCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"item" forIndexPath:indexPath];
+    cell.trends = _dataSource[indexPath.row];
     
     return cell;
 }

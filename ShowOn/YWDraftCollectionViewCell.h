@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class YWTrendsModel;
 @interface YWDraftCollectionViewCell : UICollectionViewCell
+
+@property (nonatomic, strong) YWTrendsModel *trends;
 
 @end

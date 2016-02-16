@@ -88,7 +88,7 @@
     }else {
         _hotView = [[YWHotView alloc] init];
         self.navigationController.navigationBarHidden = YES;
-        _hotView.dataSource = _dataSource;
+//        _hotView.dataSource = _dataSource;
         _hotView.delegate = self;
         [self.view addSubview:_hotView];
         [_hotView makeConstraints:^(MASConstraintMaker *make) {
@@ -205,7 +205,7 @@
         case 1:
         {
             YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
-            vc.isFocus = YES;
+            vc.relationType = 1;
             vc.title = @"关注";
             [self.navigationController pushViewController:vc animated:YES];
         }
@@ -213,7 +213,7 @@
         case 2:
         {
             YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
-            vc.isFocus = NO;
+            vc.relationType = 2;
             vc.title = @"粉丝";
             [self.navigationController pushViewController:vc animated:YES];
         }
