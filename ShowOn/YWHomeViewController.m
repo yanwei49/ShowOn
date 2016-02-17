@@ -16,6 +16,7 @@
 #import "YWParser.h"
 #import "YWDataBaseManager.h"
 #import "YWUserModel.h"
+#import "MJRefresh.h"
 
 #import "YWArticleModel.h"
 
@@ -30,6 +31,7 @@
     UITableView     *_tableView;
     NSMutableArray  *_dataSource;
     YWHttpManager   *_httpManager;
+    NSInteger        _currentPage;
 }
 
 - (void)viewDidLoad {
@@ -40,6 +42,7 @@
     [self createLeftItemWithTitle:@"首页"];
     _dataSource = [[NSMutableArray alloc] init];
     _httpManager = [YWHttpManager shareInstance];
+    _currentPage = 0;
 
     [self createSubViews];
     [self createHotView];
@@ -106,6 +109,10 @@
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.top.left.right.offset(0);
     }];
+    _tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _currentPage = 0;
+        [self requestArticleList];
+    }];
 }
 
 - (void)createHotView {
@@ -138,14 +145,30 @@
 - (void)requestArticleList {
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
     [_httpManager requestTemplateList:parameters success:^(id responseObject) {
+        if (!_currentPage) {
+            [_dataSource removeAllObjects];
+        }
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser articleWithArray:responseObject[@"articleList"]];
         [_dataSource addObjectsFromArray:array];
+        [self noContentViewShowWithState:_dataSource.count?NO:YES];
+        if (array.count<20) {
+            _tableView.footer = nil;
+        }else {
+            _tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+                _currentPage ++;
+                [self requestArticleList];
+            }];
+        }
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
         [_tableView reloadData];
     } otherFailure:^(id responseObject) {
-        
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
     } failure:^(NSError *error) {
-        
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
     }];
 }
 

@@ -22,6 +22,7 @@
 #import "YWCustomTabBarViewController.h"
 #import "YWHotView.h"
 #import "YWHotItemViewController.h"
+#import "YWDataBaseManager.h"
 
 @interface YWMineViewController ()<UITableViewDelegate, UITableViewDataSource, YWMineTableHeadViewDelegate, YWHotViewDelegate>
 
@@ -114,15 +115,15 @@
     _tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.offset(0);
+        make.left.bottom.right.offset(0);
+        make.top.offset(64);
     }];
 }
 
 #pragma mark - action
 - (void)actionRightItem:(UIButton *)button {
-    YWUserDataViewController *vc = [[YWUserDataViewController alloc] init];
-    vc.isSelf = YES;
-    [self.navigationController pushViewController:vc animated:YES];
+    YWSettingViewController *setVC = [[YWSettingViewController alloc] init];
+    [self.navigationController pushViewController:setVC animated:YES];
 }
 
 #pragma mark - YWHotViewDelegate
@@ -163,10 +164,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    NSArray *className = @[@"YWATMeViewController", @"YWCommentViewController", @"YWSupportViewController", @"YWMessageViewController", @"YWFocusViewController", @"YWExperienceViewController", @"YWDraftViewController"];
-    UIViewController *vc = [[NSClassFromString(className[indexPath.row]) alloc] init];
-    vc.title = _dataSource[indexPath.row];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (![[YWDataBaseManager shareInstance] loginUser]) {
+        NSArray *className = @[@"YWATMeViewController", @"YWCommentViewController", @"YWSupportViewController", @"YWMessageViewController", @"YWTrendsViewController", @"YWExperienceViewController", @"YWDraftViewController"];
+        UIViewController *vc = [[NSClassFromString(className[indexPath.row]) alloc] init];
+        vc.title = _dataSource[indexPath.row];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else {
+        [self login];
+    }
 }
 
 ////设置分割线顶左

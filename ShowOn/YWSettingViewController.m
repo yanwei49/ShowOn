@@ -20,22 +20,24 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
-    _dataSource = [[NSMutableArray alloc] init];
+    self.title = @"设置";
+    self.view.backgroundColor = Subject_color;
+    _dataSource = [[NSMutableArray alloc] initWithArray:@[@"隐私", @"黑名单", @"清楚缓存", @"建议反馈", @"关于角儿（用户使用协议）"]];
     
     [self createSubViews];
 }
 
 - (void)createSubViews {
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.backgroundColor = Subject_color;
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.offset(0);
+        make.left.bottom.right.offset(0);
+        make.top.offset(64);
     }];
 }
 
@@ -46,7 +48,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    
+    cell.backgroundColor = Subject_color;
+    cell.textLabel.text = _dataSource[indexPath.row];
+    cell.textLabel.font = [UIFont systemFontOfSize:15];
+    cell.textLabel.textColor = [UIColor whiteColor];
     
     return cell;
 }

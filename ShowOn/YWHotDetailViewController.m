@@ -54,6 +54,11 @@
     self.navigationController.navigationBarHidden = NO;
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+//    [self requestTrendsDetail];
+}
+
 //- (void)dataSource {
 //    _movie = [[YWMovieModel alloc] init];
 //    _movie.movieId = @"1";
@@ -173,7 +178,7 @@
 }
 
 #pragma mark - request
-- (void)requestTrendsList {
+- (void)requestTrendsDetail {
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"trendsId": _trends.trendsId};
     [_httpManager requestTrendsDetail:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];

@@ -8,6 +8,9 @@
 
 #import "YWTemplateListViewController.h"
 #import "YWTemplateListTableViewCell.h"
+#import "MJRefresh.h"
+#import "YWHttpManager.h"
+#import "YWParser.h"
 
 #import "YWMovieTemplateModel.h"
 
@@ -19,6 +22,8 @@
 {
     UITableView     *_tableView;
     NSMutableArray  *_dataSource;
+    YWHttpManager   *_httpManager;
+    NSInteger        _currentPage;
 }
 
 - (void)viewDidLoad {
@@ -26,7 +31,9 @@
     self.view.backgroundColor = Subject_color;
     self.title = _template.templateName;
     _dataSource = [[NSMutableArray alloc] init];
-    
+    _httpManager = [YWHttpManager shareInstance];
+    _currentPage = 0;
+
     [self createSubViews];
     [self dataSource];
 }
@@ -52,7 +59,43 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.offset(0);
+        make.left.bottom.right.offset(0);
+        make.top.offset(69);
+    }];
+    _tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _currentPage = 0;
+        [self requestSupportList];
+    }];
+}
+
+#pragma mark - request
+- (void)requestSupportList {
+    NSDictionary *parameters = @{@"templateId": _template.templateId, @"page": @(_currentPage)};
+    [_httpManager requestSupportList:parameters success:^(id responseObject) {
+        if (!_currentPage) {
+            [_dataSource removeAllObjects];
+        }
+        YWParser *parser = [[YWParser alloc] init];
+        NSArray *array = [parser supportWithArray:responseObject[@"supportList"]];
+        [_dataSource addObjectsFromArray:array];
+        [self noContentViewShowWithState:_dataSource.count?NO:YES];
+        if (array.count<20) {
+            _tableView.footer = nil;
+        }else {
+            _tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+                _currentPage ++;
+                [self requestSupportList];
+            }];
+        }
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
+    } failure:^(NSError *error) {
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
     }];
 }
 

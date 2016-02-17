@@ -116,7 +116,8 @@
     _tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.offset(0);
+        make.left.bottom.right.offset(0);
+        make.top.offset(64);
     }];
     
     _dataPickerBackView = [[UIView alloc] init];
@@ -194,21 +195,21 @@
 }
 
 - (void)actionTrendsCategoryOnClick:(UIButton *)button {
+    NSArray *array = @[@"全部", @"原创", @"合作", @"转发"];
     if (_categoryView) {
         _categoryView.hidden = !_categoryView.hidden;
     }else {
         _categoryView = [[YWTrendsCategoryView alloc] init];
-        NSArray *array = @[@"全部", @"原创", @"合作", @"转发"];
         _categoryView.delegate = self;
         _categoryView.categoryArray = array;
         [self.view addSubview:_categoryView];
-        [_categoryView makeConstraints:^(MASConstraintMaker *make) {
-            make.width.offset(100);
-            make.height.offset(array.count*30);
-            make.top.equalTo(button.mas_bottom);
-            make.centerX.equalTo(button.mas_centerX);
-        }];
     }
+    [_categoryView makeConstraints:^(MASConstraintMaker *make) {
+        make.width.offset(100);
+        make.height.offset(array.count*30);
+        make.top.equalTo(button.mas_bottom);
+        make.centerX.equalTo(button.mas_centerX);
+    }];
 }
 
 #pragma mark - request
@@ -317,9 +318,9 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (!_itemSelectIndex) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 30)];
-        view.backgroundColor = Subject_color;
+        view.backgroundColor = RGBColor(50, 50, 50);
         UIButton *button = [[UIButton alloc] init];
-        button.backgroundColor = Subject_color;
+        button.backgroundColor = RGBColor(50, 50, 50);
         NSArray *array = @[@"全部", @"原创", @"合作", @"转发"];
         [button setTitle:[NSString stringWithFormat:@"%@ %ld", array[_trendsType], _trendsArray.count] forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];

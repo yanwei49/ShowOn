@@ -13,6 +13,7 @@
 #import "YWUserModel.h"
 #import "YWSearchViewController.h"
 #import "YWDataBaseManager.h"
+#import "MJRefresh.h"
 
 @interface YWFollowingViewController ()<UITableViewDelegate, UITableViewDataSource, YWFollowingTableViewCellDelegate, UISearchBarDelegate>
 
@@ -24,6 +25,7 @@
     UITableView         *_tableView;
     UISearchBar         *_searchBar;
     YWHttpManager       *_httpManager;
+    NSInteger            _currentPage;
 }
 
 - (void)viewDidLoad {
@@ -31,6 +33,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSource = [[NSMutableArray alloc] init];
     _httpManager = [YWHttpManager shareInstance];
+    _currentPage = 0;
 
     [self createSubViews];
 //    [self datatSource];
@@ -70,20 +73,40 @@
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.offset(0);
     }];
+    _tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _currentPage = 0;
+        [self requestUserList];
+    }];
 }
 
 #pragma mark - request
 - (void)requestUserList {
-    NSDictionary *parameters = @{@"relationTypeId": @(_relationType), @"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
+    NSDictionary *parameters = @{@"relationTypeId": @(_relationType), @"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"page": @(_currentPage)};
     [_httpManager requestUserList:parameters success:^(id responseObject) {
+        if (!_currentPage) {
+            [_dataSource removeAllObjects];
+        }
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser userWithArray:responseObject[@"userList"]];
         [_dataSource addObjectsFromArray:array];
+        [self noContentViewShowWithState:_dataSource.count?NO:YES];
+        if (array.count<20) {
+            _tableView.footer = nil;
+        }else {
+            _tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+                _currentPage ++;
+                [self requestUserList];
+            }];
+        }
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
         [_tableView reloadData];
     } otherFailure:^(id responseObject) {
-        
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
     } failure:^(NSError *error) {
-        
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
     }];
 }
 
@@ -146,9 +169,12 @@
 }
 
 #pragma mark - UISearchBarDelegate
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     YWSearchViewController *searchVC = [[YWSearchViewController alloc] init];
     [self.navigationController pushViewController:searchVC animated:YES];
+    
+    return NO;
 }
+
 
 @end

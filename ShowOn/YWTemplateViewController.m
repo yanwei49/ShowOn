@@ -10,6 +10,10 @@
 #import "YWTemplateCollectionViewCell.h"
 #import "YWSearchCollectionReusableView.h"
 #import "YWTemplateListViewController.h"
+#import "YWSearchViewController.h"
+#import "MJRefresh.h"
+#import "YWParser.h"
+#import "YWHttpManager.h"
 
 #import "YWMovieTemplateModel.h"
 
@@ -21,13 +25,17 @@
 {
     NSMutableArray      *_dataSource;
     UICollectionView    *_collectionView;
+    YWHttpManager       *_httpManager;
+    NSInteger            _currentPage;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
     _dataSource = [[NSMutableArray alloc] init];
-    
+    _httpManager = [YWHttpManager shareInstance];
+    _currentPage = 0;
+
     [self createSubViews];
     [self dataSourceWithIndex:10];
 }
@@ -57,7 +65,43 @@
     _collectionView.dataSource = self;
     [self.view addSubview:_collectionView];
     [_collectionView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.offset(0);
+        make.left.bottom.right.offset(0);
+        make.top.offset(69);
+    }];
+    _collectionView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _currentPage = 0;
+        [self requestSupportList];
+    }];
+}
+
+#pragma mark - request
+- (void)requestSupportList {
+    NSDictionary *parameters = @{@"templateId": @"", @"page": @(_currentPage)};
+    [_httpManager requestSupportList:parameters success:^(id responseObject) {
+        if (!_currentPage) {
+            [_dataSource removeAllObjects];
+        }
+        YWParser *parser = [[YWParser alloc] init];
+        NSArray *array = [parser supportWithArray:responseObject[@"supportList"]];
+        [_dataSource addObjectsFromArray:array];
+        [self noContentViewShowWithState:_dataSource.count?NO:YES];
+        if (array.count<20) {
+            _collectionView.footer = nil;
+        }else {
+            _collectionView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+                _currentPage ++;
+                [self requestSupportList];
+            }];
+        }
+        [_collectionView.header endRefreshing];
+        [_collectionView.footer endRefreshing];
+        [_collectionView reloadData];
+    } otherFailure:^(id responseObject) {
+        [_collectionView.header endRefreshing];
+        [_collectionView.footer endRefreshing];
+    } failure:^(NSError *error) {
+        [_collectionView.header endRefreshing];
+        [_collectionView.footer endRefreshing];
     }];
 }
 
@@ -121,6 +165,11 @@
             break;
     }
     [_collectionView reloadData];
+}
+
+- (void)searchCollectionReusableViewDidSelectSearchButton:(YWSearchCollectionReusableView *)view {
+    YWSearchViewController *searchVC = [[YWSearchViewController alloc] init];
+    [self.navigationController pushViewController:searchVC animated:YES];
 }
 
 @end

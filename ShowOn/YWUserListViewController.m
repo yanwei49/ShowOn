@@ -1,36 +1,36 @@
 //
-//  YWCommentViewController.m
+//  YWUserListViewController.m
 //  ShowOn
 //
-//  Created by 颜魏 on 15/12/4.
-//  Copyright © 2015年 yanwei. All rights reserved.
+//  Created by David Yu on 17/2/16.
+//  Copyright © 2016年 yanwei. All rights reserved.
 //
 
-#import "YWCommentViewController.h"
-#import "YWCommentTableViewCell.h"
-#import "YWParser.h"
-#import "YWHttpManager.h"
-#import "YWUserModel.h"
-#import "YWHotDetailViewController.h"
-#import "YWDataBaseManager.h"
+#import "YWUserListViewController.h"
 #import "MJRefresh.h"
+#import "YWHttpManager.h"
+#import "YWParser.h"
+#import "YWUserTableViewCell.h"
 
-@interface YWCommentViewController()<UITableViewDataSource, UITableViewDelegate, YWCommentTableViewCellDelegate>
+@interface YWUserListViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @end
 
-@implementation YWCommentViewController
+@implementation YWUserListViewController
 {
-    NSMutableArray      *_dataSource;
-    UITableView         *_tableView;
-    YWHttpManager       *_httpManager;
-    NSInteger            _currentPage;
+    UITableView     *_tableView;
+    NSMutableArray  *_dataSource;
+    YWHttpManager   *_httpManager;
+    NSInteger        _currentPage;
+    NSMutableArray  *_stateArray;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.title = @"选择用户";
+    [self createRightItemWithTitle:@"完成"];
     _dataSource = [[NSMutableArray alloc] init];
+    _stateArray = [[NSMutableArray alloc] init];
     _httpManager = [YWHttpManager shareInstance];
     _currentPage = 0;
 
@@ -39,44 +39,63 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self requestCommentList];
+    [self requestUserList];
 }
 
+#pragma mark - create
+- (void)actionRightItem:(UIButton *)button {
+    NSMutableArray *users = [NSMutableArray array];
+    for (NSInteger i=0; i<_stateArray.count; i++) {
+        if ([_stateArray[i] boolValue]) {
+            [users addObject:_dataSource[i]];
+        }
+    }
+    if ([_delegate respondsToSelector:@selector(userListViewControllerDidSelectUsers:)]) {
+        [_delegate userListViewControllerDidSelectUsers:users];
+    }
+}
+
+#pragma mark - create
 - (void)createSubViews {
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     _tableView.backgroundColor = Subject_color;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [_tableView registerClass:[YWCommentTableViewCell class] forCellReuseIdentifier:@"cell"];
+    [_tableView registerClass:[YWUserTableViewCell class] forCellReuseIdentifier:@"cell"];
+    _tableView.showsVerticalScrollIndicator = NO;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.offset(0);
+        make.bottom.top.left.right.offset(0);
     }];
     _tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _currentPage = 0;
-        [self requestCommentList];
+        [self requestUserList];
     }];
 }
 
 #pragma mark - request
-- (void)requestCommentList {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"page": @(_currentPage)};
-    [_httpManager requestCommentList:parameters success:^(id responseObject) {
+- (void)requestUserList {
+    NSDictionary *parameters = @{@"relationTypeId": @(0), @"userId": @"", @"page": @(_currentPage)};
+    [_httpManager requestUserList:parameters success:^(id responseObject) {
         if (!_currentPage) {
             [_dataSource removeAllObjects];
+            [_stateArray removeAllObjects];
         }
         YWParser *parser = [[YWParser alloc] init];
-        NSArray *array = [parser aiTeWithArray:responseObject[@"aiTeList"]];
+        NSArray *array = [parser userWithArray:responseObject[@"userList"]];
         [_dataSource addObjectsFromArray:array];
         [self noContentViewShowWithState:_dataSource.count?NO:YES];
+        for (NSInteger i=0; i<array.count; i++) {
+            [_stateArray addObject:@(NO)];
+        }
         if (array.count<20) {
             _tableView.footer = nil;
         }else {
             _tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
                 _currentPage ++;
-                [self requestCommentList];
+                [self requestUserList];
             }];
         }
         [_tableView.header endRefreshing];
@@ -97,26 +116,25 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    YWCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    cell.comment = _dataSource[indexPath.row];
+    YWUserTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    cell.user = _dataSource[indexPath.row];
+    cell.state = [_stateArray[indexPath.row] boolValue];
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [YWCommentTableViewCell cellHeightForMode:nil];
+    return 60;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    YWHotDetailViewController *hotVC = [[YWHotDetailViewController alloc] init];
-    hotVC.trends = [_dataSource[indexPath.row] trends];
-    [self.navigationController pushViewController:hotVC animated:YES];
+    BOOL state = [_stateArray[indexPath.row] boolValue];
+    [_stateArray replaceObjectAtIndex:indexPath.row withObject:@(!state)];
+    YWUserTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.state = [_stateArray[indexPath.row] boolValue];
 }
 
-#pragma mark - YWCommentTableViewCellDelegate
-- (void)commentTableViewCellDidSelectPlay:(YWCommentTableViewCell *)cell {
 
-}
 
 @end

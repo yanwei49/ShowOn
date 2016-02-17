@@ -136,9 +136,13 @@
 		568DC0D51C5619DB00CFD1BC /* 对话框@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 568DC0651C5619DA00CFD1BC /* 对话框@2x.png */; };
 		568DC0D61C5619DB00CFD1BC /* 对话框@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 568DC0661C5619DA00CFD1BC /* 对话框@3x.png */; };
 		568DC0D81C5619F300CFD1BC /* 接口.txt in Resources */ = {isa = PBXBuildFile; fileRef = 568DC0D71C5619F300CFD1BC /* 接口.txt */; };
+		569257EB1C744C58000EFB95 /* YWUserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 569257EA1C744C58000EFB95 /* YWUserListViewController.m */; };
+		569257EE1C744FDC000EFB95 /* YWUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 569257ED1C744FDC000EFB95 /* YWUserTableViewCell.m */; };
 		56A6BFAE1C59CA8800AEA490 /* YWAiTeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A6BFAD1C59CA8800AEA490 /* YWAiTeModel.m */; };
 		56A6BFB11C59CE0700AEA490 /* YWSupportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A6BFB01C59CE0700AEA490 /* YWSupportModel.m */; };
 		56B72F391C73099E00E3ACE6 /* YWTrendsCategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B72F381C73099E00E3ACE6 /* YWTrendsCategoryView.m */; };
+		56CCBB951C745DAE00AEA45B /* YWUserProtocolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CCBB941C745DAE00AEA45B /* YWUserProtocolViewController.m */; };
+		56CFFFC51C745E0D00BE9E6F /* YWSuggestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CFFFC41C745E0D00BE9E6F /* YWSuggestionViewController.m */; };
 		56F4AF1C1C125EE4008A6828 /* YWLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF1B1C125EE4008A6828 /* YWLoginViewController.m */; };
 		56F4AF1F1C12653F008A6828 /* YWRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF1E1C12653F008A6828 /* YWRegisterViewController.m */; };
 		56F4AF221C126550008A6828 /* YWForgetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F4AF211C126550008A6828 /* YWForgetPasswordViewController.m */; };
@@ -402,6 +406,10 @@
 		568DC0651C5619DA00CFD1BC /* 对话框@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "对话框@2x.png"; sourceTree = "<group>"; };
 		568DC0661C5619DA00CFD1BC /* 对话框@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "对话框@3x.png"; sourceTree = "<group>"; };
 		568DC0D71C5619F300CFD1BC /* 接口.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "接口.txt"; sourceTree = "<group>"; };
+		569257E91C744C58000EFB95 /* YWUserListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWUserListViewController.h; sourceTree = "<group>"; };
+		569257EA1C744C58000EFB95 /* YWUserListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWUserListViewController.m; sourceTree = "<group>"; };
+		569257EC1C744FDC000EFB95 /* YWUserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWUserTableViewCell.h; sourceTree = "<group>"; };
+		569257ED1C744FDC000EFB95 /* YWUserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWUserTableViewCell.m; sourceTree = "<group>"; };
 		5695FFD51C4C61600070544A /* Directions.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = Directions.geojson; sourceTree = "<group>"; };
 		56A6BFAC1C59CA8800AEA490 /* YWAiTeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWAiTeModel.h; sourceTree = "<group>"; };
 		56A6BFAD1C59CA8800AEA490 /* YWAiTeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWAiTeModel.m; sourceTree = "<group>"; };
@@ -409,6 +417,10 @@
 		56A6BFB01C59CE0700AEA490 /* YWSupportModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWSupportModel.m; sourceTree = "<group>"; };
 		56B72F371C73099E00E3ACE6 /* YWTrendsCategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTrendsCategoryView.h; sourceTree = "<group>"; };
 		56B72F381C73099E00E3ACE6 /* YWTrendsCategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTrendsCategoryView.m; sourceTree = "<group>"; };
+		56CCBB931C745DAE00AEA45B /* YWUserProtocolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWUserProtocolViewController.h; sourceTree = "<group>"; };
+		56CCBB941C745DAE00AEA45B /* YWUserProtocolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWUserProtocolViewController.m; sourceTree = "<group>"; };
+		56CFFFC31C745E0D00BE9E6F /* YWSuggestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWSuggestionViewController.h; sourceTree = "<group>"; };
+		56CFFFC41C745E0D00BE9E6F /* YWSuggestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWSuggestionViewController.m; sourceTree = "<group>"; };
 		56F4AF1A1C125EE4008A6828 /* YWLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWLoginViewController.h; sourceTree = "<group>"; };
 		56F4AF1B1C125EE4008A6828 /* YWLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWLoginViewController.m; sourceTree = "<group>"; };
 		56F4AF1D1C12653F008A6828 /* YWRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWRegisterViewController.h; sourceTree = "<group>"; };
@@ -805,6 +817,24 @@
 			path = resouce;
 			sourceTree = "<group>";
 		};
+		56CCBB911C745D4800AEA45B /* suggestion */ = {
+			isa = PBXGroup;
+			children = (
+				56CFFFC31C745E0D00BE9E6F /* YWSuggestionViewController.h */,
+				56CFFFC41C745E0D00BE9E6F /* YWSuggestionViewController.m */,
+			);
+			name = suggestion;
+			sourceTree = "<group>";
+		};
+		56CCBB921C745D7A00AEA45B /* user_protocol */ = {
+			isa = PBXGroup;
+			children = (
+				56CCBB931C745DAE00AEA45B /* YWUserProtocolViewController.h */,
+				56CCBB941C745DAE00AEA45B /* YWUserProtocolViewController.m */,
+			);
+			name = user_protocol;
+			sourceTree = "<group>";
+		};
 		56F4AF191C125ED0008A6828 /* login */ = {
 			isa = PBXGroup;
 			children = (
@@ -1142,6 +1172,8 @@
 				77D0F0D11C11C2D200134A17 /* message */,
 				77D0F0D21C11C31B00134A17 /* experience */,
 				77D0F0D31C11C32100134A17 /* draft */,
+				56CCBB921C745D7A00AEA45B /* user_protocol */,
+				56CCBB911C745D4800AEA45B /* suggestion */,
 			);
 			name = viewcontroller;
 			sourceTree = "<group>";
@@ -1198,6 +1230,8 @@
 				5689DBCB1C4476080095936F /* YWHotView.m */,
 				567C151A1C731761006A365D /* YWKeyboardHeadView.h */,
 				567C151B1C731761006A365D /* YWKeyboardHeadView.m */,
+				569257EC1C744FDC000EFB95 /* YWUserTableViewCell.h */,
+				569257ED1C744FDC000EFB95 /* YWUserTableViewCell.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -1238,6 +1272,8 @@
 				774A1E561C2FC9C600671945 /* YWWriteCommentViewController.m */,
 				77927B451C4541F0001ED99B /* YWHotItemViewController.h */,
 				77927B461C4541F0001ED99B /* YWHotItemViewController.m */,
+				569257E91C744C58000EFB95 /* YWUserListViewController.h */,
+				569257EA1C744C58000EFB95 /* YWUserListViewController.m */,
 			);
 			name = "热门";
 			sourceTree = "<group>";
@@ -1846,6 +1882,7 @@
 				77D0F1011C11CABB00134A17 /* YWHttpManager.m in Sources */,
 				56FE9A1C1C0FC242007BA29B /* YWTrendsViewController.m in Sources */,
 				5689DBCC1C4476080095936F /* YWHotView.m in Sources */,
+				56CFFFC51C745E0D00BE9E6F /* YWSuggestionViewController.m in Sources */,
 				770EC2C71C1088E100A4D2E9 /* YWSearchCollectionReusableView.m in Sources */,
 				56F5D38A1C17D44F008C33CA /* YWToolboxPlay.m in Sources */,
 				77D0F0FA1C11C6D500134A17 /* YWExperienceTableViewCell.m in Sources */,
@@ -1862,6 +1899,7 @@
 				56FE9A0D1C0FBB95007BA29B /* YWMovieViewController.m in Sources */,
 				7710ABB41C1F8A88006FF4EF /* YWUserDataViewController.m in Sources */,
 				567C151F1C7322AB006A365D /* YWWeiBoFriendsViewController.m in Sources */,
+				569257EE1C744FDC000EFB95 /* YWUserTableViewCell.m in Sources */,
 				56A6BFAE1C59CA8800AEA490 /* YWAiTeModel.m in Sources */,
 				566BF5EB1C4717CF002C5591 /* YWTemplateListViewController.m in Sources */,
 				56F5D3291C17AAFD008C33CA /* NSMutableAttributedString+NimbusKitAttributedLabel.m in Sources */,
@@ -1871,7 +1909,9 @@
 				77D0F0CD1C11C1B200134A17 /* YWCollectionTableViewCell.m in Sources */,
 				56F4AF1C1C125EE4008A6828 /* YWLoginViewController.m in Sources */,
 				770EC2C41C107AC600A4D2E9 /* YWBaseViewController.m in Sources */,
+				56CCBB951C745DAE00AEA45B /* YWUserProtocolViewController.m in Sources */,
 				56B72F391C73099E00E3ACE6 /* YWTrendsCategoryView.m in Sources */,
+				569257EB1C744C58000EFB95 /* YWUserListViewController.m in Sources */,
 				56F5D3861C17CBCF008C33CA /* YWMovieRecorder.m in Sources */,
 				568DBF6B1C55C0AC00CFD1BC /* YWSearchTemplateTableViewCell.m in Sources */,
 				568D286E1C49CDCA00DAA9B9 /* YWArticleDetailViewController.m in Sources */,

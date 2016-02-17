@@ -13,6 +13,7 @@
 #import "YWUserModel.h"
 #import "YWHotDetailViewController.h"
 #import "YWDataBaseManager.h"
+#import "MJRefresh.h"
 
 @interface YWATMeViewController()<UITableViewDataSource, UITableViewDelegate, YWATMeTableViewCellDelegate>
 
@@ -23,6 +24,7 @@
     NSMutableArray      *_dataSource;
     UITableView         *_tableView;
     YWHttpManager       *_httpManager;
+    NSInteger            _currentPage;
 }
 
 - (void)viewDidLoad {
@@ -30,23 +32,15 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSource = [[NSMutableArray alloc] init];
     _httpManager = [YWHttpManager shareInstance];
+    _currentPage = 0;
 
     [self createSubViews];
-//    [self dataSource];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self requestAiTeList];
 }
-//
-//- (void)dataSource {
-//    for (NSInteger i=0; i<10; i++) {
-//        [_dataSource addObject:@""];
-//    }
-//    
-//    [_tableView reloadData];
-//}
 
 - (void)createSubViews {
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -60,20 +54,40 @@
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.offset(0);
     }];
+    _tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _currentPage = 0;
+        [self requestAiTeList];
+    }];
 }
 
 #pragma mark - request
 - (void)requestAiTeList {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"page": @(_currentPage)};
     [_httpManager requestAiTeList:parameters success:^(id responseObject) {
+        if (!_currentPage) {
+            [_dataSource removeAllObjects];
+        }
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser aiTeWithArray:responseObject[@"aiTeList"]];
         [_dataSource addObjectsFromArray:array];
+        [self noContentViewShowWithState:_dataSource.count?NO:YES];
+        if (array.count<20) {
+            _tableView.footer = nil;
+        }else {
+            _tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+                _currentPage ++;
+                [self requestAiTeList];
+            }];
+        }
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
         [_tableView reloadData];
     } otherFailure:^(id responseObject) {
-        
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
     } failure:^(NSError *error) {
-        
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
     }];
 }
 

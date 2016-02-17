@@ -14,6 +14,8 @@
 #import "UMSocial.h"
 #import "UMSocialSnsPlatformManager.h"
 #import "YWUserModel.h"
+#import "YWParser.h"
+#import "YWDataBaseManager.h"
 
 @interface YWLoginViewController ()<UITextFieldDelegate>
 
@@ -325,6 +327,9 @@
     [self loginSuccess];
     NSDictionary *parameters = @{@"accout":_accountTextField.text, @"password":_passwordTextField.text, @"type": @(_loginType)};
     [[YWHttpManager shareInstance] requestLogin:parameters success:^(id responseObject) {
+        YWParser *parser = [[YWParser alloc] init];
+        _othersUser = [parser userWithDict:responseObject[@"user"]];
+        [[YWDataBaseManager shareInstance] addLoginUser:_othersUser];
         [self loginSuccess];
     } otherFailure:^(id responseObject) {
     } failure:^(NSError *error) {

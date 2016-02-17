@@ -12,6 +12,7 @@
 @protocol YWSearchCollectionReusableViewDelegate <NSObject>
 
 - (void)searchCollectionReusableView:(YWSearchCollectionReusableView *)view didSelectItemWithIndex:(NSInteger)index;
+- (void)searchCollectionReusableViewDidSelectSearchButton:(YWSearchCollectionReusableView *)view;
 
 @end
 

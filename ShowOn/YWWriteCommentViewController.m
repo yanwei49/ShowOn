@@ -8,8 +8,11 @@
 
 #import "YWWriteCommentViewController.h"
 #import "YWKeyboardHeadView.h"
+#import "YWUserListViewController.h"
+#import "YWUserModel.h"
+#import "YWHttpManager.h"
 
-@interface YWWriteCommentViewController ()<YWKeyboardHeadViewDelegate, UITextViewDelegate>
+@interface YWWriteCommentViewController ()<YWKeyboardHeadViewDelegate, UITextViewDelegate, YWUserListViewControllerDelegate>
 
 @end
 
@@ -18,6 +21,8 @@
     YWKeyboardHeadView  *_keyboardHead;
     UITextView          *_textView;
     UILabel             *_placeholderLabel;
+    NSMutableArray      *_selectUsers;
+    YWHttpManager       *_httpManager;
 }
 
 - (void)viewDidLoad {
@@ -25,6 +30,8 @@
     self.view.backgroundColor = Subject_color;
     [self createRightItemWithTitle:@"发布"];
     [self createLeftItemWithTitle:@"取消"];
+    _selectUsers = [[NSMutableArray alloc] init];
+    _httpManager = [YWHttpManager shareInstance];
 
     [self createSubViews];
 }
@@ -55,16 +62,45 @@
 
 #pragma mark - action
 - (void)actionRightItem:(UIButton *)button {
-
+    if (!_textView.text.length) {
+        [self showAlterWithTitle:@"说的什么吧！"];
+    }else {
+        [self requestCommitContent];
+    }
 }
 
 - (void)actionLeftItem:(UIButton *)button {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - request
+- (void)requestCommitContent {
+    NSDictionary *parameters = @{};
+    [_httpManager requestAiTeList:parameters success:^(id responseObject) {
+        
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
 #pragma mark - YWKeyboardHeadViewDelegate
 - (void)keyboardHeadViewButtonOnClick {
+    YWUserListViewController *vc = [[YWUserListViewController alloc] init];
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
+#pragma mark - YWUserListViewControllerDelegate
+- (void)userListViewControllerDidSelectUsers:(NSArray *)users {
+    [_selectUsers addObjectsFromArray:users];
+    NSMutableString *names = [NSMutableString string];
+    for (YWUserModel *user in users) {
+        [names appendString:@"@"];
+        [names appendString:user.userName];
+    }
+    _textView.text = [NSString stringWithFormat:@"%@%@", _textView.text, names];
 }
 
 #pragma mark - UITextViewDelegate

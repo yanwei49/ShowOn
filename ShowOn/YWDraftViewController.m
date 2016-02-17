@@ -13,6 +13,7 @@
 #import "YWHttpManager.h"
 #import "YWUserModel.h"
 #import "YWDataBaseManager.h"
+#import "MJRefresh.h"
 
 @interface YWDraftViewController()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -23,6 +24,7 @@
     NSMutableArray      *_dataSource;
     UICollectionView    *_collectionView;
     YWHttpManager       *_httpManager;
+    NSInteger            _currentPage;
 }
 
 - (void)viewDidLoad {
@@ -30,9 +32,9 @@
     self.view.backgroundColor = Subject_color;
     _dataSource = [[NSMutableArray alloc] init];
     _httpManager = [YWHttpManager shareInstance];
+    _currentPage = 0;
 
     [self createSubViews];
-//    [self dataSource];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -45,13 +47,6 @@
     [self requestDraftList];
 }
 
-//- (void)dataSource {
-//    for (NSInteger i=0; i<10; i++) {
-//        [_dataSource addObject:@""];
-//    }
-//    [_collectionView reloadData];
-//}
-//
 - (void)createSubViews {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake((kScreenWidth-5)/2, 200);
@@ -65,6 +60,10 @@
     [_collectionView makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.offset(0);
     }];
+    _collectionView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _currentPage = 0;
+        [self requestDraftList];
+    }];
 }
 
 
@@ -72,14 +71,30 @@
 - (void)requestDraftList {
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
     [_httpManager requestDraftList:parameters success:^(id responseObject) {
+        if (!_currentPage) {
+            [_dataSource removeAllObjects];
+        }
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser trendsWithArray:responseObject[@"draftList"]];
         [_dataSource addObjectsFromArray:array];
+        [self noContentViewShowWithState:_dataSource.count?NO:YES];
+        if (array.count<20) {
+            _collectionView.footer = nil;
+        }else {
+            _collectionView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+                _currentPage ++;
+                [self requestDraftList];
+            }];
+        }
+        [_collectionView.header endRefreshing];
+        [_collectionView.footer endRefreshing];
         [_collectionView reloadData];
     } otherFailure:^(id responseObject) {
-        
+        [_collectionView.header endRefreshing];
+        [_collectionView.footer endRefreshing];
     } failure:^(NSError *error) {
-        
+        [_collectionView.header endRefreshing];
+        [_collectionView.footer endRefreshing];
     }];
 }
 

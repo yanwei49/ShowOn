@@ -8,7 +8,6 @@
 
 #import "YWSearchCollectionReusableView.h"
 #import "YWCustomSegView.h"
-#import "YWSearchViewController.h"
 
 @interface YWSearchCollectionReusableView ()<UISearchBarDelegate, YWCustomSegViewDelegate>
 
@@ -71,6 +70,15 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [_searchBar resignFirstResponder];
     
+}
+
+#pragma mark - UISearchBarDelegate
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    if ([_delegate respondsToSelector:@selector(searchCollectionReusableViewDidSelectSearchButton:)]) {
+        [_delegate searchCollectionReusableViewDidSelectSearchButton:self];
+    }
+    
+    return NO;
 }
 
 

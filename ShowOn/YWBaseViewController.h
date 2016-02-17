@@ -14,10 +14,17 @@
 - (void)actionLeftItem:(UIButton *)button;
 
 - (void)createRightItemWithTitle:(NSString *)title;
+- (void)createRightItemWithImage:(NSString *)imageName;
 - (void)actionRightItem:(UIButton *)button;
 
-- (void)createRightItemWithImage:(NSString *)imageName;
 //跳转到登录页面
 - (void)login;
+
+//弹框提示
+- (void)showAlterWithTitle:(NSString *)title;
+
+//无内容时界面显示状态
+- (void)noContentViewShowWithState:(BOOL)state;
+
 
 @end
