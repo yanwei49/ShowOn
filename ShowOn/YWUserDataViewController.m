@@ -15,8 +15,9 @@
 #import "YWParser.h"
 #import "YWUserModel.h"
 #import "YWTrendsModel.h"
-#import "YWHotDetailViewController.h"
+#import "YWTrendsDetailViewController.h"
 #import "YWTrendsCategoryView.h"
+#import "YWDataBaseManager.h"
 
 @interface YWUserDataViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YWMineTableHeadViewDelegate, YWCustomSegViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, YWTrendsTableViewCellDelegate, YWTrendsCategoryViewDelegate>
 
@@ -40,11 +41,13 @@
     YWHttpManager          *_httpManager;
     NSInteger               _trendsType;
     YWTrendsCategoryView   *_categoryView;
+    YWTrendsCategoryView   *_userCategoryView;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
+    [self createRightItemWithImage:@"more_normal.png"];
     _httpManager = [YWHttpManager shareInstance];
     _dataSource = [[NSMutableArray alloc] initWithArray:@[@"个人签名", @"性别", @"地区", @"年龄", @"星座", @"身高", @"三围"]];
     _sexArray = @[@"男", @"女"];
@@ -57,14 +60,6 @@
     [[IQKeyboardManager sharedManager] setEnableAutoToolbar:YES];
     
     [self createSubViews];
-    [self dataSource];
-}
-
-- (void)dataSource {
-    for (NSInteger i=0; i<5; i++) {
-        [_allTrendsArray addObject:@""];
-    }
-    [_tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -180,6 +175,24 @@
 }
 
 #pragma mark - action
+- (void)actionRightItem:(UIButton *)button {
+    NSArray *array = @[@"举报", @"拉黑"];
+    if (_userCategoryView) {
+        _userCategoryView.hidden = !_userCategoryView.hidden;
+    }else {
+        _userCategoryView = [[YWTrendsCategoryView alloc] init];
+        _userCategoryView.delegate = self;
+        _userCategoryView.categoryArray = array;
+        [self.view addSubview:_userCategoryView];
+    }
+    [_userCategoryView makeConstraints:^(MASConstraintMaker *make) {
+        make.width.offset(70);
+        make.height.offset(array.count*30);
+        make.top.offset(64);
+        make.right.offset(-10);
+    }];
+}
+
 - (void)actionCancel:(UIButton *)button {
     _dataPickerBackView.hidden = YES;
 }
@@ -235,6 +248,28 @@
     [_httpManager requestSupport:parameters success:^(id responseObject) {
         trends.trendsIsSupport = trends.trendsIsSupport?@"0":@"1";
         [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_trendsArray indexOfObject:trends] inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)requestReport {
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"informTypeId": @"1", @"informTargetId": _user.userId};
+    [_httpManager requestReport:parameters success:^(id responseObject) {
+
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)requestBlacklist {
+    NSDictionary *parameters = @{@"userId": _user.userId, @"state": @"1"};
+    [_httpManager requestChangeRelationType:parameters success:^(id responseObject) {
+
     } otherFailure:^(id responseObject) {
         
     } failure:^(NSError *error) {
@@ -323,7 +358,7 @@
         button.backgroundColor = RGBColor(50, 50, 50);
         NSArray *array = @[@"全部", @"原创", @"合作", @"转发"];
         [button setTitle:[NSString stringWithFormat:@"%@ %ld", array[_trendsType], _trendsArray.count] forState:UIControlStateNormal];
-        [button setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"down.png"] forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize:13];
         [button addTarget:self action:@selector(actionTrendsCategoryOnClick:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:button];
@@ -346,7 +381,7 @@
         [cell.accessoryView becomeFirstResponder];
         [self didSelectCellWithIndex:indexPath.row];
     }else {
-        YWHotDetailViewController *hotVC = [[YWHotDetailViewController alloc] init];
+        YWTrendsDetailViewController *hotVC = [[YWTrendsDetailViewController alloc] init];
         hotVC.trends = _trendsArray[indexPath.row];
         [self.navigationController pushViewController:hotVC animated:YES];
     }
@@ -377,15 +412,19 @@
 }
 
 #pragma mark - YWTrendsCategoryViewDelegate
-- (void)trendsCategoryViewDidSelectCategoryWithIndex:(NSInteger)index {
-    _trendsType = index;
-    [_trendsArray removeAllObjects];
-    for (YWTrendsModel *trends in _allTrendsArray) {
-        if (trends.trendsType.integerValue == index || !index) {
-            [_trendsArray addObject:trends];
+- (void)trendsCategoryView:(YWTrendsCategoryView *)view didSelectCategoryWithIndex:(NSInteger)index {
+    if (view == _categoryView) {
+        !index?[self requestReport]:[self requestBlacklist];
+    }else {
+        _trendsType = index;
+        [_trendsArray removeAllObjects];
+        for (YWTrendsModel *trends in _allTrendsArray) {
+            if (trends.trendsType.integerValue == index || !index) {
+                [_trendsArray addObject:trends];
+            }
         }
+        [_tableView reloadData];
     }
-    [_tableView reloadData];
 }
 
 #pragma mark - YWCustomSegViewDelegate

@@ -73,9 +73,9 @@
     _tabBar.itemDelegate = self;
     self.window.rootViewController = _tabBar;
     NSArray *classNames = @[@"YWHomeViewController", @"YWMovieViewController", @"YWMineViewController"];
-    NSArray *titles = @[@"首页", @"影集", @"我的"];
-    NSArray *imageNames = @[@"", @"", @""];
-    NSArray *selectImageNames = @[@"", @"", @""];
+    NSArray *titles = @[@"", @"", @""];
+    NSArray *imageNames = @[@"article_normal.png", @"shoot_normal.png", @"mine_normal.png"];
+    NSArray *selectImageNames = @[@"more_selected.png", @"shoot_selected.png", @"more_selected.png"];
     _tabBar.titles = titles;
     _tabBar.imageNames = imageNames;
     _tabBar.selectImageNames = selectImageNames;

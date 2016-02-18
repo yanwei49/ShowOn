@@ -34,8 +34,8 @@
         
         _stateButton = [[UIButton alloc] init];
         _stateButton.backgroundColor = [UIColor whiteColor];
-        [_stateButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-        [_stateButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+        [_stateButton setImage:[UIImage imageNamed:@"choose_normal.png"] forState:UIControlStateNormal];
+        [_stateButton setImage:[UIImage imageNamed:@"choose_selected.png"] forState:UIControlStateSelected];
         [self.contentView addSubview:_stateButton];
         [_stateButton makeConstraints:^(MASConstraintMaker *make) {
             make.right.offset(-20);

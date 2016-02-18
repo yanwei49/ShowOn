@@ -96,7 +96,7 @@
         
         _playButton = [[UIButton alloc] init];
         _playButton.backgroundColor = Subject_color;
-        [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [_playButton setImage:[UIImage imageNamed:@"play_list.png"] forState:UIControlStateNormal];
         [_playButton addTarget:self action:@selector(actionOnClick:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_playButton];
         [_playButton makeConstraints:^(MASConstraintMaker *make) {

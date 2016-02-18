@@ -8,7 +8,7 @@
 
 #import "YWTrendsViewController.h"
 #import "YWFocusTableViewCell.h"
-#import "YWHotDetailViewController.h"
+#import "YWTrendsDetailViewController.h"
 #import "YWParser.h"
 #import "YWHttpManager.h"
 #import "YWSearchViewController.h"
@@ -163,7 +163,7 @@
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser trendsWithArray:responseObject[@"trendsList"]];
         [_allTrendsArray addObjectsFromArray:array];
-        [self trendsCategoryViewDidSelectCategoryWithIndex:_trendsType];
+        [self trendsCategoryView:_categoryView didSelectCategoryWithIndex:_trendsType];
         [self noContentViewShowWithState:_allTrendsArray.count?NO:YES];
         if (array.count<20) {
             _tableView.footer = nil;
@@ -186,7 +186,7 @@
 }
 
 #pragma mark - YWTrendsCategoryViewDelegate
-- (void)trendsCategoryViewDidSelectCategoryWithIndex:(NSInteger)index {
+- (void)trendsCategoryView:(YWTrendsCategoryView *)view didSelectCategoryWithIndex:(NSInteger)index {
     _categoryView.hidden = YES;
     _trendsType = index;
     [_dataSource removeAllObjects];
@@ -226,7 +226,7 @@
     button.backgroundColor = RGBColor(50, 50, 50);
     NSArray *array = @[@"全部", @"原创", @"合作", @"转发"];
     [button setTitle:[NSString stringWithFormat:@"%@ %ld", array[_trendsType], _dataSource.count] forState:UIControlStateNormal];
-    [button setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"down.png"] forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:13];
     [button addTarget:self action:@selector(actionTrendsCategoryOnClick:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:button];
@@ -241,7 +241,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    YWHotDetailViewController *vc = [[YWHotDetailViewController alloc] init];
+    YWTrendsDetailViewController *vc = [[YWTrendsDetailViewController alloc] init];
     vc.trends = _dataSource[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
 }

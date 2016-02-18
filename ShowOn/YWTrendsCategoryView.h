@@ -11,7 +11,7 @@
 @class YWTrendsCategoryView;
 @protocol YWTrendsCategoryViewDelegate <NSObject>
 
-- (void)trendsCategoryViewDidSelectCategoryWithIndex:(NSInteger)index;
+- (void)trendsCategoryView:(YWTrendsCategoryView *)view didSelectCategoryWithIndex:(NSInteger)index;
 
 @end
 @interface YWTrendsCategoryView : UIView

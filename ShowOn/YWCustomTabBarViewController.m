@@ -15,6 +15,7 @@
 @implementation YWCustomTabBarViewController
 {
     NSMutableArray   *_items;
+    NSMutableArray   *_backItems;
     UIView           *_view;
 }
 
@@ -22,6 +23,7 @@
     [super viewDidLoad];
     self.tabBar.hidden = YES;
     _items = [[NSMutableArray alloc] init];
+    _backItems = [[NSMutableArray alloc] init];
     
     _view = [[UIView alloc] init];
     _view.backgroundColor = RGBColor(30, 30, 30);
@@ -38,14 +40,24 @@
         UIButton *button = [[UIButton alloc] init];
         button.backgroundColor = RGBColor(30, 30, 30);
         [button addTarget:self action:@selector(actionOnClick:) forControlEvents:UIControlEventTouchUpInside];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor greenColor] forState:UIControlStateSelected];
-        [_items addObject:button];
+//        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//        [button setTitleColor:[UIColor greenColor] forState:UIControlStateSelected];
+        [_backItems addObject:button];
         [_view addSubview:button];
         [button makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.offset(0);
             make.left.offset(kScreenWidth/itemNums*i);
             make.width.offset(kScreenWidth/itemNums);
+        }];
+        UIButton *btn = [[UIButton alloc] init];
+        btn.userInteractionEnabled = NO;
+        btn.backgroundColor = RGBColor(30, 30, 30);
+        [_items addObject:btn];
+        [button addSubview:btn];
+        [btn makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(button.mas_centerX);
+            make.centerY.equalTo(button.mas_centerY);
+            make.width.height.offset(30);
         }];
     }
 }
@@ -58,13 +70,21 @@
     }
 }
 
+- (void)setSelectImageNames:(NSArray *)selectImageNames {
+    _selectImageNames = selectImageNames;
+    for (NSInteger i=0; i<_itemNums; i++) {
+        UIButton *button = _items[i];
+        [button setImage:[UIImage imageNamed:selectImageNames[i]] forState:UIControlStateSelected];
+    }
+}
+
 - (void)setHiddenState:(BOOL)hiddenState {
     _hiddenState = hiddenState;
     _view.hidden = hiddenState;
 }
 
 - (void)actionOnClick:(UIButton *)button {
-    NSInteger index = [_items indexOfObject:button];
+    NSInteger index = [_backItems indexOfObject:button];
     for (NSInteger i=0; i<_itemNums; i++) {
         UIButton *button1 = _items[i];
         button1.selected = (i==index)?YES:NO;

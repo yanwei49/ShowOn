@@ -13,10 +13,18 @@
 @end
 
 @implementation YWUserProtocolViewController
+{
+    UIWebView     *_webView;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"用户协议";
+    
+    NSString* path = [[NSBundle mainBundle] pathForResource:@"protocol" ofType:@"html"];
+    NSURL* url = [NSURL fileURLWithPath:path];
+    NSURLRequest* request = [NSURLRequest requestWithURL:url] ;
+    [_webView loadRequest:request];
 }
 
 

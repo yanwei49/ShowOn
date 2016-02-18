@@ -146,12 +146,19 @@
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.text = _dataSource[indexPath.row];
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
-    view.backgroundColor = [UIColor greenColor];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    view.backgroundColor = RGBColor(52, 52, 52);
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, 20, 20)];
     label.backgroundColor = [UIColor redColor];
+    label.layer.masksToBounds = YES;
+    label.layer.cornerRadius = 10;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont systemFontOfSize:12];
+    label.text = @"10";
     [view addSubview:label];
-    UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(3-0, 0, 10, 20)];
-    img.backgroundColor = [UIColor redColor];
+    UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(30, 0, 10, 20)];
+    img.backgroundColor = RGBColor(52, 52, 52);
+    img.image = [UIImage imageNamed:@"next.png"];
     [view addSubview:img];
     cell.accessoryView = view;
     

@@ -1,5 +1,5 @@
 //
-//  YWHotDetailViewController.h
+//  YWTrendsDetailViewController.h
 //  ShowOn
 //
 //  Created by 颜魏 on 15/12/4.
@@ -9,7 +9,7 @@
 #import "YWBaseViewController.h"
 
 @class YWTrendsModel;
-@interface YWHotDetailViewController : YWBaseViewController
+@interface YWTrendsDetailViewController : YWBaseViewController
 
 @property (nonatomic, strong) YWTrendsModel *trends;
 

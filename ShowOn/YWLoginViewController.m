@@ -51,7 +51,8 @@
 
 - (void)createSubViews {
     _backButton = [[UIButton alloc] init];
-    _backButton.backgroundColor = [UIColor greenColor];
+    _backButton.backgroundColor = [UIColor whiteColor];
+    [_backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
     [_backButton addTarget:self action:@selector(actionBack) forControlEvents:UIControlEventTouchUpInside];
     _backButton.hidden = _backButtonHiddenState;
     [self.view addSubview:_backButton];
@@ -148,6 +149,7 @@
     }];
     
     NSArray *titles = @[@"微信登录", @"QQ登录", @"微博登录"];
+    NSArray *imageNames = @[@"wechat.png", @"qq.png", @"weibo.png"];
     for (NSInteger i=0; i<3; i++) {
         UIButton *button = [[UIButton alloc] init];
         button.backgroundColor = [UIColor whiteColor];
@@ -164,8 +166,8 @@
         }];
         
         UIImageView *imageView = [[UIImageView alloc] init];
-        imageView.backgroundColor = [UIColor greenColor];
-        imageView.image = [UIImage imageNamed:@""];
+        imageView.backgroundColor = [UIColor whiteColor];
+        imageView.image = [UIImage imageNamed:imageNames[i]];
         [button addSubview:imageView];
         [imageView makeConstraints:^(MASConstraintMaker *make) {
             make.left.top.right.offset(0);

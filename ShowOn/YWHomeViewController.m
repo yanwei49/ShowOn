@@ -107,7 +107,8 @@
     _tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.top.left.right.offset(0);
+        make.bottom.left.right.offset(0);
+        make.top.offset(64);
     }];
     _tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _currentPage = 0;
@@ -123,7 +124,6 @@
         _hotView = [[YWHotView alloc] init];
         _hotView.delegate = self;
         self.navigationController.navigationBarHidden = YES;
-        _hotView.backgroundColor = [UIColor greenColor];
         [self.view addSubview:_hotView];
         [_hotView makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(0);
@@ -143,7 +143,7 @@
 
 #pragma mark - request
 - (void)requestArticleList {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@""};
     [_httpManager requestTemplateList:parameters success:^(id responseObject) {
         if (!_currentPage) {
             [_dataSource removeAllObjects];

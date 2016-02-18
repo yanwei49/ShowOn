@@ -65,8 +65,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([_delegate respondsToSelector:@selector(trendsCategoryViewDidSelectCategoryWithIndex:)]) {
-        [_delegate trendsCategoryViewDidSelectCategoryWithIndex:indexPath.row];
+    if ([_delegate respondsToSelector:@selector(trendsCategoryView:didSelectCategoryWithIndex:)]) {
+        [_delegate trendsCategoryView:self didSelectCategoryWithIndex:indexPath.row];
     }
 }
 

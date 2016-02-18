@@ -11,6 +11,9 @@
 #import "YWUserListViewController.h"
 #import "YWUserModel.h"
 #import "YWHttpManager.h"
+#import "YWTrendsModel.h"
+#import "YWCommentModel.h"
+#import "YWDataBaseManager.h"
 
 @interface YWWriteCommentViewController ()<YWKeyboardHeadViewDelegate, UITextViewDelegate, YWUserListViewControllerDelegate>
 
@@ -44,25 +47,38 @@
     _textView.delegate = self;
     [self.view addSubview:_textView];
     [_textView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.offset(10);
+        make.top.offset(10+64);
+        make.left.offset(10);
         make.height.offset(150);
         make.right.offset(-10);
     }];
     
     _placeholderLabel = [[UILabel alloc] init];
-    _placeholderLabel.font = [UIFont systemFontOfSize:15];\
+    _placeholderLabel.font = [UIFont systemFontOfSize:15];
     _placeholderLabel.text = @"说点什么吧！";
+    _placeholderLabel.textColor = [UIColor lightGrayColor];
     [self.view addSubview:_placeholderLabel];
     [_placeholderLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.offset(10);
+        make.top.offset(18+64);
+        make.left.offset(15);
         make.height.offset(15);
         make.right.offset(-10);
+    }];
+    
+    _keyboardHead = [[YWKeyboardHeadView alloc] init];
+    _keyboardHead.delegate = self;
+    [self.view addSubview:_keyboardHead];
+    [_keyboardHead makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.offset(0);
+        make.height.offset(49);
     }];
 }
 
 #pragma mark - action
 - (void)actionRightItem:(UIButton *)button {
-    if (!_textView.text.length) {
+    if (![[YWDataBaseManager shareInstance] loginUser]) {
+        [self login];
+    }else if (!_textView.text.length) {
         [self showAlterWithTitle:@"说的什么吧！"];
     }else {
         [self requestCommitContent];
@@ -75,9 +91,16 @@
 
 #pragma mark - request
 - (void)requestCommitContent {
-    NSDictionary *parameters = @{};
+    NSMutableString *userId = [NSMutableString stringWithString:@""];
+    for (YWUserModel *user in _selectUsers) {
+        if ([_textView.text rangeOfString:[NSString stringWithFormat:@"@%@", user.userName]].location != NSNotFound) {
+            [userId appendString:user.userId];
+            [userId appendString:@"|"];
+        }
+    }
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"commentsTargetId": _trends?_trends.trendsId:_comment.commentId, @"commentsTypeId": _trends?@(1):@(2), @"commentsContent": _textView.text, @"aiTeuserIds": userId};
     [_httpManager requestAiTeList:parameters success:^(id responseObject) {
-        
+        [self.navigationController popViewControllerAnimated:YES];
     } otherFailure:^(id responseObject) {
         
     } failure:^(NSError *error) {

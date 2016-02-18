@@ -25,7 +25,7 @@
         self.contentView.backgroundColor = RGBColor(30, 30, 30);
         
         _playMovie = [[YWMoviePlayView alloc] init];
-        _playMovie.backgroundColor = [UIColor greenColor];
+        _playMovie.backgroundColor = Subject_color;
         _playMovie.layer.masksToBounds = YES;
         _playMovie.layer.cornerRadius = 5;
         [self.contentView addSubview:_playMovie];
@@ -61,8 +61,8 @@
         
         _supportButton = [[UIButton alloc] init];
         _supportButton.backgroundColor = RGBColor(130, 130, 130);
-        [_supportButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-        [_supportButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+        [_supportButton setImage:[UIImage imageNamed:@"support_normal.png"] forState:UIControlStateNormal];
+        [_supportButton setImage:[UIImage imageNamed:@"support_selected.png"] forState:UIControlStateSelected];
         [button addSubview:_supportButton];
         [_supportButton makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.offset(0);

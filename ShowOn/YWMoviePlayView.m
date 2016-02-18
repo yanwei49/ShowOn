@@ -133,12 +133,6 @@
     [self addNotification];
 }
 
-/**
- *  截取指定时间的视频缩略图
- *
- *  @param timeBySecond 时间点
- */
-
 #pragma mark - 通知
 /**
  *  添加播放器通知

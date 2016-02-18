@@ -8,6 +8,11 @@
 
 #import "YWBaseViewController.h"
 
+@class YWTrendsModel;
+@class YWCommentModel;
 @interface YWWriteCommentViewController : YWBaseViewController
+
+@property (nonatomic, strong) YWTrendsModel *trends;
+@property (nonatomic, strong) YWCommentModel *comment;
 
 @end

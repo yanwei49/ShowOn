@@ -125,7 +125,7 @@
         }];
         
         _playMovieView = [[YWMoviePlayView alloc] init];
-        _playMovieView.backgroundColor = [UIColor greenColor];
+        _playMovieView.backgroundColor = RGBColor(30, 30, 30);
         _playMovieView.layer.masksToBounds = YES;
         _playMovieView.layer.cornerRadius = 5;
         [self.contentView addSubview:_playMovieView];
@@ -167,7 +167,7 @@
 
 - (void)setTrends:(YWTrendsModel *)trends {
     _trends = trends;
-    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsUser.portraitUri] placeholderImage:kPlaceholderMoiveImage];
+    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsUser.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
     if (trends.trendsType.integerValue == 2) {
         //        NSMutableString *str = [NSMutableString string];
         //        [str appendString:movie.movieReleaseUser.userName];

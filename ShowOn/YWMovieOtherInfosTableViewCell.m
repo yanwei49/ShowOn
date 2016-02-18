@@ -61,7 +61,7 @@
 
         _moreButton = [[UIButton alloc] init];
         _moreButton.backgroundColor = RGBColor(42, 42, 42);
-        [_moreButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [_moreButton setImage:[UIImage imageNamed:@"more_normal.png"] forState:UIControlStateNormal];
         [_moreButton addTarget:self action:@selector(actionOnClickMore:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_moreButton];
         [_moreButton makeConstraints:^(MASConstraintMaker *make) {
@@ -106,8 +106,8 @@
         _supportButton = [[UIButton alloc] init];
         _supportButton.backgroundColor = RGBColor(42, 42, 42);
         _supportButton.userInteractionEnabled = NO;
-        [_supportButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-        [_supportButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+        [_supportButton setImage:[UIImage imageNamed:@"support_normal.png"] forState:UIControlStateNormal];
+        [_supportButton setImage:[UIImage imageNamed:@"support_selected.png"] forState:UIControlStateSelected];
         [supportButton addSubview:_supportButton];
         [_supportButton makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(supportButton.mas_centerY);
@@ -130,8 +130,8 @@
         _collectButton = [[UIButton alloc] init];
         _collectButton.backgroundColor = RGBColor(42, 42, 42);
         _collectButton.userInteractionEnabled = NO;
-        [_collectButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-        [_collectButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+        [_collectButton setImage:[UIImage imageNamed:@"collect_normal.png"] forState:UIControlStateNormal];
+        [_collectButton setImage:[UIImage imageNamed:@"collect_selected.png"] forState:UIControlStateSelected];
         [collectButton addSubview:_collectButton];
         [_collectButton makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_supportButton.mas_centerY);
@@ -166,7 +166,7 @@
         UIButton *shareBtn = [[UIButton alloc] init];
         shareBtn.backgroundColor = RGBColor(42, 42, 42);
         shareBtn.userInteractionEnabled = NO;
-        [shareBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [shareBtn setImage:[UIImage imageNamed:@"relay_normal.png"] forState:UIControlStateNormal];
         [shareButton addSubview:shareBtn];
         [shareBtn makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_supportButton.mas_centerY);

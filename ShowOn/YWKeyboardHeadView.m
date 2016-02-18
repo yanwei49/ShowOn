@@ -17,13 +17,13 @@
      
         UIButton *button = [[UIButton alloc] init];
         button.backgroundColor = [UIColor whiteColor];
-        [button setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"@_normal.png"] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(actionAiteOnClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:button];
         [button makeConstraints:^(MASConstraintMaker *make) {
             make.left.offset(20);
-            make.width.offset(60);
-            make.top.bottom.offset(0);
+            make.width.height.offset(30);
+            make.centerY.equalTo(self.mas_centerY);
         }];
     }
     

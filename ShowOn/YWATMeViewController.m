@@ -11,7 +11,7 @@
 #import "YWParser.h"
 #import "YWHttpManager.h"
 #import "YWUserModel.h"
-#import "YWHotDetailViewController.h"
+#import "YWTrendsDetailViewController.h"
 #import "YWDataBaseManager.h"
 #import "MJRefresh.h"
 
@@ -110,7 +110,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    YWHotDetailViewController *hotVC = [[YWHotDetailViewController alloc] init];
+    YWTrendsDetailViewController *hotVC = [[YWTrendsDetailViewController alloc] init];
     hotVC.trends = [_dataSource[indexPath.row] trends];
     [self.navigationController pushViewController:hotVC animated:YES];
 }

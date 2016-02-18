@@ -32,7 +32,7 @@
         _isSelf = state;
         
         _avatorImageView = [[UIImageView alloc] init];
-        _avatorImageView.backgroundColor = [UIColor greenColor];
+        _avatorImageView.backgroundColor = [UIColor whiteColor];
         _avatorImageView.layer.masksToBounds = YES;
         _avatorImageView.layer.cornerRadius = 30;
         [self addSubview:_avatorImageView];
@@ -54,7 +54,8 @@
         }];
 
         _rankImageView = [[UIImageView alloc] init];
-        _rankImageView.backgroundColor = [UIColor greenColor];
+        _rankImageView.backgroundColor = Subject_color;
+        _rankImageView.image = [UIImage imageNamed:@"certification.png"];
         [self addSubview:_rankImageView];
         [_rankImageView makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_nameLabel.mas_centerY);
@@ -189,7 +190,7 @@
 
 - (void)setUser:(YWUserModel *)user {
     _user = user;
-    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:[UIImage imageNamed:@""]];
+    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
     _nameLabel.text = [NSString stringWithFormat:@"%@       %@", user.userName, user.userRank];
     _empiricalLabel.text = [NSString stringWithFormat:@"经验值 %@", user.userEmpirical];
     _authenticationLabel.text = user.userAuthentication;

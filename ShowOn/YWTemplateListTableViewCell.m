@@ -54,7 +54,7 @@
         
         UIImageView *playImage = [[UIImageView alloc] init];
         playImage.backgroundColor = RGBColor(50, 50, 50);
-        playImage.image = [UIImage imageNamed:@""];
+        playImage.image = [UIImage imageNamed:@"play_big.png"];
         [_imageView addSubview:playImage];
         [playImage makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(view.mas_centerX);

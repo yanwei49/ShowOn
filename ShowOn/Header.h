@@ -38,9 +38,9 @@
 
 #define Subject_color    [UIColor colorWithRed:42/256.0 green:42/256.0 blue:42/256.0 alpha:1]
 #define CornerRadius     5
-#define kPlaceholderUserAvatorImage  [UIImage imageNamed:@""]
-#define kPlaceholderMoiveImage  [UIImage imageNamed:@""]
-#define kPlaceholderArticleImage  [UIImage imageNamed:@""]
+#define kPlaceholderUserAvatorImage  [UIImage imageNamed:@"avator_background_image.png"]
+#define kPlaceholderMoiveImage  [UIImage imageNamed:@"movie_background_image.jpg"]
+#define kPlaceholderArticleImage  [UIImage imageNamed:@"article_background_image.jpg"]
 
 
 #endif /* Header_h */

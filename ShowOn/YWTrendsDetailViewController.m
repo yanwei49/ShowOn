@@ -1,12 +1,12 @@
 //
-//  YWHotDetailViewController.m
+//  YWTrendsDetailViewController.m
 //  ShowOn
 //
 //  Created by 颜魏 on 15/12/4.
 //  Copyright © 2015年 yanwei. All rights reserved.
 //
 
-#import "YWHotDetailViewController.h"
+#import "YWTrendsDetailViewController.h"
 #import "YWMovieModel.h"
 #import "YWFocusTableViewCell.h"
 #import "YWMovieCommentTableViewCell.h"
@@ -22,16 +22,15 @@
 #import "YWParser.h"
 #import "YWUserModel.h"
 #import "YWDataBaseManager.h"
-
-
+#import "YWTranscribeViewController.h"
 #import "YWCommentModel.h"
 #import "YWMovieTemplateModel.h"
 
-@interface YWHotDetailViewController()<UITableViewDataSource, UITableViewDelegate, YWFocusTableViewCellDelegate, YWMovieCommentTableViewCellDelegate, YWMovieOtherInfosTableViewCellDelegate>
+@interface YWTrendsDetailViewController()<UITableViewDataSource, UITableViewDelegate, YWFocusTableViewCellDelegate, YWMovieCommentTableViewCellDelegate, YWMovieOtherInfosTableViewCellDelegate, UIActionSheetDelegate>
 
 @end
 
-@implementation YWHotDetailViewController
+@implementation YWTrendsDetailViewController
 {
     UITableView         *_tableView;
     UIButton            *_commentView;
@@ -174,6 +173,7 @@
     YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
     YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
     nv.title = @"写评论";
+    vc.trends = _trends;
     [self presentViewController:nv animated:YES completion:nil];
 }
 
@@ -183,6 +183,75 @@
     [_httpManager requestTrendsDetail:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         _trends = [parser trendsWithDict:responseObject[@"trends"]];
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)requestTrendsSupport {
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": _trends.trendsId,@"praiseTypeId": @(1)};
+    [_httpManager requestSupport:parameters success:^(id responseObject) {
+        _trends.trendsIsSupport = @"1";
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)requestCommentSupport:(YWCommentModel *)comment {
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": comment.commentId, @"praiseTypeId": @(2)};
+    [_httpManager requestSupport:parameters success:^(id responseObject) {
+        comment.isSupport = @"1";
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)requestRepeat {
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"trendsId": _trends.trendsId, @"forwardComments": @(2)};
+    [_httpManager requestRepeat:parameters success:^(id responseObject) {
+
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)requestShare {
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"trendsId": _trends.trendsId};
+    [_httpManager requestShare:parameters success:^(id responseObject) {
+        [UMSocialSnsService presentSnsIconSheetView:self appKey:UMengAppKey shareText:@"来自【角儿】" shareImage:nil shareToSnsNames:@[UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQzone,UMShareToSina,UMShareToQQ] delegate:nil];
+        NSString *url = responseObject[@"url"];
+        NSString *title = _trends.trendsContent.length>0?_trends.trendsContent:@"";
+        [UMSocialData defaultData].extConfig.qqData.url = url;
+        [UMSocialData defaultData].extConfig.qzoneData.url =  url;
+        [UMSocialData defaultData].extConfig.qqData.title =  title;
+        [UMSocialData defaultData].extConfig.qzoneData.title =  title;
+        [UMSocialData defaultData].extConfig.wechatSessionData.url =  url;
+        [UMSocialData defaultData].extConfig.wechatTimelineData.url =  url;
+        [UMSocialData defaultData].extConfig.wechatSessionData.title =  title;
+        [UMSocialData defaultData].extConfig.wechatTimelineData.title =  title;
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)requestTrendsCollect {
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"collectionTargetId": _trends.trendsId,@"collectionTypeId": @(1)};
+    [_httpManager requestSupport:parameters success:^(id responseObject) {
+        _trends.trendsIsCollect = @"1";
+        _trends.trendsCollectionNumbers = [NSString stringWithFormat:@"%ld", _trends.trendsCollectionNumbers.integerValue+1];
         [_tableView reloadData];
     } otherFailure:^(id responseObject) {
         
@@ -245,12 +314,30 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    if (indexPath.row > 1) {
+        YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
+        YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
+        nv.title = @"写评论";
+        vc.comment = _trends.trendsComments[indexPath.row-2];
+        [self presentViewController:nv animated:YES completion:nil];
+    }
+}
+
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        [self requestRepeat];
+    }else if (buttonIndex == 1) {
+        [self requestShare];
+    }
 }
 
 #pragma mark - YWFocusTableViewCellDelegate
 - (void)focusTableViewCellDidSelectCooperate:(YWFocusTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
-
+        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.trends = _trends;
+        [self.navigationController pushViewController:vc animated:YES];
     }else {
         [self login];
     }
@@ -258,7 +345,9 @@
 
 - (void)focusTableViewCellDidSelectPlay:(YWFocusTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
-        
+        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.template = _trends.trendsMovie.movieTemplate;
+        [self.navigationController pushViewController:vc animated:YES];
     }else {
         [self login];
     }
@@ -267,17 +356,19 @@
 #pragma mark - YWMovieOtherInfosTableViewCellDelegate
 - (void)movieOtherInfosTableViewCellDidSelectShare:(YWMovieOtherInfosTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
-        [UMSocialSnsService presentSnsIconSheetView:self appKey:UMengAppKey shareText:@"来自【角儿】" shareImage:nil shareToSnsNames:@[UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQzone,UMShareToSina,UMShareToQQ] delegate:nil];
-        NSString *url = @"http://www.baidu.com";
-        NSString *title = _trends.trendsContent.length>0?_trends.trendsContent:@"";
-        [UMSocialData defaultData].extConfig.qqData.url = url;
-        [UMSocialData defaultData].extConfig.qzoneData.url =  url;
-        [UMSocialData defaultData].extConfig.qqData.title =  title;
-        [UMSocialData defaultData].extConfig.qzoneData.title =  title;
-        [UMSocialData defaultData].extConfig.wechatSessionData.url =  url;
-        [UMSocialData defaultData].extConfig.wechatTimelineData.url =  url;
-        [UMSocialData defaultData].extConfig.wechatSessionData.title =  title;
-        [UMSocialData defaultData].extConfig.wechatTimelineData.title =  title;
+        if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
+            UIAlertController *sheet = [UIAlertController alertControllerWithTitle:@"转发/分享" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+            [sheet addAction:[UIAlertAction actionWithTitle:@"转发" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                [self requestRepeat];
+            }]];
+            [sheet addAction:[UIAlertAction actionWithTitle:@"分享" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                [self requestShare];
+            }]];
+            [self.navigationController pushViewController:sheet animated:YES];
+        }else {
+            UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"转发/分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"转发", @"分享", nil];
+            [sheet showInView:self.view];
+        }
     }else {
         [self login];
     }
@@ -285,7 +376,7 @@
 
 - (void)movieOtherInfosTableViewCellDidSelectSupport:(YWMovieOtherInfosTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
-        
+        [self requestTrendsSupport];
     }else {
         [self login];
     }
@@ -293,7 +384,7 @@
 
 - (void)movieOtherInfosTableViewCellDidSelectCollect:(YWMovieOtherInfosTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
-        
+        [self requestTrendsCollect];
     }else {
         [self login];
     }
@@ -308,7 +399,7 @@
 #pragma mark - YWMovieCommentTableViewCellDelegate
 - (void)movieCommentTableViewCellDidSelectSupport:(YWMovieCommentTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
-        
+        [self requestCommentSupport:cell.comment];
     }else {
         [self login];
     }

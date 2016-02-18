@@ -14,8 +14,13 @@
 #import "YWParser.h"
 #import "YWDataBaseManager.h"
 #import "YWUserModel.h"
+#import "YWTemplateTrendsTableViewCell.h"
+#import "YWTranscribeViewController.h"
+#import "YWTrendsModel.h"
+#import "YWCommentModel.h"
+#import "YWMovieModel.h"
 
-@interface YWHotItemViewController ()<UITableViewDataSource, UITableViewDelegate, YWMovieCommentTableViewCellDelegate>
+@interface YWHotItemViewController ()<UITableViewDataSource, UITableViewDelegate, YWMovieCommentTableViewCellDelegate, YWTemplateTrendsTableViewCellDelegate>
 
 @end
 
@@ -47,6 +52,11 @@
     [self createSubViews];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self requestTemplateDetail];
+}
+
 #pragma mark - private
 - (void)createSubViews {
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -54,7 +64,7 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_tableView registerClass:[YWMovieCommentTableViewCell class] forCellReuseIdentifier:@"commentCell"];
     [_tableView registerClass:[YWHotTableViewCell class] forCellReuseIdentifier:@"templateCell"];
-    [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"trendsCell"];
+    [_tableView registerClass:[YWTemplateTrendsTableViewCell class] forCellReuseIdentifier:@"trendsCell"];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableFooterView = [[UIView alloc] init];
@@ -91,6 +101,18 @@
     }];
 }
 
+- (void)requestCommentSupport:(YWCommentModel *)comment {
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": comment.commentId, @"praiseTypeId": @(2)};
+    [_httpManager requestSupport:parameters success:^(id responseObject) {
+        comment.isSupport = @"1";
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
 #pragma nmark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (!_segmentedControl.selectedSegmentIndex) {
@@ -116,7 +138,9 @@
             
             return cell;
         }else {
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"trendsCell"];
+            YWTemplateTrendsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"trendsCell"];
+            cell.delegate = self;
+            cell.trends = _trends[indexPath.row];
             
             return cell;
         }
@@ -170,7 +194,28 @@
 #pragma mark - YWMovieCommentTableViewCellDelegate
 - (void)movieCommentTableViewCellDidSelectSupport:(YWMovieCommentTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
-        
+        [self requestCommentSupport:cell.comment];
+    }else {
+        [self login];
+    }
+}
+
+#pragma mark - YWTemplateTrendsTableViewCellDelegate
+- (void)templateTrendsTableViewCellDidSelectCooperate:(YWTemplateTrendsTableViewCell *)cell {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
+        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.trends = cell.trends;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else {
+        [self login];
+    }
+}
+
+- (void)templateTrendsTableViewCellDidSelectPlay:(YWTemplateTrendsTableViewCell *)cell {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
+        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.template = cell.trends.trendsMovie.movieTemplate;
+        [self.navigationController pushViewController:vc animated:YES];
     }else {
         [self login];
     }

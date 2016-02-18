@@ -55,7 +55,7 @@
         }];
         
         _playButton = [[UIButton alloc] init];
-        [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [_playButton setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
         _playButton.userInteractionEnabled = NO;
         [_playButton addTarget:self action:@selector(actionPlay:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:_playButton];

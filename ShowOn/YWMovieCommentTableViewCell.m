@@ -40,8 +40,8 @@
         
         _supportButton = [[UIButton alloc] init];
         _supportButton.backgroundColor = RGBColor(60, 60, 60);
-        [_supportButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-        [_supportButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+        [_supportButton setImage:[UIImage imageNamed:@"support_normal.png"] forState:UIControlStateNormal];
+        [_supportButton setImage:[UIImage imageNamed:@"support_selected.png"] forState:UIControlStateSelected];
         [_supportButton addTarget:self action:@selector(actionOnClickSupport:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_supportButton];
         [_supportButton makeConstraints:^(MASConstraintMaker *make) {
@@ -94,7 +94,7 @@
         [_contentLabel makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_userNameLabel.mas_bottom);
             make.left.equalTo(_userNameLabel.mas_left);
-            make.right.offset(-10);
+            make.right.offset(-40);
             make.bottom.equalTo(line.mas_top);
         }];
     }
@@ -118,7 +118,7 @@
 
 +(CGFloat)cellHeightWithComment:(YWCommentModel *)comment {
     CGFloat height = 60;
-    CGRect rect = [comment.commentContent boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
+    CGRect rect = [comment.commentContent boundingRectWithSize:CGSizeMake(kScreenWidth-50, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
     if (rect.size.height>20) {
         height += rect.size.height-20;
     }

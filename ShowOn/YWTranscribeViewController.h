@@ -8,6 +8,11 @@
 
 #import "YWBaseViewController.h"
 
+@class YWTrendsModel;
+@class YWMovieTemplateModel;
 @interface YWTranscribeViewController : YWBaseViewController
+
+@property (nonatomic, strong) YWMovieTemplateModel *template;
+@property (nonatomic, strong) YWTrendsModel *trends;
 
 @end

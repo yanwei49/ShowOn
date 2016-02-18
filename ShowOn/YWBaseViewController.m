@@ -72,7 +72,7 @@
 
 #pragma mark - right/left item
 - (void)createLeftItemWithTitle:(NSString *)title {
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(10, 5, 70, 34)];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(10, 5, 50, 34)];
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:15];
     [button addTarget:self action:@selector(actionLeftItem:) forControlEvents:UIControlEventTouchUpInside];
@@ -80,7 +80,7 @@
 }
 
 - (void)createRightItemWithTitle:(NSString *)title {
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth - 80, 5, 70, 34)];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth - 60, 5, 50, 34)];
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:15];
     [button addTarget:self action:@selector(actionRightItem:) forControlEvents:UIControlEventTouchUpInside];
@@ -88,7 +88,7 @@
 }
 
 - (void)createRightItemWithImage:(NSString *)imageName {
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth - 80, 5, 70, 34)];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth - 60, 5, 50, 34)];
     [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(actionRightItem:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];

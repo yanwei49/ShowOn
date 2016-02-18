@@ -27,7 +27,7 @@
         self.contentView.layer.cornerRadius = CornerRadius;;
 
         _imageView = [[UIImageView alloc] init];
-        _imageView.backgroundColor = [UIColor greenColor];
+        _imageView.backgroundColor = RGBColor(30, 30, 30);
         [self.contentView addSubview:_imageView];
         [_imageView makeConstraints:^(MASConstraintMaker *make) {
             make.top.left.right.offset(0);

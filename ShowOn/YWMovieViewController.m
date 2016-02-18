@@ -96,7 +96,8 @@
     }];
     
     UIButton *takePhotoButton = [[UIButton alloc] init];
-    takePhotoButton.backgroundColor = [UIColor redColor];
+    takePhotoButton.backgroundColor = RGBColor(30, 30, 30);
+    [takePhotoButton setImage:[UIImage imageNamed:@"red_point.png"] forState:UIControlStateNormal];
     takePhotoButton.layer.cornerRadius = 20;
     takePhotoButton.layer.masksToBounds = YES;
     [takePhotoButton addTarget:self action:@selector(actionTakePhoto:) forControlEvents:UIControlEventTouchUpInside];
@@ -109,7 +110,8 @@
     }];
     
     UIButton *backButton = [[UIButton alloc] init];
-    backButton.backgroundColor = [UIColor redColor];
+    backButton.backgroundColor = RGBColor(30, 30, 30);
+    [backButton setImage:[UIImage imageNamed:@"back_orange.png"] forState:UIControlStateNormal];
     backButton.layer.cornerRadius = 20;
     backButton.layer.masksToBounds = YES;
     [backButton addTarget:self action:@selector(actionBack:) forControlEvents:UIControlEventTouchUpInside];
@@ -118,11 +120,11 @@
         make.centerY.equalTo(_tooBar.mas_centerY);
         make.left.offset(20);
         make.height.offset(30);
-        make.width.offset(50);
+        make.width.offset(30);
     }];
     
     _movie1 = [[YWMoviePlayView alloc] init];
-    _movie1.backgroundColor = [UIColor greenColor];
+    _movie1.backgroundColor = Subject_color;
     [self.view addSubview:_movie1];
     [_movie1 makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(5);
@@ -132,7 +134,7 @@
     }];
     
     _movie2 = [[YWMoviePlayView alloc] init];
-    _movie2.backgroundColor = [UIColor greenColor];
+    _movie2.backgroundColor = Subject_color;
     [self.view addSubview:_movie2];
     [_movie2 makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(5);
