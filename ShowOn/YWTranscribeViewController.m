@@ -11,8 +11,13 @@
 #import "YWMoviePlayView.h"
 #import "YWMovieRecorder.h"
 #import "YWEditCoverViewController.h"
+#import "YWTemplateCollectionViewCell.h"
+#import "YWSubsectionVideoModel.h"
+#import "YWMovieTemplateModel.h"
+#import "YWTrendsModel.h"
+#import "YWMovieModel.h"
 
-@interface YWTranscribeViewController ()<YWCustomSegViewDelegate>
+@interface YWTranscribeViewController ()<YWCustomSegViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWMoviePlayViewDelegate, YWMovieRecorderDelegate>
 
 @end
 
@@ -23,13 +28,33 @@
     YWCustomSegView     *_modelItemView;
     YWMoviePlayView     *_playView;
     YWMovieRecorder     *_recorderView;
-    UIView              *_orderModelBackgroundView;
-    UIView              *_shootScaleModelBackgroundView;
+    NSMutableArray      *_collectionViews;
+    NSMutableArray      *_labels;
+    NSMutableArray      *_dataSource1;
+    NSMutableArray      *_dataSource2;
+    NSMutableArray      *_dataSource3;
+    NSMutableArray      *_titles1;
+    NSMutableArray      *_titles2;
+    NSMutableArray      *_recorderMovies;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
+    _dataSource1 = [[NSMutableArray alloc] init];
+    _dataSource2 = [[NSMutableArray alloc] init];
+    _dataSource3 = [[NSMutableArray alloc] init];
+    _recorderMovies = [[NSMutableArray alloc] init];
+    _titles1 = [[NSMutableArray alloc] initWithArray:@[@"近\n景", @"中\n景", @"远\n景"]];
+    _titles2 = [[NSMutableArray alloc] initWithArray:@[@"特\n写", @"中\n景", @"远\n景"]];
+    _collectionViews = [[NSMutableArray alloc] init];
+    _labels = [[NSMutableArray alloc] init];
+    _template = _trends?_trends.trendsMovie.movieTemplate:_template;
+    if (!_trends) {
+        for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
+            model.subsectionVideoPerformanceStatus = @"2";
+        }
+    }
     
     [self createSubViews];
 }
@@ -44,9 +69,21 @@
     self.navigationController.navigationBarHidden = NO;
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [_recorderView startRunning];
+}
+
+-(void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [_recorderView stopRunning];
+}
+
 - (void)createSubViews {
-    _backgroundSV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight-40)];
-    _backgroundSV.backgroundColor = Subject_color;
+    _backgroundSV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 20, kScreenWidth, kScreenHeight-40)];
+    _backgroundSV.showsVerticalScrollIndicator = NO;
+    _backgroundSV.bounces = NO;
+    _backgroundSV.backgroundColor = RGBColor(50, 50, 50);
     [self.view addSubview:_backgroundSV];
     NSArray  *titles = @[@"取消", @"完成"];
     _itemView = [[YWCustomSegView alloc] initWithItemTitles:titles];
@@ -61,33 +98,74 @@
         make.height.offset(40);
     }];
 
-    _playView = [[YWMoviePlayView alloc] init];
+//    NSString *path = [[NSBundle mainBundle] pathForResource:@"video1.mov" ofType:nil];
+    _playView = [[YWMoviePlayView alloc] initWithFrame:CGRectMake(5, 5, kScreenWidth-10, 250) playUrl:@""];
     _playView.backgroundColor = Subject_color;
     _playView.layer.masksToBounds = YES;
+    _playView.isCountdown = YES;
+    _playView.delegate = self;
     _playView.layer.cornerRadius = 5;
     _playView.layer.borderColor = RGBColor(30, 30, 30).CGColor;
     _playView.layer.borderWidth = 1;
     [_backgroundSV addSubview:_playView];
-    [_playView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.offset(5);
-        make.width.offset(kScreenWidth-10);
-        make.height.offset(200);
-    }];
+//    [_playView makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.left.offset(5);
+//        make.width.offset(kScreenWidth-10);
+//        make.height.offset(200);
+//    }];
     
-    _recorderView = [[YWMovieRecorder alloc] init];
+    UIButton *playButton = [[UIButton alloc] init];
+    playButton.backgroundColor = Subject_color;
+    [playButton setTitle:@"预览全片" forState:UIControlStateNormal];
+    [playButton setImage:[UIImage imageNamed:@"play_button.png"] forState:UIControlStateNormal];
+    [playButton addTarget:self action:@selector(actionPlay:) forControlEvents:UIControlEventTouchUpInside];
+    [_playView addSubview:playButton];
+    [playButton makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(_playView.mas_right).offset(-5);
+        make.height.offset(20);
+        make.top.equalTo(_playView.mas_top).offset(5);
+    }];
+
+    _recorderView = [[YWMovieRecorder alloc] initWithFrame:CGRectMake(5, 260, kScreenWidth-10, 250)];
     _recorderView.backgroundColor = Subject_color;
     _recorderView.layer.masksToBounds = YES;
     _recorderView.layer.cornerRadius = 5;
+    _recorderView.delegate = self;
     _recorderView.layer.borderColor = RGBColor(30, 30, 30).CGColor;
     _recorderView.layer.borderWidth = 1;
+    _recorderView.model = _template.templateSubsectionVideos[0];
     [_backgroundSV addSubview:_recorderView];
-    [_recorderView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(5);
-        make.width.offset(kScreenWidth-10);
-        make.top.equalTo(_playView.mas_bottom).offset(5);
-        make.height.offset(200);
+//    [_recorderView makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.offset(5);
+//        make.width.offset(kScreenWidth-10);
+//        make.top.equalTo(_playView.mas_bottom).offset(5);
+//        make.height.offset(200);
+//    }];
+    
+    UIButton *restartButton = [[UIButton alloc] init];
+    restartButton.backgroundColor = Subject_color;
+    [restartButton setTitle:@"重新拍摄" forState:UIControlStateNormal];
+    [restartButton setImage:[UIImage imageNamed:@"red_point_button.png"] forState:UIControlStateNormal];
+    [restartButton addTarget:self action:@selector(actionRestart:) forControlEvents:UIControlEventTouchUpInside];
+    [_recorderView addSubview:restartButton];
+    [restartButton makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(_recorderView.mas_right).offset(-5);
+        make.height.offset(20);
+        make.top.equalTo(_recorderView.mas_top).offset(5);
     }];
     
+    UIButton *changeButton = [[UIButton alloc] init];
+    changeButton.backgroundColor = Subject_color;
+    [changeButton setTitle:@"切换" forState:UIControlStateNormal];
+    [changeButton setImage:[UIImage imageNamed:@"change_shot_button.png"] forState:UIControlStateNormal];
+    [changeButton addTarget:self action:@selector(actionChange:) forControlEvents:UIControlEventTouchUpInside];
+    [_recorderView addSubview:changeButton];
+    [changeButton makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_recorderView.mas_left).offset(5);
+        make.height.offset(20);
+        make.top.equalTo(_recorderView.mas_top).offset(5);
+    }];
+
     NSArray  *modelTitles = @[@"顺序模式", @"景别模式"];
     _modelItemView = [[YWCustomSegView alloc] initWithItemTitles:modelTitles];
     _modelItemView.hiddenLineView = NO;
@@ -101,44 +179,31 @@
         make.height.offset(20);
         make.top.equalTo(_recorderView.mas_bottom);
     }];
-    
-    _orderModelBackgroundView = [[UIView alloc] init];
-    _orderModelBackgroundView.backgroundColor = Subject_color;
-    [_backgroundSV addSubview:_orderModelBackgroundView];
-    [_orderModelBackgroundView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(0);
-        make.width.offset(kScreenWidth);
-        make.height.offset(300);
-        make.top.equalTo(_modelItemView.mas_bottom);
-    }];
-    
-    _shootScaleModelBackgroundView = [[UIView alloc] init];
-    _shootScaleModelBackgroundView.backgroundColor = Subject_color;
-    _shootScaleModelBackgroundView.hidden = YES;
-    [_backgroundSV addSubview:_shootScaleModelBackgroundView];
-    [_shootScaleModelBackgroundView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(0);
-        make.height.offset(300);
-        make.width.offset(kScreenWidth);
-        make.top.equalTo(_modelItemView.mas_bottom);
-    }];
 
-//    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-//    layout.itemSize = CGSizeMake((kScreenWidth-30)/5, (kScreenWidth-30)/5);
-//    
-//    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-//    _collectionView.backgroundColor = Subject_color;
-//    [_collectionView registerClass:[YWTemplateCollectionViewCell class] forCellWithReuseIdentifier:@"item"];
-//    _collectionView.delegate = self;
-//    _collectionView.dataSource = self;
-//    [self.view addSubview:_collectionView];
-//    [_collectionView makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.offset(5);
-//        make.right.offset(-5);
-//        make.height.offset((kScreenWidth-30)/5*2+5);
-//        make.bottom.equalTo(takePhotoButton.mas_top).offset(-15);
-//    }];
-
+    for (NSInteger i=0; i<3; i++) {
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        layout.itemSize = CGSizeMake(110, 80);
+        
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(30, 530+85*i, kScreenWidth-30, 80) collectionViewLayout:layout];
+        collectionView.backgroundColor = RGBColor(30, 30, 30);
+//        collectionView.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        [collectionView registerClass:[YWTemplateCollectionViewCell class] forCellWithReuseIdentifier:@"item"];
+        collectionView.delegate = self;
+        collectionView.dataSource = self;
+        [_backgroundSV addSubview:collectionView];
+        [_collectionViews addObject:collectionView];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 530+85*i, 30, 80)];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont systemFontOfSize:13];
+        label.text = _titles1[i];
+        label.numberOfLines = 0;
+        label.textAlignment = NSTextAlignmentCenter;
+        [_backgroundSV addSubview:label];
+        [_labels addObject:label];
+    }
+    _backgroundSV.contentSize = CGSizeMake(kScreenWidth, 540+85*3+10);
+    [self customSegView:_modelItemView didSelectItemWithIndex:0];
 }
 
 #pragma mark - action
@@ -146,22 +211,162 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)actionPlay:(UIButton *)button {
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"video2.mov" ofType:nil];
+    _playView.urlStr = path;
+//    [_playView play];
+}
+
+- (void)actionRestart:(UIButton *)button {
+    _recorderView.model.subsectionVideoPerformanceStatus = @"2";
+    [_recorderMovies removeObject:_recorderView.model];
+    _playView.urlStr = _recorderView.model.subsectionVideoUrl;
+    for (UICollectionView *collectionView in _collectionViews) {
+        [collectionView reloadData];
+    }
+}
+
+- (void)actionChange:(UIButton *)button {
+    [_recorderView changeCamera];
+}
+
+#pragma mark - YWMoviePlayViewDelegate
+- (void)moviePlayViewPlayWithState:(BOOL)playState {
+    if (_recorderView.model.subsectionVideoPerformanceStatus.integerValue != 1) {
+        if (playState) {
+            [_recorderView startRecorder];
+        }
+    }
+}
+
+- (void)moviePlayViewPlayDown:(YWMoviePlayView *)view {
+    [_recorderView startRecorder];
+}
+
+#pragma mark - YWMovieRecorderDelegate
+- (void)movieRecorderDown:(YWMovieRecorder *)view {
+    view.model.subsectionVideoPerformanceStatus = @"1";
+    for (UICollectionView *collectionView in _collectionViews) {
+        [collectionView reloadData];
+    }
+    [_recorderMovies addObject:view.model];
+}
+
+//- (void)movieRecorderDownWithData:(NSData *)data subsectionVideoSort:(NSString *)subsectionVideoSort subsectionVideoType:(NSString *)subsectionVideoType {
+//    [_movieData addObject:data];
+//    [_moviesubsectionVideoSorts addObject:subsectionVideoSort];
+//    [_moviesubsectionVideoTypes addObject:subsectionVideoType];
+//}
 
 #pragma mark - YWCustomSegViewDelegate
 - (void)customSegView:(YWCustomSegView *)view didSelectItemWithIndex:(NSInteger)index {
     if ([view isEqual:_itemView]) {
         if (index) {
-            YWEditCoverViewController *vc = [[YWEditCoverViewController alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
+            if (_recorderMovies.count) {
+                YWEditCoverViewController *vc = [[YWEditCoverViewController alloc] init];
+                vc.trends = _trends;
+                vc.template = _template;
+//                vc.recorderMovies = _recorderMovies;
+                vc.recorderState = _template.templateSubsectionVideos.count==_recorderMovies.count?YES:NO;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else {
+                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请先录制视频" message:nil delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+                [alter show];
+            }
         }else {
             [self.navigationController popViewControllerAnimated:YES];
         }
     }else {
-    
+        [_dataSource1 removeAllObjects];
+        [_dataSource2 removeAllObjects];
+        [_dataSource3 removeAllObjects];
+        for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
+            //分段视频类型（ 1、顺序模式(3、近景,4、中景,5、远景,),2、景别模式(6、特写,7、中景,8、远景)）
+            model.subsectionVideoPerformanceStatus = (model.subsectionVideoPerformanceStatus.integerValue==1)?@"1":@"2";
+            if (model.subsectionVideoType.integerValue == 3*(index+1)) {
+                [_dataSource1 addObject:model];
+            }else if (model.subsectionVideoType.integerValue == 3*(index+1)+1) {
+                [_dataSource2 addObject:model];
+            }else if (model.subsectionVideoType.integerValue == 3*(index+1)+2) {
+                [_dataSource3 addObject:model];
+            }
+        }
+        YWSubsectionVideoModel *model;
+        if (_dataSource1.count) {
+            model = _dataSource1[0];
+        }else if (_dataSource2.count) {
+            model = _dataSource2[0];
+        }else if (_dataSource3.count) {
+            model = _dataSource3[0];
+        }else {
+            model = _template.templateSubsectionVideos[0];
+        }
+        _playView.urlStr = model.subsectionVideoUrl;
+//        _playView.urlStr = _template.templateVideoUrl;
+        model.subsectionVideoPerformanceStatus = model.subsectionVideoPerformanceStatus.integerValue==1?@"1":@"0";
+        for (NSInteger i=0; i<3; i++) {
+            UILabel *label = _labels[i];
+            label.text = !index?_titles1[i]:_titles2[i];
+            UICollectionView *collectionView = _collectionViews[i];
+            [collectionView reloadData];
+        }
     }
 }
 
+#pragma mark - UICollectionViewDelegate
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    switch ([_collectionViews indexOfObject:collectionView]) {
+        case 0:
+            return _dataSource1.count;
+            break;
+        case 1:
+            return _dataSource2.count;
+            break;
+        case 2:
+            return _dataSource3.count;
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
 
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    YWTemplateCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"item" forIndexPath:indexPath];
+    cell.textFont = [UIFont systemFontOfSize:12];
+    cell.viewAlpha = 0.3;
+    NSArray *array = @[_dataSource1, _dataSource2, _dataSource3];
+    cell.subsectionVideo = array[[_collectionViews indexOfObject:collectionView]][indexPath.row];
+    
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger cIndex = [_collectionViews indexOfObject:collectionView];
+    NSArray *array = @[_dataSource1, _dataSource2, _dataSource3];
+    for (NSArray *arr in array) {
+        for (YWSubsectionVideoModel *model in arr) {
+            if (model.subsectionVideoPerformanceStatus.integerValue == 0) {
+                model.subsectionVideoPerformanceStatus = @"2";
+            }
+        }
+    }
+    YWSubsectionVideoModel *subsectionVideoModel = array[cIndex][indexPath.row];
+    _playView.urlStr = subsectionVideoModel.subsectionVideoUrl;
+    subsectionVideoModel.subsectionVideoPerformanceStatus = subsectionVideoModel.subsectionVideoPerformanceStatus.integerValue==1?@"1":@"0";
+    _recorderView.model = subsectionVideoModel;
+    for (UICollectionView *cv in _collectionViews) {
+        [cv reloadData];
+    }
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+    return 0;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    return 5;
+}
 
 
 @end

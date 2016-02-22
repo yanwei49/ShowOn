@@ -18,8 +18,6 @@
 #import "YWUserModel.h"
 #import "MJRefresh.h"
 
-#import "YWArticleModel.h"
-
 @interface YWHomeViewController ()<YWHotViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @end
@@ -32,6 +30,7 @@
     NSMutableArray  *_dataSource;
     YWHttpManager   *_httpManager;
     NSInteger        _currentPage;
+    NSMutableArray  *_templateArray;
 }
 
 - (void)viewDidLoad {
@@ -41,32 +40,19 @@
     self.title = @"图文";
     [self createLeftItemWithTitle:@"首页"];
     _dataSource = [[NSMutableArray alloc] init];
+    _templateArray = [[NSMutableArray alloc] init];
     _httpManager = [YWHttpManager shareInstance];
     _currentPage = 0;
 
     [self createSubViews];
     [self createHotView];
-    [self dataSource];
 }
-
-- (void)dataSource {
-    for (NSInteger i=0; i<10; i++) {
-        YWArticleModel *article = [[YWArticleModel alloc] init];
-        article.articleId = @"1";
-        article.articleAuthorName = @"作者11";
-        article.articleTitle = @"标题11";
-        article.articleCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-        article.articleUrl = @"http://www.baidu.com";
-        [_dataSource addObject:article];
-    }
-    [_tableView reloadData];
-}
-
 
 #pragma mark - NSNotification
 - (void)hiddenHotView {
     self.navigationController.navigationBarHidden = NO;
     _hotView.hidden = YES;
+    _tableView.hidden = NO;
 }
 
 - (void)dealloc {
@@ -87,6 +73,8 @@
     [super viewDidAppear:animated];
     YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     tabBar.hiddenState = NO;
+    [self requestArticleList];
+    [self requestTemplateList];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -107,8 +95,7 @@
     _tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.left.right.offset(0);
-        make.top.offset(64);
+        make.top.bottom.left.right.offset(0);
     }];
     _tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _currentPage = 0;
@@ -117,16 +104,18 @@
 }
 
 - (void)createHotView {
+    _tableView.hidden = YES;
     if (_hotView) {
         _hotView.hidden = NO;
         self.navigationController.navigationBarHidden = YES;
     }else {
         _hotView = [[YWHotView alloc] init];
         _hotView.delegate = self;
+        _hotView.dataSource = _templateArray;
         self.navigationController.navigationBarHidden = YES;
         [self.view addSubview:_hotView];
         [_hotView makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(0);
+            make.top.equalTo(20);
             make.left.offset(0);
             make.right.offset(0);
             make.bottom.offset(0);
@@ -144,7 +133,7 @@
 #pragma mark - request
 - (void)requestArticleList {
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@""};
-    [_httpManager requestTemplateList:parameters success:^(id responseObject) {
+    [_httpManager requestArticleList:parameters success:^(id responseObject) {
         if (!_currentPage) {
             [_dataSource removeAllObjects];
         }
@@ -169,6 +158,20 @@
     } failure:^(NSError *error) {
         [_tableView.header endRefreshing];
         [_tableView.footer endRefreshing];
+    }];
+}
+
+- (void)requestTemplateList {
+    [_httpManager requestTemplateList:nil success:^(id responseObject) {
+        [_templateArray removeAllObjects];
+        YWParser *parser = [[YWParser alloc] init];
+        NSArray *array = [parser templateWithArray:responseObject[@"templateList"]];
+        [_templateArray addObjectsFromArray:array];
+        _hotView.dataSource = _templateArray;
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
     }];
 }
 

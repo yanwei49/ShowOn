@@ -9,6 +9,8 @@
 #import "YWMovieRecorder.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "YWSubsectionVideoModel.h"
+
 typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 
 @interface YWMovieRecorder ()<AVCaptureFileOutputRecordingDelegate>//视频文件输出代理
@@ -65,7 +67,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
         return;
     }
     //初始化设备输出对象，用于获得输出数据
-    _captureMovieFileOutput=[[AVCaptureMovieFileOutput alloc]init];
+    _captureMovieFileOutput=[[AVCaptureMovieFileOutput alloc] init];
     
     //将设备输入添加到会话中
     if ([_captureSession canAddInput:_captureDeviceInput]) {
@@ -83,7 +85,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     }
     
     //创建视频预览层，用于实时展示摄像头状态
-    _captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc]initWithSession:_captureSession];
+    _captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_captureSession];
     
     CALayer *layer = self.layer;
     layer.masksToBounds=YES;
@@ -95,6 +97,14 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     
     _enableRotation=YES;
     [self addNotificationToCaptureDevice:captureDevice];
+}
+
+- (void)startRunning {
+    [_captureSession startRunning];
+}
+
+- (void)stopRunning {
+    [_captureSession stopRunning];
 }
 
 - (void)startRecorder {
@@ -152,6 +162,15 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 -(void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error{
     NSLog(@"视频录制完成.");
+//    NSError *saveError;
+//    NSData *data = [NSData dataWithContentsOfURL:outputFileURL options:NSDataReadingMappedIfSafe error:&saveError];
+//    if ([_delegate respondsToSelector:@selector(movieRecorderDownWithData:subsectionVideoSort:subSort:)]) {
+//        [_delegate movieRecorderDownWithData:data subsectionVideoSort:_subsectionVideoSort subsectionVideoType:_subsectionVideoType];
+//    }
+    _model.recorderVideoUrl = outputFileURL;
+    if ([_delegate respondsToSelector:@selector(movieRecorderDown:)]) {
+        [_delegate movieRecorderDown:self];
+    }
     //视频录入完成之后在后台将视频存储到相簿
     _enableRotation=YES;
     UIBackgroundTaskIdentifier lastBackgroundTaskIdentifier = _backgroundTaskIdentifier;
@@ -226,7 +245,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
  *  @param notification 通知对象
  */
 -(void)areaChange:(NSNotification *)notification{
-    NSLog(@"捕获区域改变...");
+//    NSLog(@"捕获区域改变...");
 }
 
 /**

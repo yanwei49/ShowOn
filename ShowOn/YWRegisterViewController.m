@@ -224,7 +224,7 @@
 }
 
 - (void)requestRegister {
-    NSDictionary *parameters = @{@"account": _accountTextField.text, @"password": _passwordTextField.text};
+    NSDictionary *parameters = @{@"account": _accountTextField.text, @"password": _passwordTextField.text, @"accountTypeId": @(1), @"nickname": @"", @"birthday": @"", @"sex": @"", @"introduction": @""};
     [[YWHttpManager shareInstance] requestRegister:parameters success:^(id responseObject) {
         [SVProgressHUD showSuccessWithStatus:@"注册成功"];
         [self registerSuccess];

@@ -16,8 +16,15 @@
 #import "YWHotItemViewController.h"
 #import "YWTemplateViewController.h"
 #import "YWTemplateListViewController.h"
-
+#import "YWHttpManager.h"
+#import "YWParser.h"
+#import "YWTrendsModel.h"
+#import "YWMovieModel.h"
 #import "YWMovieTemplateModel.h"
+#import "YWDataBaseManager.h"
+
+#import "YWDataBaseManager.h"
+#import "YWUserModel.h"
 
 @interface YWMovieViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWHotViewDelegate>
 
@@ -25,23 +32,26 @@
 
 @implementation YWMovieViewController
 {
-    UIView             *_tooBar;
-    YWMoviePlayView    *_movie1;
-    YWMoviePlayView    *_movie2;
-    UICollectionView   *_collectionView;
-    NSMutableArray     *_dataSource;
+    UIView              *_tooBar;
+    YWMoviePlayView     *_movie1;
+    YWMoviePlayView     *_movie2;
+    UICollectionView    *_collectionView;
     YWHotView           *_hotView;
-    BOOL             _isPushHotItem;
+    BOOL                 _isPushHotItem;
+    YWHttpManager       *_httpManager;
+    NSMutableArray      *_templateArray;
+    NSInteger            _selectIndex;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
     self.title = @"模板名称";
-    _dataSource = [[NSMutableArray alloc] init];
+    _templateArray = [[NSMutableArray alloc] init];
+    _httpManager = [YWHttpManager shareInstance];
+    _selectIndex = 1;
     [self createLeftItemWithTitle:@"首页"];
     [self createSubViews];
-    [self dataSource];
 }
 
 - (instancetype)init {
@@ -59,6 +69,7 @@
 - (void)hiddenHotView {
     self.navigationController.navigationBarHidden = NO;
     _hotView.hidden = YES;
+    _movie1.hidden = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -69,21 +80,20 @@
     }
 }
 
-- (void)actionLeftItem:(UIButton *)button {
-    [self createHotView];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self requestTemplateList];
 }
 
-- (void)dataSource {
-    for (NSInteger i=0; i<10; i++) {
-        YWMovieTemplateModel *template = [[YWMovieTemplateModel alloc] init];
-        template.templateId = @"1";
-        template.templateTypeId = [NSString stringWithFormat:@"%u", arc4random()%3+1];
-        template.templateName = [NSString stringWithFormat:@"名称%ld", (long)i];
-        template.templateVideoCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-        
-        [_dataSource addObject:template];
-    }
-    [_collectionView reloadData];
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [_movie1 stop];
+    [_movie2 stop];
+}
+
+#pragma mark - action
+- (void)actionLeftItem:(UIButton *)button {
+    [self createHotView];
 }
 
 - (void)createSubViews {
@@ -123,25 +133,25 @@
         make.width.offset(30);
     }];
     
-    _movie1 = [[YWMoviePlayView alloc] init];
-    _movie1.backgroundColor = Subject_color;
+    _movie1 = [[YWMoviePlayView alloc] initWithFrame:CGRectMake(5, 64, kScreenWidth-10, (kScreenHeight-((kScreenWidth-30)/5*2+10+64+49+10+10))/2) playUrl:@""];
+    _movie1.backgroundColor = RGBColor(30, 30, 30);
     [self.view addSubview:_movie1];
-    [_movie1 makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(5);
-        make.right.offset(-5);
-        make.top.offset(64);
-        make.height.offset((kScreenHeight-((kScreenWidth-30)/5*2+10+64+49+10+10))/2);
-    }];
+//    [_movie1 makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.offset(5);
+//        make.right.offset(-5);
+//        make.top.offset(64);
+//        make.height.offset((kScreenHeight-((kScreenWidth-30)/5*2+10+64+49+10+10))/2);
+//    }];
     
-    _movie2 = [[YWMoviePlayView alloc] init];
-    _movie2.backgroundColor = Subject_color;
+    _movie2 = [[YWMoviePlayView alloc] initWithFrame:CGRectMake(5, (kScreenHeight-((kScreenWidth-30)/5*2+10+64+49+10+10))/2+64+5, kScreenWidth-10, (kScreenHeight-((kScreenWidth-30)/5*2+10+64+49+10+10))/2) playUrl:@""];
+    _movie2.backgroundColor = RGBColor(30, 30, 30);
     [self.view addSubview:_movie2];
-    [_movie2 makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(5);
-        make.right.offset(-5);
-        make.top.equalTo(_movie1.mas_bottom).offset(5);
-        make.height.offset((kScreenHeight-((kScreenWidth-30)/5*2+10+64+49+10+10))/2);
-    }];
+//    [_movie2 makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.offset(5);
+//        make.right.offset(-5);
+//        make.top.equalTo(_movie1.mas_bottom).offset(5);
+//        make.height.offset((kScreenHeight-((kScreenWidth-30)/5*2+10+64+49+10+10))/2);
+//    }];
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake((kScreenWidth-30)/5, (kScreenWidth-30)/5);
@@ -149,6 +159,7 @@
     _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
     _collectionView.backgroundColor = Subject_color;
     [_collectionView registerClass:[YWTemplateCollectionViewCell class] forCellWithReuseIdentifier:@"item"];
+    [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"moreItem"];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
     [self.view addSubview:_collectionView];
@@ -161,12 +172,14 @@
 }
 
 - (void)createHotView {
+    _movie1.hidden = YES;
     self.navigationController.navigationBarHidden = YES;
     if (_hotView) {
         _hotView.hidden = NO;
     }else {
         _hotView = [[YWHotView alloc] init];
         _hotView.delegate = self;
+        _hotView.dataSource = _templateArray;
         [self.view addSubview:_hotView];
         [_hotView makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(20);
@@ -186,8 +199,38 @@
 }
 
 - (void)actionTakePhoto:(UIButton *)button {
-    YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
+        if (_selectIndex < _templateArray.count+1) {
+            YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+            vc.template = _templateArray[_selectIndex-1];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }else {
+        [self login];
+    }
+}
+
+#pragma mark - request
+- (void)requestTemplateList {
+    [_httpManager requestTemplateList:nil success:^(id responseObject) {
+        [_templateArray removeAllObjects];
+        YWParser *parser = [[YWParser alloc] init];
+        NSArray *array = [parser templateWithArray:responseObject[@"templateList"]];
+        [_templateArray addObjectsFromArray:array];
+        if (_templateArray.count) {
+            self.title = [_templateArray[0] templateName];
+            _movie1.urlStr = [_templateArray[0] templateVideoUrl];
+            if ([[_templateArray[0] templateTrends] count]) {
+                _movie2.urlStr = [[[_templateArray[0] templateTrends][0] trendsMovie] movieUrl];
+            }
+        }
+        _hotView.dataSource = _templateArray;
+        [_collectionView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 #pragma mark - YWHotViewDelegate
@@ -202,16 +245,25 @@
 
 #pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _dataSource.count;
+    return _templateArray.count+1<=10?_templateArray.count+1:10;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    YWTemplateCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"item" forIndexPath:indexPath];
-    cell.textFont = [UIFont systemFontOfSize:12];
-    cell.viewAlpha = 0.3;
-    cell.template = _dataSource[indexPath.row];
-    
-    return cell;
+    if (!indexPath.row) {
+        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"moreItem" forIndexPath:indexPath];
+        UIImageView *img = [[UIImageView alloc] initWithFrame:cell.contentView.bounds];
+        img.image = [UIImage imageNamed:@"@_normal.png"];
+        [cell.contentView addSubview:img];
+        
+        return cell;
+    }else {
+        YWTemplateCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"item" forIndexPath:indexPath];
+        cell.textFont = [UIFont systemFontOfSize:12];
+        cell.viewAlpha = 0.3;
+        cell.template = _templateArray[indexPath.row-1];
+        
+        return cell;
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -219,9 +271,12 @@
         YWTemplateViewController *vc = [[YWTemplateViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }else {
-        YWTemplateListViewController *vc = [[YWTemplateListViewController alloc] init];
-        vc.template = _dataSource[indexPath.row];
-        [self.navigationController pushViewController:vc animated:YES];
+        _selectIndex = indexPath.row;
+        YWMovieTemplateModel *template = _templateArray[indexPath.row-1];
+        self.title = template.templateName;
+        _movie1.urlStr = template.templateVideoUrl?:@"";
+        YWTrendsModel *trends = template.templateTrends.count?template.templateTrends[0]:nil;
+        _movie2.urlStr = trends.trendsMovie.movieUrl?:@"";
     }
 }
 

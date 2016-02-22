@@ -8,6 +8,13 @@
 
 #import "YWBaseViewController.h"
 
+@class YWTrendsModel;
+@class YWMovieTemplateModel;
 @interface YWEditCoverViewController : YWBaseViewController
+
+//@property (nonatomic, strong) NSArray *recorderMovies;
+@property (nonatomic, strong) YWTrendsModel *trends;
+@property (nonatomic, strong) YWMovieTemplateModel *template;
+@property (nonatomic, assign) BOOL recorderState;
 
 @end

@@ -311,6 +311,7 @@
 //参数：
 {
     "userId": ""               //当前登录用户ID
+    "type": ""                 //类型 1.发起合演 2.仅自己可见
     "state": ""                //状态 1.草稿 2.发布
     "videoCoverImage": ""      //视频封面
     "movieContent": ""         //视频内容

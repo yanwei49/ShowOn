@@ -35,7 +35,7 @@
         _imageView.layer.cornerRadius = 5;
         [view addSubview:_imageView];
         [_imageView makeConstraints:^(MASConstraintMaker *make) {
-            make.left.offset(20);
+            make.left.offset(10);
             make.top.bottom.offset(0);
             make.width.offset(100);
         }];
@@ -52,11 +52,12 @@
             make.height.offset(20);
         }];
         
-        UIImageView *playImage = [[UIImageView alloc] init];
-        playImage.backgroundColor = RGBColor(50, 50, 50);
-        playImage.image = [UIImage imageNamed:@"play_big.png"];
-        [_imageView addSubview:playImage];
-        [playImage makeConstraints:^(MASConstraintMaker *make) {
+        UIButton *playbutton = [[UIButton alloc] init];
+        playbutton.backgroundColor = RGBColor(50, 50, 50);
+        [playbutton setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
+        [playbutton addTarget:self action:@selector(actionPlay:) forControlEvents:UIControlEventTouchUpInside];
+        [_imageView addSubview:playbutton];
+        [playbutton makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(view.mas_centerX);
             make.centerY.equalTo(view.mas_centerY);
             make.width.height.offset(40);
@@ -64,6 +65,12 @@
     }
     
     return self;
+}
+
+- (void)actionPlay:(UIButton *)button {
+    if ([_delegate respondsToSelector:@selector(templateListTableViewCellDidSelectPlay:)]) {
+        [_delegate templateListTableViewCellDidSelectPlay:self];
+    }
 }
 
 - (void)setTemplate:(YWMovieTemplateModel *)template {

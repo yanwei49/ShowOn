@@ -23,6 +23,9 @@
 #import "YWHotView.h"
 #import "YWHotItemViewController.h"
 #import "YWDataBaseManager.h"
+#import "YWHttpManager.h"
+#import "YWParser.h"
+#import "YWUserModel.h"
 
 @interface YWMineViewController ()<UITableViewDelegate, UITableViewDataSource, YWMineTableHeadViewDelegate, YWHotViewDelegate>
 
@@ -35,12 +38,16 @@
     YWMineTableHeadView *_headView;
     YWHotView           *_hotView;
     BOOL                 _isPushHotItem;
+    YWHttpManager       *_httpManager;
+    NSMutableArray      *_templateArray;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"我的";
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = Subject_color;
+    _httpManager = [YWHttpManager shareInstance];
+    _templateArray = [[NSMutableArray alloc] init];
     _dataSource = [[NSMutableArray alloc] initWithArray:@[@"@我的", @"评论", @"赞", @"私信", @"好友动态", @"经验值", @"草稿箱"]];
     [self createRightItemWithTitle:@"设置"];
     [self createLeftItemWithTitle:@"首页"];
@@ -52,6 +59,7 @@
 - (void)hiddenHotView {
     self.navigationController.navigationBarHidden = NO;
     _hotView.hidden = YES;
+    _tableView.hidden = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -60,6 +68,7 @@
         [self createHotView];
         _isPushHotItem = NO;
     }
+    _headView.user = [[YWDataBaseManager shareInstance] loginUser];
     YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     tabBar.hiddenState = NO;
 }
@@ -68,6 +77,7 @@
     [super viewDidAppear:animated];
     YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     tabBar.hiddenState = NO;
+    [self requestTemplateList];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -83,14 +93,16 @@
 }
 
 - (void)createHotView {
+    _tableView.hidden = YES;
     if (_hotView) {
         _hotView.hidden = NO;
         self.navigationController.navigationBarHidden = YES;
     }else {
         _hotView = [[YWHotView alloc] init];
         self.navigationController.navigationBarHidden = YES;
-//        _hotView.dataSource = _dataSource;
+        _hotView.dataSource = _templateArray;
         _hotView.delegate = self;
+        _hotView.dataSource = _templateArray;
         [self.view addSubview:_hotView];
         [_hotView makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(20);
@@ -104,6 +116,7 @@
 - (void)createSubViews {
     _headView = [[YWMineTableHeadView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 200) withUserIsSelf:YES];
     _headView.delegate = self;
+    _headView.user = [[YWDataBaseManager shareInstance] loginUser];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     _tableView.backgroundColor = Subject_color;
@@ -124,6 +137,21 @@
 - (void)actionRightItem:(UIButton *)button {
     YWSettingViewController *setVC = [[YWSettingViewController alloc] init];
     [self.navigationController pushViewController:setVC animated:YES];
+}
+
+#pragma mark - request
+- (void)requestTemplateList {
+    [_httpManager requestTemplateList:nil success:^(id responseObject) {
+        [_templateArray removeAllObjects];
+        YWParser *parser = [[YWParser alloc] init];
+        NSArray *array = [parser templateWithArray:responseObject[@"templateList"]];
+        [_templateArray addObjectsFromArray:array];
+        _hotView.dataSource = _templateArray;
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 #pragma mark - YWHotViewDelegate
@@ -147,21 +175,25 @@
     cell.textLabel.text = _dataSource[indexPath.row];
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
     view.backgroundColor = RGBColor(52, 52, 52);
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, 20, 20)];
-    label.backgroundColor = [UIColor redColor];
-    label.layer.masksToBounds = YES;
-    label.layer.cornerRadius = 10;
-    label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor whiteColor];
-    label.font = [UIFont systemFontOfSize:12];
-    label.text = @"10";
-    [view addSubview:label];
+    YWUserModel *user = [[YWDataBaseManager shareInstance] loginUser];
+    NSArray *array = @[user.userATMeNums?:@"", user.userCommentNums?:@"", user.userSupportNums?:@""];
+    if (indexPath.row<3 && [array[indexPath.row] integerValue]) {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, 20, 20)];
+        label.backgroundColor = [UIColor redColor];
+        label.layer.masksToBounds = YES;
+        label.layer.cornerRadius = 10;
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont systemFontOfSize:12];
+        label.text = array[indexPath.row];
+        [view addSubview:label];
+    }
     UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(30, 0, 10, 20)];
     img.backgroundColor = RGBColor(52, 52, 52);
     img.image = [UIImage imageNamed:@"next.png"];
     [view addSubview:img];
     cell.accessoryView = view;
-    
+
     return cell;
 }
 
@@ -171,7 +203,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if (![[YWDataBaseManager shareInstance] loginUser]) {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
         NSArray *className = @[@"YWATMeViewController", @"YWCommentViewController", @"YWSupportViewController", @"YWMessageViewController", @"YWTrendsViewController", @"YWExperienceViewController", @"YWDraftViewController"];
         UIViewController *vc = [[NSClassFromString(className[indexPath.row]) alloc] init];
         vc.title = _dataSource[indexPath.row];
@@ -202,7 +234,14 @@
 
 #pragma mark - YWMineTableHeadViewDelegate
 - (void)mineTableHeadViewDidSelectAvator {
-
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
+        YWUserDataViewController *vc = [[YWUserDataViewController alloc] init];
+        vc.isSelf = YES;
+        vc.user = [[YWDataBaseManager shareInstance] loginUser];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else {
+        [self login];
+    }
 }
 
 - (void)mineTableHeadView:(YWMineTableHeadView *)view didSelectButtonWithIndex:(NSInteger)index {

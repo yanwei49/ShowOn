@@ -26,6 +26,7 @@
     [super viewDidLoad];
     self.title = @"用户反馈";
     _httpManager = [YWHttpManager shareInstance];
+    [self createRightItemWithTitle:@"提交"];
     
     [self createSubViews];
 }
@@ -38,20 +39,28 @@
     _textView.delegate = self;
     [self.view addSubview:_textView];
     [_textView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.offset(10);
+        make.top.offset(74);
+        make.left.offset(10);
         make.height.offset(150);
         make.right.offset(-10);
     }];
     
     _placeholderLabel = [[UILabel alloc] init];
-    _placeholderLabel.font = [UIFont systemFontOfSize:15];\
+    _placeholderLabel.font = [UIFont systemFontOfSize:15];
     _placeholderLabel.text = @"请留下您宝贵的意见吧！";
+    _placeholderLabel.textColor = [UIColor lightGrayColor];
     [self.view addSubview:_placeholderLabel];
     [_placeholderLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.offset(10);
+        make.top.offset(84);
+        make.left.offset(15);
         make.height.offset(15);
         make.right.offset(-10);
     }];
+}
+
+#pragma mark - actiom
+- (void)actionRightItem:(UIButton *)button {
+    [self requestSuggestion];
 }
 
 #pragma mark - request
@@ -63,7 +72,8 @@
     }else {
         NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"feedBackContents": _textView.text};
         [_httpManager requestFeedback:parameters success:^(id responseObject) {
-            
+            [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
+            [self.navigationController popViewControllerAnimated:YES];
         } otherFailure:^(id responseObject) {
             
         } failure:^(NSError *error) {

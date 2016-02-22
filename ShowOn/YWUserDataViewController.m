@@ -18,6 +18,9 @@
 #import "YWTrendsDetailViewController.h"
 #import "YWTrendsCategoryView.h"
 #import "YWDataBaseManager.h"
+#import "YWTrendsViewController.h"
+#import "YWFollowingViewController.h"
+#import "YWCollectionViewController.h"
 
 @interface YWUserDataViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YWMineTableHeadViewDelegate, YWCustomSegViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, YWTrendsTableViewCellDelegate, YWTrendsCategoryViewDelegate>
 
@@ -78,6 +81,7 @@
     
     _headView = [[YWMineTableHeadView alloc] initWithFrame:CGRectZero withUserIsSelf:_isSelf];
     _headView.delegate = self;
+    _headView.user = _user;
     [view addSubview:_headView];
     [_headView makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.offset(0);
@@ -318,8 +322,10 @@
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.textLabel.text = _dataSource[indexPath.row];
         cell.accessoryType = UITableViewCellAccessoryDetailButton;
+        NSArray *contents = @[_user.userInfos?:@"", _user.userSex?:@"", _user.userDistrict?:@"", _user.userBirthday?:@"", _user.userConstellation?:@"", _user.userheight?:@"", _user.userBwh?:@""];
         UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth-200, cell.bounds.size.height)];
         tf.delegate = self;
+        tf.text = contents[indexPath.row];
         tf.textColor = [UIColor whiteColor];
         tf.textAlignment = NSTextAlignmentRight;
         tf.font = [UIFont systemFontOfSize:15];
@@ -351,7 +357,7 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (!_itemSelectIndex) {
+    if (_itemSelectIndex) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 30)];
         view.backgroundColor = RGBColor(50, 50, 50);
         UIButton *button = [[UIButton alloc] init];
@@ -413,7 +419,7 @@
 
 #pragma mark - YWTrendsCategoryViewDelegate
 - (void)trendsCategoryView:(YWTrendsCategoryView *)view didSelectCategoryWithIndex:(NSInteger)index {
-    if (view == _categoryView) {
+    if (view == _userCategoryView) {
         !index?[self requestReport]:[self requestBlacklist];
     }else {
         _trendsType = index;
@@ -441,7 +447,40 @@
 
 #pragma mark - YWMineTableHeadViewDelegate
 - (void)mineTableHeadView:(YWMineTableHeadView *)view didSelectButtonWithIndex:(NSInteger)index {
-    
+    switch (index) {
+        case 0:
+        {
+            YWTrendsViewController *vc = [[YWTrendsViewController alloc] init];
+            vc.title = @"动态";
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        case 1:
+        {
+            YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
+            vc.relationType = 1;
+            vc.title = @"关注";
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        case 2:
+        {
+            YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
+            vc.relationType = 2;
+            vc.title = @"粉丝";
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        case 3:
+        {
+            YWCollectionViewController *vc = [[YWCollectionViewController alloc] init];
+            vc.title = @"收藏";
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)mineTableHeadViewDidSelectFocus {
@@ -449,7 +488,12 @@
 }
 
 - (void)mineTableHeadViewDidSelectSendMessage {
-    
+    YWChatRoomViewComtroller *vc = [[YWChatRoomViewComtroller alloc] init];
+    vc.conversationType = ConversationType_PRIVATE;
+    vc.targetId = _user.userId;
+    vc.userName = _user.userName;
+    vc.title = _user.userName;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

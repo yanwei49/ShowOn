@@ -121,7 +121,7 @@
         [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:support.trends.trendsUser.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
         _contentLabel.text = support.trends.trendsContent;
         _timeLabel.text = support.trends.trendsPubdate;
-        NSMutableString *name = [NSMutableString stringWithString:support.trends.trendsUser.userName];
+        NSMutableString *name = [NSMutableString stringWithString:support.trends.trendsUser.userName?:@""];
         for (YWUserModel *user in support.trends.trendsMovieCooperateUsers) {
             [name appendFormat:@"+"];
             [name appendFormat:@"%@", user.userName];
@@ -134,15 +134,6 @@
         _userNameLabel.text = support.comment.commentUser.userName;
     }
 }
-
-//+ (CGFloat)cellHeightForMode:(YWCommentModel *)model {
-//    CGFloat height = 90;
-//    height += 20;
-//    
-//    return height;
-//}
-
-
 
 
 @end

@@ -38,7 +38,6 @@
         self.backgroundColor = Subject_color;
         
         [self createSubViews];
-
     }
     return self;
 }

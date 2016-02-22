@@ -13,6 +13,7 @@
 #import "YWUserModel.h"
 #import "YWTrendsModel.h"
 #import "YWMovieTemplateModel.h"
+#import "YWSubsectionVideoModel.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @implementation YWTemplateTrendsTableViewCell
@@ -26,6 +27,8 @@
     YWMoviePlayView  *_playMovieView;
     UIButton         *_playButton;
     UIButton         *_cooperateButton;
+    UIImageView      *_imageView;
+    UIButton         *_playingButton;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -123,18 +126,42 @@
             make.width.offset(60);
         }];
         
-        _playMovieView = [[YWMoviePlayView alloc] init];
+        _playMovieView = [[YWMoviePlayView alloc] initWithFrame:CGRectMake(5, 65, kScreenWidth-10, 200) playUrl:@""];
         _playMovieView.backgroundColor = RGBColor(30, 30, 30);
         _playMovieView.layer.masksToBounds = YES;
         _playMovieView.layer.cornerRadius = 5;
         [self.contentView addSubview:_playMovieView];
-        [_playMovieView makeConstraints:^(MASConstraintMaker *make) {
+//        [_playMovieView makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.offset(65);
+//            make.left.offset(5);
+//            make.right.offset(-5);
+//            make.height.offset(200);
+//        }];
+        
+        _imageView = [[UIImageView alloc] init];
+        _imageView.backgroundColor = RGBColor(30, 30, 30);
+        _imageView.layer.masksToBounds = YES;
+        _imageView.layer.cornerRadius = 5;
+        [view addSubview:_imageView];
+        [_imageView makeConstraints:^(MASConstraintMaker *make) {
             make.top.offset(65);
             make.left.offset(5);
             make.right.offset(-5);
             make.height.offset(200);
         }];
         
+        _playingButton = [[UIButton alloc] init];
+        [_playingButton setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
+        _playingButton.userInteractionEnabled = NO;
+        [_playingButton addTarget:self action:@selector(actionPlaying:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:_playingButton];
+        [_playingButton makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(_imageView.mas_centerY);
+            make.centerX.equalTo(_imageView.mas_centerX);
+            make.width.equalTo(_imageView.mas_width);
+            make.height.equalTo(_imageView.mas_height);
+        }];
+
         _contentLabel = [[UILabel alloc] init];
         _contentLabel.numberOfLines = 0;
         _contentLabel.text = @"";
@@ -152,6 +179,12 @@
     return self;
 }
 
+- (void)actionPlaying:(UIButton *)button {
+    if ([_delegate respondsToSelector:@selector(templateTrendsTableViewCellDidSelectPlaying:)]) {
+        [_delegate templateTrendsTableViewCellDidSelectPlaying:self];
+    }
+}
+
 - (void)actionCooperateButton:(UIButton *)button {
     if ([_delegate respondsToSelector:@selector(templateTrendsTableViewCellDidSelectCooperate:)]) {
         [_delegate templateTrendsTableViewCellDidSelectCooperate:self];
@@ -166,20 +199,24 @@
 
 - (void)setTrends:(YWTrendsModel *)trends {
     _trends = trends;
+    _imageView.hidden = YES;
+    _playingButton.hidden = YES;
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
+    _playMovieView.urlStr = trends.trendsMovie.movieUrl?:(trends.trendsMovie.movieTemplate.templateSubsectionVideos.count?[trends.trendsMovie.movieTemplate.templateSubsectionVideos[0] subsectionVideoUrl]:@"");
     [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsUser.portraitUri] placeholderImage:kPlaceholderMoiveImage];
     if (trends.trendsType.integerValue == 2) {
-        //        NSMutableString *str = [NSMutableString string];
-        //        [str appendString:movie.movieReleaseUser.userName];
-        //        for (NSInteger i=0; i<movie.movieRecorderUsers.count; i++) {
-        //            [str appendString:@"+"];
-        //            [str appendString:[movie.movieRecorderUsers[i] userName]];
-        //        }
-        //        _userNameLabel.text = str;
+        NSMutableString *str = [NSMutableString string];
+        [str appendString:trends.trendsUser.userName];
+        for (NSInteger i=0; i<trends.trendsMovieCooperateUsers.count; i++) {
+            [str appendString:@"+"];
+            [str appendString:[trends.trendsMovieCooperateUsers[i] userName]];
+        }
+        _userNameLabel.text = str;
     }else if (trends.trendsType.integerValue == 1) {
         _userNameLabel.text = trends.trendsUser.userName;
     }
     _timeLabel.text = trends.trendsMovie.movieTemplate.templateVideoTime;
-    //    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [movie.movieTimeLength componentsSeparatedByString:@":"][0], [movie.movieTimeLength componentsSeparatedByString:@":"][1]];
+    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][0], [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][1]];
     _contentLabel.text = trends.trendsContent;
     _numsLabel.text = [NSString stringWithFormat:@"播放%@次", trends.trendsMoviePlayCount];
     

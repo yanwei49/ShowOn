@@ -12,6 +12,7 @@
 #import "YWFollowingViewController.h"
 #import "YWPrivacyViewController.h"
 #import <SDImageCache.h>
+#import "YWDataBaseManager.h"
 
 @interface YWSettingViewController()<UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
 
@@ -38,12 +39,32 @@
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    _tableView.tableFooterView = [[UIView alloc] init];
+    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 200)];
+    footView.backgroundColor = Subject_color;
+    UIButton *resigsterBtn = [[UIButton alloc] init];
+    [resigsterBtn setTitle:@"注销登录" forState:UIControlStateNormal];
+    resigsterBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    resigsterBtn.backgroundColor = RGBColor(30, 30, 30);
+    [resigsterBtn addTarget:self action:@selector(actionResigster) forControlEvents:UIControlEventTouchUpInside];
+    [footView addSubview:resigsterBtn];
+    [resigsterBtn makeConstraints:^(MASConstraintMaker *make) {
+        make.height.offset(40);
+        make.bottom.offset(0);
+        make.left.offset(40);
+        make.right.offset(-40);
+    }];
+    _tableView.tableFooterView = footView;
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.right.offset(0);
         make.top.offset(64);
     }];
+}
+
+#pragma mark - action
+- (void)actionResigster {
+    [[YWDataBaseManager shareInstance] cleanLoginUsers];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark - pravite
@@ -83,10 +104,11 @@
         UIAlertController *alter = [UIAlertController alertControllerWithTitle:@"是否清除缓存" message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alter addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self cleanCache];
+            [_tableView reloadData];
         }]];
         [alter addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         }]];
-        [self.navigationController pushViewController:alter animated:YES];
+        [self presentViewController:alter animated:YES completion:nil];
     }else {
         UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"是否清除缓存" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         [alter show];
@@ -100,20 +122,17 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    if (indexPath.row != 2) {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
-        view.backgroundColor = RGBColor(52, 52, 52);
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, 20, 20)];
-        label.backgroundColor = [UIColor redColor];
-        label.layer.masksToBounds = YES;
-        label.layer.cornerRadius = 10;
+    if (indexPath.row == 2) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 20)];
+        view.backgroundColor = Subject_color;
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, 60, 20)];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor whiteColor];
         label.font = [UIFont systemFontOfSize:12];
         label.text = [NSString stringWithFormat:@"%@M", [self obtainCache]];
         [view addSubview:label];
-        UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(30, 0, 10, 20)];
-        img.backgroundColor = RGBColor(52, 52, 52);
+        UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(70, 0, 10, 20)];
+        img.backgroundColor = Subject_color;
         img.image = [UIImage imageNamed:@"next.png"];
         [view addSubview:img];
         cell.accessoryView = view;
@@ -135,8 +154,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (indexPath.row != 2) {
-        NSArray *className = @[@"YWPrivacyViewController", @"YWFollowingViewController", @"YWSuggestionViewController", @"", @"YWUserProtocolViewController"];
-        UIViewController *vc = (UIViewController *)NSClassFromString(className[indexPath.row]);
+        NSArray *className = @[@"YWPrivacyViewController", @"YWFollowingViewController", @"", @"YWSuggestionViewController", @"YWUserProtocolViewController"];
+        UIViewController *vc = [[NSClassFromString(className[indexPath.row]) alloc] init];
         if (indexPath.row == 1) {
             vc.title = @"黑名单";
         }

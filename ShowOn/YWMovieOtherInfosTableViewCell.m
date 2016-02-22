@@ -180,7 +180,7 @@
 
 - (void)actionOnClickMore:(UIButton *)button {
     if ([_delegate respondsToSelector:@selector(movieOtherInfosTableViewCellDidSelectSupport:)]) {
-        [_delegate movieOtherInfosTableViewCellDidSelectSupport:self];
+        [_delegate movieOtherInfosTableViewCellDidSelectMore:self];
     }
 }
 
@@ -204,8 +204,8 @@
 
 - (void)setTrends:(YWTrendsModel *)trends {
     _trends = trends;
-    _supportButton.selected = trends.trendsIsSupport;
-    _collectButton.selected = trends.trendsIsCollect;
+    _supportButton.selected = trends.trendsIsSupport.integerValue?YES:NO;
+    _collectButton.selected = trends.trendsIsCollect.integerValue?YES:NO;
     _supportLabel.text = trends.trendsSuppotNumbers;
     [_collectionView reloadData];
 }

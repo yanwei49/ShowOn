@@ -14,14 +14,11 @@
 #import "YWSearchViewController.h"
 #import "YWDataBaseManager.h"
 #import "MJRefresh.h"
-
 #import "YWTrendsModel.h"
-#import "YWMovieModel.h"
-#import "YWMovieTemplateModel.h"
 #import "YWUserModel.h"
-#import "YWCommentModel.h"
-#import "YWSubsectionVideoModel.h"
 #import "YWTrendsCategoryView.h"
+#import "YWTranscribeViewController.h"
+#import "YWMovieModel.h"
 
 @interface YWTrendsViewController ()<UITableViewDelegate, UITableViewDataSource, YWFocusTableViewCellDelegate, UISearchBarDelegate, YWTrendsCategoryViewDelegate>
 
@@ -44,71 +41,16 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSource = [[NSMutableArray alloc] init];
     _allTrendsArray = [[NSMutableArray alloc] init];
+    _httpManager = [YWHttpManager shareInstance];
     _currentPage = 0;
     
     [self createSubViews];
-    [self dataSource];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-//    [self requestTrendsList];
-}
-
-- (void)dataSource {
-    for (NSInteger i=0; i<10; i++) {
-        YWTrendsModel *trends = [[YWTrendsModel alloc] init];
-        trends.trendsId = [NSString stringWithFormat:@"%ld", i];
-        trends.trendsType = [NSString stringWithFormat:@"%ld", (long)arc4random()%3+1];
-        trends.trendsPubdate = @"2015-01-10";
-        trends.trendsMoviePlayCount = @"100";
-        trends.trendsContent = @"为己任内容我i让我去让我琼海请让我后悔千万人千万人薄荷问无人区普i人e王企鹅号叫恶趣味金额去维护去问恶趣味建行卡气温将客户而且我";
-        trends.trendsIsSupport = @"1";
-        
-        YWUserModel *user = [[YWUserModel alloc] init];
-        user.userId = [NSString stringWithFormat:@"%ld", i];
-        user.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-        user.userName = [NSString stringWithFormat:@"测试用户%ld", i+1];
-        trends.trendsUser = user;
-        
-        YWMovieModel *movie = [[YWMovieModel alloc] init];
-        movie.movieCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-        movie.movieUrl = @"";
-        trends.trendsMovie = movie;
-        
-        YWMovieTemplateModel *template = [[YWMovieTemplateModel alloc] init];
-        template.templateId = [NSString stringWithFormat:@"%ld", i];
-        template.templateName = [NSString stringWithFormat:@"模板%ld", i];
-        template.templateVideoUrl = @"";
-        template.templateVideoTime = @"1分20秒";
-        template.templateVideoCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-        template.templateTypeId = [NSString stringWithFormat:@"%ld", (long)arc4random()%3+1];
-        template.templatePlayUsers = @[user, user];
-        
-        YWSubsectionVideoModel *subsection = [[YWSubsectionVideoModel alloc] init];
-        subsection.subsectionVideoId = [NSString stringWithFormat:@"%ld", i];
-        subsection.subsectionVideoUrl = @"";
-        subsection.subsectionVideoCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-        subsection.subsectionVideoSort = subsection.subsectionVideoId;
-        subsection.subsectionVideoType = subsection.subsectionVideoId;
-        subsection.subsectionVideoPerformanceStatus = @"1";
-        subsection.subsectionVideoPlayUserId = user.userId;
-        subsection.subsectionVideoTemplateId = template.templateId;
-        template.templateSubsectionVideos = @[subsection, subsection];
-        
-        YWCommentModel *comment = [[YWCommentModel alloc] init];
-        comment.commentId = [NSString stringWithFormat:@"%ld", i];
-        comment.commentTime = @"2015-10-20 03:21";
-        comment.commentContent = @"为己任内容我i让我去让我琼海请让我后悔千万人千万人薄荷问无人区普i人";
-        comment.commentUser = user;
-        comment.isSupport = @"1";
-        trends.trendsComments = @[comment, comment];
-        trends.trendsType = [NSString stringWithFormat:@"%u", arc4random()%4];
-        
-        [_allTrendsArray addObject:trends];
-    }
-    [_dataSource addObjectsFromArray:_allTrendsArray];
-    [_tableView reloadData];
+    [self requestTrendsList];
+    [_tableView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
 }
 
 - (void)createSubViews {
@@ -126,7 +68,8 @@
     _tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.offset(0);
+        make.left.bottom.right.offset(0);
+        make.top.offset(64);
     }];
     _tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _currentPage = 0;
@@ -155,8 +98,8 @@
 
 #pragma mark - request
 - (void)requestTrendsList {
-    NSDictionary *parameters = @{@"userId": _user.userId, @"loginUseruserId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"page": @(_currentPage)};
-    [_httpManager requestTemplateList:parameters success:^(id responseObject) {
+    NSDictionary *parameters = @{@"userId": _user.userId?:[[YWDataBaseManager shareInstance] loginUser].userId, @"loginUseruserId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"page": @(_currentPage)};
+    [_httpManager requestTrendsList:parameters success:^(id responseObject) {
         if (!_currentPage) {
             [_allTrendsArray removeAllObjects];
         }
@@ -249,7 +192,8 @@
 #pragma mark - YWFocusTableViewCellDelegate
 - (void)focusTableViewCellDidSelectCooperate:(YWFocusTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
-        
+        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }else {
         [self login];
     }
@@ -257,10 +201,16 @@
 
 - (void)focusTableViewCellDidSelectPlay:(YWFocusTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
-        
+        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.template = _trends.trendsMovie.movieTemplate;
+        [self.navigationController pushViewController:vc animated:YES];
     }else {
         [self login];
     }
+}
+
+- (void)focusTableViewCellDidSelectPlaying:(YWFocusTableViewCell *)cell {
+
 }
 
 #pragma mark - UISearchBarDelegate

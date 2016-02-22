@@ -11,10 +11,11 @@
 #import "MJRefresh.h"
 #import "YWHttpManager.h"
 #import "YWParser.h"
+#import "YWTranscribeViewController.h"
 
 #import "YWMovieTemplateModel.h"
 
-@interface YWTemplateListViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface YWTemplateListViewController ()<UITableViewDataSource, UITableViewDelegate, YWTemplateListTableViewCellDelegate>
 
 @end
 
@@ -110,6 +111,7 @@
         cell = [[YWTemplateListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
     cell.template = _dataSource[indexPath.row];
+    cell.delegate = self;
     
     return cell;
 }
@@ -118,5 +120,17 @@
     return 105;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+    vc.template = _dataSource[indexPath.row];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+#pragma mark - YWTemplateListTableViewCellDelegate
+- (void)templateListTableViewCellDidSelectPlay:(YWTemplateListTableViewCell *)cell {
+
+}
 
 @end

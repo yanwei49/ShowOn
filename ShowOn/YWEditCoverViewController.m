@@ -9,6 +9,8 @@
 #import "YWEditCoverViewController.h"
 #import "YWEditTrendsViewController.h"
 #import <AVFoundation/AVFoundation.h>
+#import "YWMovieTemplateModel.h"
+#import "YWSubsectionVideoModel.h"
 
 @interface YWEditCoverViewController ()<UIScrollViewDelegate>
 
@@ -19,6 +21,7 @@
     UIImageView         *_coverImageView;
     UISegmentedControl  *_seg;
     UIScrollView        *_coverImageSV;
+    
 }
 
 - (void)viewDidLoad {
@@ -72,29 +75,49 @@
     }];
 
     _coverImageSV = [[UIScrollView alloc] init];
-    _coverImageSV.backgroundColor = Subject_color;
+    _coverImageSV.backgroundColor = RGBColor(30, 30, 30);
     _coverImageSV.delegate = self;
     [self.view addSubview:_coverImageSV];
     [_coverImageSV makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.offset(0);
-        make.height.offset(100);
+        make.height.offset(150);
         make.top.equalTo(_coverImageView.mas_bottom).offset(30);
     }];
 }
 
 #pragma mark - action
 - (void)actionDown:(UIButton *)button {
-    YWEditTrendsViewController *vc = [[YWEditTrendsViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (!_coverImageView.image) {
+        YWEditTrendsViewController *vc = [[YWEditTrendsViewController alloc] init];
+        vc.trends = _trends;
+        vc.template = _template;
+//        vc.recorderMovies = _recorderMovies;
+        vc.recorderState = _recorderState;
+        vc.image = _coverImageView.image;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else {
+        UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请选择封面" message:nil delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+        [alter show];
+    }
 }
 
 - (void)actionValueChange {
-
+    if (!_seg.selectedSegmentIndex) {
+        _coverImageSV.hidden = NO;
+    }else {
+        _coverImageSV.hidden = YES;
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 
+}
+
+- (void)movieFrameImage {
+    for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
+        
+    }
 }
 
 /**

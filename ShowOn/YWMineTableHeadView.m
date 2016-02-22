@@ -33,6 +33,8 @@
         
         _avatorImageView = [[UIImageView alloc] init];
         _avatorImageView.backgroundColor = [UIColor whiteColor];
+        _avatorImageView.userInteractionEnabled = YES;
+        [_avatorImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionSelectAvator)]];
         _avatorImageView.layer.masksToBounds = YES;
         _avatorImageView.layer.cornerRadius = 30;
         [self addSubview:_avatorImageView];
@@ -191,8 +193,8 @@
 - (void)setUser:(YWUserModel *)user {
     _user = user;
     [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
-    _nameLabel.text = [NSString stringWithFormat:@"%@       %@", user.userName, user.userRank];
-    _empiricalLabel.text = [NSString stringWithFormat:@"经验值 %@", user.userEmpirical];
+    _nameLabel.text = [NSString stringWithFormat:@"%@       %@", user.userName?:@"", user.userRank?:@""];
+    _empiricalLabel.text = [NSString stringWithFormat:@"经验值 %@", user.userEmpirical?:@"0"];
     _authenticationLabel.text = user.userAuthentication;
     _infosLabel.text = user.userInfos;
     NSArray *titles = _isSelf?@[@"动态", @"关注", @"粉丝", @"收藏"]:@[@"关注", @"粉丝", @"作品"];
@@ -202,16 +204,16 @@
         if (_isSelf) {
             switch (i) {
                 case 0:
-                    count = user.userTrendsNums;
+                    count = user.userTrendsNums?:@"0";
                     break;
                 case 1:
-                    count = user.userFocusNums;
+                    count = user.userFocusNums?:@"0";
                     break;
                 case 2:
-                    count = user.userFollowsNums;
+                    count = user.userFollowsNums?:@"0";
                     break;
                 case 3:
-                    count = user.userCollectNums;
+                    count = user.userCollectNums?:@"0";
                     break;
                 default:
                     break;
@@ -219,13 +221,13 @@
         }else {
             switch (i) {
                 case 0:
-                    count = user.userFocusNums;
+                    count = user.userFocusNums?:@"0";
                     break;
                 case 1:
-                    count = user.userFollowsNums;
+                    count = user.userFollowsNums?:@"0";
                     break;
                 case 2:
-                    count = user.userTrendsNums;
+                    count = user.userTrendsNums?:@"0";
                     break;
                 default:
                     break;

@@ -9,8 +9,10 @@
 #import "YWHttpManager.h"
 #import "AFHTTPRequestOperationManager.h"
 #import "YWHttpGlobalDefine.h"
+#import "YWSubsectionVideoModel.h"
 
-#define kHostURL               @"http://120.25.146.161/"
+//#define kHostURL               @"http://120.25.146.161/"
+#define kHostURL               @"http://192.168.31.143:8080/"
 #define HOST_URL(methodName)   [NSString stringWithFormat:@"%@%@",kHostURL,methodName]
 
 @interface YWHttpManager()
@@ -77,7 +79,7 @@ static YWHttpManager * manager;
 
 - (void)requestVerification:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure{
     [self setDefaultHeaders];
-    [_httpManager POST:HOST_URL(Verification_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [_httpManager GET:HOST_URL(Verification_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -99,7 +101,7 @@ static YWHttpManager * manager;
 
 - (void)requestLogin:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
     [self setDefaultHeaders];
-    [_httpManager POST:HOST_URL(Login_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [_httpManager GET:HOST_URL(Login_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -122,6 +124,17 @@ static YWHttpManager * manager;
 - (void)requestTemplateList:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
     [self setDefaultHeaders];
     [_httpManager GET:HOST_URL(Template_List_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            failure(error);
+        });
+    }];
+}
+
+- (void)requestArticleList:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
+    [self setDefaultHeaders];
+    [_httpManager GET:HOST_URL(Article_List_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -327,6 +340,44 @@ static YWHttpManager * manager;
         });
     }];
 }
+
+- (void)requestCollect:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
+    [self setDefaultHeaders];
+    [_httpManager GET:HOST_URL(Collect_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            failure(error);
+        });
+    }];
+}
+
+- (void)requestWriteTrends:(NSDictionary *)parameters coverImage:(UIImage *)image recorderMovies:(NSArray *)recorderMovies movieUrl:(NSURL *)movieUrl success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
+    [self setDefaultHeaders];
+    [_httpManager POST:HOST_URL(Save_Trends_Method) parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        if (movieUrl) {
+//            NSData *data = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"video1" ofType:@"mov"]]];
+//            [formData appendPartWithFileData:data name:@"video" fileName:@"video.mov" mimeType:@"video/quicktime"];
+            NSData *data = [NSData dataWithContentsOfURL:movieUrl];
+            [formData appendPartWithFileData:data name:@"video" fileName:@"video.mov" mimeType:@"video/quicktime"];
+        }else {
+            for (NSInteger i=0; i<recorderMovies.count; i++) {
+                YWSubsectionVideoModel *model = recorderMovies[i];
+                if (model.recorderVideoUrl) {
+                    NSError *saveError;
+                    NSData *data = [NSData dataWithContentsOfURL:model.recorderVideoUrl options:NSDataReadingMappedIfSafe error:&saveError];
+                    [formData appendPartWithFileData:data name:@"video" fileName:[NSString stringWithFormat:@"video%@-%@-%@.mov", model.subsectionVideoType, model.subsectionVideoSort, model.subSort] mimeType:@"video/quicktime"];
+                }
+            }
+        }
+        [formData appendPartWithFileData:UIImagePNGRepresentation(image) name:@"img" fileName:@"test.png" mimeType:@"image/png"];
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+    }];
+}
+
 
 
 @end

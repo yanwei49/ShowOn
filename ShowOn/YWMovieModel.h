@@ -17,5 +17,4 @@
 @property (nonatomic, strong) NSString  *movieCoverImage;               //视频封面
 @property (nonatomic, strong) YWMovieTemplateModel  *movieTemplate;     //视频的模板
 
-
 @end

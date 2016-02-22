@@ -14,6 +14,7 @@
 @protocol YWMovieOtherInfosTableViewCellDelegate <NSObject>
 
 - (void)movieOtherInfosTableViewCellDidSelectSupport:(YWMovieOtherInfosTableViewCell *)cell;
+- (void)movieOtherInfosTableViewCellDidSelectMore:(YWMovieOtherInfosTableViewCell *)cell;
 - (void)movieOtherInfosTableViewCellDidSelectCollect:(YWMovieOtherInfosTableViewCell *)cell;
 - (void)movieOtherInfosTableViewCellDidSelectShare:(YWMovieOtherInfosTableViewCell *)cell;
 - (void)movieOtherInfosTableViewCell:(YWMovieOtherInfosTableViewCell *)cell didSelectUserAvator:(YWUserModel *)user;

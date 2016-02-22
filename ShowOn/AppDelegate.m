@@ -18,6 +18,7 @@
 #import "UMSocialQQHandler.h"
 #import "UMSocialSinaHandler.h"
 #import "YWCustomTabBarViewController.h"
+#import "YWDataBaseManager.h"
 
 @interface AppDelegate ()<UITabBarControllerDelegate, YWCustomTabBarViewControllerDelegate>
 
@@ -32,13 +33,13 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = Subject_color;
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:LoginSuccess object:nil];
     [self configureAPIKey];
     _tabBarLastSelectIndex = -1;
 
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"LoginState"]) {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
         [self createTabBar];
-        
     }else {
         [self createLogin];
     }

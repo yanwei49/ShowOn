@@ -19,7 +19,7 @@
 
 @implementation YWBaseViewController
 {
-    NSMutableArray      *_templateArray;
+    
     YWHttpManager       *_httpManager;
     UIView              *_noContentView;
 }
@@ -27,7 +27,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
-    _templateArray = [[NSMutableArray alloc] init];
     _httpManager = [YWHttpManager shareInstance];
     
     [self createNoContentView];
@@ -45,6 +44,7 @@
     label.backgroundColor = Subject_color;
     label.textColor = RGBColor(230, 230, 230);
     label.text = @"暂无内容";
+    label.textAlignment = NSTextAlignmentCenter;
     label.font = [UIFont systemFontOfSize:15];
     [_noContentView addSubview:label];
     [label makeConstraints:^(MASConstraintMaker *make) {
@@ -53,21 +53,6 @@
         make.centerY.equalTo(_noContentView.mas_centerY);
     }];
     _noContentView.hidden = YES;
-}
-
-- (void)dataSource {
-    for (NSInteger i=0; i<10; i++) {
-        YWMovieTemplateModel *template = [[YWMovieTemplateModel alloc] init];
-        template.templateId = [NSString stringWithFormat:@"%ld", i];
-        template.templateName = [NSString stringWithFormat:@"模板%ld", i];
-        template.templateVideoUrl = @"";
-        template.templateVideoTime = @"1分20秒";
-        template.templatePlayUserNumbers = @"12";
-        template.templateVideoCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-        template.templateTypeId = [NSString stringWithFormat:@"%ld", (long)arc4random()%3+1];
-
-        [_templateArray addObject:template];
-    }
 }
 
 #pragma mark - right/left item
@@ -108,19 +93,6 @@
     YWLoginViewController *loginVC = [[YWLoginViewController alloc] init];
     loginVC.backButtonHiddenState = NO;
     [self presentViewController:loginVC animated:YES completion:nil];
-}
-
-#pragma mark - request
-- (void)requestTemplateList {
-    [_httpManager requestTemplateList:nil success:^(id responseObject) {
-        YWParser *parser = [[YWParser alloc] init];
-        NSArray *array = [parser templateWithArray:responseObject[@"templateList"]];
-        [_templateArray addObjectsFromArray:array];
-    } otherFailure:^(id responseObject) {
-        
-    } failure:^(NSError *error) {
-        
-    }];
 }
 
 #pragma mark - alter

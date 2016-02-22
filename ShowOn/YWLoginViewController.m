@@ -52,7 +52,7 @@
 - (void)createSubViews {
     _backButton = [[UIButton alloc] init];
     _backButton.backgroundColor = [UIColor whiteColor];
-    [_backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    [_backButton setImage:[UIImage imageNamed:@"back_orange.png"] forState:UIControlStateNormal];
     [_backButton addTarget:self action:@selector(actionBack) forControlEvents:UIControlEventTouchUpInside];
     _backButton.hidden = _backButtonHiddenState;
     [self.view addSubview:_backButton];
@@ -226,7 +226,15 @@
 
 - (void)actionLogin:(UIButton *)button {
     _loginType = 1;
-    [self requestLogin];
+//    [self loginSuccess];
+//    return;
+    [_accountTextField resignFirstResponder];
+    [_passwordTextField resignFirstResponder];
+    if (_accountTextField.text.length && _passwordTextField.text.length) {
+        [self requestLogin];
+    }else {
+        [self showErrorWithString:@"请输入账号和密码"];
+    }
 }
 
 - (void)actionRegister:(UIButton *)button {
@@ -268,7 +276,7 @@
             _othersUser.portraitUri = snsAccount.iconURL;
             _loginType = 3;
             
-            [self requestLogin];
+            [self requestRegister];
         }
         
     });
@@ -288,7 +296,7 @@
                 _othersUser.portraitUri = [[_socialDict objectForKey:@"sina"] objectForKey:@"icon"];
                 
                 _loginType = 4;
-                [self requestLogin];
+                [self requestRegister];
             }
         }];
     });
@@ -311,7 +319,7 @@
                 _othersUser.portraitUri = [[_socialDict objectForKey:@"qq"] objectForKey:@"icon"];
                 
                 _loginType = 2;
-                [self requestLogin];
+                [self requestRegister];
             }
         }];
     });
@@ -326,8 +334,7 @@
 
 #pragma mark - request
 - (void)requestLogin {
-    [self loginSuccess];
-    NSDictionary *parameters = @{@"accout":_accountTextField.text, @"password":_passwordTextField.text, @"type": @(_loginType)};
+    NSDictionary *parameters = @{@"account":_accountTextField.text, @"password":_passwordTextField.text};
     [[YWHttpManager shareInstance] requestLogin:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         _othersUser = [parser userWithDict:responseObject[@"user"]];
@@ -338,7 +345,27 @@
     }];
 }
 
+- (void)requestRegister {
+    NSDictionary *parameters = @{@"account": _accountTextField.text?:@"", @"password": _passwordTextField.text?:@"", @"accountTypeId": @(2), @"nickname": _othersUser.userName?:@"", @"birthday": _othersUser.userBirthday?:@"", @"sex": _othersUser.userSex?:@"", _othersUser.userInfos?:@"introduction": @""};
+    [[YWHttpManager shareInstance] requestRegister:parameters success:^(id responseObject) {
+        YWParser *parser = [[YWParser alloc] init];
+        _othersUser = [parser userWithDict:responseObject[@"user"]];
+        [[YWDataBaseManager shareInstance] addLoginUser:_othersUser];
+        [SVProgressHUD showSuccessWithStatus:@"登录成功"];
+        [self loginSuccess];
+    } otherFailure:^(id responseObject) {
+    } failure:^(NSError *error) {
+    }];
+}
+
+
 #pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    
+    return YES;
+}
+
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     if (textField.text) {
         if ([textField isEqual:_accountTextField]) {

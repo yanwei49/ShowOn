@@ -37,13 +37,13 @@
     user.userConstellation = [dict objectForKey:@"constellation"];
     user.userAuthentication = [dict objectForKey:@"authenticationInformation"];
     user.userInfos = [dict objectForKey:@"introduction"];
-    user.userFocusNums = [dict objectForKey:@"userFocusNums"];
-    user.userTrendsNums = [dict objectForKey:@"userTrendsNums"];
-    user.userFollowsNums = [dict objectForKey:@"userFocusNums"];
-    user.userCollectNums = [dict objectForKey:@"userCollectNums"];
-    user.userATMeNums = [dict objectForKey:@"userATMeNums"];
-    user.userCommentNums = [dict objectForKey:@"userCommentNums"];
-    user.userSupportNums = [dict objectForKey:@"userSupportNums"];
+    user.userFocusNums = [dict objectForKey:@"userFocusNums"]?:@"";
+    user.userTrendsNums = [dict objectForKey:@"userTrendsNums"]?:@"";
+    user.userFollowsNums = [dict objectForKey:@"userFocusNums"]?:@"";
+    user.userCollectNums = [dict objectForKey:@"userCollectNums"]?:@"";
+    user.userATMeNums = [dict objectForKey:@"userATMeNums"]?:@"";
+    user.userCommentNums = [dict objectForKey:@"userCommentNums"]?:@"";
+    user.userSupportNums = [dict objectForKey:@"userSupportNums"]?:@"";
     user.userDistrict = [dict objectForKey:@"district"];
     user.userTrends = [self trendsWithArray:[dict objectForKey:@"userTrends"]];
     user.userRelationType = [[dict objectForKey:@"relationTypeId"] integerValue];
@@ -69,11 +69,12 @@
     template.templateVideoTime = [dict objectForKey:@"dateTimeOriginal"];
     template.templateVideoCoverImage = [dict objectForKey:@"templateCoverImage"];
     template.templateTypeId = [dict objectForKey:@"templateTypeId"];
-    template.templatePlayUserNumbers = [dict objectForKey:@"templatePlayUserNumbers"];
+    template.templatePlayUserNumbers = [dict objectForKey:@"shootTime"];
     template.templatePlayUsers = [self userWithArray:[dict objectForKey:@"templatePlayUsers"]];
     template.templateSubsectionVideos = [self subsectionVideoWithArray:[dict objectForKey:@"templateSubsectionVideos"]];
     template.templateTrends = [self trendsWithArray:[dict objectForKey:@"recordeRanklist"]];
     template.templateComments = [self commentsWithArray:[dict objectForKey:@"commentList"]];
+    
     return template;
 }
 
@@ -85,8 +86,10 @@
     subsectionVideo.subsectionVideoSort = [dict objectForKey:@"sort"];
     subsectionVideo.subsectionVideoType = [dict objectForKey:@"subsectionVideoTypeId"];
     subsectionVideo.subsectionVideoPerformanceStatus = [dict objectForKey:@"performanceStatusId"];
+    subsectionVideo.subSort = [dict objectForKey:@"subSort"];
     subsectionVideo.subsectionVideoPlayUserId = [dict objectForKey:@"userId"];
     subsectionVideo.subsectionVideoTemplateId = [dict objectForKey:@"templateId"];
+    subsectionVideo.subsectionVideoTime = [dict objectForKey:@"timeLength"];
     
     return subsectionVideo;
 }
@@ -100,12 +103,13 @@
     trends.trendsSuppotNumbers = [dict objectForKey:@"dynamicSuppotNumbers"];
     trends.trendsCollectionNumbers = [dict objectForKey:@"dynamicCollectionNumbers"];
     trends.trendsIsSupport = [dict objectForKey:@"dynamicIsSupport"];
-    trends.trendsIsCollect = [dict objectForKey:@""];
+    trends.trendsIsCollect = [dict objectForKey:@"dynamicIsCollect"];
     trends.trendsComments = [self commentsWithArray:[dict objectForKey:@"commentList"]];
     trends.trendsMovieCooperateUsers = [self userWithArray:[dict objectForKey:@"trendsMovieCooperateUsers"]];
-    trends.trendsSubsectionVideos = [self subsectionVideoWithArray:[dict objectForKey:@"trendsSubsectionVideos"]];
+//    trends.trendsSubsectionVideos = [self subsectionVideoWithArray:[dict objectForKey:@"trendsSubsectionVideos"]];
     trends.trendsOtherPlayUsers = [self userWithArray:[dict objectForKey:@"trendsOtherPlayUsers"]];
-    trends.trendsMovie = [self movieWithDict:[dict objectForKey:@"dynamicMovie"]];
+    trends.trendsMovie = [self movieWithDict:[dict objectForKey:@"dynamicVideo"]];
+    trends.trendsMovie = [dict objectForKey:@"dynamicVideo"]?trends.trendsMovie:[self movieWithDict:[dict objectForKey:@"trendsMovie"]];
     trends.trendsContent = [dict objectForKey:@"dynamicContent"];
     trends.trendsMoviePlayCount = [dict objectForKey:@"playCount"];
     trends.trendsForwardComments = [dict objectForKey:@"forwardComments"];
@@ -152,8 +156,12 @@
 - (YWSupportModel *)supportWithDict:(NSDictionary *)dict {
     YWSupportModel *support = [[YWSupportModel alloc] init];
     support.supportType = [dict objectForKey:@"supportType"];
-    support.trends = [self trendsWithDict:[dict objectForKey:@"trends"]];
-    support.comment = [self commentWithDict:[dict objectForKey:@"comment"]];
+    if (![[dict objectForKey:@"comment"] isKindOfClass:[NSNull class]]) {
+        support.comment = [self commentWithDict:[dict objectForKey:@"comment"]];
+    }
+    if (![[dict objectForKey:@"trends"] isKindOfClass:[NSNull class]]) {
+        support.trends = [self trendsWithDict:[dict objectForKey:@"trends"]];
+    }
     
     return support;
 }

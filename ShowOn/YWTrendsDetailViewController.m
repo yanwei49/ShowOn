@@ -25,6 +25,10 @@
 #import "YWTranscribeViewController.h"
 #import "YWCommentModel.h"
 #import "YWMovieTemplateModel.h"
+#import "YWTrendsModel.h"
+#import "YWMovieModel.h"
+#import "YWMovieTemplateModel.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface YWTrendsDetailViewController()<UITableViewDataSource, UITableViewDelegate, YWFocusTableViewCellDelegate, YWMovieCommentTableViewCellDelegate, YWMovieOtherInfosTableViewCellDelegate, UIActionSheetDelegate>
 
@@ -41,11 +45,10 @@
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
     self.title = _trends.trendsMovie.movieTemplate.templateName;
-    [self createRightItemWithTitle:@"..."];
+    [self createRightItemWithImage:@"more_normal.png"];
     _httpManager = [YWHttpManager shareInstance];
     
     [self createSubViews];
-//    [self dataSource];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -55,49 +58,8 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-//    [self requestTrendsDetail];
+    [self requestTrendsDetail];
 }
-
-//- (void)dataSource {
-//    _movie = [[YWMovieModel alloc] init];
-//    _movie.movieId = @"1";
-//    _movie.moviePlayNumbers = @"221";
-//    _movie.movieTimeLength = @"02:12";
-//    _movie.movieName = @"测试模板1";
-//    _movie.movieRecorderType = @"1";
-//    _movie.movieIsSupport = [NSString stringWithFormat:@"%d", arc4random()%2];
-//    YWUserModel *user = [[YWUserModel alloc] init];
-//    user.userId = @"1";
-//    user.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-//    user.userName = @"用户1";
-//    YWUserModel *user1 = [[YWUserModel alloc] init];
-//    user1.userId = @"2";
-//    user1.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-//    user1.userName = @"用户2";
-//    YWUserModel *user2 = [[YWUserModel alloc] init];
-//    user2.userId = @"3";
-//    user2.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-//    user2.userName = @"用户3";
-//    _movie.movieReleaseUser = user;
-//    _movie.movieRecorderState = @"1";
-//    _movie.moviePlayers = @[user1, user2];
-//    _movie.movieIsSupport = @"1";
-//    _movie.movieIsCollect = @"1";
-//    _movie.movieSupports = @"211";
-//    NSMutableArray *comments = [NSMutableArray array];
-//    for (NSInteger i=0; i<4; i++) {
-//        YWCommentModel *comment = [[YWCommentModel alloc] init];
-//        comment.commentId = @"1";
-//        comment.commentUser = user1;
-//        comment.commentTime = @"2015-10-02 03:21";
-//        comment.commentContent = @"E区 俄武器和全文请二位ii恶趣味哦i恶趣味哦恶趣味  阿胶去我i我去额偶王企鹅我企鹅";
-//        comment.isSupport = @"1";
-//        [comments addObject:comment];
-//    }
-//    _movie.movieComments = comments;
-//    
-//    [_tableView reloadData];
-//}
 
 - (void)createSubViews {
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -112,7 +74,8 @@
     _tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.offset(0);
+        make.left.right.offset(0);
+        make.top.offset(64);
         make.bottom.offset(-49);
     }];
     
@@ -192,9 +155,10 @@
 }
 
 - (void)requestTrendsSupport {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": _trends.trendsId,@"praiseTypeId": @(1)};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": _trends.trendsId, @"praiseTypeId": @(1)};
     [_httpManager requestSupport:parameters success:^(id responseObject) {
-        _trends.trendsIsSupport = @"1";
+        _trends.trendsIsSupport = _trends.trendsIsSupport.integerValue?@"0":@"1";
+        _trends.trendsSuppotNumbers = [NSString stringWithFormat:@"%ld", _trends.trendsIsSupport.integerValue?_trends.trendsSuppotNumbers.integerValue+1:_trends.trendsSuppotNumbers.integerValue-1];
         [_tableView reloadData];
     } otherFailure:^(id responseObject) {
         
@@ -249,9 +213,9 @@
 
 - (void)requestTrendsCollect {
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"collectionTargetId": _trends.trendsId,@"collectionTypeId": @(1)};
-    [_httpManager requestSupport:parameters success:^(id responseObject) {
-        _trends.trendsIsCollect = @"1";
-        _trends.trendsCollectionNumbers = [NSString stringWithFormat:@"%ld", _trends.trendsCollectionNumbers.integerValue+1];
+    [_httpManager requestCollect:parameters success:^(id responseObject) {
+        _trends.trendsIsCollect = _trends.trendsIsCollect.integerValue?@"0":@"1";
+        _trends.trendsCollectionNumbers = [NSString stringWithFormat:@"%ld", _trends.trendsIsCollect.integerValue?_trends.trendsCollectionNumbers.integerValue+1:_trends.trendsCollectionNumbers.integerValue-1];
         [_tableView reloadData];
     } otherFailure:^(id responseObject) {
         
@@ -353,18 +317,27 @@
     }
 }
 
+- (void)focusTableViewCellDidSelectPlaying:(YWFocusTableViewCell *)cell {
+    NSString *urlStr = cell.trends.trendsMovie.movieUrl?:[cell.trends.trendsMovie.movieTemplate.templateSubsectionVideos[0] templateVideoUrl];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+    [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+}
+
 #pragma mark - YWMovieOtherInfosTableViewCellDelegate
 - (void)movieOtherInfosTableViewCellDidSelectShare:(YWMovieOtherInfosTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
         if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
             UIAlertController *sheet = [UIAlertController alertControllerWithTitle:@"转发/分享" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-            [sheet addAction:[UIAlertAction actionWithTitle:@"转发" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            [sheet addAction:[UIAlertAction actionWithTitle:@"转发" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [self requestRepeat];
             }]];
-            [sheet addAction:[UIAlertAction actionWithTitle:@"分享" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            [sheet addAction:[UIAlertAction actionWithTitle:@"分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [self requestShare];
             }]];
-            [self.navigationController pushViewController:sheet animated:YES];
+            [sheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            }]];
+            [self presentViewController:sheet animated:YES completion:nil];
         }else {
             UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"转发/分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"转发", @"分享", nil];
             [sheet showInView:self.view];
@@ -380,6 +353,10 @@
     }else {
         [self login];
     }
+}
+
+- (void)movieOtherInfosTableViewCellDidSelectMore:(YWMovieOtherInfosTableViewCell *)cell {
+
 }
 
 - (void)movieOtherInfosTableViewCellDidSelectCollect:(YWMovieOtherInfosTableViewCell *)cell {

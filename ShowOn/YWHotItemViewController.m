@@ -16,11 +16,12 @@
 #import "YWUserModel.h"
 #import "YWTemplateTrendsTableViewCell.h"
 #import "YWTranscribeViewController.h"
+#import "YWTrendsDetailViewController.h"
 #import "YWTrendsModel.h"
 #import "YWCommentModel.h"
 #import "YWMovieModel.h"
 
-@interface YWHotItemViewController ()<UITableViewDataSource, UITableViewDelegate, YWMovieCommentTableViewCellDelegate, YWTemplateTrendsTableViewCellDelegate>
+@interface YWHotItemViewController ()<UITableViewDataSource, UITableViewDelegate, YWMovieCommentTableViewCellDelegate, YWTemplateTrendsTableViewCellDelegate, YWHotTableViewCellDelegate>
 
 @end
 
@@ -70,7 +71,8 @@
     _tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.offset(0);
+        make.left.bottom.right.offset(0);
+        make.top.offset(64);
     }];
 }
 
@@ -90,9 +92,10 @@
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"templateId": _template.templateId};
     [_httpManager requestTemplateDetail:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
-        _template = [parser templateWithDict:responseObject[@"template"]];
+        _template = [parser templateWithDict:responseObject[@"templateInfo"]];
         [_trends addObjectsFromArray:_template.templateTrends];
         [_comments addObjectsFromArray:_template.templateComments];
+        [_dataSource addObjectsFromArray:_trends];
         [_tableView reloadData];
     } otherFailure:^(id responseObject) {
         
@@ -135,12 +138,13 @@
         if (!indexPath.section) {
             YWHotTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"templateCell"];
             cell.template = _template;
+            cell.delegate = self;
             
             return cell;
         }else {
             YWTemplateTrendsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"trendsCell"];
             cell.delegate = self;
-            cell.trends = _trends[indexPath.row];
+            cell.trends = _dataSource[indexPath.row];
             
             return cell;
         }
@@ -164,9 +168,9 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (!_segmentedControl.selectedSegmentIndex && section) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 30)];
-        view.backgroundColor = Subject_color;
+        view.backgroundColor = RGBColor(30, 30, 30);
         UILabel *label = [[UILabel alloc] init];
-        label.backgroundColor = Subject_color;
+        label.backgroundColor = RGBColor(30, 30, 30);
         label.textColor = [UIColor whiteColor];
         label.font = [UIFont systemFontOfSize:14];
         label.text = @"排行榜";
@@ -190,6 +194,27 @@
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [_tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (_segmentedControl.selectedSegmentIndex) {
+        
+    }else {
+        if (!indexPath.section) {
+            YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+            vc.template = _template;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else {
+            YWTrendsDetailViewController *vc = [[YWTrendsDetailViewController alloc] init];
+            vc.trends = _dataSource[indexPath.row];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
+}
+
+#pragma mark - YWHotTableViewCellDelegate
+- (void)hotTableViewCellDidSelectPlay:(YWHotTableViewCell *)cell {
+
+}
 
 #pragma mark - YWMovieCommentTableViewCellDelegate
 - (void)movieCommentTableViewCellDidSelectSupport:(YWMovieCommentTableViewCell *)cell {
@@ -219,6 +244,10 @@
     }else {
         [self login];
     }
+}
+
+- (void)templateTrendsTableViewCellDidSelectPlaying:(YWTemplateTrendsTableViewCell *)cell {
+
 }
 
 

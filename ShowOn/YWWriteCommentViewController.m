@@ -100,7 +100,8 @@
     }
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"commentsTargetId": _trends?_trends.trendsId:_comment.commentId, @"commentsTypeId": _trends?@(1):@(2), @"commentsContent": _textView.text, @"aiTeuserIds": userId};
     [_httpManager requestAiTeList:parameters success:^(id responseObject) {
-        [self.navigationController popViewControllerAnimated:YES];
+        [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
+        [self dismissViewControllerAnimated:YES completion:nil];
     } otherFailure:^(id responseObject) {
         
     } failure:^(NSError *error) {

@@ -224,5 +224,31 @@
  */
 - (void)requestShare:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
 
+/**
+ *  图文列表
+ *
+ *  @param parameters 请求参数
+ *  @param success    成功block
+ *  @param failure    失败block
+ */
+- (void)requestArticleList:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
+
+/**
+ *  发布动态、保存草稿
+ *
+ *  @param parameters 请求参数
+ *  @param success    成功block
+ *  @param failure    失败block
+ */
+- (void)requestWriteTrends:(NSDictionary *)parameters coverImage:(UIImage *)image recorderMovies:(NSArray *)recorderMovies movieUrl:(NSURL *)movieUrl success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
+
+/**
+ *  收藏
+ *
+ *  @param parameters 请求参数
+ *  @param success    成功block
+ *  @param failure    失败block
+ */
+- (void)requestCollect:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
 
 @end

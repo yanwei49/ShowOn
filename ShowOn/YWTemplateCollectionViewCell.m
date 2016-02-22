@@ -9,12 +9,14 @@
 #import "YWTemplateCollectionViewCell.h"
 #import "YWMovieTemplateModel.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "YWSubsectionVideoModel.h"
 
 @implementation YWTemplateCollectionViewCell
 {
     UIImageView   *_imageView;
     UILabel       *_nameLabel;
     UIView        *_blackView;
+    UIImageView   *_downImageView;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -49,6 +51,15 @@
             make.left.bottom.right.offset(0);
             make.height.offset(30);
         }];
+        
+        _downImageView = [[UIImageView alloc] init];
+        _downImageView.backgroundColor = [UIColor blackColor];
+        _downImageView.alpha = 0.8;
+        [self.contentView addSubview:_downImageView];
+        _downImageView.hidden = YES;
+        [_downImageView makeConstraints:^(MASConstraintMaker *make) {
+            make.left.bottom.right.top.offset(0);
+        }];
     }
     
     return self;
@@ -68,6 +79,23 @@
     _template = template;
     _nameLabel.text = template.templateName;
     [_imageView sd_setImageWithURL:[NSURL URLWithString:template.templateVideoCoverImage] placeholderImage:kPlaceholderMoiveImage];
+}
+
+- (void)setSubsectionVideo:(YWSubsectionVideoModel *)subsectionVideo {
+    _subsectionVideo = subsectionVideo;
+    _nameLabel.text = [NSString stringWithFormat:@"%@s", subsectionVideo.subsectionVideoTime?:@"0"];
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:subsectionVideo.subsectionVideoCoverImage] placeholderImage:kPlaceholderMoiveImage];
+    self.contentView.layer.borderColor = Subject_color.CGColor;
+    self.contentView.layer.borderWidth = 0;
+    _downImageView.hidden = YES;
+    if (subsectionVideo.subsectionVideoPerformanceStatus.integerValue == 1) {
+        _downImageView.hidden = NO;
+    }else if (subsectionVideo.subsectionVideoPerformanceStatus.integerValue == 2) {
+        _downImageView.hidden = YES;
+    }else {
+        self.contentView.layer.borderColor = [UIColor redColor].CGColor;
+        self.contentView.layer.borderWidth = 5;
+    }
 }
 
 
