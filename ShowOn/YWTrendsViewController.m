@@ -19,6 +19,7 @@
 #import "YWTrendsCategoryView.h"
 #import "YWTranscribeViewController.h"
 #import "YWMovieModel.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface YWTrendsViewController ()<UITableViewDelegate, UITableViewDataSource, YWFocusTableViewCellDelegate, UISearchBarDelegate, YWTrendsCategoryViewDelegate>
 
@@ -210,7 +211,16 @@
 }
 
 - (void)focusTableViewCellDidSelectPlaying:(YWFocusTableViewCell *)cell {
-
+    if (cell.trends.trendsMovie.movieUrl.length) {
+        NSString *urlStr = cell.trends.trendsMovie.movieUrl;
+        NSURL *url = [NSURL URLWithString:urlStr];
+        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    }else {
+        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.trends = cell.trends;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark - UISearchBarDelegate

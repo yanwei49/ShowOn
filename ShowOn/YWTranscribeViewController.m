@@ -267,7 +267,14 @@
                 vc.trends = _trends;
                 vc.template = _template;
 //                vc.recorderMovies = _recorderMovies;
-                vc.recorderState = _template.templateSubsectionVideos.count==_recorderMovies.count?YES:NO;
+                BOOL state = YES;
+                for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
+                    if (model.subsectionVideoPerformanceStatus.integerValue != 1) {
+                        state = NO;
+                        break;
+                    }
+                }
+                vc.recorderState = state;
                 [self.navigationController pushViewController:vc animated:YES];
             }else {
                 UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请先录制视频" message:nil delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];

@@ -12,7 +12,7 @@
 #import "YWMovieTemplateModel.h"
 #import "YWSubsectionVideoModel.h"
 
-@interface YWEditCoverViewController ()<UIScrollViewDelegate>
+@interface YWEditCoverViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @end
 
@@ -21,15 +21,18 @@
     UIImageView         *_coverImageView;
     UISegmentedControl  *_seg;
     UIScrollView        *_coverImageSV;
+    NSMutableArray      *_coverImages;
     
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
+    _coverImages = [[NSMutableArray alloc] init];
     self.title = @"制作封面";
     
     [self createSubViews];
+    [self movieFrameImage];
 }
 
 - (void)createSubViews {
@@ -85,9 +88,24 @@
     }];
 }
 
+- (void)createScorllImagesWithImages:(NSArray *)images {
+    _coverImageSV.contentSize = CGSizeMake(100*images.count, 150);
+    for (NSInteger i=0; i<images.count; i++) {
+        UIImageView *iv = [[UIImageView alloc] init];
+        iv.backgroundColor = RGBColor(30, 30, 30);
+        iv.image = images[i];
+        [_coverImageSV addSubview:iv];
+        [iv makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.offset(0);
+            make.width.offset(100);
+            make.left.offset(100*i);
+        }];
+    }
+}
+
 #pragma mark - action
 - (void)actionDown:(UIButton *)button {
-    if (!_coverImageView.image) {
+    if (_coverImageView.image) {
         YWEditTrendsViewController *vc = [[YWEditTrendsViewController alloc] init];
         vc.trends = _trends;
         vc.template = _template;
@@ -103,21 +121,137 @@
 
 - (void)actionValueChange {
     if (!_seg.selectedSegmentIndex) {
+        [self takePhoto];
         _coverImageSV.hidden = NO;
     }else {
         _coverImageSV.hidden = YES;
     }
 }
 
-#pragma mark - UIScrollViewDelegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-
+- (void)movieFrameImage {
+    [_coverImages removeAllObjects];
+    for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
+        if (model.recorderVideoUrl) {
+            for (NSInteger i=0; i<model.subsectionVideoTime.integerValue; i++) {
+                [_coverImages addObject:[self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i]];
+            }
+        }
+    }
+    [self createScorllImagesWithImages:_coverImages];
 }
 
-- (void)movieFrameImage {
-    for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
-        
+- (void)takePhoto {
+    UIImagePickerController *albumPicker = [[UIImagePickerController alloc] init];
+    BOOL isCamera = [UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceRear || UIImagePickerControllerCameraDeviceFront];
+    if (!isCamera) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"没有可用摄像头"  delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+        return;
     }
+    //拍照
+    albumPicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    albumPicker.delegate = self;
+    [self presentViewController:albumPicker animated:YES completion:NULL];
+}
+
+
+- (UIImage *)fixOrientation:(UIImage *)aImage {
+    
+    // No-op if the orientation is already correct
+    if (aImage.imageOrientation == UIImageOrientationUp)
+        return aImage;
+    
+    // We need to calculate the proper transformation to make the image upright.
+    // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    
+    switch (aImage.imageOrientation) {
+        case UIImageOrientationDown:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, aImage.size.width, aImage.size.height);
+            transform = CGAffineTransformRotate(transform, M_PI);
+            break;
+            
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+            transform = CGAffineTransformTranslate(transform, aImage.size.width, 0);
+            transform = CGAffineTransformRotate(transform, M_PI_2);
+            break;
+            
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, 0, aImage.size.height);
+            transform = CGAffineTransformRotate(transform, -M_PI_2);
+            break;
+        default:
+            break;
+    }
+    
+    switch (aImage.imageOrientation) {
+        case UIImageOrientationUpMirrored:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, aImage.size.width, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+            
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, aImage.size.height, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+        default:
+            break;
+    }
+    
+    // Now we draw the underlying CGImage into a new context, applying the transform
+    // calculated above.
+    CGContextRef ctx = CGBitmapContextCreate(NULL, aImage.size.width, aImage.size.height,
+                                             CGImageGetBitsPerComponent(aImage.CGImage), 0,
+                                             CGImageGetColorSpace(aImage.CGImage),
+                                             CGImageGetBitmapInfo(aImage.CGImage));
+    CGContextConcatCTM(ctx, transform);
+    switch (aImage.imageOrientation) {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            // Grr...
+            CGContextDrawImage(ctx, CGRectMake(0,0,aImage.size.height,aImage.size.width), aImage.CGImage);
+            break;
+            
+        default:
+            CGContextDrawImage(ctx, CGRectMake(0,0,aImage.size.width,aImage.size.height), aImage.CGImage);
+            break;
+    }
+    
+    // And now we just create a new UIImage from the drawing context
+    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+    UIImage *img = [UIImage imageWithCGImage:cgimg];
+    CGContextRelease(ctx);
+    CGImageRelease(cgimg);
+    return img;
+}
+
+#pragma mark - UIImagePickerController Delegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage *im = [self fixOrientation:image];
+    _coverImageView.image = im;
+    //关闭模态视图
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    //关闭模态视图
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat x = scrollView.contentOffset.x;
+    NSInteger i = x/100;
+    _coverImageView.image = _coverImages[i];
 }
 
 /**
@@ -125,9 +259,7 @@
  *
  *  @param timeBySecond 时间点
  */
--(UIImage *)thumbnailImageRequest:(CGFloat )timeBySecond{
-    //创建URL
-    NSURL *url=[NSURL URLWithString:@""];
+-(UIImage *)thumbnailImageRequestUrl:(NSURL *)url time:(CGFloat )timeBySecond{
     //根据url创建AVURLAsset
     AVURLAsset *urlAsset=[AVURLAsset assetWithURL:url];
     //根据AVURLAsset创建AVAssetImageGenerator

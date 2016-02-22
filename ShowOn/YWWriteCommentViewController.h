@@ -10,9 +10,11 @@
 
 @class YWTrendsModel;
 @class YWCommentModel;
+@class YWMovieTemplateModel;
 @interface YWWriteCommentViewController : YWBaseViewController
 
 @property (nonatomic, strong) YWTrendsModel *trends;
 @property (nonatomic, strong) YWCommentModel *comment;
+@property (nonatomic, strong) YWMovieTemplateModel *template;
 
 @end

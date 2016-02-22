@@ -14,6 +14,7 @@
 #import "YWTrendsModel.h"
 #import "YWCommentModel.h"
 #import "YWDataBaseManager.h"
+#import "YWMovieTemplateModel.h"
 
 @interface YWWriteCommentViewController ()<YWKeyboardHeadViewDelegate, UITextViewDelegate, YWUserListViewControllerDelegate>
 
@@ -89,6 +90,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+
 #pragma mark - request
 - (void)requestCommitContent {
     NSMutableString *userId = [NSMutableString stringWithString:@""];
@@ -98,7 +100,7 @@
             [userId appendString:@"|"];
         }
     }
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"commentsTargetId": _trends?_trends.trendsId:_comment.commentId, @"commentsTypeId": _trends?@(1):@(2), @"commentsContent": _textView.text, @"aiTeuserIds": userId};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"commentsTargetId": _trends&&_comment?_trends.trendsId:_comment.commentId, @"commentsTypeId": _trends?@(1):@(2), @"commentsContent": _textView.text, @"aiTeuserIds": userId, @"dependId": _template?_template.templateId:_trends.trendsId, @"dependType": _template?@(2):@(1)};
     [_httpManager requestAiTeList:parameters success:^(id responseObject) {
         [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
         [self dismissViewControllerAnimated:YES completion:nil];

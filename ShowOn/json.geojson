@@ -6,6 +6,11 @@
 {
     "account": ""               //账号
     "password": ""              //密码
+    "accountTypeId": ""         //登录方式 （1.手机  2.第三方平台）
+    "nickname": ""              //昵称（第三方可能有）
+    "birthday": ""              //年龄（第三方可能有）
+    "sex": ""                   //性别（第三方可能有）（1.男   0.女）
+    "introduction": ""          //简介（第三方可能有）（签名）
 }
 //返回值：
 {
@@ -51,11 +56,6 @@
 {
     "account": ""               //账号
     "password": ""              //密码
-    "accountTypeId": ""         //登录方式 （1.手机  2.第三方平台）
-    "nickname": ""              //昵称（第三方可能有）
-    "birthday": ""              //年龄（第三方可能有）
-    "sex": ""                   //性别（第三方可能有）（1.男   0.女）
-    "introduction": ""          //简介（第三方可能有）（签名）
 }
 //返回值：
 {
@@ -128,6 +128,15 @@
     "code": "",
     "msg": "",
     "user": {
+        /*=======新加========*/
+        "headPortrait": ""          //头像
+        "userTrendsNums": ""        //动态数
+        "userCollectNums": ""       //收藏数
+        "userATMeNums": ""          //@我的数量
+        "userCommentNums": ""       //评论数
+        "userSupportNums": ""       //点赞数
+        /*=======新加========*/
+        
         "nickname": ""              //昵称
         "birthday": ""              //年龄
         "sex": ""                   //性别（1.男   0.女）

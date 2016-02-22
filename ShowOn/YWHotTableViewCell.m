@@ -112,9 +112,10 @@
     _timeLabel.text = [NSString stringWithFormat:@"时长%@", template.templateVideoTime];
     _numsLabel.text = [NSString stringWithFormat:@"拍摄次数%@", template.templatePlayUserNumbers];
     [_imageView sd_setImageWithURL:[NSURL URLWithString:template.templateVideoCoverImage] placeholderImage:kPlaceholderMoiveImage];
-    _playMovieView.urlStr = template.templateVideoUrl;
-    _playButton.hidden = YES;
-    _imageView.hidden = YES;
+//    _playMovieView.urlStr = template.templateVideoUrl;
+    _playMovieView.hidden = YES;
+//    _playButton.hidden = YES;
+//    _imageView.hidden = YES;
 }
 
 

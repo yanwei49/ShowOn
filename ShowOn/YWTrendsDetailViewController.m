@@ -282,6 +282,7 @@
         YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
         YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
         nv.title = @"写评论";
+        vc.trends = _trends;
         vc.comment = _trends.trendsComments[indexPath.row-2];
         [self presentViewController:nv animated:YES completion:nil];
     }
@@ -318,10 +319,16 @@
 }
 
 - (void)focusTableViewCellDidSelectPlaying:(YWFocusTableViewCell *)cell {
-    NSString *urlStr = cell.trends.trendsMovie.movieUrl?:[cell.trends.trendsMovie.movieTemplate.templateSubsectionVideos[0] templateVideoUrl];
-    NSURL *url = [NSURL URLWithString:urlStr];
-    MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-    [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    if (cell.trends.trendsMovie.movieUrl.length) {
+        NSString *urlStr = cell.trends.trendsMovie.movieUrl;
+        NSURL *url = [NSURL URLWithString:urlStr];
+        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    }else {
+        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.trends = cell.trends;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark - YWMovieOtherInfosTableViewCellDelegate

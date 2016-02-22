@@ -2220,7 +2220,7 @@
 					"$(PROJECT_DIR)/ShowOn/umeng_ios_social_sdk_4.2.1_arm64_custom/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
 					"$(PROJECT_DIR)/ShowOn/umeng_ios_social_sdk_4.2.1_arm64_custom/UMSocial_Sdk_Extra_Frameworks/Wechat",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.qunongzhuang.ShowOn;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qunongzhuang.Juer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -2247,7 +2247,7 @@
 					"$(PROJECT_DIR)/ShowOn/umeng_ios_social_sdk_4.2.1_arm64_custom/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
 					"$(PROJECT_DIR)/ShowOn/umeng_ios_social_sdk_4.2.1_arm64_custom/UMSocial_Sdk_Extra_Frameworks/Wechat",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.qunongzhuang.ShowOn;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qunongzhuang.Juer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

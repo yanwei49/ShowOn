@@ -20,6 +20,8 @@
 #import "YWTrendsModel.h"
 #import "YWCommentModel.h"
 #import "YWMovieModel.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import "YWTranscribeViewController.h"
 
 @interface YWHotItemViewController ()<UITableViewDataSource, UITableViewDelegate, YWMovieCommentTableViewCellDelegate, YWTemplateTrendsTableViewCellDelegate, YWHotTableViewCellDelegate>
 
@@ -213,7 +215,10 @@
 
 #pragma mark - YWHotTableViewCellDelegate
 - (void)hotTableViewCellDidSelectPlay:(YWHotTableViewCell *)cell {
-
+    NSString *urlStr = cell.template.templateVideoUrl;
+    NSURL *url = [NSURL URLWithString:urlStr];
+    MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+    [self presentViewController:moviePlayerViewController animated:YES completion:nil];
 }
 
 #pragma mark - YWMovieCommentTableViewCellDelegate
@@ -247,7 +252,16 @@
 }
 
 - (void)templateTrendsTableViewCellDidSelectPlaying:(YWTemplateTrendsTableViewCell *)cell {
-
+    if (cell.trends.trendsMovie.movieUrl.length) {
+        NSString *urlStr = cell.trends.trendsMovie.movieUrl;
+        NSURL *url = [NSURL URLWithString:urlStr];
+        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    }else {
+        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.trends = cell.trends;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 
