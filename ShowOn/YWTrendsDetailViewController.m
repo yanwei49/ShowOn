@@ -320,7 +320,7 @@
 
 - (void)focusTableViewCellDidSelectPlaying:(YWFocusTableViewCell *)cell {
     if (cell.trends.trendsMovie.movieUrl.length) {
-        NSString *urlStr = cell.trends.trendsMovie.movieUrl;
+        NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURL *url = [NSURL URLWithString:urlStr];
         MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
         [self presentViewController:moviePlayerViewController animated:YES completion:nil];

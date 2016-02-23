@@ -17,6 +17,8 @@
 #import "YWDataBaseManager.h"
 #import "YWUserModel.h"
 #import "MJRefresh.h"
+#import "YWMovieTemplateModel.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface YWHomeViewController ()<YWHotViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -205,5 +207,13 @@
     [self.navigationController pushViewController:vc animated:YES];
     _isPushHotItem = YES;
 }
+
+- (void)hotViewDidSelectPlayItemWithTemplate:(YWMovieTemplateModel *)template {
+    NSString *urlStr = [template.templateVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+    [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+}
+
 
 @end

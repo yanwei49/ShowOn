@@ -26,6 +26,8 @@
 #import "YWHttpManager.h"
 #import "YWParser.h"
 #import "YWUserModel.h"
+#import "YWMovieTemplateModel.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface YWMineViewController ()<UITableViewDelegate, UITableViewDataSource, YWMineTableHeadViewDelegate, YWHotViewDelegate>
 
@@ -40,6 +42,7 @@
     BOOL                 _isPushHotItem;
     YWHttpManager       *_httpManager;
     NSMutableArray      *_templateArray;
+    YWUserModel         *_loginUser;
 }
 
 - (void)viewDidLoad {
@@ -51,6 +54,7 @@
     _dataSource = [[NSMutableArray alloc] initWithArray:@[@"@我的", @"评论", @"赞", @"私信", @"好友动态", @"经验值", @"草稿箱"]];
     [self createRightItemWithTitle:@"设置"];
     [self createLeftItemWithTitle:@"首页"];
+    _loginUser = [[YWDataBaseManager shareInstance] loginUser];
     
     [self createSubViews];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenHotView) name:@"HiddenHotView" object:nil];
@@ -68,7 +72,7 @@
         [self createHotView];
         _isPushHotItem = NO;
     }
-    _headView.user = [[YWDataBaseManager shareInstance] loginUser];
+    _headView.user = _loginUser;
     YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     tabBar.hiddenState = NO;
 }
@@ -78,6 +82,10 @@
     YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     tabBar.hiddenState = NO;
     [self requestTemplateList];
+    _loginUser = [[YWDataBaseManager shareInstance] loginUser];
+    if (_loginUser) {
+        [self requestUserDetails];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -116,7 +124,7 @@
 - (void)createSubViews {
     _headView = [[YWMineTableHeadView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 200) withUserIsSelf:YES];
     _headView.delegate = self;
-    _headView.user = [[YWDataBaseManager shareInstance] loginUser];
+    _headView.user = _loginUser;
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     _tableView.backgroundColor = Subject_color;
@@ -154,12 +162,34 @@
     }];
 }
 
+- (void)requestUserDetails {
+    NSDictionary *parameters = @{@"userId": _loginUser.userId};
+    [_httpManager requestUserDetail:parameters success:^(id responseObject) {
+        YWParser *parser = [[YWParser alloc] init];
+        _loginUser = [parser userWithDict:responseObject[@"user"]];
+        _loginUser.userId = [[YWDataBaseManager shareInstance] loginUser].userId;
+        _headView.user = _loginUser;
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
 #pragma mark - YWHotViewDelegate
 - (void)hotViewDidSelectItemWithTemplate:(YWMovieTemplateModel *)template {
     YWHotItemViewController *vc = [[YWHotItemViewController alloc] init];
     vc.template = template;
     [self.navigationController pushViewController:vc animated:YES];
     _isPushHotItem = YES;
+}
+
+- (void)hotViewDidSelectPlayItemWithTemplate:(YWMovieTemplateModel *)template {
+    NSString *urlStr = [template.templateVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+    [self presentViewController:moviePlayerViewController animated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDelegate
@@ -175,7 +205,7 @@
     cell.textLabel.text = _dataSource[indexPath.row];
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
     view.backgroundColor = RGBColor(52, 52, 52);
-    YWUserModel *user = [[YWDataBaseManager shareInstance] loginUser];
+    YWUserModel *user = _loginUser;
     NSArray *array = @[user.userATMeNums?:@"", user.userCommentNums?:@"", user.userSupportNums?:@""];
     if (indexPath.row<3 && [array[indexPath.row] integerValue]) {
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, 20, 20)];
@@ -203,7 +233,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if ([[YWDataBaseManager shareInstance] loginUser]) {
+    if (_loginUser) {
         NSArray *className = @[@"YWATMeViewController", @"YWCommentViewController", @"YWSupportViewController", @"YWMessageViewController", @"YWTrendsViewController", @"YWExperienceViewController", @"YWDraftViewController"];
         UIViewController *vc = [[NSClassFromString(className[indexPath.row]) alloc] init];
         vc.title = _dataSource[indexPath.row];
@@ -234,10 +264,10 @@
 
 #pragma mark - YWMineTableHeadViewDelegate
 - (void)mineTableHeadViewDidSelectAvator {
-    if ([[YWDataBaseManager shareInstance] loginUser]) {
+    if (_loginUser) {
         YWUserDataViewController *vc = [[YWUserDataViewController alloc] init];
         vc.isSelf = YES;
-        vc.user = [[YWDataBaseManager shareInstance] loginUser];
+        vc.user = _loginUser;
         [self.navigationController pushViewController:vc animated:YES];
     }else {
         [self login];

@@ -50,7 +50,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
-    [self createRightItemWithImage:@"more_normal.png"];
+    if ([_user.userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userId]) {
+        [self createRightItemWithTitle:@"保存"];
+    }else {
+        [self createRightItemWithImage:@"more_normal.png"];
+    }
     _httpManager = [YWHttpManager shareInstance];
     _dataSource = [[NSMutableArray alloc] initWithArray:@[@"个人签名", @"性别", @"地区", @"年龄", @"星座", @"身高", @"三围"]];
     _sexArray = @[@"男", @"女"];
@@ -180,21 +184,25 @@
 
 #pragma mark - action
 - (void)actionRightItem:(UIButton *)button {
-    NSArray *array = @[@"举报", @"拉黑"];
-    if (_userCategoryView) {
-        _userCategoryView.hidden = !_userCategoryView.hidden;
+    if ([_user.userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userId]) {
+        [self requestSaveUserDetails];
     }else {
-        _userCategoryView = [[YWTrendsCategoryView alloc] init];
-        _userCategoryView.delegate = self;
-        _userCategoryView.categoryArray = array;
-        [self.view addSubview:_userCategoryView];
+        NSArray *array = @[@"举报", @"拉黑"];
+        if (_userCategoryView) {
+            _userCategoryView.hidden = !_userCategoryView.hidden;
+        }else {
+            _userCategoryView = [[YWTrendsCategoryView alloc] init];
+            _userCategoryView.delegate = self;
+            _userCategoryView.categoryArray = array;
+            [self.view addSubview:_userCategoryView];
+        }
+        [_userCategoryView makeConstraints:^(MASConstraintMaker *make) {
+            make.width.offset(70);
+            make.height.offset(array.count*30);
+            make.top.offset(64);
+            make.right.offset(-10);
+        }];
     }
-    [_userCategoryView makeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(70);
-        make.height.offset(array.count*30);
-        make.top.offset(64);
-        make.right.offset(-10);
-    }];
 }
 
 - (void)actionCancel:(UIButton *)button {
@@ -240,6 +248,24 @@
         [_allTrendsArray addObjectsFromArray:_user.userTrends];
         [_trendsArray addObjectsFromArray:_allTrendsArray];
         [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)requestSaveUserDetails {
+    NSMutableArray *array = [NSMutableArray array];
+    for (NSInteger i=0; i<7; i++) {
+        UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        UITextField *tf = (UITextField *)cell.accessoryView;
+        [array addObject:tf.text?:@""];
+    }
+    NSDictionary *parameters = @{@"userId": _user.userId, @"introduction": array[0], @"sex": array[1], @"district": array[2], @"birthday": array[3], @"constellation": array[4], @"height": array[5], @"bwh": array[6]};
+    [_httpManager requestSaveUserDetails:parameters success:^(id responseObject) {
+        [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
+        [self.navigationController popViewControllerAnimated:YES];
     } otherFailure:^(id responseObject) {
         
     } failure:^(NSError *error) {
@@ -383,9 +409,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (!_itemSelectIndex) {
-        UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
-        [cell.accessoryView becomeFirstResponder];
-        [self didSelectCellWithIndex:indexPath.row];
+        if (_isSelf) {
+            UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+            [cell.accessoryView becomeFirstResponder];
+            [self didSelectCellWithIndex:indexPath.row];
+        }
     }else {
         YWTrendsDetailViewController *hotVC = [[YWTrendsDetailViewController alloc] init];
         hotVC.trends = _trendsArray[indexPath.row];
@@ -423,6 +451,7 @@
         !index?[self requestReport]:[self requestBlacklist];
     }else {
         _trendsType = index;
+        view.hidden = YES;
         [_trendsArray removeAllObjects];
         for (YWTrendsModel *trends in _allTrendsArray) {
             if (trends.trendsType.integerValue == index || !index) {

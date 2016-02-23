@@ -101,7 +101,7 @@
     
     _playOrPause = [[UIButton alloc] initWithFrame:CGRectMake(self.bounds.size.width/2-30, self.bounds.size.height/2-30, 60, 60)];
     [_playOrPause setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
-    [_playOrPause setImage:[UIImage imageNamed:@"@_normal.png"] forState:UIControlStateSelected];
+    [_playOrPause setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
     [_playOrPause addTarget:self action:@selector(actionPlayOrPasue) forControlEvents:UIControlEventTouchUpInside];
     [self.layer addSublayer:_playOrPause.layer];
     

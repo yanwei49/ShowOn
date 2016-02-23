@@ -82,6 +82,7 @@
     YWSubsectionVideoModel *subsectionVideo = [[YWSubsectionVideoModel alloc] init];
     subsectionVideo.subsectionVideoId = [dict objectForKey:@"subsectionVideoId"];
     subsectionVideo.subsectionVideoUrl = [dict objectForKey:@"videoUrl"];
+    subsectionVideo.subsectionOriginalVideoUrl = [dict objectForKey:@"originalVideoUrl"];
     subsectionVideo.subsectionVideoCoverImage = [dict objectForKey:@""];
     subsectionVideo.subsectionVideoSort = [dict objectForKey:@"sort"];
     subsectionVideo.subsectionVideoType = [dict objectForKey:@"subsectionVideoTypeId"];
@@ -109,7 +110,6 @@
 //    trends.trendsSubsectionVideos = [self subsectionVideoWithArray:[dict objectForKey:@"trendsSubsectionVideos"]];
     trends.trendsOtherPlayUsers = [self userWithArray:[dict objectForKey:@"trendsOtherPlayUsers"]];
     trends.trendsMovie = [self movieWithDict:[dict objectForKey:@"dynamicVideo"]];
-    trends.trendsMovie = [dict objectForKey:@"dynamicVideo"]?trends.trendsMovie:[self movieWithDict:[dict objectForKey:@"trendsMovie"]];
     trends.trendsContent = [dict objectForKey:@"dynamicContent"];
     trends.trendsMoviePlayCount = [dict objectForKey:@"playCount"];
     trends.trendsForwardComments = [dict objectForKey:@"forwardComments"];

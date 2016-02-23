@@ -13,6 +13,7 @@
 @protocol YWHotViewDelegate <NSObject>
 
 - (void)hotViewDidSelectItemWithTemplate:(YWMovieTemplateModel *)template;
+- (void)hotViewDidSelectPlayItemWithTemplate:(YWMovieTemplateModel *)template;
 
 @end
 @interface YWHotView : UIView

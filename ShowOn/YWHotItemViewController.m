@@ -94,6 +94,8 @@
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"templateId": _template.templateId};
     [_httpManager requestTemplateDetail:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
+        [_trends removeAllObjects];
+        [_comments removeAllObjects];
         _template = [parser templateWithDict:responseObject[@"templateInfo"]];
         [_trends addObjectsFromArray:_template.templateTrends];
         [_comments addObjectsFromArray:_template.templateComments];
@@ -161,7 +163,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (!_segmentedControl.selectedSegmentIndex) {
-        return 200;
+        if (!indexPath.section) {
+            return 200;
+        }else {
+            return [YWTemplateTrendsTableViewCell cellHeightWithTrends:_dataSource[indexPath.row]];
+        }
     }else {
         return 80;
     }
@@ -215,7 +221,7 @@
 
 #pragma mark - YWHotTableViewCellDelegate
 - (void)hotTableViewCellDidSelectPlay:(YWHotTableViewCell *)cell {
-    NSString *urlStr = cell.template.templateVideoUrl;
+    NSString *urlStr = [cell.template.templateVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:urlStr];
     MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
     [self presentViewController:moviePlayerViewController animated:YES completion:nil];
@@ -253,7 +259,7 @@
 
 - (void)templateTrendsTableViewCellDidSelectPlaying:(YWTemplateTrendsTableViewCell *)cell {
     if (cell.trends.trendsMovie.movieUrl.length) {
-        NSString *urlStr = cell.trends.trendsMovie.movieUrl;
+        NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURL *url = [NSURL URLWithString:urlStr];
         MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
         [self presentViewController:moviePlayerViewController animated:YES completion:nil];

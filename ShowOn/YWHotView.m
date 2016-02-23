@@ -13,7 +13,7 @@
 #import "YWHttpManager.h"
 #import "YWParser.h"
 
-@interface YWHotView ()<UITableViewDataSource, UITableViewDelegate>
+@interface YWHotView ()<UITableViewDataSource, UITableViewDelegate, YWHotTableViewCellDelegate>
 
 @end
 
@@ -73,6 +73,7 @@
         view.backgroundColor = Subject_color;
         cell.selectedBackgroundView = view;
     }
+    cell.delegate = self;
     cell.template = _dataSource[indexPath.row];
 
     return cell;
@@ -89,5 +90,11 @@
     return 200;
 }
 
+#pragma mark - YWHotTableViewCellDelegate
+- (void)hotTableViewCellDidSelectPlay:(YWHotTableViewCell *)cell {
+    if ([_delegate respondsToSelector:@selector(hotViewDidSelectPlayItemWithTemplate:)]) {
+        [_delegate hotViewDidSelectPlayItemWithTemplate:cell.template];
+    }
+}
 
 @end

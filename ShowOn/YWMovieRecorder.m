@@ -26,6 +26,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     BOOL                        _enableRotation;//是否允许旋转（注意在视频录制过程中禁止屏幕旋转）
     CGRect                     *_lastBounds;//旋转的前大小
     UIBackgroundTaskIdentifier  _backgroundTaskIdentifier;//后台任务标识
+    UIView                     *_backView;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -97,6 +98,11 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     
     _enableRotation=YES;
     [self addNotificationToCaptureDevice:captureDevice];
+    
+    _backView = [[UIView alloc] initWithFrame:self.bounds];
+    _backView.backgroundColor = [UIColor blackColor];
+    _backView.alpha = 0.7;
+    [self addSubview:_backView];
 }
 
 - (void)startRunning {
@@ -108,6 +114,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 
 - (void)startRecorder {
+    _backView.hidden = YES;
     //根据设备输出获得连接
     AVCaptureConnection *captureConnection=[_captureMovieFileOutput connectionWithMediaType:AVMediaTypeVideo];
     //根据连接取得设备输出的数据
@@ -120,11 +127,12 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
         //预览图层和视频方向保持一致
         captureConnection.videoOrientation=[_captureVideoPreviewLayer connection].videoOrientation;
         NSString *outputFielPath=[NSTemporaryDirectory() stringByAppendingString:@"myMovie.mov"];
-        NSLog(@"save path is :%@",outputFielPath);
+
         NSURL *fileUrl=[NSURL fileURLWithPath:outputFielPath];
         [_captureMovieFileOutput startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
     }
     else{
+        _backView.hidden = NO;
         [_captureMovieFileOutput stopRecording];//停止录制
     }
 }

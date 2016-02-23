@@ -53,6 +53,7 @@
     if (!_trends) {
         for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
             model.subsectionVideoPerformanceStatus = @"2";
+            model.subsectionVideoUrl = model.subsectionOriginalVideoUrl;
         }
     }
     

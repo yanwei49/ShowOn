@@ -58,14 +58,12 @@
         
         _playButton = [[UIButton alloc] init];
         [_playButton setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
-        _playButton.userInteractionEnabled = NO;
         [_playButton addTarget:self action:@selector(actionPlay:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:_playButton];
         [_playButton makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_imageView.mas_centerY);
             make.centerX.equalTo(_imageView.mas_centerX);
-            make.width.equalTo(_imageView.mas_width);
-            make.height.equalTo(_imageView.mas_height);
+            make.width.height.offset(80);
         }];
         
         _numsLabel = [[UILabel alloc] init];

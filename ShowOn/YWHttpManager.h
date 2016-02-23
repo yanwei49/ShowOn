@@ -99,6 +99,15 @@
 - (void)requestUserDetail:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
 
 /**
+ *  保存个人资料
+ *
+ *  @param parameters 请求参数
+ *  @param success    成功block
+ *  @param failure    失败block
+ */
+- (void)requestSaveUserDetails:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
+
+/**
  *  获取用户列表
  *
  *  @param parameters 请求参数

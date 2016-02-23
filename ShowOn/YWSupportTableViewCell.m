@@ -12,6 +12,7 @@
 #import "YWCommentModel.h"
 #import "YWUserModel.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "YWMovieModel.h"
 
 @implementation YWSupportTableViewCell
 {
@@ -38,7 +39,7 @@
             make.width.height.offset(60);
         }];
         
-        UIView  *view = [[UIView alloc] init];
+        UIView *view = [[UIView alloc] init];
         view.backgroundColor = RGBColor(30, 30, 30);
         [self.contentView addSubview:view];
         [view makeConstraints:^(MASConstraintMaker *make) {
@@ -49,7 +50,7 @@
         _imageView = [[UIImageView alloc] init];
         _imageView.layer.masksToBounds = YES;
         _imageView.layer.cornerRadius = CornerRadius;
-        _imageView.backgroundColor = [UIColor whiteColor];
+        _imageView.backgroundColor = Subject_color;
         [self.contentView addSubview:_imageView];
         [_imageView makeConstraints:^(MASConstraintMaker *make) {
             make.top.offset(0);
@@ -96,7 +97,7 @@
         }];
         
         _playButton = [[UIButton alloc] init];
-        _playButton.backgroundColor = Subject_color;
+//        _playButton.backgroundColor = Subject_color;
         [_playButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
 //        [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
         [_playButton addTarget:self action:@selector(actionOnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -119,6 +120,7 @@
     _support = support;
     if (support.supportType.integerValue == 1) {
         [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:support.trends.trendsUser.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
+        [_imageView sd_setImageWithURL:[NSURL URLWithString:support.trends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
         _contentLabel.text = support.trends.trendsContent;
         _timeLabel.text = support.trends.trendsPubdate;
         NSMutableString *name = [NSMutableString stringWithString:support.trends.trendsUser.userName?:@""];
@@ -129,6 +131,7 @@
         _userNameLabel.text = name;
     }else {
         [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:support.comment.commentUser.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
+        [_imageView sd_setImageWithURL:[NSURL URLWithString:support.comment.commentTrends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
         _contentLabel.text = support.comment.commentContent;
         _timeLabel.text = support.comment.commentTime;
         _userNameLabel.text = support.comment.commentUser.userName;

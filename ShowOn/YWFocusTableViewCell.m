@@ -158,7 +158,6 @@
         
         _playingButton = [[UIButton alloc] init];
         [_playingButton setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
-        _playingButton.userInteractionEnabled = NO;
         [_playingButton addTarget:self action:@selector(actionPlaying:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:_playingButton];
         [_playingButton makeConstraints:^(MASConstraintMaker *make) {

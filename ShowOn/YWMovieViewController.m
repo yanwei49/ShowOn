@@ -22,7 +22,7 @@
 #import "YWMovieModel.h"
 #import "YWMovieTemplateModel.h"
 #import "YWDataBaseManager.h"
-
+#import <MediaPlayer/MediaPlayer.h>
 #import "YWDataBaseManager.h"
 #import "YWUserModel.h"
 
@@ -241,6 +241,13 @@
     _isPushHotItem = YES;
     YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     tabBar.hiddenState = YES;
+}
+
+- (void)hotViewDidSelectPlayItemWithTemplate:(YWMovieTemplateModel *)template {
+    NSString *urlStr = [template.templateVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+    [self presentViewController:moviePlayerViewController animated:YES completion:nil];
 }
 
 #pragma mark - UICollectionViewDelegate
