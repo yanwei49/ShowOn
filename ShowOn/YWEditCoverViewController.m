@@ -77,29 +77,29 @@
         make.height.offset(180);
     }];
 
-    _coverImageSV = [[UIScrollView alloc] init];
+    _coverImageSV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 330, kScreenWidth, 150)];
     _coverImageSV.backgroundColor = RGBColor(30, 30, 30);
     _coverImageSV.delegate = self;
     [self.view addSubview:_coverImageSV];
-    [_coverImageSV makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.offset(0);
-        make.height.offset(150);
-        make.top.equalTo(_coverImageView.mas_bottom).offset(30);
-    }];
+//    [_coverImageSV makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.right.offset(0);
+//        make.height.offset(150);
+//        make.top.equalTo(_coverImageView.mas_bottom).offset(30);
+//    }];
 }
 
 - (void)createScorllImagesWithImages:(NSArray *)images {
-    _coverImageSV.contentSize = CGSizeMake(100*images.count, 150);
+    _coverImageSV.contentSize = CGSizeMake(200*images.count, 150);
     for (NSInteger i=0; i<images.count; i++) {
-        UIImageView *iv = [[UIImageView alloc] init];
+        UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(200*i, 0, 200, 150)];
         iv.backgroundColor = RGBColor(30, 30, 30);
         iv.image = images[i];
         [_coverImageSV addSubview:iv];
-        [iv makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.offset(0);
-            make.width.offset(100);
-            make.left.offset(100*i);
-        }];
+//        [iv makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.bottom.offset(0);
+//            make.width.offset(100);
+//            make.left.offset(100*i);
+//        }];
     }
 }
 
@@ -121,9 +121,9 @@
 
 - (void)actionValueChange {
     if (!_seg.selectedSegmentIndex) {
-        [self takePhoto];
         _coverImageSV.hidden = NO;
     }else {
+        [self takePhoto];
         _coverImageSV.hidden = YES;
     }
 }
@@ -132,7 +132,7 @@
     [_coverImages removeAllObjects];
     for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
         if (model.recorderVideoUrl) {
-            for (NSInteger i=0; i<model.subsectionVideoTime.integerValue; i++) {
+            for (NSInteger i=0; i<1; i++) {
                 [_coverImages addObject:[self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i]];
             }
         }
@@ -250,7 +250,7 @@
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat x = scrollView.contentOffset.x;
-    NSInteger i = x/100;
+    NSInteger i = x/200;
     _coverImageView.image = _coverImages[i];
 }
 

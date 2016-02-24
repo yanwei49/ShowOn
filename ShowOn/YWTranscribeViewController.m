@@ -50,7 +50,7 @@
     _collectionViews = [[NSMutableArray alloc] init];
     _labels = [[NSMutableArray alloc] init];
     _template = _trends?_trends.trendsMovie.movieTemplate:_template;
-    if (!_trends) {
+    if (_trends) {
         for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
             model.subsectionVideoPerformanceStatus = @"2";
             model.subsectionVideoUrl = model.subsectionOriginalVideoUrl;
@@ -134,7 +134,9 @@
     _recorderView.delegate = self;
     _recorderView.layer.borderColor = RGBColor(30, 30, 30).CGColor;
     _recorderView.layer.borderWidth = 1;
-    _recorderView.model = _template.templateSubsectionVideos[0];
+    if (_template.templateSubsectionVideos.count) {
+        _recorderView.model = _template.templateSubsectionVideos[0];
+    }
     [_backgroundSV addSubview:_recorderView];
 //    [_recorderView makeConstraints:^(MASConstraintMaker *make) {
 //        make.left.offset(5);
@@ -306,7 +308,7 @@
             model = _dataSource2[0];
         }else if (_dataSource3.count) {
             model = _dataSource3[0];
-        }else {
+        }else if(_template.templateSubsectionVideos.count) {
             model = _template.templateSubsectionVideos[0];
         }
         _playView.urlStr = model.subsectionVideoUrl;

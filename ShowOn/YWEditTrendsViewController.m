@@ -31,7 +31,7 @@
     NSInteger       _state;     //2.发布，1.草稿
     NSMutableArray *_buttons;
 //    NSInteger       _flag;      //是否是完整视频（1：完整  2：分段）
-    UIActivityIndicatorView     *_activity;
+//    UIActivityIndicatorView     *_activity;
 }
 
 - (void)viewDidLoad {
@@ -43,10 +43,10 @@
     _state = 2;
     
     [self createSubViews];
-    
-    _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    _activity.frame = self.view.bounds;
-    [self.view addSubview:_activity];
+//    
+//    _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//    _activity.frame = self.view.bounds;
+//    [self.view addSubview:_activity];
 }
 
 - (void)createSubViews {
@@ -70,7 +70,8 @@
     _coverImageView.image = _image;
     [self.view addSubview:_coverImageView];
     [_coverImageView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.offset(0);
+        make.left.right.offset(0);
+        make.top.offset(64);
         make.height.offset(200);
     }];
     
@@ -135,18 +136,22 @@
 #pragma mark - private
 - (NSURL *)movieMerge {
     if (_recorderState) {
-        [self mergeAndSaveComplete:^(id responseObject) {
-            [_activity stopAnimating];
-            
-            return responseObject;
-        }];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self mergeAndSaveComplete:^(id responseObject) {
+//                [_activity stopAnimating];
+//                [SVProgressHUD showSuccessWithStatus:@"合成成功"];
+                
+                return responseObject;
+            }];
+        });
     }
     return [NSURL URLWithString:@""];
 }
 
 //合并
 - (void)mergeAndSaveComplete:(NSURL * (^) (id responseObject))complete {
-    [_activity startAnimating];
+//    [_activity startAnimating];
+//    [SVProgressHUD showWithStatus:@"合成中"];
     // 1 - Create AVMutableComposition object. This object will hold your AVMutableCompositionTrack instances.
     AVMutableComposition *mixComposition = [[AVMutableComposition alloc] init];
     // 2 - Video track
@@ -187,31 +192,30 @@
     [exporter exportAsynchronouslyWithCompletionHandler:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             complete(exporter.outputURL);
+            [self exportDidFinish:exporter];
         });
     }];
 }
-//
-//-(void)exportDidFinish:(AVAssetExportSession*)session {
-//    if (session.status == AVAssetExportSessionStatusCompleted) {
-//        NSURL *outputURL = session.outputURL;
-//        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-//        if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:outputURL]) {
-//            [library writeVideoAtPathToSavedPhotosAlbum:outputURL completionBlock:^(NSURL *assetURL, NSError *error){
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    if (error) {
-//                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Video Saving Failed" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//                        [alert show];
-//                    } else {
-//                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Video Saved" message:@"Saved To Photo Album" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//                        [alert show];
-//                    }
-//                });
-//            }];
-//        }
-//    }
-//    
-//    [_activity stopAnimating];
-//}
+
+-(void)exportDidFinish:(AVAssetExportSession*)session {
+    if (session.status == AVAssetExportSessionStatusCompleted) {
+        NSURL *outputURL = session.outputURL;
+        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+        if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:outputURL]) {
+            [library writeVideoAtPathToSavedPhotosAlbum:outputURL completionBlock:^(NSURL *assetURL, NSError *error){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (error) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Video Saving Failed" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        [alert show];
+                    } else {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Video Saved" message:@"Saved To Photo Album" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        [alert show];
+                    }
+                });
+            }];
+        }
+    }
+}
 
 #pragma mark - action
 - (void)actionRightItem {
@@ -237,8 +241,9 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [_httpManager requestWriteTrends:parameters coverImage:[UIImage imageNamed:@"@_normal"] recorderMovies:_template.templateSubsectionVideos movieUrl:[self movieMerge] success:^(id responseObject) {
             [SVProgressHUD showInfoWithStatus:responseObject[@"msg"]];
+            [self.navigationController popToRootViewControllerAnimated:YES];
         } otherFailure:^(id responseObject) {
-            
+            [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
         } failure:^(NSError *error) {
             
         }];

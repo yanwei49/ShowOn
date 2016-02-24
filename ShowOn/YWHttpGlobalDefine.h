@@ -37,10 +37,9 @@
 #define Feedback_Method                       @"juer/dynamic/feedBack?json"                 //用户反馈
 #define Repeat_Method                         @"juer/dynamic/forwardDynamic?json"           //转发
 #define Share_Method                          @""          //分享
-
 #define Collect_Method                        @"juer/dynamic/collection?json"               //收藏
 #define Commit_Comment_Method                 @"juer/dynamic/comments?json"                 //发表评论
-#define Save_Trends_Method                    @"juer/dynamic/draftOrDynamicVideo?json"                    //发布动态、保存到草稿箱
+#define Save_Trends_Method                    @"juer/dynamic/draftOrDynamicVideo?json"      //发布动态、保存到草稿箱
 #define Article_List_Method                   @"juer/dynamic/teletextList?json"             //图文列表
 
 

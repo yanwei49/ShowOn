@@ -142,7 +142,7 @@
         _imageView.backgroundColor = RGBColor(30, 30, 30);
         _imageView.layer.masksToBounds = YES;
         _imageView.layer.cornerRadius = 5;
-        [view addSubview:_imageView];
+        [self.contentView addSubview:_imageView];
         [_imageView makeConstraints:^(MASConstraintMaker *make) {
             make.top.offset(65);
             make.left.offset(5);
@@ -152,14 +152,12 @@
         
         _playingButton = [[UIButton alloc] init];
         [_playingButton setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
-        _playingButton.userInteractionEnabled = NO;
         [_playingButton addTarget:self action:@selector(actionPlaying:) forControlEvents:UIControlEventTouchUpInside];
-        [view addSubview:_playingButton];
+        [self.contentView addSubview:_playingButton];
         [_playingButton makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_imageView.mas_centerY);
             make.centerX.equalTo(_imageView.mas_centerX);
-            make.width.equalTo(_imageView.mas_width);
-            make.height.equalTo(_imageView.mas_height);
+            make.width.height.offset(100);
         }];
 
         _contentLabel = [[UILabel alloc] init];
