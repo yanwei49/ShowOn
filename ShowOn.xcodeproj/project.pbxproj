@@ -737,13 +737,13 @@
 			name = model;
 			sourceTree = "<group>";
 		};
-		568DBF641C55BE0E00CFD1BC /* 搜索 */ = {
+		568DBF641C55BE0E00CFD1BC /* search */ = {
 			isa = PBXGroup;
 			children = (
 				568DBF651C55BE2000CFD1BC /* YWSearchViewController.h */,
 				568DBF661C55BE2000CFD1BC /* YWSearchViewController.m */,
 			);
-			name = "搜索";
+			name = search;
 			sourceTree = "<group>";
 		};
 		568DBF681C55C08A00CFD1BC /* searchTemplateCell */ = {
@@ -1210,9 +1210,9 @@
 		56FE99FF1C0FBB14007BA29B /* viewcontroller */ = {
 			isa = PBXGroup;
 			children = (
-				568DBF641C55BE0E00CFD1BC /* 搜索 */,
-				56FE9A141C0FC18D007BA29B /* 热门 */,
-				56FE9A151C0FC197007BA29B /* 模板 */,
+				568DBF641C55BE0E00CFD1BC /* search */,
+				56FE9A141C0FC18D007BA29B /* hot */,
+				56FE9A151C0FC197007BA29B /* templa */,
 			);
 			name = viewcontroller;
 			sourceTree = "<group>";
@@ -1344,7 +1344,7 @@
 			name = view;
 			sourceTree = "<group>";
 		};
-		56FE9A141C0FC18D007BA29B /* 热门 */ = {
+		56FE9A141C0FC18D007BA29B /* hot */ = {
 			isa = PBXGroup;
 			children = (
 				77D0F10A1C11DC4B00134A17 /* YWTrendsDetailViewController.h */,
@@ -1356,10 +1356,10 @@
 				569257E91C744C58000EFB95 /* YWUserListViewController.h */,
 				569257EA1C744C58000EFB95 /* YWUserListViewController.m */,
 			);
-			name = "热门";
+			name = hot;
 			sourceTree = "<group>";
 		};
-		56FE9A151C0FC197007BA29B /* 模板 */ = {
+		56FE9A151C0FC197007BA29B /* templa */ = {
 			isa = PBXGroup;
 			children = (
 				56FE9A171C0FC234007BA29B /* YWTemplateViewController.h */,
@@ -1367,7 +1367,7 @@
 				566BF5E91C4717CF002C5591 /* YWTemplateListViewController.h */,
 				566BF5EA1C4717CF002C5591 /* YWTemplateListViewController.m */,
 			);
-			name = "模板";
+			name = templa;
 			sourceTree = "<group>";
 		};
 		633C4F8F77FB0DA0579932AD /* Pods */ = {
@@ -2204,6 +2204,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2222,6 +2223,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.qunongzhuang.Juer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -2231,6 +2233,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2249,6 +2252,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.qunongzhuang.Juer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

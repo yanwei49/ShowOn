@@ -87,6 +87,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     
     //创建视频预览层，用于实时展示摄像头状态
     _captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_captureSession];
+//    _captureVideoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientationPortrait;
     
     CALayer *layer = self.layer;
     layer.masksToBounds=YES;

@@ -40,6 +40,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self requestSupportList];
+    [_tableView setContentOffset:CGPointMake(0, 0)];
 }
 
 - (void)createSubViews {

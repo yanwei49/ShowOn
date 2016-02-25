@@ -366,23 +366,21 @@ static YWHttpManager * manager;
 - (void)requestWriteTrends:(NSDictionary *)parameters coverImage:(UIImage *)image recorderMovies:(NSArray *)recorderMovies movieUrl:(NSURL *)movieUrl success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
     [self setDefaultHeaders];
     [_httpManager POST:HOST_URL(Save_Trends_Method) parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        if (!recorderMovies.count) {
-//            NSData *data = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"video1" ofType:@"mov"]]];
-//            [formData appendPartWithFileData:data name:@"video" fileName:@"video.mov" mimeType:@"video/quicktime"];
+        if (movieUrl) {
             NSData *data = [NSData dataWithContentsOfURL:movieUrl];
             [formData appendPartWithFileData:data name:@"video" fileName:@"video.mov" mimeType:@"video/quicktime"];
         }else {
             for (NSInteger i=0; i<recorderMovies.count; i++) {
                 YWSubsectionVideoModel *model = recorderMovies[i];
                 if (model.recorderVideoUrl) {
-//                    NSError *saveError;
-//                    NSData *data = [NSData dataWithContentsOfURL:model.recorderVideoUrl options:NSDataReadingMappedIfSafe error:&saveError];
                     NSData *data = [NSData dataWithContentsOfURL:model.recorderVideoUrl];
                     [formData appendPartWithFileData:data name:@"video" fileName:[NSString stringWithFormat:@"video%@-%@-%@.mov", model.subsectionVideoType, model.subsectionVideoSort, model.subSort] mimeType:@"video/quicktime"];
                 }
             }
         }
-        [formData appendPartWithFileData:UIImagePNGRepresentation(image) name:@"img" fileName:@"test.png" mimeType:@"image/png"];
+        if (image) {
+            [formData appendPartWithFileData:UIImagePNGRepresentation(image) name:@"img" fileName:@"test.png" mimeType:@"image/png"];
+        }
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

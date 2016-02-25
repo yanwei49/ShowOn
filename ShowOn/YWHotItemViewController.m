@@ -250,7 +250,7 @@
 - (void)templateTrendsTableViewCellDidSelectPlay:(YWTemplateTrendsTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
         YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
-        vc.template = cell.trends.trendsMovie.movieTemplate;
+        vc.template = _template;
         [self.navigationController pushViewController:vc animated:YES];
     }else {
         [self login];

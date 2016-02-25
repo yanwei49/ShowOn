@@ -132,7 +132,8 @@
     [_coverImages removeAllObjects];
     for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
         if (model.recorderVideoUrl) {
-            for (NSInteger i=0; i<1; i++) {
+            AVURLAsset *urlAsset=[AVURLAsset assetWithURL:model.recorderVideoUrl];
+            for (NSInteger i=0; i<urlAsset.duration.value; i++) {
                 [_coverImages addObject:[self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i]];
             }
         }

@@ -16,6 +16,7 @@
 #import "YWMovieTemplateModel.h"
 #import "YWTrendsModel.h"
 #import "YWMovieModel.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface YWTranscribeViewController ()<YWCustomSegViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWMoviePlayViewDelegate, YWMovieRecorderDelegate>
 
@@ -215,9 +216,10 @@
 }
 
 - (void)actionPlay:(UIButton *)button {
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"video2.mov" ofType:nil];
-    _playView.urlStr = path;
-//    [_playView play];
+    NSString *urlStr = [!_trends?_template.templateVideoUrl:_trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+    [self presentViewController:moviePlayerViewController animated:YES completion:nil];
 }
 
 - (void)actionRestart:(UIButton *)button {
@@ -230,7 +232,9 @@
 }
 
 - (void)actionChange:(UIButton *)button {
-    [_recorderView changeCamera];
+    if (_recorderView.model.subsectionVideoPerformanceStatus.integerValue != 0) {
+        [_recorderView changeCamera];
+    }
 }
 
 #pragma mark - YWMoviePlayViewDelegate
@@ -308,12 +312,12 @@
             model = _dataSource2[0];
         }else if (_dataSource3.count) {
             model = _dataSource3[0];
-        }else if(_template.templateSubsectionVideos.count) {
-            model = _template.templateSubsectionVideos[0];
         }
-        _playView.urlStr = model.subsectionVideoUrl;
-//        _playView.urlStr = _template.templateVideoUrl;
-        model.subsectionVideoPerformanceStatus = model.subsectionVideoPerformanceStatus.integerValue==1?@"1":@"0";
+        if (model) {
+            _playView.urlStr = model.subsectionVideoUrl;
+            //        _playView.urlStr = _template.templateVideoUrl;
+            model.subsectionVideoPerformanceStatus = model.subsectionVideoPerformanceStatus.integerValue==1?@"1":@"0";
+        }
         for (NSInteger i=0; i<3; i++) {
             UILabel *label = _labels[i];
             label.text = !index?_titles1[i]:_titles2[i];
