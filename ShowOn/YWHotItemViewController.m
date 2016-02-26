@@ -96,6 +96,7 @@
         YWParser *parser = [[YWParser alloc] init];
         [_trends removeAllObjects];
         [_comments removeAllObjects];
+        [_dataSource removeAllObjects];
         _template = [parser templateWithDict:responseObject[@"templateInfo"]];
         [_trends addObjectsFromArray:_template.templateTrends];
         [_comments addObjectsFromArray:_template.templateComments];
