@@ -47,9 +47,9 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
         _captureSession.sessionPreset=AVCaptureSessionPreset1280x720;
     }
     //获得输入设备
-    AVCaptureDevice *captureDevice=[self getCameraDeviceWithPosition:AVCaptureDevicePositionBack];//取得后置摄像头
+    AVCaptureDevice *captureDevice=[self getCameraDeviceWithPosition:AVCaptureDevicePositionFront];//取得前置摄像头
     if (!captureDevice) {
-        NSLog(@"取得后置摄像头时出现问题.");
+        NSLog(@"取得前置摄像头时出现问题.");
         return;
     }
     //添加一个音频输入设备
@@ -144,8 +144,8 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [self removeNotificationFromCaptureDevice:currentDevice];
     AVCaptureDevice *toChangeDevice;
     AVCaptureDevicePosition toChangePosition=AVCaptureDevicePositionFront;
-    if (currentPosition==AVCaptureDevicePositionUnspecified||currentPosition==AVCaptureDevicePositionFront) {
-        toChangePosition=AVCaptureDevicePositionBack;
+    if (currentPosition==AVCaptureDevicePositionUnspecified||currentPosition==AVCaptureDevicePositionBack) {
+        toChangePosition=AVCaptureDevicePositionFront;
     }
     toChangeDevice=[self getCameraDeviceWithPosition:toChangePosition];
     [self addNotificationToCaptureDevice:toChangeDevice];
@@ -176,10 +176,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 //    if ([_delegate respondsToSelector:@selector(movieRecorderDownWithData:subsectionVideoSort:subSort:)]) {
 //        [_delegate movieRecorderDownWithData:data subsectionVideoSort:_subsectionVideoSort subsectionVideoType:_subsectionVideoType];
 //    }
-    _model.recorderVideoUrl = outputFileURL;
-    if ([_delegate respondsToSelector:@selector(movieRecorderDown:)]) {
-        [_delegate movieRecorderDown:self];
-    }
     //视频录入完成之后在后台将视频存储到相簿
     _enableRotation=YES;
     UIBackgroundTaskIdentifier lastBackgroundTaskIdentifier = _backgroundTaskIdentifier;
@@ -188,6 +184,10 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [assetsLibrary writeVideoAtPathToSavedPhotosAlbum:outputFileURL completionBlock:^(NSURL *assetURL, NSError *error) {
         if (error) {
             NSLog(@"保存视频到相簿过程中发生错误，错误信息：%@",error.localizedDescription);
+        }
+        _model.recorderVideoUrl = assetURL;
+        if ([_delegate respondsToSelector:@selector(movieRecorderDown:)]) {
+            [_delegate movieRecorderDown:self];
         }
         if (lastBackgroundTaskIdentifier!=UIBackgroundTaskInvalid) {
             [[UIApplication sharedApplication] endBackgroundTask:lastBackgroundTaskIdentifier];

@@ -31,7 +31,8 @@
     NSInteger       _state;     //2.发布，1.草稿
     NSMutableArray *_buttons;
 //    NSInteger       _flag;      //是否是完整视频（1：完整  2：分段）
-//    UIActivityIndicatorView     *_activity;
+    UIActivityIndicatorView     *_activity;
+    NSURL          *_movieUrl;
 }
 
 - (void)viewDidLoad {
@@ -40,13 +41,14 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"存入草稿箱" style:UIBarButtonItemStyleDone target:self action:@selector(actionRightItem)];
     _httpManager = [YWHttpManager shareInstance];
     _buttons = [[NSMutableArray alloc] init];
-    _state = 2;
+    _state = 1;
     
     [self createSubViews];
-//    
-//    _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//    _activity.frame = self.view.bounds;
-//    [self.view addSubview:_activity];
+    _movieUrl = [self movieMerge];
+    
+    _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _activity.frame = self.view.bounds;
+    [self.view addSubview:_activity];
 }
 
 - (void)createSubViews {
@@ -138,8 +140,12 @@
     if (_recorderState) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self mergeAndSaveComplete:^(id responseObject) {
-//                [_activity stopAnimating];
-//                [SVProgressHUD showSuccessWithStatus:@"合成成功"];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [SVProgressHUD showSuccessWithStatus:@"合成成功"];
+                    self.view.userInteractionEnabled = YES;
+                    _movieUrl = responseObject;
+                    NSLog(@"%@+++++++++%@", _movieUrl, responseObject);
+                });
                 
                 return responseObject;
             }];
@@ -252,20 +258,19 @@
 
 //合并
 - (void)mergeAndSaveComplete:(NSURL * (^) (id responseObject))complete {
-//    [_activity startAnimating];
-//    [SVProgressHUD showWithStatus:@"合成中"];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.view.userInteractionEnabled = NO;
+        [SVProgressHUD showWithStatus:@"合成中"];
+    });
     // 1 - Create AVMutableComposition object. This object will hold your AVMutableCompositionTrack instances.
     AVMutableComposition *mixComposition = [[AVMutableComposition alloc] init];
     // 2 - Video track
     AVMutableCompositionTrack *firstTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
     AVAsset *lastAsset;
-    AVMutableVideoCompositionInstruction * MainInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
-    AVMutableVideoCompositionLayerInstruction *FirstlayerInstruction;
-    AVMutableVideoCompositionLayerInstruction *SecondlayerInstruction;
     for (NSInteger i=0; i<_template.templateSubsectionVideos.count; i++) {
         NSURL *url;
         for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
-            if (model.subsectionVideoSort.integerValue == 1) {
+            if (model.subsectionVideoSort.integerValue == i+1) {
                 if (model.recorderVideoUrl) {
                     url = model.recorderVideoUrl;
                 }else {
@@ -275,57 +280,11 @@
             }
         }
         AVAsset *medioAsset = [AVAsset assetWithURL:url];
+        NSLog(@"%@==========", url.absoluteString);
         if (!i) {
             [firstTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, medioAsset.duration) ofTrack:[[medioAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
-            //FIXING ORIENTATION//
-            FirstlayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:firstTrack];
-            AVAssetTrack *FirstAssetTrack = [[medioAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-            UIImageOrientation FirstAssetOrientation_  = UIImageOrientationUp;
-            BOOL  isFirstAssetPortrait_  = NO;
-            CGAffineTransform firstTransform = FirstAssetTrack.preferredTransform;
-            if(firstTransform.a == 0 && firstTransform.b == 1.0 && firstTransform.c == -1.0 && firstTransform.d == 0)  {FirstAssetOrientation_= UIImageOrientationRight; isFirstAssetPortrait_ = YES;}
-            if(firstTransform.a == 0 && firstTransform.b == -1.0 && firstTransform.c == 1.0 && firstTransform.d == 0)  {FirstAssetOrientation_ =  UIImageOrientationLeft; isFirstAssetPortrait_ = YES;}
-            if(firstTransform.a == 1.0 && firstTransform.b == 0 && firstTransform.c == 0 && firstTransform.d == 1.0)   {FirstAssetOrientation_ =  UIImageOrientationUp;}
-            if(firstTransform.a == -1.0 && firstTransform.b == 0 && firstTransform.c == 0 && firstTransform.d == -1.0) {FirstAssetOrientation_ = UIImageOrientationDown;}
-            CGFloat FirstAssetScaleToFitRatio = 320.0/FirstAssetTrack.naturalSize.width;
-            if(isFirstAssetPortrait_){
-                FirstAssetScaleToFitRatio = 320.0/FirstAssetTrack.naturalSize.height;
-                CGAffineTransform FirstAssetScaleFactor = CGAffineTransformMakeScale(FirstAssetScaleToFitRatio,FirstAssetScaleToFitRatio);
-                [FirstlayerInstruction setTransform:CGAffineTransformConcat(FirstAssetTrack.preferredTransform, FirstAssetScaleFactor) atTime:kCMTimeZero];
-            }else{
-                CGAffineTransform FirstAssetScaleFactor = CGAffineTransformMakeScale(FirstAssetScaleToFitRatio,FirstAssetScaleToFitRatio);
-                [FirstlayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(FirstAssetTrack.preferredTransform, FirstAssetScaleFactor),CGAffineTransformMakeTranslation(0, 160)) atTime:kCMTimeZero];
-            }
-            [FirstlayerInstruction setOpacity:0.0 atTime:medioAsset.duration];
         }else {
             [firstTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, medioAsset.duration) ofTrack:[[medioAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:lastAsset.duration error:nil];
-            MainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeAdd(lastAsset.duration, medioAsset.duration));
-            SecondlayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:firstTrack];
-            AVAssetTrack *SecondAssetTrack = [[medioAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-            UIImageOrientation SecondAssetOrientation_  = UIImageOrientationUp;
-            BOOL  isSecondAssetPortrait_  = NO;
-            CGAffineTransform secondTransform = SecondAssetTrack.preferredTransform;
-            if(secondTransform.a == 0 && secondTransform.b == 1.0 && secondTransform.c == -1.0 && secondTransform.d == 0)  {SecondAssetOrientation_= UIImageOrientationRight; isSecondAssetPortrait_ = YES;}
-            if(secondTransform.a == 0 && secondTransform.b == -1.0 && secondTransform.c == 1.0 && secondTransform.d == 0)  {SecondAssetOrientation_ =  UIImageOrientationLeft; isSecondAssetPortrait_ = YES;}
-            if(secondTransform.a == 1.0 && secondTransform.b == 0 && secondTransform.c == 0 && secondTransform.d == 1.0)   {SecondAssetOrientation_ =  UIImageOrientationUp;}
-            if(secondTransform.a == -1.0 && secondTransform.b == 0 && secondTransform.c == 0 && secondTransform.d == -1.0) {SecondAssetOrientation_ = UIImageOrientationDown;}
-            CGFloat SecondAssetScaleToFitRatio = 320.0/SecondAssetTrack.naturalSize.width;
-            if(isSecondAssetPortrait_){
-                SecondAssetScaleToFitRatio = 320.0/SecondAssetTrack.naturalSize.height;
-                CGAffineTransform SecondAssetScaleFactor = CGAffineTransformMakeScale(SecondAssetScaleToFitRatio,SecondAssetScaleToFitRatio);
-                [SecondlayerInstruction setTransform:CGAffineTransformConcat(SecondAssetTrack.preferredTransform, SecondAssetScaleFactor) atTime:lastAsset.duration];
-            }else{
-                ;
-                CGAffineTransform SecondAssetScaleFactor = CGAffineTransformMakeScale(SecondAssetScaleToFitRatio,SecondAssetScaleToFitRatio);
-                [SecondlayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(SecondAssetTrack.preferredTransform, SecondAssetScaleFactor),CGAffineTransformMakeTranslation(0, 160)) atTime:lastAsset.duration];
-            }
-            
-            MainInstruction.layerInstructions = [NSArray arrayWithObjects:FirstlayerInstruction,SecondlayerInstruction,nil];;
-            
-            AVMutableVideoComposition *MainCompositionInst = [AVMutableVideoComposition videoComposition];
-            MainCompositionInst.instructions = [NSArray arrayWithObject:MainInstruction];
-            MainCompositionInst.frameDuration = CMTimeMake(1, 30);
-            MainCompositionInst.renderSize = self.view.bounds.size;
         }
         lastAsset = medioAsset;
     }
@@ -385,14 +344,18 @@
     button.selected = YES;
     UIButton *btn = _buttons[[_buttons indexOfObject:button]?0:1];
     btn.selected = NO;
-    _state = [_buttons indexOfObject:button];
+    _state = [_buttons indexOfObject:button]*2+2;
 }
 
 #pragma mark - request
 - (void)requestSaveTrends {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"trendsId": _trends?_trends.trendsId:@"", @"type": @(_type), @"flag": _recorderState?@(1):@(2), @"state": @(_state), @"movieContent": _contentTextView.text, @"templateId": _template.templateId};
+    if (_trends) {
+        _state = 2;
+    }
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"trendsId": _trends?_trends.trendsId:@"", @"state": @(_type), @"flag": _recorderState?@(1):@(2), @"type": @(_state), @"movieContent": _contentTextView.text, @"templateId": _template.templateId};
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [_httpManager requestWriteTrends:parameters coverImage:_image recorderMovies:_template.templateSubsectionVideos movieUrl:[self movieMerge] success:^(id responseObject) {
+        [_httpManager requestWriteTrends:parameters coverImage:_image recorderMovies:_template.templateSubsectionVideos movieUrl:_movieUrl success:^(id responseObject) {
             [SVProgressHUD showInfoWithStatus:responseObject[@"msg"]];
             [self.navigationController popToRootViewControllerAnimated:YES];
         } otherFailure:^(id responseObject) {

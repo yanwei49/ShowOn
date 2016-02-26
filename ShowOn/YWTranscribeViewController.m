@@ -54,7 +54,9 @@
     if (_trends) {
         for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
             model.subsectionVideoPerformanceStatus = @"2";
-            model.subsectionVideoUrl = model.subsectionOriginalVideoUrl;
+            if (model.subsectionOriginalVideoUrl.length) {
+                model.subsectionVideoUrl = model.subsectionOriginalVideoUrl;
+            }
         }
     }
     
@@ -239,6 +241,7 @@
 
 #pragma mark - YWMoviePlayViewDelegate
 - (void)moviePlayViewPlayWithState:(BOOL)playState {
+    self.view.userInteractionEnabled = !playState;
     if (_recorderView.model.subsectionVideoPerformanceStatus.integerValue != 1) {
         if (playState) {
             [_recorderView startRecorder];
