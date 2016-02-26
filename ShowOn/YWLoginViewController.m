@@ -332,8 +332,27 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:LoginSuccess object:nil];
 }
 
+- (BOOL)verification {
+    if (!_accountTextField.text.length || !_passwordTextField.text.length) {
+        [self showErrorWithString:@"请输入账号和密码"];
+        return NO;
+    }
+    if (![NSString isMobileNumber:_accountTextField.text]) {
+        [self showErrorWithString:@"请输入正确的手机号"];
+        return NO;
+    }
+    if (![NSString isValidatePwd:_passwordTextField.text]) {
+        [self showErrorWithString:@"密码只能为6-12为数字或字母"];
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark - request
 - (void)requestLogin {
+    if (![self verification]) {
+        return;
+    }
     NSDictionary *parameters = @{@"account":_accountTextField.text, @"password":_passwordTextField.text};
     [[YWHttpManager shareInstance] requestLogin:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];

@@ -133,13 +133,53 @@
     for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
         if (model.recorderVideoUrl) {
             AVURLAsset *urlAsset=[AVURLAsset assetWithURL:model.recorderVideoUrl];
-            NSLog(@"-=============%ld", urlAsset.duration.value);
             for (NSInteger i=0; i<1; i++) {
-                [_coverImages addObject:[self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i]];
+                UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i];
+                NSLog(@"-=============%ld", urlAsset.duration.value);
+                [_coverImages addObject:[self rotation:image]];
+                if (!i) {
+                    _coverImageView.image = _coverImages[0];
+                }
             }
         }
     }
     [self createScorllImagesWithImages:_coverImages];
+}
+
+- (UIImage *)rotation:(UIImage *)aImage {
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    transform = CGAffineTransformTranslate(transform, aImage.size.width, 0);
+    transform = CGAffineTransformRotate(transform, M_PI_2);
+    transform = CGAffineTransformTranslate(transform, aImage.size.height, 0);
+    transform = CGAffineTransformScale(transform, -1, 2);
+
+    
+    CGContextRef ctx = CGBitmapContextCreate(NULL, aImage.size.width, aImage.size.height,
+                                             CGImageGetBitsPerComponent(aImage.CGImage), 0,
+                                             CGImageGetColorSpace(aImage.CGImage),
+                                             CGImageGetBitmapInfo(aImage.CGImage));
+    CGContextConcatCTM(ctx, transform);
+    switch (aImage.imageOrientation) {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            // Grr...
+            CGContextDrawImage(ctx, CGRectMake(0,0,aImage.size.height,aImage.size.width), aImage.CGImage);
+            break;
+            
+        default:
+            CGContextDrawImage(ctx, CGRectMake(0,0,aImage.size.width,aImage.size.height), aImage.CGImage);
+            break;
+    }
+    
+    // And now we just create a new UIImage from the drawing context
+    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+    UIImage *img = [UIImage imageWithCGImage:cgimg];
+    CGContextRelease(ctx);
+    CGImageRelease(cgimg);
+
+    return img;
 }
 
 - (void)takePhoto {
@@ -280,6 +320,7 @@
     }
     CMTimeShow(actualTime);
     UIImage *image=[UIImage imageWithCGImage:cgImage];//转化为UIImage
+    NSLog(@"-=============%ld", image.imageOrientation);
 
     CGImageRelease(cgImage);
     

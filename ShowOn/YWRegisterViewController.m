@@ -208,19 +208,53 @@
     }else if (!_verificationCode && ![_verificationCode isEqualToString:_verificationTextField.text]) {
         [self showErrorWithString:message[4]];
     }else {
-        [self requestRegister];
+        if ([self verification]) {
+            [self requestRegister];
+        }
     }
+}
+
+- (BOOL)verification {
+    if (![NSString isMobileNumber:_accountTextField.text]) {
+        [self showErrorWithString:@"请输入正确的手机号"];
+        return NO;
+    }
+    if (![NSString isValidatePwd:_passwordTextField.text]) {
+        [self showErrorWithString:@"密码只能为6-12为数字或字母"];
+        return NO;
+    }
+    if (![_repeatPasswordTextField.text isEqualToString:_passwordTextField.text]) {
+        [self showErrorWithString:@"两次密码不一样，请重新输入"];
+        return NO;
+    }
+    return YES;
 }
 
 #pragma mark - request
 - (void)requestVerification {
     NSDictionary *parameters = @{@"account": _accountTextField.text};
+    [self delayMethod];
     [[YWHttpManager shareInstance] requestVerification:parameters success:^(id responseObject) {
         _verificationCode = responseObject[@"verificationCode"];
         NSLog(@"=========%@", responseObject[@"verificationCode"]);
     } otherFailure:^(id responseObject) {
     } failure:^(NSError *error) {
     }];
+}
+
+- (void)delayMethod {
+    static int cnt = 60;
+    _sendVerificationButton.backgroundColor = [UIColor lightGrayColor];
+    if (!cnt--) {
+        _sendVerificationButton.userInteractionEnabled = YES;
+        [_sendVerificationButton setTitle:@"发送验证码" forState:UIControlStateNormal];
+        _sendVerificationButton.backgroundColor = [UIColor orangeColor];
+        cnt = 60;
+    }else {
+        _sendVerificationButton.userInteractionEnabled = NO;
+        [_sendVerificationButton setTitle:[NSString stringWithFormat:@"%ld s", (long)cnt] forState:UIControlStateNormal];
+        [self performSelector:@selector(delayMethod) withObject:self afterDelay:1];
+    }
 }
 
 - (void)requestRegister {
@@ -239,6 +273,7 @@
 
 #pragma mark - UITextFieldDelegate
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+    [textField resignFirstResponder];
     if (textField.text) {
         if ([textField isEqual:_accountTextField]) {
             if ([NSString isMobileNumber:_accountTextField.text]) {

@@ -54,8 +54,8 @@
     if (_trends) {
         for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
             model.subsectionVideoPerformanceStatus = @"2";
-            if (model.subsectionOriginalVideoUrl.length) {
-                model.subsectionVideoUrl = model.subsectionOriginalVideoUrl;
+            if (model.subsectionRecorderVideoUrl.length) {
+                model.subsectionVideoUrl = model.subsectionRecorderVideoUrl;
             }
         }
     }
@@ -241,16 +241,17 @@
 
 #pragma mark - YWMoviePlayViewDelegate
 - (void)moviePlayViewPlayWithState:(BOOL)playState {
-    self.view.userInteractionEnabled = !playState;
     if (_recorderView.model.subsectionVideoPerformanceStatus.integerValue != 1) {
         if (playState) {
             [_recorderView startRecorder];
+            self.view.userInteractionEnabled = NO;
         }
     }
 }
 
 - (void)moviePlayViewPlayDown:(YWMoviePlayView *)view {
     [_recorderView startRecorder];
+    self.view.userInteractionEnabled = YES;
 }
 
 #pragma mark - YWMovieRecorderDelegate
@@ -320,7 +321,8 @@
             _playView.urlStr = model.subsectionVideoUrl;
             //        _playView.urlStr = _template.templateVideoUrl;
             model.subsectionVideoPerformanceStatus = model.subsectionVideoPerformanceStatus.integerValue==1?@"1":@"0";
-        }
+            _recorderView.model = model;
+}
         for (NSInteger i=0; i<3; i++) {
             UILabel *label = _labels[i];
             label.text = !index?_titles1[i]:_titles2[i];

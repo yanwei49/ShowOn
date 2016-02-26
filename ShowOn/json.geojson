@@ -354,6 +354,16 @@
               "videoCoverImage": ""        //视频封面
               "movieTemplate": {
                   "templateId": ""         //模板id
+                  "templateSubsectionVideos": [{   //模板分段视频
+                       "subsectionVideoId"             //'分段视频ID',
+                       "videoUrl"                      //'视频URL',
+                       "templateId"                    //'模版ID',
+                       "sort"                          //'序号',
+                       "performanceStatusId"           //'演出状态ID 1、已演,2、未演'
+                       "userId"                        //'演出过这段视频的用户ID',
+                       "subsectionVideoTypeId"         //'分段视频类型ID 1、顺序模式(3、近景,4、中景,5、远景,),2、景别模式(6、特写,7、中景,8、远景)',
+                       "subsectionVideoUrl"            //如果该动态录制过了这个分段视频则返回录制完的视频url
+                   }]
               }
           }
     }]
@@ -394,6 +404,27 @@
                "userId"                        //'演出过这段视频的用户ID',
                "subsectionVideoTypeId"         //'分段视频类型ID 1、顺序模式(3、近景,4、中景,5、远景,),2、景别模式(6、特写,7、中景,8、远景)',
           }]
+         "recordeRanklist": [{   //（返回播放次数最多的一条动态）
+             "dynamicId": ""          //动态id
+             "dynamicTypeId": ""        //动态类型
+             "dynamicVideo": {
+                 "videoName": ""              //视频名称
+                 "videoCoverImage": ""        //视频封面
+                 "videoUrl": ""               //动态视频url（如果动态是录制了完整视频则返回完整视频url，否则返回空）
+                 "movieTemplate": {
+                     "templateId": ""            //模板id
+                     "templateSubsectionVideos": [{   //模板分段视频
+                          "subsectionVideoId"             //'分段视频ID',
+                          "videoUrl"                      //'视频URL',
+                          "templateId"                    //'模版ID',
+                          "sort"                          //'序号',
+                          "performanceStatusId"           //'演出状态ID 1、已演,2、未演'
+                          "userId"                        //'演出过这段视频的用户ID',
+                          "subsectionVideoTypeId"         //'分段视频类型ID 1、顺序模式(3、近景,4、中景,5、远景,),2、景别模式(6、特写,7、中景,8、远景)',
+                          "subsectionVideoUrl"            //如果该动态录制过了这个分段视频则返回录制完的视频url
+                      }]
+                }
+         }]
     }]
 }
 
@@ -418,10 +449,25 @@
     "shootTime": ""                 //拍摄次数
     "templateCoverImage": ""        //模板封面图片
     "recordeRanklist": [{
-            "trendsId": ""          //动态id
-            "trendsMovie": {
+            "dynamicId": ""          //动态id
+            "dynamicTypeId": ""        //动态类型
+            "dynamicVideo": {
                     "videoName": ""              //视频名称
                     "videoCoverImage": ""        //视频封面
+                    "videoUrl": ""               //动态视频url（如果动态是录制了完整视频则返回完整视频url，否则返回空）
+                    "movieTemplate": {
+                        "templateId": ""            //模板id
+                        "templateSubsectionVideos": [{   //模板分段视频
+                             "subsectionVideoId"             //'分段视频ID',
+                             "videoUrl"                      //'视频URL',
+                             "templateId"                    //'模版ID',
+                             "sort"                          //'序号',
+                             "performanceStatusId"           //'演出状态ID 1、已演,2、未演'
+                             "userId"                        //'演出过这段视频的用户ID',
+                             "subsectionVideoTypeId"         //'分段视频类型ID 1、顺序模式(3、近景,4、中景,5、远景,),2、景别模式(6、特写,7、中景,8、远景)',
+                             "subsectionVideoUrl"            //如果该动态录制过了这个分段视频则返回录制完的视频url
+                         }]
+                    }
             }
     }]
     "commentList": [{

@@ -10,8 +10,7 @@
 #import "YWLoginViewController.h"
 #import "YWHttpManager.h"
 #import "YWParser.h"
-
-#import "YWMovieTemplateModel.h"
+#import "YWNavigationController.h"
 
 @interface YWBaseViewController ()<UIAlertViewDelegate>
 
@@ -92,7 +91,9 @@
 - (void)login {
     YWLoginViewController *loginVC = [[YWLoginViewController alloc] init];
     loginVC.backButtonHiddenState = NO;
-    [self presentViewController:loginVC animated:YES completion:nil];
+    YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:loginVC];
+    nv.navigationBarHidden = YES;
+    [self presentViewController:nv animated:YES completion:nil];
 }
 
 #pragma mark - alter

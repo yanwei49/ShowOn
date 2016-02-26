@@ -15,6 +15,7 @@
 #import "YWSubsectionVideoModel.h"
 #import "YWMovieTemplateModel.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "YWMovieModel.h"
 
 @interface YWEditTrendsViewController ()<UITextViewDelegate>
 
@@ -267,6 +268,9 @@
     // 2 - Video track
     AVMutableCompositionTrack *firstTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
     AVAsset *lastAsset;
+    AVMutableVideoCompositionInstruction * MainInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+    AVMutableVideoCompositionLayerInstruction *FirstlayerInstruction;
+    AVMutableVideoCompositionLayerInstruction *SecondlayerInstruction;
     for (NSInteger i=0; i<_template.templateSubsectionVideos.count; i++) {
         NSURL *url;
         for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
@@ -283,8 +287,55 @@
         NSLog(@"%@==========", url.absoluteString);
         if (!i) {
             [firstTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, medioAsset.duration) ofTrack:[[medioAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
+            //FIXING ORIENTATION//
+            FirstlayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:firstTrack];
+            AVAssetTrack *FirstAssetTrack = [[medioAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+            UIImageOrientation FirstAssetOrientation_  = UIImageOrientationUp;
+            BOOL  isFirstAssetPortrait_  = NO;
+            CGAffineTransform firstTransform = FirstAssetTrack.preferredTransform;
+            if(firstTransform.a == 0 && firstTransform.b == 1.0 && firstTransform.c == -1.0 && firstTransform.d == 0)  {FirstAssetOrientation_= UIImageOrientationRight; isFirstAssetPortrait_ = YES;}
+            if(firstTransform.a == 0 && firstTransform.b == -1.0 && firstTransform.c == 1.0 && firstTransform.d == 0)  {FirstAssetOrientation_ =  UIImageOrientationLeft; isFirstAssetPortrait_ = YES;}
+            if(firstTransform.a == 1.0 && firstTransform.b == 0 && firstTransform.c == 0 && firstTransform.d == 1.0)   {FirstAssetOrientation_ =  UIImageOrientationUp;}
+            if(firstTransform.a == -1.0 && firstTransform.b == 0 && firstTransform.c == 0 && firstTransform.d == -1.0) {FirstAssetOrientation_ = UIImageOrientationDown;}
+            CGFloat FirstAssetScaleToFitRatio = 320.0/FirstAssetTrack.naturalSize.width;
+            if(isFirstAssetPortrait_){
+                FirstAssetScaleToFitRatio = 320.0/FirstAssetTrack.naturalSize.height;
+                CGAffineTransform FirstAssetScaleFactor = CGAffineTransformMakeScale(FirstAssetScaleToFitRatio,FirstAssetScaleToFitRatio);
+                [FirstlayerInstruction setTransform:CGAffineTransformConcat(FirstAssetTrack.preferredTransform, FirstAssetScaleFactor) atTime:kCMTimeZero];
+            }else{
+                CGAffineTransform FirstAssetScaleFactor = CGAffineTransformMakeScale(FirstAssetScaleToFitRatio,FirstAssetScaleToFitRatio);
+                [FirstlayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(FirstAssetTrack.preferredTransform, FirstAssetScaleFactor),CGAffineTransformMakeTranslation(0, 160)) atTime:kCMTimeZero];
+            }
+            [FirstlayerInstruction setOpacity:0.0 atTime:medioAsset.duration];
         }else {
             [firstTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, medioAsset.duration) ofTrack:[[medioAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:lastAsset.duration error:nil];
+            MainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeAdd(lastAsset.duration, medioAsset.duration));
+            SecondlayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:firstTrack];
+            AVAssetTrack *SecondAssetTrack = [[medioAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+            UIImageOrientation SecondAssetOrientation_  = UIImageOrientationUp;
+            BOOL  isSecondAssetPortrait_  = NO;
+            CGAffineTransform secondTransform = SecondAssetTrack.preferredTransform;
+            if(secondTransform.a == 0 && secondTransform.b == 1.0 && secondTransform.c == -1.0 && secondTransform.d == 0)  {SecondAssetOrientation_= UIImageOrientationRight; isSecondAssetPortrait_ = YES;}
+            if(secondTransform.a == 0 && secondTransform.b == -1.0 && secondTransform.c == 1.0 && secondTransform.d == 0)  {SecondAssetOrientation_ =  UIImageOrientationLeft; isSecondAssetPortrait_ = YES;}
+            if(secondTransform.a == 1.0 && secondTransform.b == 0 && secondTransform.c == 0 && secondTransform.d == 1.0)   {SecondAssetOrientation_ =  UIImageOrientationUp;}
+            if(secondTransform.a == -1.0 && secondTransform.b == 0 && secondTransform.c == 0 && secondTransform.d == -1.0) {SecondAssetOrientation_ = UIImageOrientationDown;}
+            CGFloat SecondAssetScaleToFitRatio = 320.0/SecondAssetTrack.naturalSize.width;
+            if(isSecondAssetPortrait_){
+                SecondAssetScaleToFitRatio = 320.0/SecondAssetTrack.naturalSize.height;
+                CGAffineTransform SecondAssetScaleFactor = CGAffineTransformMakeScale(SecondAssetScaleToFitRatio,SecondAssetScaleToFitRatio);
+                [SecondlayerInstruction setTransform:CGAffineTransformConcat(SecondAssetTrack.preferredTransform, SecondAssetScaleFactor) atTime:lastAsset.duration];
+            }else{
+                ;
+                CGAffineTransform SecondAssetScaleFactor = CGAffineTransformMakeScale(SecondAssetScaleToFitRatio,SecondAssetScaleToFitRatio);
+                [SecondlayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(SecondAssetTrack.preferredTransform, SecondAssetScaleFactor),CGAffineTransformMakeTranslation(0, 160)) atTime:lastAsset.duration];
+            }
+            
+            MainInstruction.layerInstructions = [NSArray arrayWithObjects:FirstlayerInstruction,SecondlayerInstruction,nil];;
+            
+            AVMutableVideoComposition *MainCompositionInst = [AVMutableVideoComposition videoComposition];
+            MainCompositionInst.instructions = [NSArray arrayWithObject:MainInstruction];
+            MainCompositionInst.frameDuration = CMTimeMake(1, 30);
+            MainCompositionInst.renderSize = self.view.bounds.size;
         }
         lastAsset = medioAsset;
     }
@@ -352,17 +403,18 @@
     if (_trends) {
         _state = 2;
     }
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"trendsId": _trends?_trends.trendsId:@"", @"state": @(_type), @"flag": _recorderState?@(1):@(2), @"type": @(_state), @"movieContent": _contentTextView.text, @"templateId": _template.templateId};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"trendsId": _trends?_trends.trendsId:@"", @"state": @(_type), @"templateId": _template?_template.templateId:_trends.trendsMovie.movieTemplate.templateId, @"flag": _recorderState?@(1):@(2), @"type": @(_state), @"movieContent": _contentTextView.text, @"templateId": _template.templateId};
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [_httpManager requestWriteTrends:parameters coverImage:_image recorderMovies:_template.templateSubsectionVideos movieUrl:_movieUrl success:^(id responseObject) {
             [SVProgressHUD showInfoWithStatus:responseObject[@"msg"]];
-            [self.navigationController popToRootViewControllerAnimated:YES];
         } otherFailure:^(id responseObject) {
             [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
         } failure:^(NSError *error) {
             
         }];
+        [SVProgressHUD showInfoWithStatus:@"发布中，请稍等。。。"];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     });
 }
 

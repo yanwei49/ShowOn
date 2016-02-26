@@ -36,26 +36,12 @@
     _currentPage = 0;
 
     [self createSubViews];
-//    [self datatSource];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self requestUserList];
 }
-
-//- (void)datatSource {
-//    for (NSInteger i=0; i<10; i++) {
-//        YWUserModel *model = [[YWUserModel alloc] init];
-//        model.portraitUri = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-//        model.userId = [NSString stringWithFormat:@"%ld", i];
-//        model.userName = [NSString stringWithFormat:@"测试账号%ld", i];
-//        model.userRelationType = _relationType?kBeFocus:kFocus;
-//        
-//        [_dataSource addObject:model];
-//    }
-//    [_tableView reloadData];
-//}
 
 - (void)createSubViews {
     _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 40)];
@@ -71,7 +57,8 @@
     _tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.offset(0);
+        make.left.bottom.right.offset(0);
+        make.top.offset(64);
     }];
     _tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _currentPage = 0;

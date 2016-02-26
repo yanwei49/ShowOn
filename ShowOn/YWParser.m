@@ -82,7 +82,6 @@
     YWSubsectionVideoModel *subsectionVideo = [[YWSubsectionVideoModel alloc] init];
     subsectionVideo.subsectionVideoId = [dict objectForKey:@"subsectionVideoId"];
     subsectionVideo.subsectionVideoUrl = [dict objectForKey:@"videoUrl"];
-    subsectionVideo.subsectionOriginalVideoUrl = [dict objectForKey:@"originalVideoUrl"];
     subsectionVideo.subsectionVideoCoverImage = [dict objectForKey:@""];
     subsectionVideo.subsectionVideoSort = [dict objectForKey:@"sort"];
     subsectionVideo.subsectionVideoType = [dict objectForKey:@"subsectionVideoTypeId"];
@@ -91,6 +90,7 @@
     subsectionVideo.subsectionVideoPlayUserId = [dict objectForKey:@"userId"];
     subsectionVideo.subsectionVideoTemplateId = [dict objectForKey:@"templateId"];
     subsectionVideo.subsectionVideoTime = [dict objectForKey:@"timeLength"];
+    subsectionVideo.subsectionRecorderVideoUrl = [dict objectForKey:@"subsectionVideoUrl"];
     
     return subsectionVideo;
 }

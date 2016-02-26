@@ -573,6 +573,7 @@
 		7710ABB61C20EB80006FF4EF /* YWMovieModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWMovieModel.m; sourceTree = "<group>"; };
 		7710ABB81C21BC56006FF4EF /* YWFocusCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFocusCommentTableViewCell.h; sourceTree = "<group>"; };
 		7710ABB91C21BC56006FF4EF /* YWFocusCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFocusCommentTableViewCell.m; sourceTree = "<group>"; };
+		771627F91C8082200059CCBE /* change_json.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = change_json.geojson; sourceTree = "<group>"; };
 		771FEAC71C77F87A009F71FB /* red_point_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_point_button.png; sourceTree = "<group>"; };
 		771FEAC81C77F87A009F71FB /* red_point_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red_point_button@2x.png"; sourceTree = "<group>"; };
 		771FEAC91C77F87A009F71FB /* red_point_button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red_point_button@3x.png"; sourceTree = "<group>"; };
@@ -1120,6 +1121,7 @@
 				568DC0D71C5619F300CFD1BC /* 接口.txt */,
 				5695FFD51C4C61600070544A /* Directions.geojson */,
 				56679BC31C3B393700272C44 /* json.geojson */,
+				771627F91C8082200059CCBE /* change_json.geojson */,
 				56FE99CC1C0FBAB8007BA29B /* AppDelegate.h */,
 				56FE99CD1C0FBAB8007BA29B /* AppDelegate.m */,
 				56FE9A111C0FBCF2007BA29B /* YWNavigationController.h */,

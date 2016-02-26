@@ -212,8 +212,31 @@
     }
 }
 
+- (BOOL)verification {
+    if (!_accountTextField.text.length || !_passwordTextField.text.length || !_repeatPasswordTextField.text.length) {
+        [self showErrorWithString:@"请输入正确的信息"];
+        return NO;
+    }
+    if ([NSString isMobileNumber:_accountTextField.text]) {
+        [self showErrorWithString:@"请输入正确的手机号"];
+        return NO;
+    }
+    if ([NSString isValidatePwd:_passwordTextField.text]) {
+        [self showErrorWithString:@"密码只能为6-12为数字或字母"];
+        return NO;
+    }
+    if ([_repeatPasswordTextField.text isEqualToString:_passwordTextField.text]) {
+        [self showErrorWithString:@"两次密码不一样，请重新输入"];
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark - request
 - (void)requestReset {
+    if (![self verification]) {
+        return;
+    }
     NSDictionary *parameters = @{@"account": _accountTextField.text, @"password": _passwordTextField.text};
     [[YWHttpManager shareInstance] requestResetPassword:parameters success:^(id responseObject) {
         [SVProgressHUD showSuccessWithStatus:@"重置成功，请重新登录"];
@@ -224,13 +247,32 @@
 }
 
 - (void)requestVerification {
+    if (!_accountTextField.text.length) {
+        [self showErrorWithString:@"请输入手机号"];
+    }
     NSDictionary *parameters = @{@"account": _accountTextField.text};
+    [self delayMethod];
     [[YWHttpManager shareInstance] requestVerification:parameters success:^(id responseObject) {
         _verificationCode = responseObject[@"verificationCode"];
         NSLog(@"=========%@", responseObject[@"verificationCode"]);
     } otherFailure:^(id responseObject) {
     } failure:^(NSError *error) {
     }];
+}
+
+- (void)delayMethod {
+    static int cnt = 60;
+    _sendVerificationButton.backgroundColor = [UIColor lightGrayColor];
+    if (!cnt--) {
+        _sendVerificationButton.userInteractionEnabled = YES;
+        [_sendVerificationButton setTitle:@"发送验证码" forState:UIControlStateNormal];
+        _sendVerificationButton.backgroundColor = [UIColor orangeColor];
+        cnt = 60;
+    }else {
+        _sendVerificationButton.userInteractionEnabled = NO;
+        [_sendVerificationButton setTitle:[NSString stringWithFormat:@"%ld s", (long)cnt] forState:UIControlStateNormal];
+        [self performSelector:@selector(delayMethod) withObject:self afterDelay:1];
+    }
 }
 
 #pragma mark - UITextFieldDelegate
