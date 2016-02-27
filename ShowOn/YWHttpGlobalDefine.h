@@ -21,6 +21,7 @@
 #define Template_List_Method                  @"juer/dynamic/templateRankList?json"         //模板列表
 #define Template_Detail_Method                @"juer/dynamic/templateInfo?json"             //模板详情
 #define Trends_List_Method                    @"juer/dynamic/trendsList?json"               //动态列表
+#define Friend_Trends_List_Method             @"juer/dynamic/friendTrendsList?json"         //好友动态列表
 #define Trends_Detail_Method                  @"juer/dynamic/trendsInfo?json"               //动态详情
 #define Save_User_Detail_Method               @"juer/user/updateUserInfo?json"              //保存用户信息
 #define User_Detail_Method                    @"juer/user/getUserInfo?json"                 //用户详情

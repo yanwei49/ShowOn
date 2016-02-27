@@ -159,12 +159,11 @@
         _playingButton = [[UIButton alloc] init];
         [_playingButton setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
         [_playingButton addTarget:self action:@selector(actionPlaying:) forControlEvents:UIControlEventTouchUpInside];
-        [view addSubview:_playingButton];
+        [self.contentView addSubview:_playingButton];
         [_playingButton makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_imageView.mas_centerY);
             make.centerX.equalTo(_imageView.mas_centerX);
-            make.width.equalTo(_imageView.mas_width);
-            make.height.equalTo(_imageView.mas_height);
+            make.width.height.offset(100);
         }];
 
         _contentLabel = [[UILabel alloc] init];

@@ -165,6 +165,17 @@ static YWHttpManager * manager;
     }];
 }
 
+- (void)requestFriendsTrendsList:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
+    [self setDefaultHeaders];
+    [_httpManager GET:HOST_URL(Friend_Trends_List_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            failure(error);
+        });
+    }];
+}
+
 - (void)requestTrendsDetail:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
     [self setDefaultHeaders];
     [_httpManager GET:HOST_URL(Trends_Detail_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {

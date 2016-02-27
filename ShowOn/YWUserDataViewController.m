@@ -182,6 +182,11 @@
     _dataPickerBackView.hidden = YES;
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self requestUserDetails];
+}
+
 #pragma mark - action
 - (void)actionRightItem:(UIButton *)button {
     if ([_user.userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userId]) {
@@ -288,7 +293,7 @@
 - (void)requestReport {
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"informTypeId": @"1", @"informTargetId": _user.userId};
     [_httpManager requestReport:parameters success:^(id responseObject) {
-
+        [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
     } otherFailure:^(id responseObject) {
         
     } failure:^(NSError *error) {
@@ -299,7 +304,7 @@
 - (void)requestBlacklist {
     NSDictionary *parameters = @{@"userId": _user.userId, @"state": @"1"};
     [_httpManager requestChangeRelationType:parameters success:^(id responseObject) {
-
+        [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
     } otherFailure:^(id responseObject) {
         
     } failure:^(NSError *error) {
@@ -348,7 +353,7 @@
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.textLabel.text = _dataSource[indexPath.row];
         cell.accessoryType = UITableViewCellAccessoryDetailButton;
-        NSArray *contents = @[_user.userInfos?:@"", _user.userSex?:@"", _user.userDistrict?:@"", _user.userBirthday?:@"", _user.userConstellation?:@"", _user.userheight?:@"", _user.userBwh?:@""];
+        NSArray *contents = @[_user.userInfos?:@"", _user.userSex?(_user.userSex.integerValue?@"男":@"女"):@"", _user.userDistrict?:@"", _user.userBirthday?:@"", _user.userConstellation?:@"", _user.userheight?:@"", _user.userBwh?:@""];
         UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth-200, cell.bounds.size.height)];
         tf.delegate = self;
         tf.text = contents[indexPath.row];
@@ -466,6 +471,8 @@
 - (void)customSegView:(YWCustomSegView *)view didSelectItemWithIndex:(NSInteger)index {
     _itemSelectIndex = index;
     [self hiddenPickView];
+    _userCategoryView.hidden = YES;
+    _categoryView.hidden = YES;
     [_tableView reloadData];
 }
 

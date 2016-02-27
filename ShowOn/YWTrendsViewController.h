@@ -14,5 +14,6 @@
 
 @property (nonatomic, strong) YWTrendsModel *trends;
 @property (nonatomic, strong) YWUserModel *user;
+@property (nonatomic, assign) BOOL isFriendTrendsList;
 
 @end

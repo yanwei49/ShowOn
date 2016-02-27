@@ -237,6 +237,10 @@
         NSArray *className = @[@"YWATMeViewController", @"YWCommentViewController", @"YWSupportViewController", @"YWMessageViewController", @"YWTrendsViewController", @"YWExperienceViewController", @"YWDraftViewController"];
         UIViewController *vc = [[NSClassFromString(className[indexPath.row]) alloc] init];
         vc.title = _dataSource[indexPath.row];
+        if (indexPath.row == 4) {
+            YWTrendsViewController *v = (YWTrendsViewController *)vc;
+            v.isFriendTrendsList = YES;
+        }
         [self.navigationController pushViewController:vc animated:YES];
     }else {
         [self login];

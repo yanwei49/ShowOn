@@ -23,7 +23,7 @@
         self.backgroundColor = [UIColor whiteColor];
         
         _avatorImageView = [[UIImageView alloc] init];
-        _avatorImageView.backgroundColor = [UIColor greenColor];
+        _avatorImageView.backgroundColor = [UIColor whiteColor];
         _avatorImageView.layer.masksToBounds = YES;
         _avatorImageView.layer.cornerRadius = 30;
         [self.contentView addSubview:_avatorImageView];

@@ -50,7 +50,11 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self requestTrendsList];
+    if (_isFriendTrendsList) {
+        [self requestFriendTrendsList];
+    }else {
+        [self requestTrendsList];
+    }
     [_tableView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
 }
 
@@ -74,7 +78,11 @@
     }];
     _tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _currentPage = 0;
-        [self requestTrendsList];
+        if (_isFriendTrendsList) {
+            [self requestFriendTrendsList];
+        }else {
+            [self requestTrendsList];
+        }
     }];
 }
 
@@ -98,6 +106,37 @@
 }
 
 #pragma mark - request
+- (void)requestFriendTrendsList {
+    NSDictionary *parameters = @{@"userId": _user.userId?:[[YWDataBaseManager shareInstance] loginUser].userId, @"loginUseruserId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"page": @(_currentPage)};
+    [_httpManager requestFriendsTrendsList:parameters success:^(id responseObject) {
+        if (!_currentPage) {
+            [_allTrendsArray removeAllObjects];
+        }
+        YWParser *parser = [[YWParser alloc] init];
+        NSArray *array = [parser trendsWithArray:responseObject[@"trendsList"]];
+        [_allTrendsArray addObjectsFromArray:array];
+        [self trendsCategoryView:_categoryView didSelectCategoryWithIndex:_trendsType];
+        [self noContentViewShowWithState:_allTrendsArray.count?NO:YES];
+        if (array.count<20) {
+            _tableView.footer = nil;
+        }else {
+            _tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+                _currentPage ++;
+                [self requestFriendTrendsList];
+            }];
+        }
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
+    } failure:^(NSError *error) {
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
+    }];
+}
+
 - (void)requestTrendsList {
     NSDictionary *parameters = @{@"userId": _user.userId?:[[YWDataBaseManager shareInstance] loginUser].userId, @"loginUseruserId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"page": @(_currentPage)};
     [_httpManager requestTrendsList:parameters success:^(id responseObject) {
