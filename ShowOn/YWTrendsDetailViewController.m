@@ -180,14 +180,12 @@
 }
 
 - (void)requestRepeat {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"trendsId": _trends.trendsId, @"forwardComments": @(2)};
-    [_httpManager requestRepeat:parameters success:^(id responseObject) {
-
-    } otherFailure:^(id responseObject) {
-        
-    } failure:^(NSError *error) {
-        
-    }];
+    YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
+    YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
+    nv.title = @"转发";
+    vc.trends = _trends;
+    vc.type = 3;
+    [self presentViewController:nv animated:YES completion:nil];
 }
 
 - (void)requestShare {

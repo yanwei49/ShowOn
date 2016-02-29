@@ -15,6 +15,7 @@
 #import "YWCommentModel.h"
 #import "YWDataBaseManager.h"
 #import "YWMovieTemplateModel.h"
+#import "YWTrendsModel.h"
 
 @interface YWWriteCommentViewController ()<YWKeyboardHeadViewDelegate, UITextViewDelegate, YWUserListViewControllerDelegate>
 
@@ -42,13 +43,32 @@
 
 #pragma mark - create
 - (void)createSubViews {
+    UILabel *label = [[UILabel alloc] init];
+    label.backgroundColor = Subject_color;
+    if (_type == 3) {
+        label.text = [NSString stringWithFormat:@"转发动态：%@", _trends.trendsContent];
+    }else if (_comment) {
+        label.text = [NSString stringWithFormat:@"回复评论：%@", _comment.commentContent];
+    }else if (_trends) {
+        label.text = [NSString stringWithFormat:@"评论动态：%@", _trends.trendsContent];
+    }else if (_template) {
+        label.text = [NSString stringWithFormat:@"评论模板：%@", _template.templateName];
+    }
+    [self.view addSubview:label];
+    [label makeConstraints:^(MASConstraintMaker *make) {
+        make.top.offset(64);
+        make.left.offset(10);
+        make.height.offset(20);
+        make.right.offset(-40);
+    }];
+    
     _textView = [[UITextView alloc] init];
     _textView.backgroundColor = [UIColor whiteColor];
     _textView.font = [UIFont systemFontOfSize:15];
     _textView.delegate = self;
     [self.view addSubview:_textView];
     [_textView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(10+64);
+        make.top.offset(20+10+64);
         make.left.offset(10);
         make.height.offset(150);
         make.right.offset(-10);
@@ -82,14 +102,17 @@
     }else if (!_textView.text.length) {
         [self showAlterWithTitle:@"说的什么吧！"];
     }else {
-        [self requestCommitContent];
+        if (_type == 3) {
+            [self requestRepeat];
+        }else {
+            [self requestCommitContent];
+        }
     }
 }
 
 - (void)actionLeftItem:(UIButton *)button {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 #pragma mark - request
 - (void)requestCommitContent {
@@ -104,6 +127,17 @@
     [_httpManager requestAiTeList:parameters success:^(id responseObject) {
         [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
         [self dismissViewControllerAnimated:YES completion:nil];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)requestRepeat {
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"trendsId": _trends.trendsId, @"forwardComments": @(2)};
+    [_httpManager requestRepeat:parameters success:^(id responseObject) {
+        
     } otherFailure:^(id responseObject) {
         
     } failure:^(NSError *error) {

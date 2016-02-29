@@ -200,6 +200,7 @@
 //    _imageView.hidden = YES;
 //    _playingButton.hidden = YES;
     _playMovieView.hidden = YES;
+    _cooperateButton.hidden = (trends.trendsType.integerValue != 2)?YES:NO;
     [_imageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
 //    _playMovieView.urlStr = trends.trendsMovie.movieUrl?:(trends.trendsMovie.movieTemplate.templateSubsectionVideos.count?[trends.trendsMovie.movieTemplate.templateSubsectionVideos[0] subsectionVideoUrl]:@"");
     [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsUser.portraitUri] placeholderImage:kPlaceholderMoiveImage];

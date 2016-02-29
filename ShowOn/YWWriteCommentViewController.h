@@ -16,5 +16,6 @@
 @property (nonatomic, strong) YWTrendsModel *trends;
 @property (nonatomic, strong) YWCommentModel *comment;
 @property (nonatomic, strong) YWMovieTemplateModel *template;
+@property (nonatomic, assign) NSInteger type;  //(1.评论动态   2.评论评论   3.转发)
 
 @end

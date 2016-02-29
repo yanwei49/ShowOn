@@ -22,8 +22,10 @@
 #import "YWMovieModel.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "YWTranscribeViewController.h"
+#import "YWWriteCommentViewController.h"
+#import "YWNavigationController.h"
 
-@interface YWHotItemViewController ()<UITableViewDataSource, UITableViewDelegate, YWMovieCommentTableViewCellDelegate, YWTemplateTrendsTableViewCellDelegate, YWHotTableViewCellDelegate>
+@interface YWHotItemViewController ()<UITableViewDataSource, UITableViewDelegate, YWMovieCommentTableViewCellDelegate, YWTemplateTrendsTableViewCellDelegate, YWHotTableViewCellDelegate, UIActionSheetDelegate>
 
 @end
 
@@ -211,17 +213,53 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [_tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (_segmentedControl.selectedSegmentIndex) {
-        
+        YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
+        YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
+        nv.title = @"写评论";
+        vc.comment = _dataSource[indexPath.row];
+        [self presentViewController:nv animated:YES completion:nil];
     }else {
         if (!indexPath.section) {
-            YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
-            vc.template = _template;
-            [self.navigationController pushViewController:vc animated:YES];
+            if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
+                UIAlertController *sheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+                [sheet addAction:[UIAlertAction actionWithTitle:@"去录制" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+                    vc.template = _template;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }]];
+                [sheet addAction:[UIAlertAction actionWithTitle:@"评论模板" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
+                    YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
+                    nv.title = @"写评论";
+                    vc.template = _template;
+                    [self presentViewController:nv animated:YES completion:nil];
+                }]];
+                [sheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+                [self presentViewController:sheet animated:YES completion:nil];
+            }else {
+                UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"去录制", @"评论模板", nil];
+                [sheet showInView:self.view];
+            }
         }else {
             YWTrendsDetailViewController *vc = [[YWTrendsDetailViewController alloc] init];
             vc.trends = _dataSource[indexPath.row];
             [self.navigationController pushViewController:vc animated:YES];
         }
+    }
+}
+
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.template = _template;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if (buttonIndex == 1) {
+        YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
+        YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
+        nv.title = @"写评论";
+        vc.template = _template;
+        [self presentViewController:nv animated:YES completion:nil];
     }
 }
 
