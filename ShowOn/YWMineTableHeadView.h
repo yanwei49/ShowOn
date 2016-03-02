@@ -24,6 +24,7 @@
 @interface YWMineTableHeadView : UIView
 
 @property (nonatomic, strong) YWUserModel  *user;
+@property (nonatomic, strong) UIImage      *headImage;
 @property (nonatomic, assign) id<YWMineTableHeadViewDelegate> delegate;
 
 - (instancetype)initWithFrame:(CGRect)frame withUserIsSelf:(BOOL)state;

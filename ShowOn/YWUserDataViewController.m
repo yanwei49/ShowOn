@@ -22,7 +22,7 @@
 #import "YWFollowingViewController.h"
 #import "YWCollectionViewController.h"
 
-@interface YWUserDataViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YWMineTableHeadViewDelegate, YWCustomSegViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, YWTrendsTableViewCellDelegate, YWTrendsCategoryViewDelegate>
+@interface YWUserDataViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YWMineTableHeadViewDelegate, YWCustomSegViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, YWTrendsTableViewCellDelegate, YWTrendsCategoryViewDelegate, UIActionSheetDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @end
 
@@ -45,6 +45,7 @@
     NSInteger               _trendsType;
     YWTrendsCategoryView   *_categoryView;
     YWTrendsCategoryView   *_userCategoryView;
+    UIImage                *_headImage;
 }
 
 - (void)viewDidLoad {
@@ -242,6 +243,54 @@
     }];
 }
 
+- (void)actionAvator {
+    if ([[UIDevice currentDevice] systemVersion].floatValue >= 8.0) {
+        UIAlertController *sheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        [sheet addAction:[UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self actionTakePhoto];
+        }]];
+        [sheet addAction:[UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self actionAblum];
+        }]];
+        [sheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }]];
+    }else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"拍照" otherButtonTitles:@"相册", nil];
+        [actionSheet showInView:self.view];
+    }
+}
+
+- (void)actionTakePhoto {
+    UIImagePickerController *albumPicker = [[UIImagePickerController alloc] init];
+    BOOL isCamera = [UIImagePickerController isCameraDeviceAvailable:
+                     UIImagePickerControllerCameraDeviceRear ||
+                     UIImagePickerControllerCameraDeviceFront];
+    if (!isCamera) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"没有可用摄像头" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+        return;
+    }
+    //拍照
+    albumPicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    albumPicker.delegate = self;
+    [self presentViewController:albumPicker animated:YES completion:NULL];
+}
+
+- (void)actionAblum {
+    UIImagePickerController *albumPicker = [[UIImagePickerController alloc] init];
+    BOOL isCamera = [UIImagePickerController isCameraDeviceAvailable:
+                     UIImagePickerControllerCameraDeviceRear ||
+                     UIImagePickerControllerCameraDeviceFront];
+    if (!isCamera) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"没有可用摄像头" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+        return;
+    }
+    albumPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    albumPicker.delegate = self;
+    [self presentViewController:albumPicker animated:YES completion:NULL];
+}
+
 #pragma mark - request
 - (void)requestUserDetails {
     NSDictionary *parameters = @{@"userId": _user.userId};
@@ -249,7 +298,9 @@
         [_allTrendsArray removeAllObjects];
         [_trendsArray removeAllObjects];
         YWParser *parser = [[YWParser alloc] init];
+        NSString *userId = _user.userId;
         _user = [parser userWithDict:responseObject[@"user"]];
+        _user.userId = userId;
         [_allTrendsArray addObjectsFromArray:_user.userTrends];
         [_trendsArray addObjectsFromArray:_allTrendsArray];
         [_tableView reloadData];
@@ -268,7 +319,7 @@
         [array addObject:tf.text?:@""];
     }
     NSDictionary *parameters = @{@"userId": _user.userId, @"introduction": array[0], @"sex": array[1], @"district": array[2], @"birthday": array[3], @"constellation": array[4], @"height": array[5], @"bwh": array[6]};
-    [_httpManager requestSaveUserDetails:parameters success:^(id responseObject) {
+    [_httpManager requestSaveUserDetails:parameters image:_headImage success:^(id responseObject) {
         [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
         [self.navigationController popViewControllerAnimated:YES];
     } otherFailure:^(id responseObject) {
@@ -310,6 +361,63 @@
     } failure:^(NSError *error) {
         
     }];
+}
+
+- (void)requestFocus {
+    NSInteger state = 0;
+    switch (_user.userRelationType) {
+        case kEachOtherNoFocus:
+            state = kFocus;
+            break;
+        case kFocus:
+            state = kEachOtherNoFocus;
+            break;
+        case kBeFocus:
+            state = kEachOtherFocus;
+            break;
+        case kBlackList:
+            state = kEachOtherNoFocus;
+            break;
+        case kEachOtherFocus:
+            state = kBeFocus;
+            break;
+        default:
+            break;
+    }
+    NSDictionary *parameters = @{@"state": @(state), @"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
+    [_httpManager requestChangeRelationType:parameters success:^(id responseObject) {
+        _user.userRelationType = state;
+        _headView.user = _user;
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+#pragma mark - UIImagePickerController Delegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    _headImage = image;
+    _headView.headImage = _headImage;
+    //关闭模态视图
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    //关闭模态视图
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (!buttonIndex) {
+        [self actionTakePhoto];
+    }else if (buttonIndex == 1) {
+        [self actionAblum];
+    }
 }
 
 #pragma mark - UIPickerViewDataSource
@@ -520,7 +628,7 @@
 }
 
 - (void)mineTableHeadViewDidSelectFocus {
-    
+    [self requestFocus];
 }
 
 - (void)mineTableHeadViewDidSelectSendMessage {

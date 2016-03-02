@@ -190,6 +190,11 @@
     }
 }
 
+- (void)setHeadImage:(UIImage *)headImage {
+    _headImage = headImage;
+    _avatorImageView.image = headImage;
+}
+
 - (void)setUser:(YWUserModel *)user {
     _user = user;
     [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];

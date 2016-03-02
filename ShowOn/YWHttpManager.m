@@ -198,14 +198,16 @@ static YWHttpManager * manager;
     }];
 }
 
-- (void)requestSaveUserDetails:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
+- (void)requestSaveUserDetails:(NSDictionary *)parameters image:(UIImage *)image success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
     [self setDefaultHeaders];
-    [_httpManager GET:HOST_URL(Save_User_Detail_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [_httpManager POST:HOST_URL(Save_User_Detail_Method) parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        if (image) {
+            [formData appendPartWithFileData:UIImagePNGRepresentation(image) name:@"img" fileName:@"test.png" mimeType:@"image/png"];
+        }
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            failure(error);
-        });
+        failure(error);
     }];
 }
 

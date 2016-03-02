@@ -309,6 +309,7 @@
          "userId": ""               //用户Id
          "headPortrait": ""         //用户头像
          "nickname": ""             //昵称
+         "relationTypeId":""        //和当前登录用户的关系类型
     }]
 }
 
@@ -777,7 +778,7 @@
 {
     "userId": ""               //当前登录用户ID
 }
-//返回值：
+//返回值：juer/user/getUserInfo?json
 {
     "code": "",
     "msg": "",
@@ -785,6 +786,7 @@
         "supportType": ""      //类型（1.动态      2.评论）
         "trends": {
             "dynamicId"     //'动态ID'
+            "dynamicContent": ""   //动态内容
             "dynamicMovie": {
                 "videoUrl": ""               //'视频播放URL',
                 "videoCoverImage"            //视频封面图片

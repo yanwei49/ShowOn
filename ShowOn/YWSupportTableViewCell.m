@@ -97,6 +97,7 @@
         }];
         
         _playButton = [[UIButton alloc] init];
+        _playButton.userInteractionEnabled = NO;
 //        _playButton.backgroundColor = Subject_color;
         [_playButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
 //        [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];

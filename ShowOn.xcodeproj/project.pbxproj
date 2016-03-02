@@ -10,6 +10,7 @@
 		566AE2741C3DE19900781A7E /* YWCustomTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566AE2731C3DE19900781A7E /* YWCustomTabBarViewController.m */; };
 		566BF5EB1C4717CF002C5591 /* YWTemplateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566BF5EA1C4717CF002C5591 /* YWTemplateListViewController.m */; };
 		566BF5EE1C47191F002C5591 /* YWTemplateListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 566BF5ED1C47191F002C5591 /* YWTemplateListTableViewCell.m */; };
+		566E7BA81C86628A008D2B4F /* 测试结果.txt in Resources */ = {isa = PBXBuildFile; fileRef = 566E7BA71C86628A008D2B4F /* 测试结果.txt */; };
 		566F0DA01C48716500353311 /* YWTrendsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 566F0D9F1C48716500353311 /* YWTrendsModel.m */; };
 		5678555B1C7552BB008DEB1C /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 567855581C7552BB008DEB1C /* down.png */; };
 		5678555C1C7552BB008DEB1C /* down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 567855591C7552BB008DEB1C /* down@2x.png */; };
@@ -290,6 +291,7 @@
 		566BF5EA1C4717CF002C5591 /* YWTemplateListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTemplateListViewController.m; sourceTree = "<group>"; };
 		566BF5EC1C47191F002C5591 /* YWTemplateListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTemplateListTableViewCell.h; sourceTree = "<group>"; };
 		566BF5ED1C47191F002C5591 /* YWTemplateListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTemplateListTableViewCell.m; sourceTree = "<group>"; };
+		566E7BA71C86628A008D2B4F /* 测试结果.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "测试结果.txt"; sourceTree = "<group>"; };
 		566F0D9E1C48716500353311 /* YWTrendsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTrendsModel.h; sourceTree = "<group>"; };
 		566F0D9F1C48716500353311 /* YWTrendsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTrendsModel.m; sourceTree = "<group>"; };
 		567855581C7552BB008DEB1C /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
@@ -1118,6 +1120,7 @@
 		56FE99C81C0FBAB8007BA29B /* ShowOn */ = {
 			isa = PBXGroup;
 			children = (
+				566E7BA71C86628A008D2B4F /* 测试结果.txt */,
 				568DC0D71C5619F300CFD1BC /* 接口.txt */,
 				5695FFD51C4C61600070544A /* Directions.geojson */,
 				56679BC31C3B393700272C44 /* json.geojson */,
@@ -1822,6 +1825,7 @@
 				568DC0B01C5619DB00CFD1BC /* set.png in Resources */,
 				771FEAD01C77F88F009F71FB /* play_button.png in Resources */,
 				56F5D3731C17AED0008C33CA /* iOS-social-analytics-releasenote.html in Resources */,
+				566E7BA81C86628A008D2B4F /* 测试结果.txt in Resources */,
 				568DC07D1C5619DB00CFD1BC /* choose_normal@2x.png in Resources */,
 				568DC0911C5619DB00CFD1BC /* more_selected@2x.png in Resources */,
 				568DC0D31C5619DB00CFD1BC /* weichant_moments@3x.png in Resources */,

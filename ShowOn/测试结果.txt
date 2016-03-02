@@ -1,0 +1,123 @@
+1.点击收藏后，收藏数增加了  但是收藏列表没有数据
+    接口：juer/dynamic/collectList?json
+
+2.点赞列表在原有的基础上再加一个返回值，动态发布的文字内容(第九行)
+    "supportList": [{
+        "supportType": ""      //类型（1.动态      2.评论）
+        "trends": {
+            "dynamicId"     //'动态ID'
+            "dynamicContent": ""   //动态内容
+            "dynamicMovie": {
+                "videoUrl": ""               //'视频播放URL',
+                "videoCoverImage"            //视频封面图片
+                "movieTemplate": {
+                    "templateId": ""            //模板id
+                }
+            }
+        }
+        "comment": {
+        }
+    }]
+
+3.粉丝数，收藏数不对
+    接口：juer/user/getUserInfo?json
+
+
+4.用户详情没有返回动态列表 （返回数据格式见下）
+    接口：juer/user/getUserInfo?json
+/***
+*   获取好友资料
+*/
+//参数：
+{
+"userId": ""
+"loginUserId": ""      //登录用户ID（登录了就传，没登陆默认空字符串）
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "user": {
+        /*=======新加========*/
+        "headPortrait": ""          //头像
+        "userTrendsNums": ""        //动态数
+        "userCollectNums": ""       //收藏数
+        "userATMeNums": ""          //@我的数量
+        "userCommentNums": ""       //评论数
+        "userSupportNums": ""       //点赞数
+        /*=======新加========*/
+
+        "nickname": ""              //昵称
+        "birthday": ""              //年龄
+        "sex": ""                   //性别（1.男   0.女）
+        "introduction": ""          //简介（签名）
+        "district": ""              //居住地
+        "empiricalValue": ""        //经验
+        "userFocusNums": ""         //关注数
+        "userFansNums": ""          //粉丝数
+        "userWorksNums": ""         //作品数
+        "authenticationInformation": ""      //认证信息
+        "constellation": ""         //星座
+        "height": ""                //身高
+        "bwh": ""                   //三围
+        "relationTypeId": ""        //关系类型（0.无关系    1.粉丝    2.关注的人    3.相互关注    4.黑名单）
+        "userTrends": [{
+            "dynamicId": ""           //'动态ID'
+            "dynamicContent": ""      //'动态内容'
+            "pubdate": ""             //'动态发布时间'
+            "playCount": ""           //'播放次数'
+            "forwardComments": ""     //转发评论'
+            "dynamicTypeId": ""       //'动态类型ID 1、原创,2、合演,3、转发'
+            "dynamicSuppotNumbers": ""//'动态点赞数'
+            "dynamicIsSupport": ""    //当前登录用户是否点赞（0：未， 1：是）
+            "dynamicMovie": {
+                "videoUrl": ""               //'视频播放URL',
+                "movieTemplate": {
+                    "templateId": ""            //模板id
+                }
+            }
+        }]
+    }
+}
+
+5.获取用户列表接口没有返回和当前登录用户的关系类型（relationTypeId）（返回数据格式见下）
+    接口：juer/user/getFriendList?json
+/***
+*   关注、粉丝、黑名单列表
+*/
+//参数：
+{
+"userId": ""               //当前登录用户ID
+"relationTypeId": ""       //关系类型（1、关注,2、粉丝,3、黑名单,4、相互关注'）
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "userList": [{
+        "userId": ""               //用户Id
+        "headPortrait": ""         //用户头像
+        "nickname": ""             //昵称
+        "relationTypeId":""        //和当前登录用户的关系类型
+    }]
+}
+
+
+6.保存用户信息接口报错
+    接口：juer/user/updateUserInfo?json
+传给后台的测试数据：
+{
+    birthday = "2014-03-02";
+    bwh = "90-20-10";
+    constellation = "\U91d1\U725b\U5ea7";
+    district = Changsha;
+    height = 175;
+    introduction = "";
+    sex = "\U5973";
+    userId = 10;
+}
+在这个接口上再加一个修改用户头像(用户头像可有可无)
+[formData appendPartWithFileData:UIImagePNGRepresentation(image) name:@"img" fileName:@"test.png" mimeType:@"image/png"];
+
+
+

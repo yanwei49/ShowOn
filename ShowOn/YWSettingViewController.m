@@ -157,7 +157,9 @@
         NSArray *className = @[@"YWPrivacyViewController", @"YWFollowingViewController", @"", @"YWSuggestionViewController", @"YWUserProtocolViewController"];
         UIViewController *vc = [[NSClassFromString(className[indexPath.row]) alloc] init];
         if (indexPath.row == 1) {
-            vc.title = @"黑名单";
+            YWFollowingViewController *c = (YWFollowingViewController *)vc;
+            c.title = @"黑名单";
+            c.relationType = 3;
         }
         [self.navigationController pushViewController:vc animated:YES];
     }else {

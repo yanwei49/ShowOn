@@ -45,6 +45,8 @@
 - (void)createSubViews {
     UILabel *label = [[UILabel alloc] init];
     label.backgroundColor = Subject_color;
+    label.textColor = [UIColor lightGrayColor];
+    label.font = [UIFont systemFontOfSize:13];
     if (_type == 3) {
         label.text = [NSString stringWithFormat:@"转发动态：%@", _trends.trendsContent];
     }else if (_comment) {
@@ -56,7 +58,7 @@
     }
     [self.view addSubview:label];
     [label makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(64);
+        make.top.offset(64+5);
         make.left.offset(10);
         make.height.offset(20);
         make.right.offset(-40);
@@ -80,7 +82,7 @@
     _placeholderLabel.textColor = [UIColor lightGrayColor];
     [self.view addSubview:_placeholderLabel];
     [_placeholderLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(18+64);
+        make.top.offset(20+18+64);
         make.left.offset(15);
         make.height.offset(15);
         make.right.offset(-10);

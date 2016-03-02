@@ -114,7 +114,7 @@
  *  @param success    成功block
  *  @param failure    失败block
  */
-- (void)requestSaveUserDetails:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
+- (void)requestSaveUserDetails:(NSDictionary *)parameters image:(UIImage *)image success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
 
 /**
  *  获取用户列表
