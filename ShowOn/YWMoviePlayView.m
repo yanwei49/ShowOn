@@ -251,6 +251,7 @@
 - (void)actionPlayOrPasue {
     _isEnd = NO;
     _playOrPause.selected = !_playOrPause.selected;
+    _playOrPause.hidden = YES;
     if(_player.rate==0){ //说明时暂停
         if (_isCountdown && !_isPlay) {
             _isPlay = YES;

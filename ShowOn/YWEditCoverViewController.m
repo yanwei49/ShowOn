@@ -135,7 +135,7 @@
             AVURLAsset *urlAsset=[AVURLAsset assetWithURL:model.recorderVideoUrl];
             for (NSInteger i=0; i<1; i++) {
                 UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i];
-                NSLog(@"-=============%ld", urlAsset.duration.value);
+                NSLog(@"-=============%lld", urlAsset.duration.value);
                 [_coverImages addObject:[self rotation:image]];
                 if (!i) {
                     _coverImageView.image = _coverImages[0];

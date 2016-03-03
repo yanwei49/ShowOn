@@ -106,7 +106,7 @@
     _playView = [[YWMoviePlayView alloc] initWithFrame:CGRectMake(5, 5, kScreenWidth-10, 250) playUrl:@""];
     _playView.backgroundColor = Subject_color;
     _playView.layer.masksToBounds = YES;
-    _playView.isCountdown = YES;
+//    _playView.isCountdown = YES;
     _playView.delegate = self;
     _playView.layer.cornerRadius = 5;
     _playView.layer.borderColor = RGBColor(30, 30, 30).CGColor;
@@ -226,6 +226,7 @@
 
 - (void)actionRestart:(UIButton *)button {
     _recorderView.model.subsectionVideoPerformanceStatus = @"2";
+    _recorderView.model.subsectionRecorderVideoUrl = nil;
     [_recorderMovies removeObject:_recorderView.model];
     _playView.urlStr = _recorderView.model.subsectionVideoUrl;
     for (UICollectionView *collectionView in _collectionViews) {
@@ -234,9 +235,9 @@
 }
 
 - (void)actionChange:(UIButton *)button {
-    if (_recorderView.model.subsectionVideoPerformanceStatus.integerValue != 0) {
+//    if (_recorderView.model.subsectionVideoPerformanceStatus.integerValue != 0) {
         [_recorderView changeCamera];
-    }
+//    }
 }
 
 #pragma mark - YWMoviePlayViewDelegate
@@ -273,7 +274,14 @@
 - (void)customSegView:(YWCustomSegView *)view didSelectItemWithIndex:(NSInteger)index {
     if ([view isEqual:_itemView]) {
         if (index) {
-            if (_recorderMovies.count) {
+            BOOL state = NO;
+            for (NSInteger i=0; _template.templateSubsectionVideos.count; i++) {
+                if ([_template.templateSubsectionVideos[i] subsectionVideoUrl]) {
+                    state = YES;
+                    break;
+                }
+            }
+            if (state) {
                 YWEditCoverViewController *vc = [[YWEditCoverViewController alloc] init];
                 vc.trends = _trends;
                 vc.template = _template;

@@ -222,6 +222,8 @@
             _movie1.urlStr = [_templateArray[0] templateVideoUrl];
             if ([[_templateArray[0] templateTrends] count]) {
                 _movie2.urlStr = [[[_templateArray[0] templateTrends][0] trendsMovie] movieUrl];
+            }else {
+                _movie2.urlStr = @"";
             }
         }
         _hotView.dataSource = _templateArray;

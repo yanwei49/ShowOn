@@ -407,13 +407,13 @@
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [_httpManager requestWriteTrends:parameters coverImage:_image recorderMovies:_template.templateSubsectionVideos movieUrl:_movieUrl success:^(id responseObject) {
-            [SVProgressHUD showInfoWithStatus:responseObject[@"msg"]];
+            [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
         } otherFailure:^(id responseObject) {
             [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
         } failure:^(NSError *error) {
             
         }];
-        [SVProgressHUD showInfoWithStatus:@"发布中，请稍等。。。"];
+        [SVProgressHUD showWithStatus:@"上传中，请稍等。。。"];
         [self.navigationController popToRootViewControllerAnimated:YES];
     });
 }

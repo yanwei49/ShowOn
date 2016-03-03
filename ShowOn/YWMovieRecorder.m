@@ -27,6 +27,9 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     CGRect                     *_lastBounds;//旋转的前大小
     UIBackgroundTaskIdentifier  _backgroundTaskIdentifier;//后台任务标识
     UIView                     *_backView;
+    UILabel                    *_timeLabel;
+    NSTimer                    *_timer;
+    UIButton                   *_playButton; //播放/暂停按钮
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -104,6 +107,12 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     _backView.backgroundColor = [UIColor blackColor];
     _backView.alpha = 0.7;
     [self addSubview:_backView];
+    
+    _playButton = [[UIButton alloc] initWithFrame:CGRectMake(self.bounds.size.width/2-30, self.bounds.size.height/2-30, 60, 60)];
+    [_playButton setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
+    [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+    [_playButton addTarget:self action:@selector(actionPlay) forControlEvents:UIControlEventTouchUpInside];
+    [self.layer addSublayer:_playButton.layer];
 }
 
 - (void)startRunning {
@@ -112,6 +121,17 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 
 - (void)stopRunning {
     [_captureSession stopRunning];
+}
+
+- (void)actionPlay {
+    _playButton.hidden = YES;
+    _timeLabel = [[UILabel alloc] initWithFrame:_playButton.frame];
+    _timeLabel.textColor = [UIColor whiteColor];
+    _timeLabel.textAlignment = NSTextAlignmentCenter;
+    _timeLabel.text = @"3";
+    _timeLabel.font = [UIFont boldSystemFontOfSize:50];
+    [self addSubview:_timeLabel];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(delayMethod) userInfo:nil repeats:YES];
 }
 
 - (void)startRecorder {
@@ -138,14 +158,27 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     }
 }
 
+
+- (void)delayMethod {
+    NSInteger cnt = _timeLabel.text.integerValue;
+    cnt--;
+    _timeLabel.text = [NSString stringWithFormat:@"%ld", cnt];
+    if (!cnt) {
+        [_timeLabel removeFromSuperview];
+        [_timer invalidate];
+        _timer = nil;
+        [self startRecorder];
+    }
+}
+
 - (void)changeCamera {
     AVCaptureDevice *currentDevice=[_captureDeviceInput device];
     AVCaptureDevicePosition currentPosition=[currentDevice position];
     [self removeNotificationFromCaptureDevice:currentDevice];
     AVCaptureDevice *toChangeDevice;
     AVCaptureDevicePosition toChangePosition=AVCaptureDevicePositionFront;
-    if (currentPosition==AVCaptureDevicePositionUnspecified||currentPosition==AVCaptureDevicePositionBack) {
-        toChangePosition=AVCaptureDevicePositionFront;
+    if (currentPosition==AVCaptureDevicePositionUnspecified||currentPosition==AVCaptureDevicePositionFront) {
+        toChangePosition=AVCaptureDevicePositionBack;
     }
     toChangeDevice=[self getCameraDeviceWithPosition:toChangePosition];
     [self addNotificationToCaptureDevice:toChangeDevice];
@@ -178,6 +211,8 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 //    }
     //视频录入完成之后在后台将视频存储到相簿
     _enableRotation=YES;
+    _playButton.hidden = NO;
+    _backView.hidden = NO;
     UIBackgroundTaskIdentifier lastBackgroundTaskIdentifier = _backgroundTaskIdentifier;
     _backgroundTaskIdentifier=UIBackgroundTaskInvalid;
     ALAssetsLibrary *assetsLibrary=[[ALAssetsLibrary alloc]init];
