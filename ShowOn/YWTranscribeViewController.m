@@ -17,6 +17,7 @@
 #import "YWTrendsModel.h"
 #import "YWMovieModel.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "MPMoviePlayerViewController+Rotation.h"
 
 @interface YWTranscribeViewController ()<YWCustomSegViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWMoviePlayViewDelegate, YWMovieRecorderDelegate>
 
@@ -36,7 +37,10 @@
     NSMutableArray      *_dataSource3;
     NSMutableArray      *_titles1;
     NSMutableArray      *_titles2;
-    NSMutableArray      *_recorderMovies;
+    CGFloat              _recorderTime;
+    NSTimer             *_timer;
+    UIView              *_progressView;
+//    NSMutableArray      *_recorderMovies;
 }
 
 - (void)viewDidLoad {
@@ -45,12 +49,14 @@
     _dataSource1 = [[NSMutableArray alloc] init];
     _dataSource2 = [[NSMutableArray alloc] init];
     _dataSource3 = [[NSMutableArray alloc] init];
-    _recorderMovies = [[NSMutableArray alloc] init];
+//    _recorderMovies = [[NSMutableArray alloc] init];
     _titles1 = [[NSMutableArray alloc] initWithArray:@[@"近\n景", @"中\n景", @"远\n景"]];
     _titles2 = [[NSMutableArray alloc] initWithArray:@[@"特\n写", @"中\n景", @"远\n景"]];
     _collectionViews = [[NSMutableArray alloc] init];
     _labels = [[NSMutableArray alloc] init];
     _template = _trends?_trends.trendsMovie.movieTemplate:_template;
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(run) userInfo:nil repeats:YES];
+    _timer.fireDate = [NSDate distantFuture];
     if (_trends) {
         for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
             model.subsectionVideoPerformanceStatus = @"2";
@@ -186,30 +192,37 @@
         make.top.equalTo(_recorderView.mas_bottom);
     }];
 
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 530, kScreenWidth, 85*3+20)];
+    [_backgroundSV addSubview:bgView];
+    
     for (NSInteger i=0; i<3; i++) {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         layout.itemSize = CGSizeMake(110, 80);
         
-        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(30, 530+85*i, kScreenWidth-30, 80) collectionViewLayout:layout];
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(30, 85*i, kScreenWidth-30, 80) collectionViewLayout:layout];
         collectionView.backgroundColor = RGBColor(30, 30, 30);
 //        collectionView.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         [collectionView registerClass:[YWTemplateCollectionViewCell class] forCellWithReuseIdentifier:@"item"];
         collectionView.delegate = self;
         collectionView.dataSource = self;
-        [_backgroundSV addSubview:collectionView];
+        [bgView addSubview:collectionView];
         [_collectionViews addObject:collectionView];
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 530+85*i, 30, 80)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 85*i, 30, 80)];
         label.textColor = [UIColor whiteColor];
         label.font = [UIFont systemFontOfSize:13];
         label.text = _titles1[i];
         label.numberOfLines = 0;
         label.textAlignment = NSTextAlignmentCenter;
-        [_backgroundSV addSubview:label];
+        [bgView addSubview:label];
         [_labels addObject:label];
     }
     _backgroundSV.contentSize = CGSizeMake(kScreenWidth, 540+85*3+10);
     [self customSegView:_modelItemView didSelectItemWithIndex:0];
+    
+    _progressView = [[UIView alloc] initWithFrame:CGRectMake(30, -10, 1, 105)];
+    _progressView.backgroundColor = [UIColor redColor];
+    [bgView addSubview:_progressView];
 }
 
 #pragma mark - action
@@ -221,13 +234,14 @@
     NSString *urlStr = [!_trends?_template.templateVideoUrl:_trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:urlStr];
     MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+    [moviePlayerViewController rotateVideoViewWithDegrees:!_trends?0:90];
     [self presentViewController:moviePlayerViewController animated:YES completion:nil];
 }
 
 - (void)actionRestart:(UIButton *)button {
     _recorderView.model.subsectionVideoPerformanceStatus = @"2";
     _recorderView.model.subsectionRecorderVideoUrl = nil;
-    [_recorderMovies removeObject:_recorderView.model];
+//    [_recorderMovies removeObject:_recorderView.model];
     _playView.urlStr = _recorderView.model.subsectionVideoUrl;
     for (UICollectionView *collectionView in _collectionViews) {
         [collectionView reloadData];
@@ -242,17 +256,17 @@
 
 #pragma mark - YWMoviePlayViewDelegate
 - (void)moviePlayViewPlayWithState:(BOOL)playState {
-    if (_recorderView.model.subsectionVideoPerformanceStatus.integerValue != 1) {
-        if (playState) {
-            [_recorderView startRecorder];
-            self.view.userInteractionEnabled = NO;
-        }
-    }
+//    if (_recorderView.model.subsectionVideoPerformanceStatus.integerValue != 1) {
+//        if (playState) {
+//            [_recorderView startRecorder];
+//            self.view.userInteractionEnabled = NO;
+//        }
+//    }
 }
 
 - (void)moviePlayViewPlayDown:(YWMoviePlayView *)view {
-    [_recorderView startRecorder];
-    self.view.userInteractionEnabled = YES;
+//    [_recorderView startRecorder];
+//    self.view.userInteractionEnabled = YES;
 }
 
 #pragma mark - YWMovieRecorderDelegate
@@ -261,22 +275,48 @@
     for (UICollectionView *collectionView in _collectionViews) {
         [collectionView reloadData];
     }
-    [_recorderMovies addObject:view.model];
+//    [_recorderMovies addObject:view.model];
 }
 
-//- (void)movieRecorderDownWithData:(NSData *)data subsectionVideoSort:(NSString *)subsectionVideoSort subsectionVideoType:(NSString *)subsectionVideoType {
-//    [_movieData addObject:data];
-//    [_moviesubsectionVideoSorts addObject:subsectionVideoSort];
-//    [_moviesubsectionVideoTypes addObject:subsectionVideoType];
-//}
+- (void)movieRecorderBegin:(YWMovieRecorder *)view {
+    self.view.userInteractionEnabled = NO;
+    _recorderTime = view.model.subsectionVideoTime.floatValue;
+    [self timerStart];
+}
+
+- (void)timerStart {
+    _timer.fireDate = [NSDate distantPast];
+}
+
+- (void)run {
+    static CGFloat cnt;
+    NSInteger step = 110/_recorderTime;
+    [self recorderProgressAnimationWithFloat:step];
+    if (cnt > _recorderTime) {
+        cnt = 0;
+        _timer.fireDate = [NSDate distantFuture];
+        [self recorderDown];
+    }
+    cnt += 0.1;
+}
+
+- (void)recorderProgressAnimationWithFloat:(CGFloat)progress {
+    CGRect frame = _progressView.frame;
+    frame.origin.x += progress;
+    _progressView.frame = frame;
+}
+
+- (void)recorderDown {
+    self.view.userInteractionEnabled = YES;
+}
 
 #pragma mark - YWCustomSegViewDelegate
 - (void)customSegView:(YWCustomSegView *)view didSelectItemWithIndex:(NSInteger)index {
     if ([view isEqual:_itemView]) {
         if (index) {
             BOOL state = NO;
-            for (NSInteger i=0; _template.templateSubsectionVideos.count; i++) {
-                if ([_template.templateSubsectionVideos[i] subsectionVideoUrl]) {
+            for (NSInteger i=0; i<_template.templateSubsectionVideos.count; i++) {
+                if ([_template.templateSubsectionVideos[i] recorderVideoUrl]) {
                     state = YES;
                     break;
                 }
@@ -330,7 +370,7 @@
             //        _playView.urlStr = _template.templateVideoUrl;
             model.subsectionVideoPerformanceStatus = model.subsectionVideoPerformanceStatus.integerValue==1?@"1":@"0";
             _recorderView.model = model;
-}
+        }
         for (NSInteger i=0; i<3; i++) {
             UILabel *label = _labels[i];
             label.text = !index?_titles1[i]:_titles2[i];
@@ -385,6 +425,9 @@
     for (UICollectionView *cv in _collectionViews) {
         [cv reloadData];
     }
+    //重新设置_progressView的frame
+    YWTemplateCollectionViewCell *cell = (YWTemplateCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    _progressView.frame = CGRectMake(cell.frame.origin.x+30, -cell.frame.origin.y+10, 1, 105);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {

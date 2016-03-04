@@ -24,6 +24,7 @@
 #import "YWTranscribeViewController.h"
 #import "YWWriteCommentViewController.h"
 #import "YWNavigationController.h"
+#import "MPMoviePlayerViewController+Rotation.h"
 
 @interface YWHotItemViewController ()<UITableViewDataSource, UITableViewDelegate, YWMovieCommentTableViewCellDelegate, YWTemplateTrendsTableViewCellDelegate, YWHotTableViewCellDelegate, UIActionSheetDelegate>
 
@@ -268,6 +269,7 @@
     NSString *urlStr = [cell.template.templateVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:urlStr];
     MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+    [moviePlayerViewController rotateVideoViewWithDegrees:0];
     [self presentViewController:moviePlayerViewController animated:YES completion:nil];
 }
 
@@ -306,6 +308,7 @@
         NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURL *url = [NSURL URLWithString:urlStr];
         MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [moviePlayerViewController rotateVideoViewWithDegrees:90];
         [self presentViewController:moviePlayerViewController animated:YES completion:nil];
     }else {
         YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];

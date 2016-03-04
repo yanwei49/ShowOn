@@ -121,3 +121,13 @@
 
 
 
+7.第三方登录时调用注册接口失败
+    接口：juer/user/register?json
+
+
+8.短信验证码获取不到
+    接口：juer/user/getVerificationCode?json
+
+
+
+

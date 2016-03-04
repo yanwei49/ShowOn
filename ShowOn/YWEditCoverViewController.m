@@ -11,6 +11,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "YWMovieTemplateModel.h"
 #import "YWSubsectionVideoModel.h"
+#import "YWTools.h"
 
 @interface YWEditCoverViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -92,6 +93,7 @@
     _coverImageSV.contentSize = CGSizeMake(200*images.count, 150);
     for (NSInteger i=0; i<images.count; i++) {
         UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(200*i, 0, 200, 150)];
+        iv.contentMode = UIViewContentModeCenter;
         iv.backgroundColor = RGBColor(30, 30, 30);
         iv.image = images[i];
         [_coverImageSV addSubview:iv];
@@ -133,10 +135,15 @@
     for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
         if (model.recorderVideoUrl) {
             AVURLAsset *urlAsset=[AVURLAsset assetWithURL:model.recorderVideoUrl];
+            NSLog(@"-=============%lld", urlAsset.duration.value);
             for (NSInteger i=0; i<1; i++) {
                 UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i];
-                NSLog(@"-=============%lld", urlAsset.duration.value);
-                [_coverImages addObject:[self rotation:image]];
+                UIImage *rotationImage = [self rotation:image];
+                CGFloat w = (rotationImage.size.width/200>rotationImage.size.height/100)?rotationImage.size.width*rotationImage.size.height/100:200;
+                CGFloat h = (rotationImage.size.width/200<rotationImage.size.height/100)?rotationImage.size.height*rotationImage.size.width/200:100;
+                UIImage *scaleImage = [YWTools image:rotationImage scaledToSize:CGSizeMake(w, h)];
+                UIImage *cutImage = [YWTools cutImage:scaleImage withRect:CGRectMake(0, 0, 200, 100)];
+                [_coverImages addObject:scaleImage];
                 if (!i) {
                     _coverImageView.image = _coverImages[0];
                 }

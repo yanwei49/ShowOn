@@ -19,7 +19,7 @@
 
 @property (nonatomic, assign) id<YWToolboxPlayDelegate> delegate;
 
-+ (YWToolboxPlay *)shareInstance;
+//+ (YWToolboxPlay *)shareInstance;
 - (void)play;
 
 @end

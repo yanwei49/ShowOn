@@ -29,6 +29,7 @@
 #import "YWMovieModel.h"
 #import "YWMovieTemplateModel.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "MPMoviePlayerViewController+Rotation.h"
 
 @interface YWTrendsDetailViewController()<UITableViewDataSource, UITableViewDelegate, YWFocusTableViewCellDelegate, YWMovieCommentTableViewCellDelegate, YWMovieOtherInfosTableViewCellDelegate, UIActionSheetDelegate>
 
@@ -321,6 +322,7 @@
         NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURL *url = [NSURL URLWithString:urlStr];
         MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [moviePlayerViewController rotateVideoViewWithDegrees:90];
         [self presentViewController:moviePlayerViewController animated:YES completion:nil];
     }else {
         YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];

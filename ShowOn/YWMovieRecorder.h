@@ -14,6 +14,7 @@
 
 //- (void)movieRecorderDownWithData:(NSData *)data subsectionVideoSort:(NSString *)subsectionVideoSort subsectionVideoType:(NSString *)subsectionVideoType;
 - (void)movieRecorderDown:(YWMovieRecorder *)view;
+- (void)movieRecorderBegin:(YWMovieRecorder *)view;
 
 @end
 

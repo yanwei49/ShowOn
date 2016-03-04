@@ -19,6 +19,7 @@
 #import "MJRefresh.h"
 #import "YWMovieTemplateModel.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "MPMoviePlayerViewController+Rotation.h"
 
 @interface YWHomeViewController ()<YWHotViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -212,6 +213,7 @@
     NSString *urlStr = [template.templateVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:urlStr];
     MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+    [moviePlayerViewController rotateVideoViewWithDegrees:0];
     [self presentViewController:moviePlayerViewController animated:YES completion:nil];
 }
 

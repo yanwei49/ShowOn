@@ -10,6 +10,7 @@
 #import "YWMovieTemplateModel.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "YWSubsectionVideoModel.h"
+#import "YWTools.h"
 
 @implementation YWTemplateCollectionViewCell
 {
@@ -84,7 +85,20 @@
 - (void)setSubsectionVideo:(YWSubsectionVideoModel *)subsectionVideo {
     _subsectionVideo = subsectionVideo;
     _nameLabel.text = [NSString stringWithFormat:@"%@s", subsectionVideo.subsectionVideoTime?:@"0"];
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:subsectionVideo.subsectionVideoCoverImage] placeholderImage:kPlaceholderMoiveImage];
+//    [_imageView sd_setImageWithURL:[NSURL URLWithString:subsectionVideo.subsectionVideoCoverImage] placeholderImage:kPlaceholderMoiveImage];
+    NSURL *url;
+    if (subsectionVideo.recorderVideoUrl) {
+        url = subsectionVideo.recorderVideoUrl;
+    }else if (subsectionVideo.subsectionRecorderVideoUrl && subsectionVideo.subsectionRecorderVideoUrl.length) {
+        NSString *urlStr = subsectionVideo.subsectionRecorderVideoUrl;
+        urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        url = [NSURL URLWithString:urlStr];
+    }else {
+        NSString *urlStr = subsectionVideo.subsectionVideoUrl;
+        urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        url = [NSURL URLWithString:urlStr];
+    }
+    _imageView.image = [YWTools thumbnailImageRequestUrl:url time:0];
     self.contentView.layer.borderColor = Subject_color.CGColor;
     self.contentView.layer.borderWidth = 0;
     _downImageView.hidden = YES;
@@ -93,7 +107,7 @@
     }else if (subsectionVideo.subsectionVideoPerformanceStatus.integerValue == 2) {
         _downImageView.hidden = YES;
     }else {
-        self.contentView.layer.borderColor = [UIColor redColor].CGColor;
+        self.contentView.layer.borderColor = [UIColor lightGrayColor].CGColor;
         self.contentView.layer.borderWidth = 5;
     }
 }

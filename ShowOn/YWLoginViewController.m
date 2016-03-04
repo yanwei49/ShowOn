@@ -40,7 +40,8 @@
     
     [[IQKeyboardManager sharedManager] setEnable:YES];
     [[IQKeyboardManager sharedManager] setEnableAutoToolbar:YES];
-
+    _othersUser = [[YWUserModel alloc] init];
+    
     [self createSubViews];
 }
 
@@ -354,12 +355,15 @@
         return;
     }
     NSDictionary *parameters = @{@"account":_accountTextField.text, @"password":_passwordTextField.text};
+    [SVProgressHUD showWithStatus:@"登录中..."];
     [[YWHttpManager shareInstance] requestLogin:parameters success:^(id responseObject) {
+        [SVProgressHUD showSuccessWithStatus:@"登录成功"];
         YWParser *parser = [[YWParser alloc] init];
         _othersUser = [parser userWithDict:responseObject[@"user"]];
         [[YWDataBaseManager shareInstance] addLoginUser:_othersUser];
         [self loginSuccess];
     } otherFailure:^(id responseObject) {
+        [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
     } failure:^(NSError *error) {
     }];
 }

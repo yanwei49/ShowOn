@@ -10,6 +10,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "YWMovieTemplateModel.h"
 #import "YWMoviePlayView.h"
+#import "YWTools.h"
 
 @implementation YWHotTableViewCell
 {
@@ -109,7 +110,10 @@
     _nameLabel.text = template.templateName;
     _timeLabel.text = [NSString stringWithFormat:@"时长%@", template.templateVideoTime];
     _numsLabel.text = [NSString stringWithFormat:@"拍摄次数%@", template.templatePlayUserNumbers];
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:template.templateVideoCoverImage] placeholderImage:kPlaceholderMoiveImage];
+//    [_imageView sd_setImageWithURL:[NSURL URLWithString:template.templateVideoCoverImage] placeholderImage:kPlaceholderMoiveImage];
+    NSString *urlStr = template.templateVideoUrl;
+    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    _imageView.image = [YWTools thumbnailImageRequestUrl:[NSURL URLWithString:urlStr] time:0];
 //    _playMovieView.urlStr = template.templateVideoUrl;
     _playMovieView.hidden = YES;
 //    _playButton.hidden = YES;

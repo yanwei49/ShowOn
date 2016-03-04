@@ -502,7 +502,7 @@
         UIButton *button = [[UIButton alloc] init];
         button.backgroundColor = RGBColor(50, 50, 50);
         NSArray *array = @[@"全部", @"原创", @"合作", @"转发"];
-        [button setTitle:[NSString stringWithFormat:@"%@ %ld", array[_trendsType], _trendsArray.count] forState:UIControlStateNormal];
+        [button setTitle:[NSString stringWithFormat:@"%@ %ld", array[_trendsType], (unsigned long)_trendsArray.count] forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:@"down.png"] forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize:13];
         [button addTarget:self action:@selector(actionTrendsCategoryOnClick:) forControlEvents:UIControlEventTouchUpInside];

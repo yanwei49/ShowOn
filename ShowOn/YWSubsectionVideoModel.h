@@ -16,7 +16,7 @@
 @property (nonatomic, strong) NSString *subsectionVideoUrl;                     //原分段视频URL
 @property (nonatomic, strong) NSString *subsectionRecorderVideoUrl;             //分段视频录制过的URL
 @property (nonatomic, strong) NSString *subsectionVideoTime;                    //分段视频时长
-@property (nonatomic, strong) NSURL *recorderVideoUrl;                          //录制完的分段视频URL
+@property (nonatomic, strong) NSURL *recorderVideoUrl;                          //刚录制完的分段视频URL
 @property (nonatomic, strong) NSString *subsectionVideoCoverImage;              //分段视频封面
 @property (nonatomic, strong) NSString *subsectionVideoSort;                    //分段视频序号 (处于完整视频中的序号)
 @property (nonatomic, strong) NSString *subSort;                                //分段视频子序号
