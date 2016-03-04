@@ -37,9 +37,11 @@
     NSMutableArray      *_dataSource3;
     NSMutableArray      *_titles1;
     NSMutableArray      *_titles2;
-    CGFloat              _recorderTime;
-    NSTimer             *_timer;
-    UIView              *_progressView;
+    NSInteger            _collectionViewIndex;
+    NSInteger            _cellIndex;
+//    CGFloat              _recorderTime;
+//    NSTimer             *_timer;
+//    UIView              *_progressView;
 //    NSMutableArray      *_recorderMovies;
 }
 
@@ -55,8 +57,8 @@
     _collectionViews = [[NSMutableArray alloc] init];
     _labels = [[NSMutableArray alloc] init];
     _template = _trends?_trends.trendsMovie.movieTemplate:_template;
-    _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(run) userInfo:nil repeats:YES];
-    _timer.fireDate = [NSDate distantFuture];
+//    _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(run) userInfo:nil repeats:YES];
+//    _timer.fireDate = [NSDate distantFuture];
     if (_trends) {
         for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
             model.subsectionVideoPerformanceStatus = @"2";
@@ -219,10 +221,10 @@
     }
     _backgroundSV.contentSize = CGSizeMake(kScreenWidth, 540+85*3+10);
     [self customSegView:_modelItemView didSelectItemWithIndex:0];
-    
-    _progressView = [[UIView alloc] initWithFrame:CGRectMake(30, -10, 1, 105)];
-    _progressView.backgroundColor = [UIColor redColor];
-    [bgView addSubview:_progressView];
+//    
+//    _progressView = [[UIView alloc] initWithFrame:CGRectMake(30, -10, 1, 105)];
+//    _progressView.backgroundColor = [UIColor redColor];
+//    [bgView addSubview:_progressView];
 }
 
 #pragma mark - action
@@ -249,6 +251,9 @@
 }
 
 - (void)actionChange:(UIButton *)button {
+    YWTemplateCollectionViewCell *cell = (YWTemplateCollectionViewCell *)[_collectionViews[_collectionViewIndex] cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_cellIndex inSection:0]];
+    [cell startRecorderAnimationWithDuration:12];
+    return;
 //    if (_recorderView.model.subsectionVideoPerformanceStatus.integerValue != 0) {
         [_recorderView changeCamera];
 //    }
@@ -280,31 +285,34 @@
 
 - (void)movieRecorderBegin:(YWMovieRecorder *)view {
     self.view.userInteractionEnabled = NO;
-    _recorderTime = view.model.subsectionVideoTime.floatValue;
-    [self timerStart];
+    YWTemplateCollectionViewCell *cell = (YWTemplateCollectionViewCell *)[_collectionViews[_collectionViewIndex] cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_cellIndex inSection:0]];
+    [cell startRecorderAnimationWithDuration:view.model.subsectionVideoTime.floatValue];
+
+//    _recorderTime = view.model.subsectionVideoTime.floatValue;
+//    [self timerStart];
 }
 
-- (void)timerStart {
-    _timer.fireDate = [NSDate distantPast];
-}
-
-- (void)run {
-    static CGFloat cnt;
-    NSInteger step = 110/_recorderTime;
-    [self recorderProgressAnimationWithFloat:step];
-    if (cnt > _recorderTime) {
-        cnt = 0;
-        _timer.fireDate = [NSDate distantFuture];
-        [self recorderDown];
-    }
-    cnt += 0.1;
-}
-
-- (void)recorderProgressAnimationWithFloat:(CGFloat)progress {
-    CGRect frame = _progressView.frame;
-    frame.origin.x += progress;
-    _progressView.frame = frame;
-}
+//- (void)timerStart {
+//    _timer.fireDate = [NSDate distantPast];
+//}
+//
+//- (void)run {
+//    static CGFloat cnt;
+//    NSInteger step = 110/_recorderTime;
+//    [self recorderProgressAnimationWithFloat:step];
+//    if (cnt > _recorderTime) {
+//        cnt = 0;
+//        _timer.fireDate = [NSDate distantFuture];
+//        [self recorderDown];
+//    }
+//    cnt += 0.1;
+//}
+//
+//- (void)recorderProgressAnimationWithFloat:(CGFloat)progress {
+//    CGRect frame = _progressView.frame;
+//    frame.origin.x += progress;
+//    _progressView.frame = frame;
+//}
 
 - (void)recorderDown {
     self.view.userInteractionEnabled = YES;
@@ -370,6 +378,8 @@
             //        _playView.urlStr = _template.templateVideoUrl;
             model.subsectionVideoPerformanceStatus = model.subsectionVideoPerformanceStatus.integerValue==1?@"1":@"0";
             _recorderView.model = model;
+            _collectionViewIndex = 0;
+            _cellIndex = 0;
         }
         for (NSInteger i=0; i<3; i++) {
             UILabel *label = _labels[i];
@@ -410,6 +420,8 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger cIndex = [_collectionViews indexOfObject:collectionView];
+    _collectionViewIndex = cIndex;
+    _cellIndex = indexPath.row;
     NSArray *array = @[_dataSource1, _dataSource2, _dataSource3];
     for (NSArray *arr in array) {
         for (YWSubsectionVideoModel *model in arr) {
@@ -425,9 +437,7 @@
     for (UICollectionView *cv in _collectionViews) {
         [cv reloadData];
     }
-    //重新设置_progressView的frame
-    YWTemplateCollectionViewCell *cell = (YWTemplateCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    _progressView.frame = CGRectMake(cell.frame.origin.x+30, -cell.frame.origin.y+10, 1, 105);
+//    _progressView.frame = CGRectMake(cell.frame.origin.x+30, -cell.frame.origin.y+10, 1, 105);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {

@@ -1094,7 +1094,7 @@
 		56F5D3871C17D40A008C33CA /* Toolbox play */ = {
 			isa = PBXGroup;
 			children = (
-				56F5D38D1C17DCD2008C33CA /* videoRing.caf */,
+				77D0F1051C11CCA400134A17 /* YWHttpGlobalDefine.h */,
 				56F5D3881C17D44F008C33CA /* YWToolboxPlay.h */,
 				56F5D3891C17D44F008C33CA /* YWToolboxPlay.m */,
 			);
@@ -1128,6 +1128,7 @@
 			children = (
 				566E7BA71C86628A008D2B4F /* 测试结果.txt */,
 				568DC0D71C5619F300CFD1BC /* 接口.txt */,
+				56F5D38D1C17DCD2008C33CA /* videoRing.caf */,
 				5695FFD51C4C61600070544A /* Directions.geojson */,
 				56679BC31C3B393700272C44 /* json.geojson */,
 				771627F91C8082200059CCBE /* change_json.geojson */,
@@ -1627,7 +1628,6 @@
 				56F5D3871C17D40A008C33CA /* Toolbox play */,
 				56F5D3831C17CBA1008C33CA /* movie recorder */,
 				56F5D3821C17CB91008C33CA /* movie play */,
-				77D0F1051C11CCA400134A17 /* YWHttpGlobalDefine.h */,
 				77D0F0FF1C11CABB00134A17 /* YWHttpManager.h */,
 				77D0F1001C11CABB00134A17 /* YWHttpManager.m */,
 				77D0F1021C11CAC900134A17 /* YWParser.h */,

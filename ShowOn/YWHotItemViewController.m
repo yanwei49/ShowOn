@@ -296,6 +296,7 @@
 - (void)templateTrendsTableViewCellDidSelectPlay:(YWTemplateTrendsTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
         YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.trends = cell.trends;
         vc.template = _template;
         [self.navigationController pushViewController:vc animated:YES];
     }else {

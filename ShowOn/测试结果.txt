@@ -129,5 +129,8 @@
     接口：juer/user/getVerificationCode?json
 
 
+9.模板详情没有返回模板的分段视频数组
+    接口：templateInfo
+
 
 

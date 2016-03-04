@@ -18,4 +18,7 @@
 @property (nonatomic, strong) YWMovieTemplateModel *template;
 @property (nonatomic, strong) YWSubsectionVideoModel *subsectionVideo;
 
+//开始录制动画
+- (void)startRecorderAnimationWithDuration:(CGFloat)time;
+
 @end
