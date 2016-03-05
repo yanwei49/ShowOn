@@ -44,6 +44,12 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 
 - (void)initSubViews {
+    _playButton = [[UIButton alloc] initWithFrame:CGRectMake(self.bounds.size.width/2-30, self.bounds.size.height/2-30, 60, 60)];
+    [_playButton setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
+    [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+    [_playButton addTarget:self action:@selector(actionPlay) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_playButton];
+    
     //初始化会话
     _captureSession=[[AVCaptureSession alloc]init];
     if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {//设置分辨率
@@ -112,7 +118,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [_playButton setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
     [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
     [_playButton addTarget:self action:@selector(actionPlay) forControlEvents:UIControlEventTouchUpInside];
-    [self.layer addSublayer:_playButton.layer];
+    [self addSubview:_playButton];
 }
 
 - (void)startRunning {
@@ -199,34 +205,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     }
     //提交会话配置
     [_captureSession commitConfiguration];
-}
-
-- (AVMutableVideoCompositionLayerInstruction *)layerInstructionAfterFixingOrientationForAsset:(AVAsset *)inAsset forTrack:(AVMutableCompositionTrack *)inTrack atTime:(CMTime)inTime
-{
-    //FIXING ORIENTATION//
-    AVMutableVideoCompositionLayerInstruction *videolayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:inTrack];
-    AVAssetTrack *videoAssetTrack = [[inAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-    UIImageOrientation videoAssetOrientation_  = UIImageOrientationUp;
-    BOOL  isVideoAssetPortrait_  = NO;
-    CGAffineTransform videoTransform = videoAssetTrack.preferredTransform;
-    
-    if(videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0)  {videoAssetOrientation_= UIImageOrientationRight; isVideoAssetPortrait_ = YES;}
-    if(videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0)  {videoAssetOrientation_ =  UIImageOrientationLeft; isVideoAssetPortrait_ = YES;}
-    if(videoTransform.a == 1.0 && videoTransform.b == 0 && videoTransform.c == 0 && videoTransform.d == 1.0)   {videoAssetOrientation_ =  UIImageOrientationUp;}
-    if(videoTransform.a == -1.0 && videoTransform.b == 0 && videoTransform.c == 0 && videoTransform.d == -1.0) {videoAssetOrientation_ = UIImageOrientationDown;}
-    
-    CGFloat FirstAssetScaleToFitRatio = 320.0 / videoAssetTrack.naturalSize.width;
-    
-    if(isVideoAssetPortrait_) {
-        FirstAssetScaleToFitRatio = 320.0/videoAssetTrack.naturalSize.height;
-        CGAffineTransform FirstAssetScaleFactor = CGAffineTransformMakeScale(FirstAssetScaleToFitRatio,FirstAssetScaleToFitRatio);
-        [videolayerInstruction setTransform:CGAffineTransformConcat(videoAssetTrack.preferredTransform, FirstAssetScaleFactor) atTime:kCMTimeZero];
-    }else{
-        CGAffineTransform FirstAssetScaleFactor = CGAffineTransformMakeScale(FirstAssetScaleToFitRatio,FirstAssetScaleToFitRatio);
-        [videolayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(videoAssetTrack.preferredTransform, FirstAssetScaleFactor),CGAffineTransformMakeTranslation(0, 160)) atTime:kCMTimeZero];
-    }
-    [videolayerInstruction setOpacity:0.0 atTime:inTime];
-    return videolayerInstruction;
 }
 
 #pragma mark - 视频输出代理

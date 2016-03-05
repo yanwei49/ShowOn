@@ -23,7 +23,7 @@
     UISegmentedControl  *_seg;
     UIScrollView        *_coverImageSV;
     NSMutableArray      *_coverImages;
-    
+    UIView              *_cutView;
 }
 
 - (void)viewDidLoad {
@@ -31,6 +31,7 @@
     self.view.backgroundColor = Subject_color;
     _coverImages = [[NSMutableArray alloc] init];
     self.title = @"制作封面";
+    [self createRightItemWithTitle:@"裁剪"];
     
     [self createSubViews];
     [self movieFrameImage];
@@ -72,40 +73,58 @@
     _coverImageView.image = nil;
     [self.view addSubview:_coverImageView];
     [_coverImageView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(20);
-        make.right.offset(-20);
+        make.centerX.equalTo(self.view.mas_centerX);
         make.top.equalTo(_seg.mas_bottom).offset(20);
-        make.height.offset(180);
+        make.height.width.offset(180*(kScreenWidth-40)/375.0);
     }];
 
-    _coverImageSV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 330, kScreenWidth, 150)];
+    _coverImageSV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 330, kScreenWidth, 100)];
     _coverImageSV.backgroundColor = RGBColor(30, 30, 30);
     _coverImageSV.delegate = self;
+    _coverImageSV.bounces = NO;
+    _coverImageSV.showsHorizontalScrollIndicator = NO;
+    _coverImageSV.contentOffset = CGPointMake(0, 0);
     [self.view addSubview:_coverImageSV];
-//    [_coverImageSV makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.right.offset(0);
-//        make.height.offset(150);
-//        make.top.equalTo(_coverImageView.mas_bottom).offset(30);
-//    }];
+    
+    _cutView = [[UIView alloc] initWithFrame:CGRectMake(20, 330, 80, 100)];
+    _cutView.backgroundColor = [UIColor lightGrayColor];
+    [_cutView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(actionPan:)]];
+    _cutView.alpha = 0.5;
+    [self.view addSubview:_cutView];
 }
 
 - (void)createScorllImagesWithImages:(NSArray *)images {
-    _coverImageSV.contentSize = CGSizeMake(200*images.count, 150);
+    _coverImageSV.contentSize = CGSizeMake(120*images.count, 100);
     for (NSInteger i=0; i<images.count; i++) {
-        UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(200*i, 0, 200, 150)];
-        iv.contentMode = UIViewContentModeCenter;
+        UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(120*i, 10, 120, 80)];
+        iv.contentMode = UIViewContentModeScaleToFill;
         iv.backgroundColor = RGBColor(30, 30, 30);
         iv.image = images[i];
         [_coverImageSV addSubview:iv];
-//        [iv makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.bottom.offset(0);
-//            make.width.offset(100);
-//            make.left.offset(100*i);
-//        }];
     }
 }
 
+- (void)obtainCutImage {
+    CGRect rect = CGRectIntersection(_cutView.frame, _coverImageSV.frame);
+    CGFloat x = fabs(_coverImageSV.contentOffset.x);
+    CGFloat px = rect.origin.x + x;
+    NSInteger i = px/120;
+    UIImage *image = _coverImages[i];
+    UIImage *cutImage = [YWTools cutImage:image withRect:CGRectMake((int)px%120, 0, 80, 80)];
+    _coverImageView.image = cutImage;
+}
+
 #pragma mark - action
+- (void)actionRightItem:(UIButton *)button {
+    [self obtainCutImage];
+}
+
+- (void)actionPan:(UIPanGestureRecognizer *)pan {
+    CGPoint point = [pan translationInView:self.view];
+    pan.view.center = CGPointMake(pan.view.center.x + point.x, pan.view.center.y);
+    [pan setTranslation:CGPointMake(0, 0) inView:self.view];
+}
+
 - (void)actionDown:(UIButton *)button {
     if (_coverImageView.image) {
         YWEditTrendsViewController *vc = [[YWEditTrendsViewController alloc] init];
@@ -133,20 +152,23 @@
 - (void)movieFrameImage {
     [_coverImages removeAllObjects];
     for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
-        if (model.recorderVideoUrl) {
+//        if (model.recorderVideoUrl) {
+        if (model.subsectionVideoUrl) {
             AVURLAsset *urlAsset=[AVURLAsset assetWithURL:model.recorderVideoUrl];
             NSLog(@"-=============%lld", urlAsset.duration.value);
             for (NSInteger i=0; i<1; i++) {
-                UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i];
-                UIImage *rotationImage = [self rotation:image];
-                CGFloat w = (rotationImage.size.width/200>rotationImage.size.height/100)?rotationImage.size.width*rotationImage.size.height/100:200;
-                CGFloat h = (rotationImage.size.width/200<rotationImage.size.height/100)?rotationImage.size.height*rotationImage.size.width/200:100;
-                UIImage *scaleImage = [YWTools image:rotationImage scaledToSize:CGSizeMake(w, h)];
-                UIImage *cutImage = [YWTools cutImage:scaleImage withRect:CGRectMake(0, 0, 200, 100)];
-                [_coverImages addObject:scaleImage];
-                if (!i) {
-                    _coverImageView.image = _coverImages[0];
-                }
+//                UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i];
+                UIImage *image = [self thumbnailImageRequestUrl:[NSURL URLWithString:[model.subsectionVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] time:10*i];
+//                UIImage *rotationImage = [self rotation:image];
+                UIImage *rotationImage = [self fixOrientation:image];
+//                CGFloat w = (rotationImage.size.width/200>rotationImage.size.height/100)?rotationImage.size.width*rotationImage.size.height/100:200;
+//                CGFloat h = (rotationImage.size.width/200<rotationImage.size.height/100)?rotationImage.size.height*rotationImage.size.width/200:100;
+//                UIImage *scaleImage = [YWTools image:rotationImage scaledToSize:CGSizeMake(w, h)];
+//                UIImage *cutImage = [YWTools cutImage:rotationImage withRect:CGRectMake(0, 0, 200, 100)];
+                [_coverImages addObject:rotationImage];
+//                if (!i) {
+//                    _coverImageView.image = _coverImages[0];
+//                }
             }
         }
     }
@@ -295,13 +317,13 @@
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
-
-#pragma mark - UIScrollViewDelegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat x = scrollView.contentOffset.x;
-    NSInteger i = x/200;
-    _coverImageView.image = _coverImages[i];
-}
+//
+//#pragma mark - UIScrollViewDelegate
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    if (_cutView.frame.origin.x < 20+scrollView.contentOffset.x) {
+//        _cutView.frame = CGRectMake(20+scrollView.contentOffset.x, 0, 80, 100);
+//    }
+//}
 
 /**
  *  截取指定时间的视频缩略图

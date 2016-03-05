@@ -56,7 +56,7 @@
     movie.movieUrl = [dict objectForKey:@"videoUrl"];
     movie.movieName = [dict objectForKey:@"videoName"];
     movie.movieCoverImage = [dict objectForKey:@"videoCoverImage"];
-    movie.movieTemplate = [self templateWithDict:[dict objectForKey:@"movieTemplate"]];
+    movie.movieTemplate = [self templateWithDict:[dict objectForKey:@"videoTemplate"]];
     
     return movie;
 }

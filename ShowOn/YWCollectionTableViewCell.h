@@ -14,6 +14,7 @@
 
 - (void)collectionTableViewCellDidSelectCooperate:(YWCollectionTableViewCell *)cell;
 - (void)collectionTableViewCellDidSelectPlay:(YWCollectionTableViewCell *)cell;
+- (void)collectionTableViewCellDidSelectPlaying:(YWCollectionTableViewCell *)cell;
 
 @end
 

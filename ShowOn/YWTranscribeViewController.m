@@ -251,12 +251,7 @@
 }
 
 - (void)actionChange:(UIButton *)button {
-    YWTemplateCollectionViewCell *cell = (YWTemplateCollectionViewCell *)[_collectionViews[_collectionViewIndex] cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_cellIndex inSection:0]];
-    [cell startRecorderAnimationWithDuration:12];
-    return;
-//    if (_recorderView.model.subsectionVideoPerformanceStatus.integerValue != 0) {
-        [_recorderView changeCamera];
-//    }
+    [_recorderView changeCamera];
 }
 
 #pragma mark - YWMoviePlayViewDelegate
@@ -270,8 +265,7 @@
 }
 
 - (void)moviePlayViewPlayDown:(YWMoviePlayView *)view {
-//    [_recorderView startRecorder];
-//    self.view.userInteractionEnabled = YES;
+
 }
 
 #pragma mark - YWMovieRecorderDelegate
@@ -284,35 +278,10 @@
 }
 
 - (void)movieRecorderBegin:(YWMovieRecorder *)view {
-    self.view.userInteractionEnabled = NO;
+//    self.view.userInteractionEnabled = NO;
     YWTemplateCollectionViewCell *cell = (YWTemplateCollectionViewCell *)[_collectionViews[_collectionViewIndex] cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_cellIndex inSection:0]];
     [cell startRecorderAnimationWithDuration:view.model.subsectionVideoTime.floatValue];
-
-//    _recorderTime = view.model.subsectionVideoTime.floatValue;
-//    [self timerStart];
 }
-
-//- (void)timerStart {
-//    _timer.fireDate = [NSDate distantPast];
-//}
-//
-//- (void)run {
-//    static CGFloat cnt;
-//    NSInteger step = 110/_recorderTime;
-//    [self recorderProgressAnimationWithFloat:step];
-//    if (cnt > _recorderTime) {
-//        cnt = 0;
-//        _timer.fireDate = [NSDate distantFuture];
-//        [self recorderDown];
-//    }
-//    cnt += 0.1;
-//}
-//
-//- (void)recorderProgressAnimationWithFloat:(CGFloat)progress {
-//    CGRect frame = _progressView.frame;
-//    frame.origin.x += progress;
-//    _progressView.frame = frame;
-//}
 
 - (void)recorderDown {
     self.view.userInteractionEnabled = YES;
@@ -329,7 +298,7 @@
                     break;
                 }
             }
-            if (state) {
+            if (!state) {
                 YWEditCoverViewController *vc = [[YWEditCoverViewController alloc] init];
                 vc.trends = _trends;
                 vc.template = _template;

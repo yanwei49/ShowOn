@@ -21,6 +21,10 @@
 #import "YWTrendsViewController.h"
 #import "YWFollowingViewController.h"
 #import "YWCollectionViewController.h"
+#import "YWMovieModel.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import "MPMoviePlayerViewController+Rotation.h"
+#import "YWTranscribeViewController.h"
 
 @interface YWUserDataViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YWMineTableHeadViewDelegate, YWCustomSegViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, YWTrendsTableViewCellDelegate, YWTrendsCategoryViewDelegate, UIActionSheetDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -254,6 +258,7 @@
         }]];
         [sheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         }]];
+        [self presentViewController:sheet animated:YES completion:nil];
     }else {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"拍照" otherButtonTitles:@"相册", nil];
         [actionSheet showInView:self.view];
@@ -278,14 +283,6 @@
 
 - (void)actionAblum {
     UIImagePickerController *albumPicker = [[UIImagePickerController alloc] init];
-    BOOL isCamera = [UIImagePickerController isCameraDeviceAvailable:
-                     UIImagePickerControllerCameraDeviceRear ||
-                     UIImagePickerControllerCameraDeviceFront];
-    if (!isCamera) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"没有可用摄像头" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alertView show];
-        return;
-    }
     albumPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     albumPicker.delegate = self;
     [self presentViewController:albumPicker animated:YES completion:NULL];
@@ -293,7 +290,7 @@
 
 #pragma mark - request
 - (void)requestUserDetails {
-    NSDictionary *parameters = @{@"userId": _user.userId};
+    NSDictionary *parameters = @{@"userId": _user.userId, @"loginUserId": [[YWDataBaseManager shareInstance] loginUser].userId?:@""};
     [_httpManager requestUserDetail:parameters success:^(id responseObject) {
         [_allTrendsArray removeAllObjects];
         [_trendsArray removeAllObjects];
@@ -303,6 +300,10 @@
         _user.userId = userId;
         [_allTrendsArray addObjectsFromArray:_user.userTrends];
         [_trendsArray addObjectsFromArray:_allTrendsArray];
+        _headView.user = _user;
+        if (_headImage) {
+            _headView.headImage = _headImage;
+        }
         [_tableView reloadData];
     } otherFailure:^(id responseObject) {
         
@@ -318,8 +319,12 @@
         UITextField *tf = (UITextField *)cell.accessoryView;
         [array addObject:tf.text?:@""];
     }
-    NSDictionary *parameters = @{@"userId": _user.userId, @"introduction": array[0], @"sex": array[1], @"district": array[2], @"birthday": array[3], @"constellation": array[4], @"height": array[5], @"bwh": array[6]};
+    [SVProgressHUD showWithStatus:@"修改中..."];
+    NSDictionary *parameters = @{@"userId": _user.userId, @"introduction": array[0], @"sex": [array[1] isEqualToString:@"女"]?@"2":@"1", @"district": array[2], @"birthday": array[3], @"constellation": array[4], @"height": array[5], @"bwh": array[6]};
     [_httpManager requestSaveUserDetails:parameters image:_headImage success:^(id responseObject) {
+        YWParser *parser = [[YWParser alloc] init];
+        _user = [parser userWithDict:responseObject[@"user"]];
+        [[YWDataBaseManager shareInstance] updateLoginUser:_user];
         [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
         [self.navigationController popViewControllerAnimated:YES];
     } otherFailure:^(id responseObject) {
@@ -478,6 +483,7 @@
     }else {
         YWTrendsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell1"];
         cell.trends = _trendsArray[indexPath.row];
+        cell.delegate = self;
         
         return cell;
     }
@@ -589,6 +595,20 @@
     [self requestSupportWithTrends:cell.trends];
 }
 
+- (void)trendsTableViewCellDidSelectPlaying:(YWTrendsTableViewCell *)cell {
+    if (cell.trends.trendsMovie.movieUrl.length) {
+        NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSURL *url = [NSURL URLWithString:urlStr];
+        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [moviePlayerViewController rotateVideoViewWithDegrees:90];
+        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    }else {
+        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.trends = cell.trends;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
 #pragma mark - YWMineTableHeadViewDelegate
 - (void)mineTableHeadView:(YWMineTableHeadView *)view didSelectButtonWithIndex:(NSInteger)index {
     switch (index) {
@@ -638,6 +658,10 @@
     vc.userName = _user.userName;
     vc.title = _user.userName;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)mineTableHeadViewDidSelectAvator {
+    [self actionAvator];
 }
 
 @end

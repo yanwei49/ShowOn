@@ -7,16 +7,21 @@
 //
 
 #import "YWTrendsTableViewCell.h"
-#import "YWMoviePlayView.h"
+//#import "YWMoviePlayView.h"
 #import "YWTrendsModel.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "YWMovieTemplateModel.h"
+#import "YWMovieModel.h"
 
 @implementation YWTrendsTableViewCell
 {
-    YWMoviePlayView   *_playMovie;
+//    YWMoviePlayView   *_playMovie;
     UILabel           *_contentLabel;
     UIButton          *_supportButton;
     UILabel           *_supportLabel;
     UILabel           *_timeLabel;
+    UIImageView       *_imageView;
+    UIButton          *_playingButton;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -24,17 +29,38 @@
     if (self) {
         self.contentView.backgroundColor = RGBColor(30, 30, 30);
         
-        _playMovie = [[YWMoviePlayView alloc] init];
-        _playMovie.backgroundColor = Subject_color;
-        _playMovie.layer.masksToBounds = YES;
-        _playMovie.layer.cornerRadius = 5;
-        [self.contentView addSubview:_playMovie];
-        [_playMovie makeConstraints:^(MASConstraintMaker *make) {
+//        _playMovie = [[YWMoviePlayView alloc] init];
+//        _playMovie.backgroundColor = Subject_color;
+//        _playMovie.layer.masksToBounds = YES;
+//        _playMovie.layer.cornerRadius = 5;
+//        [self.contentView addSubview:_playMovie];
+//        [_playMovie makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.left.offset(5);
+//            make.right.offset(-5);
+//            make.height.offset(200);
+//        }];
+//        
+        _imageView = [[UIImageView alloc] init];
+        _imageView.backgroundColor = RGBColor(30, 30, 30);
+        _imageView.layer.masksToBounds = YES;
+        _imageView.layer.cornerRadius = 5;
+        [self.contentView addSubview:_imageView];
+        [_imageView makeConstraints:^(MASConstraintMaker *make) {
             make.top.left.offset(5);
             make.right.offset(-5);
             make.height.offset(200);
         }];
         
+        _playingButton = [[UIButton alloc] init];
+        [_playingButton setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
+        [_playingButton addTarget:self action:@selector(actionPlaying:) forControlEvents:UIControlEventTouchUpInside];
+        [self.contentView addSubview:_playingButton];
+        [_playingButton makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(_imageView.mas_centerY);
+            make.centerX.equalTo(_imageView.mas_centerX);
+            make.width.height.offset(100);
+        }];
+
         _contentLabel = [[UILabel alloc] init];
         _contentLabel.numberOfLines = 0;
         _contentLabel.text = @"这是搜大大难分难舍饭票千分疲惫非完全访问ufipbfiwq方碧平不i耳边风这是搜大大难分难舍饭票千分疲惫非完全访问ufipbfiwq方碧平不i耳边风";
@@ -43,7 +69,7 @@
         _contentLabel.font = [UIFont systemFontOfSize:14];
         [self.contentView addSubview:_contentLabel];
         [_contentLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_playMovie.mas_bottom).offset(5);
+            make.top.equalTo(_imageView.mas_bottom).offset(5);
             make.left.offset(10);
             make.right.offset(-10);
         }];
@@ -60,7 +86,7 @@
         }];
         
         _supportButton = [[UIButton alloc] init];
-        _supportButton.backgroundColor = RGBColor(130, 130, 130);
+        _supportButton.backgroundColor = RGBColor(30, 30, 30);
         [_supportButton setImage:[UIImage imageNamed:@"support_normal.png"] forState:UIControlStateNormal];
         [_supportButton setImage:[UIImage imageNamed:@"support_selected.png"] forState:UIControlStateSelected];
         [button addSubview:_supportButton];
@@ -96,6 +122,12 @@
     return self;
 }
 
+- (void)actionPlaying:(UIButton *)button {
+    if ([_delegate respondsToSelector:@selector(trendsTableViewCellDidSelectPlaying:)]) {
+        [_delegate trendsTableViewCellDidSelectPlaying:self];
+    }
+}
+
 - (void)actionSupport:(UIButton *)button {
     if ([_delegate respondsToSelector:@selector(trendsTableViewCellDidSelectSupportButton:)]) {
         [_delegate trendsTableViewCellDidSelectSupportButton:self];
@@ -104,6 +136,7 @@
 
 - (void)setTrends:(YWTrendsModel *)trends {
     _trends = trends;
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
     _supportButton.selected = trends.trendsIsSupport;
     _contentLabel.text = trends.trendsContent;
     _supportLabel.text = trends.trendsSuppotNumbers;

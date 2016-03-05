@@ -13,6 +13,7 @@
 @protocol YWTrendsTableViewCellDelegate <NSObject>
 
 - (void)trendsTableViewCellDidSelectSupportButton:(YWTrendsTableViewCell *)cell;
+- (void)trendsTableViewCellDidSelectPlaying:(YWTrendsTableViewCell *)cell;
 
 @end
 @interface YWTrendsTableViewCell : UITableViewCell

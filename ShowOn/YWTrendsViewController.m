@@ -234,6 +234,7 @@
 - (void)focusTableViewCellDidSelectCooperate:(YWFocusTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
         YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.template = cell.trends.trendsMovie.movieTemplate;
         [self.navigationController pushViewController:vc animated:YES];
     }else {
         [self login];
@@ -243,7 +244,7 @@
 - (void)focusTableViewCellDidSelectPlay:(YWFocusTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
         YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
-        vc.template = _trends.trendsMovie.movieTemplate;
+        vc.template = cell.trends.trendsMovie.movieTemplate;
         [self.navigationController pushViewController:vc animated:YES];
     }else {
         [self login];
