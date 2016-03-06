@@ -302,6 +302,18 @@
 
 
 
+//评论
+{
+    "userId": ""
+    "commentsTargetId": ""      //评论目标id
+    "commentsTypeId": ""        //评论的类型（1.动态   2.回复动态评论     3.模板    4.回复模板评论）
+    "aiTeuserIds": ""           //@的用户的userId，多个userId之间用|拼接
+    "dependId": ""              //该评论的动态或模板id（当commentsTypeId为2，4才有值）
+}
+{
+    "code": ""
+    "msg": ""
+}
 
 
 

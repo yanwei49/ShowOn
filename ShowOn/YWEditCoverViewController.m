@@ -12,8 +12,9 @@
 #import "YWMovieTemplateModel.h"
 #import "YWSubsectionVideoModel.h"
 #import "YWTools.h"
+#import "YWCutImageViewController.h"
 
-@interface YWEditCoverViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface YWEditCoverViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, YWCutImageViewControllerDelegate>
 
 @end
 
@@ -303,13 +304,21 @@
     return img;
 }
 
+#pragma mark - YWCutImageViewControllerDelegate
+- (void)cutImageViewControllerCutImage:(UIImage *)cutImage {
+    _coverImageView.image = cutImage;
+}
+
 #pragma mark - UIImagePickerController Delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     UIImage *im = [self fixOrientation:image];
-    _coverImageView.image = im;
     //关闭模态视图
     [picker dismissViewControllerAnimated:YES completion:NULL];
+    YWCutImageViewController *cutVC = [[YWCutImageViewController alloc] init];
+    cutVC.image = im;
+    cutVC.delegate = self;
+    [self.navigationController pushViewController:cutVC animated:YES];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -317,13 +326,6 @@
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
-//
-//#pragma mark - UIScrollViewDelegate
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    if (_cutView.frame.origin.x < 20+scrollView.contentOffset.x) {
-//        _cutView.frame = CGRectMake(20+scrollView.contentOffset.x, 0, 80, 100);
-//    }
-//}
 
 /**
  *  截取指定时间的视频缩略图

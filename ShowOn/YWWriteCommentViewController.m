@@ -49,11 +49,11 @@
     label.font = [UIFont systemFontOfSize:13];
     if (_type == 3) {
         label.text = [NSString stringWithFormat:@"转发动态：%@", _trends.trendsContent];
-    }else if (_comment) {
+    }else if (_type == 2 || _type == 5) {
         label.text = [NSString stringWithFormat:@"回复评论：%@", _comment.commentContent];
-    }else if (_trends) {
+    }else if (_type == 1) {
         label.text = [NSString stringWithFormat:@"评论动态：%@", _trends.trendsContent];
-    }else if (_template) {
+    }else if (_type == 4) {
         label.text = [NSString stringWithFormat:@"评论模板：%@", _template.templateName];
     }
     [self.view addSubview:label];
@@ -88,13 +88,15 @@
         make.right.offset(-10);
     }];
     
-    _keyboardHead = [[YWKeyboardHeadView alloc] init];
-    _keyboardHead.delegate = self;
-    [self.view addSubview:_keyboardHead];
-    [_keyboardHead makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.offset(0);
-        make.height.offset(49);
-    }];
+    if (_type != 3) {
+        _keyboardHead = [[YWKeyboardHeadView alloc] init];
+        _keyboardHead.delegate = self;
+        [self.view addSubview:_keyboardHead];
+        [_keyboardHead makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.bottom.offset(0);
+            make.height.offset(49);
+        }];
+    }
 }
 
 #pragma mark - action
@@ -118,6 +120,7 @@
 
 #pragma mark - request
 - (void)requestCommitContent {
+    [SVProgressHUD showWithStatus:@"提交中，请稍等。。。"];
     NSMutableString *userId = [NSMutableString stringWithString:@""];
     for (YWUserModel *user in _selectUsers) {
         if ([_textView.text rangeOfString:[NSString stringWithFormat:@"@%@", user.userName]].location != NSNotFound) {
@@ -125,7 +128,25 @@
             [userId appendString:@"|"];
         }
     }
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"commentsTargetId": _trends&&_comment?_trends.trendsId:_comment.commentId, @"commentsTypeId": _trends?@(1):@(2), @"commentsContent": _textView.text, @"aiTeuserIds": userId, @"dependId": _template?_template.templateId:_trends.trendsId, @"dependType": _template?@(2):@(1)};
+    NSString *dependId = @"";
+    NSString *commentsTypeId = @"1";
+    NSString *commentsTargetId = @"";
+    if (_comment && _trends) {
+        dependId = _trends.trendsId;
+        commentsTypeId = @"2";
+        commentsTargetId = _comment.commentId;
+    }else if (_comment && _template) {
+        dependId = _template.templateId;
+        commentsTypeId = @"4";
+        commentsTargetId = _comment.commentId;
+    }else if (_trends) {
+        commentsTypeId = @"1";
+        commentsTargetId = _trends.trendsId;
+    }else {
+        commentsTypeId = @"3";
+        commentsTargetId = _template.templateId;
+    }
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"commentsTargetId": commentsTargetId, @"commentsTypeId": commentsTypeId, @"commentsContent": _textView.text, @"aiTeuserIds": userId, @"dependId": dependId};
     [_httpManager requestAiTeList:parameters success:^(id responseObject) {
         [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
         [self dismissViewControllerAnimated:YES completion:nil];

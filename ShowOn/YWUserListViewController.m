@@ -77,7 +77,7 @@
 
 #pragma mark - request
 - (void)requestUserList {
-    NSDictionary *parameters = @{@"relationTypeId": @(0), @"userId": @"", @"page": @(_currentPage)};
+    NSDictionary *parameters = @{@"relationTypeId": @(1), @"userId": @"", @"page": @(_currentPage)};
     [_httpManager requestUserList:parameters success:^(id responseObject) {
         if (!_currentPage) {
             [_dataSource removeAllObjects];

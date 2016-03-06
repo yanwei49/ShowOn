@@ -235,6 +235,7 @@
 		774A1E5A1C2FCD5600671945 /* YWDataBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 774A1E591C2FCD5600671945 /* YWDataBaseManager.m */; };
 		77927B471C4541F0001ED99B /* YWHotItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77927B461C4541F0001ED99B /* YWHotItemViewController.m */; };
 		77AD0CAD1C1DA34800A1FD75 /* YWCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AD0CAC1C1DA34800A1FD75 /* YWCommentModel.m */; };
+		77BFA8101C8B1CCD00994CCF /* YWCutImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77BFA80F1C8B1CCD00994CCF /* YWCutImageViewController.m */; };
 		77BFCC1F1C7862DF001D49BA /* choose_normal_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 77BFCC191C7862DF001D49BA /* choose_normal_small.png */; };
 		77BFCC201C7862DF001D49BA /* choose_normal_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77BFCC1A1C7862DF001D49BA /* choose_normal_small@2x.png */; };
 		77BFCC211C7862DF001D49BA /* choose_normal_small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77BFCC1B1C7862DF001D49BA /* choose_normal_small@3x.png */; };
@@ -603,6 +604,8 @@
 		77927B461C4541F0001ED99B /* YWHotItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWHotItemViewController.m; sourceTree = "<group>"; };
 		77AD0CAB1C1DA34800A1FD75 /* YWCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCommentModel.h; sourceTree = "<group>"; };
 		77AD0CAC1C1DA34800A1FD75 /* YWCommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCommentModel.m; sourceTree = "<group>"; };
+		77BFA80E1C8B1CCD00994CCF /* YWCutImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCutImageViewController.h; sourceTree = "<group>"; };
+		77BFA80F1C8B1CCD00994CCF /* YWCutImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCutImageViewController.m; sourceTree = "<group>"; };
 		77BFCC191C7862DF001D49BA /* choose_normal_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = choose_normal_small.png; sourceTree = "<group>"; };
 		77BFCC1A1C7862DF001D49BA /* choose_normal_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "choose_normal_small@2x.png"; sourceTree = "<group>"; };
 		77BFCC1B1C7862DF001D49BA /* choose_normal_small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "choose_normal_small@3x.png"; sourceTree = "<group>"; };
@@ -1240,6 +1243,8 @@
 				568DBFF01C560BCD00CFD1BC /* YWEditCoverViewController.m */,
 				568DBFF21C560C6000CFD1BC /* YWEditTrendsViewController.h */,
 				568DBFF31C560C6000CFD1BC /* YWEditTrendsViewController.m */,
+				77BFA80E1C8B1CCD00994CCF /* YWCutImageViewController.h */,
+				77BFA80F1C8B1CCD00994CCF /* YWCutImageViewController.m */,
 			);
 			name = viewcontroller;
 			sourceTree = "<group>";
@@ -2067,6 +2072,7 @@
 				774A1E5A1C2FCD5600671945 /* YWDataBaseManager.m in Sources */,
 				568DBF671C55BE2000CFD1BC /* YWSearchViewController.m in Sources */,
 				56843F821C4F03C50062F7DF /* YWMovieTemplateModel.m in Sources */,
+				77BFA8101C8B1CCD00994CCF /* YWCutImageViewController.m in Sources */,
 				56F4AF221C126550008A6828 /* YWForgetPasswordViewController.m in Sources */,
 				568D28711C49CF2D00DAA9B9 /* YWArticleListTableViewCell.m in Sources */,
 				77927B471C4541F0001ED99B /* YWHotItemViewController.m in Sources */,
