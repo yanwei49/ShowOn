@@ -915,15 +915,15 @@
     "msg": "",
     "moreTemplate": {
         "celebrityTemplate": [{      //名人模板列表
-             "templateId": ""
+             "templateSubTypeId": ""
              "templateName": ""
         }]
         "vedioTemplate": [{          //视频模板列表
-             "templateId": ""
+             "templateSubTypeId": ""
              "templateName": ""
         }]
         "applicationTemplate": [{    //应用模板列表
-             "templateId": ""
+             "templateSubTypeId": ""
              "templateName": ""
         }]
     }
@@ -935,6 +935,7 @@
  */
 //参数：
 {
+    "templateSubTypeId": ""
 }
 //返回值：
 {

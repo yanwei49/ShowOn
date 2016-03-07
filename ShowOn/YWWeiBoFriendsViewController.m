@@ -10,6 +10,8 @@
 #import "YWHttpManager.h"
 #import "YWFollowingTableViewCell.h"
 #import "YWUserModel.h"
+#import "YWDataBaseManager.h"
+#import "YWParser.h"
 
 @interface YWWeiBoFriendsViewController ()<UITableViewDataSource, UITableViewDelegate, YWFollowingTableViewCellDelegate>
 
@@ -47,25 +49,71 @@
 //cursor	false	int	返回结果的游标，下一页用返回值里的next_cursor，上一页用previous_cursor，默认为0。
 #pragma mark - request
 - (void)requestWeiBoFriend {
-    NSDictionary *parameters = @{@"access_token": @"", @"uid": @"", @"cursor": @"0", @"count": @(190)};
+    NSDictionary *parameters = @{@"access_token": @"", @"uid": [[YWDataBaseManager shareInstance] loginUser].userAccount, @"cursor": @"0", @"count": @(190)};
     [[YWHttpManager shareInstance] requestWeiBoFriendList:parameters success:^(id responseObject) {
         NSArray *users = [responseObject objectForKey:@"users"];
+        NSMutableString *accounts = [NSMutableString stringWithString:@""];
         for (NSDictionary *dict in users) {
-            YWUserModel *user = [[YWUserModel alloc] init];
-            user.userName = [dict objectForKey:@"name"];
-            user.portraitUri = [dict objectForKey:@"profile_image_url"];
-            
-            [_dataSource addObject:users];
+//            YWUserModel *user = [[YWUserModel alloc] init];
+//            user.userName = [dict objectForKey:@"name"];
+//            user.portraitUri = [dict objectForKey:@"profile_image_url"];
+//            [_dataSource addObject:users];
+            [accounts appendString:[dict objectForKey:@"uid"]];
         }
+        [self requestWeiboUserWithAccounts:accounts];
         [_tableView reloadData];
     } otherFailure:^(id responseObject) {
     } failure:^(NSError *error) {
     }];
 }
 
+- (void)requestWeiboUserWithAccounts:(NSString *)accounts {
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"accounts": accounts};
+    [[YWHttpManager shareInstance] requestWeiBoUser:parameters success:^(id responseObject) {
+        [_dataSource removeAllObjects];
+        YWParser *parser = [[YWParser alloc] init];
+        [_dataSource addObjectsFromArray:[parser userWithArray:responseObject[@"userList"]]];
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+    } failure:^(NSError *error) {
+    }];
+}
+
+- (void)requestAddFollowWithUser:(YWUserModel *)user {
+    NSInteger state = 0;
+    switch (user.userRelationType) {
+        case kEachOtherNoFocus:
+            state = kFocus;
+            break;
+        case kFocus:
+            state = kEachOtherNoFocus;
+            break;
+        case kBeFocus:
+            state = kEachOtherFocus;
+            break;
+        case kBlackList:
+            state = kEachOtherNoFocus;
+            break;
+        case kEachOtherFocus:
+            state = kBeFocus;
+            break;
+        default:
+            break;
+    }
+    NSDictionary *parameters = @{@"state": @(state), @"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
+    [_httpManager requestChangeRelationType:parameters success:^(id responseObject) {
+        user.userRelationType = state;
+        [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_dataSource indexOfObject:user] inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
 #pragma mark - YWFollowingTableViewCellDelegate
 - (void)followingTableViewCellDidSelectButton:(YWFollowingTableViewCell *)cell {
-    
+    [self requestAddFollowWithUser:cell.user];
 }
 
 #pragma mark - UITableViewDelegate

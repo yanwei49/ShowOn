@@ -278,5 +278,35 @@
  */
 - (void)requestPlay:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
 
+/**
+ *  微博用户
+ *
+ *  @param parameters 请求参数
+ *  @param success    成功block
+ *  @param failure    失败block
+ */
+
+- (void)requestWeiBoUser:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
+
+/**
+ *  获取模板子分类列表
+ *
+ *  @param parameters 请求参数
+ *  @param success    成功block
+ *  @param failure    失败block
+ */
+
+- (void)requestTemplateSubCategory:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
+
+/**
+ *  获取模板某个子分类下的模板列表
+ *
+ *  @param parameters 请求参数
+ *  @param success    成功block
+ *  @param failure    失败block
+ */
+
+- (void)requestTemplateSubCategoryList:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
+
 
 @end

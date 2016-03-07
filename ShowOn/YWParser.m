@@ -69,6 +69,7 @@
     template.templateVideoTime = [dict objectForKey:@"dateTimeOriginal"];
     template.templateVideoCoverImage = [dict objectForKey:@"templateCoverImage"];
     template.templateTypeId = [dict objectForKey:@"templateTypeId"];
+    template.templateSubTypeId = [dict objectForKey:@"templateSubTypeId"];
     template.templatePlayUserNumbers = [dict objectForKey:@"shootTime"];
     template.templatePlayUsers = [self userWithArray:[dict objectForKey:@"templatePlayUsers"]];
     template.templateSubsectionVideos = [self subsectionVideoWithArray:[dict objectForKey:@"templateSubsectionVideos"]];

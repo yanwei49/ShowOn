@@ -158,6 +158,19 @@
     接口：juer/user/getUserInfo?json
 
 16.评论接口待写
+//参数
+{
+    "userId": ""
+    "commentsTargetId": ""      //评论目标id
+    "commentsTypeId": ""        //评论的类型（1.动态   2.回复动态评论     3.模板    4.回复模板评论）
+    "aiTeuserIds": ""           //@的用户的userId，多个userId之间用|拼接
+    "dependId": ""              //该评论的动态或模板id（当commentsTypeId为2，4才有值）
+}
+//返回值
+{
+    "code": ""
+    "msg": ""
+}
 
 17.手机验证码收不到
     接口：juer/user/getVerificationCode?json
@@ -175,7 +188,7 @@
 }
 
 
-19.模板表要多维护一个字段（模板的子分类id）
+19.模板表要多维护一个字段（模板的子分类id，key为：templateSubTypeId）
     模板类型id分为：1、名人专场,2、视频分类,3、应用模版
     模板的子分类id：根据模板类型id分类在进行一个细分
                 如：名人专场以人名再进行细分；视频类型可分为电影，电视剧，mv，段子等；应用模板分为拜年，生日祝福，家庭聚会等
@@ -190,15 +203,15 @@
     "msg": ""
     "moreTemplate": {
         "celebrityTemplate": [{      //名人模板列表
-            "templateId": ""
+            "templateSubTypeId": ""
             "templateName": ""
         }]
         "vedioTemplate": [{          //视频模板列表
-            "templateId": ""
+            "templateSubTypeId": ""
             "templateName": ""
         }]
         "applicationTemplate": [{    //应用模板列表
-            "templateId": ""
+            "templateSubTypeId": ""
             "templateName": ""
         }]
     }   
@@ -207,6 +220,7 @@
 21.增加接口，通过模板的子分类id获取改子分类下的模板列表
 //参数：
 {
+    "templateSubTypeId": ""
 }
 //返回值：
 {

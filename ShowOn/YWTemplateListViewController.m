@@ -12,7 +12,6 @@
 #import "YWHttpManager.h"
 #import "YWParser.h"
 #import "YWTranscribeViewController.h"
-
 #import "YWMovieTemplateModel.h"
 
 @interface YWTemplateListViewController ()<UITableViewDataSource, UITableViewDelegate, YWTemplateListTableViewCellDelegate>
@@ -36,19 +35,11 @@
     _currentPage = 0;
 
     [self createSubViews];
-    [self dataSource];
 }
 
-- (void)dataSource {
-    for (NSInteger i=0; i<10; i++) {
-        YWMovieTemplateModel *template = [[YWMovieTemplateModel alloc] init];
-        template.templateId = @"1";
-        template.templateName = [NSString stringWithFormat:@"模板%ld", (long)i];
-        template.templateVideoCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-        
-        [_dataSource addObject:template];
-    }
-    [_tableView reloadData];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self requestTemplateList];
 }
 
 - (void)createSubViews {
@@ -61,23 +52,23 @@
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.right.offset(0);
-        make.top.offset(69);
+        make.top.offset(64);
     }];
     _tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _currentPage = 0;
-        [self requestSupportList];
+        [self requestTemplateList];
     }];
 }
 
 #pragma mark - request
-- (void)requestSupportList {
-    NSDictionary *parameters = @{@"templateId": _template.templateId, @"page": @(_currentPage)};
-    [_httpManager requestSupportList:parameters success:^(id responseObject) {
+- (void)requestTemplateList {
+    NSDictionary *parameters = @{@"templateSubTypeId": _template.templateSubTypeId, @"page": @(_currentPage)};
+    [_httpManager requestTemplateSubCategoryList:parameters success:^(id responseObject) {
         if (!_currentPage) {
             [_dataSource removeAllObjects];
         }
         YWParser *parser = [[YWParser alloc] init];
-        NSArray *array = [parser supportWithArray:responseObject[@"supportList"]];
+        NSArray *array = [parser templateWithArray:responseObject[@"templateList"]];
         [_dataSource addObjectsFromArray:array];
         [self noContentViewShowWithState:_dataSource.count?NO:YES];
         if (array.count<20) {
@@ -85,7 +76,7 @@
         }else {
             _tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
                 _currentPage ++;
-                [self requestSupportList];
+                [self requestTemplateList];
             }];
         }
         [_tableView.header endRefreshing];
@@ -130,7 +121,9 @@
 
 #pragma mark - YWTemplateListTableViewCellDelegate
 - (void)templateListTableViewCellDidSelectPlay:(YWTemplateListTableViewCell *)cell {
-
+    YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+    vc.template = cell.template;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

@@ -15,8 +15,6 @@
 #import "YWParser.h"
 #import "YWHttpManager.h"
 
-#import "YWMovieTemplateModel.h"
-
 @interface YWTemplateViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWSearchCollectionReusableViewDelegate>
 
 @end
@@ -27,30 +25,22 @@
     UICollectionView    *_collectionView;
     YWHttpManager       *_httpManager;
     NSInteger            _currentPage;
+    NSMutableArray      *_celebrityArray;
+    NSMutableArray      *_vedioArray;
+    NSMutableArray      *_applicationArray;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
     _dataSource = [[NSMutableArray alloc] init];
+    _celebrityArray = [[NSMutableArray alloc] init];
+    _vedioArray = [[NSMutableArray alloc] init];
+    _applicationArray = [[NSMutableArray alloc] init];
     _httpManager = [YWHttpManager shareInstance];
     _currentPage = 0;
 
     [self createSubViews];
-    [self dataSourceWithIndex:10];
-}
-
-- (void)dataSourceWithIndex:(NSInteger)index {
-    for (NSInteger i=0; i<index; i++) {
-        YWMovieTemplateModel *template = [[YWMovieTemplateModel alloc] init];
-        template.templateId = @"1";
-        template.templateTypeId = @"1";
-        template.templateName = [NSString stringWithFormat:@"名称%ld", (long)i];
-        template.templateVideoCoverImage = @"http://www.51qnz.cn/photo/image/merchant/201510287110532762.jpg";
-
-        [_dataSource addObject:template];
-    }
-    [_collectionView reloadData];
 }
 
 - (void)createSubViews {
@@ -66,7 +56,7 @@
     [self.view addSubview:_collectionView];
     [_collectionView makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.right.offset(0);
-        make.top.offset(69);
+        make.top.offset(64);
     }];
     _collectionView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _currentPage = 0;
@@ -76,16 +66,20 @@
 
 #pragma mark - request
 - (void)requestSupportList {
-    NSDictionary *parameters = @{@"templateId": @"", @"page": @(_currentPage)};
-    [_httpManager requestSupportList:parameters success:^(id responseObject) {
+    [_httpManager requestTemplateSubCategory:nil success:^(id responseObject) {
         if (!_currentPage) {
             [_dataSource removeAllObjects];
+            [_celebrityArray removeAllObjects];
+            [_vedioArray removeAllObjects];
+            [_applicationArray removeAllObjects];
         }
         YWParser *parser = [[YWParser alloc] init];
-        NSArray *array = [parser supportWithArray:responseObject[@"supportList"]];
-        [_dataSource addObjectsFromArray:array];
-        [self noContentViewShowWithState:_dataSource.count?NO:YES];
-        if (array.count<20) {
+        [_celebrityArray addObjectsFromArray:[parser templateWithArray:responseObject[@"moreTemplate"][@"celebrityTemplate"]]];
+        [_vedioArray addObjectsFromArray:[parser templateWithArray:responseObject[@"moreTemplate"][@"vedioTemplate"]]];
+        [_applicationArray addObjectsFromArray:[parser templateWithArray:responseObject[@"moreTemplate"][@"applicationTemplate"]]];
+        [self noContentViewShowWithState:_celebrityArray.count?NO:YES];
+        _dataSource = _celebrityArray;
+        if (_dataSource.count<20) {
             _collectionView.footer = nil;
         }else {
             _collectionView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
@@ -148,22 +142,8 @@
 
 #pragma mark - YWSearchCollectionReusableViewDelegate
 - (void)searchCollectionReusableView:(YWSearchCollectionReusableView *)view didSelectItemWithIndex:(NSInteger)index {
-    switch (index) {
-        case 0:
-            [_dataSource removeAllObjects];
-            [self dataSourceWithIndex:10];
-            break;
-        case 1:
-            [_dataSource removeAllObjects];
-            [self dataSourceWithIndex:4];
-            break;
-        case 2:
-            [_dataSource removeAllObjects];
-            [self dataSourceWithIndex:7];
-            break;
-        default:
-            break;
-    }
+    NSArray *array = @[_celebrityArray, _vedioArray, _applicationArray];
+    _dataSource = array[index];
     [_collectionView reloadData];
 }
 

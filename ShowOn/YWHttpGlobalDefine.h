@@ -43,6 +43,9 @@
 #define Save_Trends_Method                    @"juer/dynamic/draftOrDynamicVideo?json"      //发布动态、保存到草稿箱
 #define Article_List_Method                   @"juer/dynamic/teletextList?json"             //图文列表
 #define Play_Method                           @""             //播放
+#define WeiBo_User_Method                     @""             //微博用户
+#define Template_Sub_Category_Method          @""             //获取模板子分类列表
+#define Template_Sub_Category_List_Method     @""             //获取模板某个子分类下的模板列表
 
 
 #endif
