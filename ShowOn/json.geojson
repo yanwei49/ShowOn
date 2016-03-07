@@ -900,3 +900,83 @@
     "code": "",
     "msg": "",
 }
+
+
+28.
+/***
+ *    增加一个获取更多模板的接口，获取的数据就是模板的子分类列表
+ */
+//参数：
+{
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "moreTemplate": {
+        "celebrityTemplate": [{      //名人模板列表
+             "templateId": ""
+             "templateName": ""
+        }]
+        "vedioTemplate": [{          //视频模板列表
+             "templateId": ""
+             "templateName": ""
+        }]
+        "applicationTemplate": [{    //应用模板列表
+             "templateId": ""
+             "templateName": ""
+        }]
+    }
+}
+
+29.
+/***
+ *    通过模板的子分类id获取改子分类下的模板列表
+ */
+//参数：
+{
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "templateList": [{
+         "templateId": ""            //模板id
+         "templateName": ""          //模板名称
+         "templateVideoUrl": ""      //模板视频URL
+         "templateVideoCoverImage": ""  //模板封面
+         "templateSubsectionVideos": [{   //模板分段视频
+              "subsectionVideoId"             //'分段视频ID',
+              "videoUrl"                      //'视频URL',
+              "templateId"                    //'模版ID',
+              "sort"                          //'序号',
+              "performanceStatusId"           //'演出状态ID 1、已演,2、未演'
+              "userId"                        //'演出过这段视频的用户ID',
+              "subsectionVideoTypeId"         //'分段视频类型ID 1、顺序模式(3、近景,4、中景,5、远景,),2、景别模式(6、特写,7、中景,8、远景)',
+              "subsectionVideoUrl"            //如果该动态录制过了这个分段视频则返回录制完的视频url
+          }]
+    }]
+}
+
+
+22.
+/***
+ *    增加接口，根据新浪微博的唯一标示符返回给我再咱们平台注册过的用户的信息列表
+ */
+//参数：
+{
+    "userId": ""        //当前登录用户的userid
+    "accounts": "1111|2222|..."     //新浪微博用户的唯一标示符串
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "userList": [{
+         "userId": ""               //用户Id
+         "headPortrait": ""         //用户头像
+         "nickname": ""             //昵称
+         "relationTypeId": ""       //用户类型
+    }]
+}
+

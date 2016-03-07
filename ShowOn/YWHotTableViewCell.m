@@ -108,7 +108,8 @@
 - (void)setTemplate:(YWMovieTemplateModel *)template {
     _template = template;
     _nameLabel.text = template.templateName;
-    _timeLabel.text = [NSString stringWithFormat:@"时长%@", template.templateVideoTime];
+    _timeLabel.text = [NSString stringWithFormat:@"时长 %@", [YWTools timMinuteStringWithUrl:template.templateVideoUrl]];
+//    _timeLabel.text = [NSString stringWithFormat:@"时长%@", template.templateVideoTime];
     _numsLabel.text = [NSString stringWithFormat:@"拍摄次数%@", template.templatePlayUserNumbers];
 //    [_imageView sd_setImageWithURL:[NSURL URLWithString:template.templateVideoCoverImage] placeholderImage:kPlaceholderMoiveImage];
     NSString *urlStr = template.templateVideoUrl;

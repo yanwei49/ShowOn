@@ -151,9 +151,9 @@
         [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
         [self dismissViewControllerAnimated:YES completion:nil];
     } otherFailure:^(id responseObject) {
-        
+        [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
     } failure:^(NSError *error) {
-        
+        [SVProgressHUD showErrorWithStatus:@"网络错误"];
     }];
 }
 

@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSString *templateVideoTime;          //模板视频长度
 @property (nonatomic, strong) NSString *templateVideoCoverImage;    //模板视频封面
 @property (nonatomic, strong) NSString *templateTypeId;             //模板类型ID 1、名人专场,2、视频分类,3、应用模版
+@property (nonatomic, strong) NSString *templateSubTypeId;          //模板小类型ID （根据模板类型id进行一个小分类）
 @property (nonatomic, strong) NSString *templatePlayUserNumbers;    //模板表演的用户数量
 @property (nonatomic, strong) NSArray  *templatePlayUsers;          //模板表演的用户
 @property (nonatomic, strong) NSArray  *templateSubsectionVideos;   //模板分段视频数组

@@ -54,7 +54,7 @@
     _noContentView.hidden = YES;
 }
 
-#pragma mark - right/left item
+#pragma mark - create right/left item
 - (void)createLeftItemWithTitle:(NSString *)title {
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(10, 5, 50, 34)];
     [button setTitle:title forState:UIControlStateNormal];
@@ -85,6 +85,18 @@
 
 - (void)actionRightItem:(UIButton *)button {
 
+}
+
+#pragma mark - request 
+- (void)requestPlayModelId:(NSString *)modelId withType:(NSInteger)type {
+    NSDictionary *parameters = @{@"modelId": modelId, @"type": @(type)};
+    [[YWHttpManager shareInstance] requestPlay:parameters success:^(id responseObject) {
+        
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 #pragma mark - login

@@ -134,3 +134,120 @@
 
 
 
+///////////========2016.3.7=======/////////
+
+10.录制排行里面的动态把草稿箱里面的也返回给我了
+  只要发布的动态   草稿箱里面的不要
+    接口：juer/dynamic/templateInfo?json
+
+11.草稿箱保存分段视频成功后，在草稿箱列表中没有返回动态视频中已录制好的分段视频的url（key为：subsectionVideoUrl）以及分段视频的出演状态不对（key为：performanceStatusId）
+    接口：juer/dynamic/templateInfo?json
+
+12.发布动态是选择保存草稿箱的时候接口报错，但是动态已保存在草稿箱中了，在草稿箱列表中可以看到该数据
+    接口：juer/dynamic/draftOrDynamicVideo?json
+
+13.第三方登录接口需要返回给我用户的基本信息（即注册接口）
+  返回的数据格式直接和用户详情的数据格式（或者和用手机号注册返回的数据格式）一样就行
+    接口：juer/user/register?json
+
+14.模板详情接口动态列表中动态的模板视频key值错误（返回的key是movieTemplate，应改为videoTemplate）
+    接口：juer/dynamic/templateInfo?json
+
+15.获取用户资料里面的动态数也不对（获取动态数的时候把草稿箱里面的动态也加进来了）
+   用户的关注数又不对了（星期六调好了是对的），关注数为0，但是我进关注列表里面有一个用户
+    接口：juer/user/getUserInfo?json
+
+16.评论接口待写
+
+17.手机验证码收不到
+    接口：juer/user/getVerificationCode?json
+
+18.新增播放次数统计接口
+参数：
+{
+    @"modelId": "",    //模板或动态的id
+    @"type": ""        //类型（1.模板    2.动态）
+}
+返回值：
+{
+    "code": ""
+    "msg": ""
+}
+
+
+19.模板表要多维护一个字段（模板的子分类id）
+    模板类型id分为：1、名人专场,2、视频分类,3、应用模版
+    模板的子分类id：根据模板类型id分类在进行一个细分
+                如：名人专场以人名再进行细分；视频类型可分为电影，电视剧，mv，段子等；应用模板分为拜年，生日祝福，家庭聚会等
+
+20.增加一个获取更多模板的接口，获取的数据就是模板的子分类列表
+参数：
+{
+}
+返回值：
+{
+    "code": ""
+    "msg": ""
+    "moreTemplate": {
+        "celebrityTemplate": [{      //名人模板列表
+            "templateId": ""
+            "templateName": ""
+        }]
+        "vedioTemplate": [{          //视频模板列表
+            "templateId": ""
+            "templateName": ""
+        }]
+        "applicationTemplate": [{    //应用模板列表
+            "templateId": ""
+            "templateName": ""
+        }]
+    }   
+}
+
+21.增加接口，通过模板的子分类id获取改子分类下的模板列表
+//参数：
+{
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "templateList": [{
+        "templateId": ""            //模板id
+        "templateName": ""          //模板名称
+        "templateVideoUrl": ""      //模板视频URL
+        "templateVideoCoverImage": ""  //模板封面
+        "templateSubsectionVideos": [{   //模板分段视频
+            "subsectionVideoId"             //'分段视频ID',
+            "videoUrl"                      //'视频URL',
+            "templateId"                    //'模版ID',
+            "sort"                          //'序号',
+            "performanceStatusId"           //'演出状态ID 1、已演,2、未演'
+            "userId"                        //'演出过这段视频的用户ID',
+            "subsectionVideoTypeId"         //'分段视频类型ID 1、顺序模式(3、近景,4、中景,5、远景,),2、景别模式(6、特写,7、中景,8、远景)',
+            "subsectionVideoUrl"            //如果该动态录制过了这个分段视频则返回录制完的视频url
+        }]
+    }]
+}
+
+
+22.增加接口，根据新浪微博的唯一标示符返回给我再咱们平台注册过的用户的信息列表
+//参数：
+{
+    "userId": ""        //当前登录用户的userid
+    "accounts": "1111|2222|..."     //新浪微博用户的唯一标示符串
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "userList": [{
+        "userId": ""               //用户Id
+        "headPortrait": ""         //用户头像
+        "nickname": ""             //昵称
+        "relationTypeId": ""       //用户类型
+    }]
+}
+
+
+

@@ -11,6 +11,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "YWSubsectionVideoModel.h"
 #import "YWTools.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @implementation YWTemplateCollectionViewCell
 {
@@ -80,6 +81,16 @@
     
     return self;
 }
+//- (void)setProgressHiddenState:(BOOL)progressHiddenState {
+//    _progressHiddenState= progressHiddenState;
+//    _progressView.hidden = progressHiddenState;
+//    [_progressView remakeConstraints:^(MASConstraintMaker *make) {
+//        make.top.offset(-20);
+//        make.bottom.offset(20);
+//        make.width.offset(1);
+//        make.left.offset(0);
+//    }];
+//}
 
 static CGFloat cnt = 0;
 - (void)startRecorderAnimationWithDuration:(CGFloat)time {
@@ -107,6 +118,9 @@ static CGFloat cnt = 0;
 - (void)stopRecorderAnimation {
     cnt = 0;
     _progressView.hidden = YES;
+    if ([_delegate respondsToSelector:@selector(templateCollectionViewCellRecorderDown:)]) {
+        [_delegate templateCollectionViewCellRecorderDown:self];
+    }
 }
 
 - (void)setTextFont:(UIFont *)textFont {
@@ -123,6 +137,10 @@ static CGFloat cnt = 0;
     _template = template;
     _nameLabel.text = template.templateName;
     [_imageView sd_setImageWithURL:[NSURL URLWithString:template.templateVideoCoverImage] placeholderImage:kPlaceholderMoiveImage];
+//    NSString *urlStr = template.templateVideoUrl;
+//    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    NSURL *url = [NSURL URLWithString:urlStr];
+//    _imageView.image = [YWTools thumbnailImageRequestUrl:url time:0];
 }
 
 - (void)setSubsectionVideo:(YWSubsectionVideoModel *)subsectionVideo {
@@ -133,7 +151,11 @@ static CGFloat cnt = 0;
         make.left.offset(0);
     }];
     _subsectionVideo = subsectionVideo;
-    _nameLabel.text = [NSString stringWithFormat:@"%@s", subsectionVideo.subsectionVideoTime?:@"0"];
+    _nameLabel.text = [YWTools timMinuteStringWithUrl:subsectionVideo.subsectionVideoUrl];
+//    NSString *urlStr = [subsectionVideo.subsectionVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    AVURLAsset *urlAsset=[AVURLAsset assetWithURL:[NSURL URLWithString:urlStr]];
+//    _nameLabel.text = [NSString stringWithFormat:@"%.1fs", CMTimeGetSeconds(urlAsset.duration)];
+//    _nameLabel.text = [NSString stringWithFormat:@"%@s", subsectionVideo.subsectionVideoTime?:@"0"];
 //    [_imageView sd_setImageWithURL:[NSURL URLWithString:subsectionVideo.subsectionVideoCoverImage] placeholderImage:kPlaceholderMoiveImage];
     NSURL *url;
     if (subsectionVideo.recorderVideoUrl) {

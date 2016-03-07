@@ -278,21 +278,29 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (indexPath.row > 1) {
-        YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
-        YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
-        nv.title = @"写评论";
-        vc.trends = _trends;
-        vc.comment = _trends.trendsComments[indexPath.row-2];
-        [self presentViewController:nv animated:YES completion:nil];
+        if ([[YWDataBaseManager shareInstance] loginUser]) {
+            YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
+            YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
+            nv.title = @"写评论";
+            vc.trends = _trends;
+            vc.comment = _trends.trendsComments[indexPath.row-2];
+            [self presentViewController:nv animated:YES completion:nil];
+        }else {
+            [self login];
+        }
     }
 }
 
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        [self requestRepeat];
-    }else if (buttonIndex == 1) {
-        [self requestShare];
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
+        if (buttonIndex == 0) {
+            [self requestRepeat];
+        }else if (buttonIndex == 1) {
+            [self requestShare];
+        }
+    }else {
+        [self login];
     }
 }
 
@@ -324,6 +332,7 @@
         MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
         [moviePlayerViewController rotateVideoViewWithDegrees:90];
         [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+        [self requestPlayModelId:cell.trends.trendsId withType:2];
     }else {
         YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
         vc.trends = cell.trends;

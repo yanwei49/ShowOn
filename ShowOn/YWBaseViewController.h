@@ -26,5 +26,7 @@
 //无内容时界面显示状态
 - (void)noContentViewShowWithState:(BOOL)state;
 
+//播放接口（type：1.模板   2.动态）
+- (void)requestPlayModelId:(NSString *)modelId withType:(NSInteger)type;
 
 @end

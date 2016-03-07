@@ -328,9 +328,9 @@
         [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
         [self.navigationController popViewControllerAnimated:YES];
     } otherFailure:^(id responseObject) {
-        
+        [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
     } failure:^(NSError *error) {
-        
+        [SVProgressHUD showErrorWithStatus:@"网络错误"];
     }];
 }
 
@@ -602,6 +602,7 @@
         MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
         [moviePlayerViewController rotateVideoViewWithDegrees:90];
         [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+        [self requestPlayModelId:cell.trends.trendsId withType:2];
     }else {
         YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
         vc.trends = cell.trends;

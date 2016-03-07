@@ -19,4 +19,10 @@
 //裁剪图片
 + (UIImage *)cutImage:(UIImage*)image withRect:(CGRect)rect;
 
+//根据视频url获取视频时间长度（转换成分：秒格式）
++ (NSString *)timMinuteStringWithUrl:(NSString *)url;
+
+//根据视频url获取视频时间长度（转换秒）
++ (NSString *)timSecondStringWithUrl:(NSString *)url;
+
 @end

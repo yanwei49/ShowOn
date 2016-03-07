@@ -271,6 +271,7 @@
     MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
     [moviePlayerViewController rotateVideoViewWithDegrees:0];
     [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    [self requestPlayModelId:cell.template.templateId withType:1];
 }
 
 #pragma mark - YWMovieCommentTableViewCellDelegate
@@ -311,6 +312,7 @@
         MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
         [moviePlayerViewController rotateVideoViewWithDegrees:90];
         [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+        [self requestPlayModelId:cell.trends.trendsId withType:2];
     }else {
         YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
         vc.trends = cell.trends;

@@ -80,4 +80,22 @@
     return [UIImage imageWithCGImage:imageRef];
 }
 
++ (NSString *)timMinuteStringWithUrl:(NSString *)url {
+    NSString *urlStr = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    AVURLAsset *urlAsset=[AVURLAsset assetWithURL:[NSURL URLWithString:urlStr]];
+    NSInteger time = (NSInteger)CMTimeGetSeconds(urlAsset.duration);
+    NSString *timeString = [NSString stringWithFormat:@"%2ld分%ld秒", time/60, time%60];
+    
+    return timeString;
+}
+
++ (NSString *)timSecondStringWithUrl:(NSString *)url {
+    NSString *urlStr = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    AVURLAsset *urlAsset=[AVURLAsset assetWithURL:[NSURL URLWithString:urlStr]];
+    NSInteger time = (NSInteger)CMTimeGetSeconds(urlAsset.duration);
+    NSString *timeString = [NSString stringWithFormat:@"%lds", time];
+    
+    return timeString;
+}
+
 @end

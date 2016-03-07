@@ -11,8 +11,8 @@
 #import "YWHttpGlobalDefine.h"
 #import "YWSubsectionVideoModel.h"
 
-#define kHostURL               @"http://120.25.146.161/"
-//#define kHostURL               @"http://192.168.1.105:8080/"
+//#define kHostURL               @"http://120.25.146.161/"
+#define kHostURL               @"http://192.168.1.121:8080/"
 #define HOST_URL(methodName)   [NSString stringWithFormat:@"%@%@",kHostURL,methodName]
 
 @interface YWHttpManager()
@@ -386,8 +386,14 @@ static YWHttpManager * manager;
             for (NSInteger i=0; i<recorderMovies.count; i++) {
                 YWSubsectionVideoModel *model = recorderMovies[i];
                 if (model.recorderVideoUrl) {
-                    NSData *data = [NSData dataWithContentsOfURL:model.recorderVideoUrl];
-                    [formData appendPartWithFileData:data name:@"video" fileName:[NSString stringWithFormat:@"video%@-%@-%@.mov", model.subsectionVideoType, model.subsectionVideoSort, model.subSort] mimeType:@"video/quicktime"];
+                    NSError *error;
+                    NSData *data = [NSData dataWithContentsOfURL:model.recorderVideoUrl options:NSDataReadingMappedIfSafe error:&error];
+                    if (error) {
+                        DebugLog(@"%@====", error);
+                    }
+                    if (data) {
+                        [formData appendPartWithFileData:data name:@"video" fileName:[NSString stringWithFormat:@"video%@-%@-%@.mov", model.subsectionVideoType, model.subsectionVideoSort, model.subSort] mimeType:@"video/quicktime"];
+                    }
                 }
             }
         }
@@ -401,6 +407,16 @@ static YWHttpManager * manager;
     }];
 }
 
+- (void)requestPlay:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
+    [self setDefaultHeaders];
+    [_httpManager GET:HOST_URL(Play_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            failure(error);
+        });
+    }];
+}
 
 
 @end

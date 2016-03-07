@@ -252,6 +252,7 @@
     MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
     [moviePlayerViewController rotateVideoViewWithDegrees:0];
     [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    [self requestPlayModelId:template.templateId withType:1];
 }
 
 #pragma mark - UICollectionViewDelegate

@@ -75,7 +75,7 @@
     _trends = trends;
     [_imageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
     _nameLabel.text = trends.trendsMovie.movieTemplate.templateName;
-    _timeLabel.text = trends.trendsPubdate;
+    _timeLabel.text = [trends.trendsPubdate componentsSeparatedByString:@" "][0];
 }
 
 @end

@@ -145,7 +145,6 @@
                     [SVProgressHUD showSuccessWithStatus:@"合成成功"];
                     self.view.userInteractionEnabled = YES;
                     _movieUrl = responseObject;
-                    NSLog(@"%@+++++++++%@", _movieUrl, responseObject);
                 });
                 
                 return responseObject;
@@ -284,7 +283,6 @@
             }
         }
         AVAsset *medioAsset = [AVAsset assetWithURL:url];
-        NSLog(@"%@==========", url.absoluteString);
         if (!i) {
             [firstTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, medioAsset.duration) ofTrack:[[medioAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
             //FIXING ORIENTATION//
@@ -404,17 +402,18 @@
         _state = 2;
     }
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"trendsId": _trends?_trends.trendsId:@"", @"state": @(_type), @"templateId": _template?_template.templateId:_trends.trendsMovie.movieTemplate.templateId, @"flag": _recorderState?@(1):@(2), @"type": @(_state), @"movieContent": _contentTextView.text, @"templateId": _template.templateId};
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [_httpManager requestWriteTrends:parameters coverImage:_image recorderMovies:_template.templateSubsectionVideos movieUrl:_movieUrl success:^(id responseObject) {
             [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
+            [self.navigationController popToRootViewControllerAnimated:YES];
         } otherFailure:^(id responseObject) {
             [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
         } failure:^(NSError *error) {
-            
+            [SVProgressHUD showErrorWithStatus:@"网络错误"];
         }];
-        [SVProgressHUD showWithStatus:@"上传中，请稍等。。。"];
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [SVProgressHUD showWithStatus:@"上传中，请稍等。。。"];
+        });
     });
 }
 

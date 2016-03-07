@@ -19,7 +19,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "MPMoviePlayerViewController+Rotation.h"
 
-@interface YWTranscribeViewController ()<YWCustomSegViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWMoviePlayViewDelegate, YWMovieRecorderDelegate>
+@interface YWTranscribeViewController ()<YWCustomSegViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWMoviePlayViewDelegate, YWMovieRecorderDelegate, YWTemplateCollectionViewCellDelegate>
 
 @end
 
@@ -242,12 +242,14 @@
 
 - (void)actionRestart:(UIButton *)button {
     _recorderView.model.subsectionVideoPerformanceStatus = @"2";
-    _recorderView.model.subsectionRecorderVideoUrl = nil;
+    _recorderView.model.recorderVideoUrl = nil;
 //    [_recorderMovies removeObject:_recorderView.model];
     _playView.urlStr = _recorderView.model.subsectionVideoUrl;
     for (UICollectionView *collectionView in _collectionViews) {
         [collectionView reloadData];
     }
+//    YWTemplateCollectionViewCell *cell = (YWTemplateCollectionViewCell *)[_collectionViews[_collectionViewIndex] cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_cellIndex inSection:0]];
+//    cell.progressHiddenState = NO;
 }
 
 - (void)actionChange:(UIButton *)button {
@@ -270,6 +272,7 @@
 
 #pragma mark - YWMovieRecorderDelegate
 - (void)movieRecorderDown:(YWMovieRecorder *)view {
+    self.view.userInteractionEnabled = YES;
     view.model.subsectionVideoPerformanceStatus = @"1";
     for (UICollectionView *collectionView in _collectionViews) {
         [collectionView reloadData];
@@ -278,13 +281,17 @@
 }
 
 - (void)movieRecorderBegin:(YWMovieRecorder *)view {
-//    self.view.userInteractionEnabled = NO;
+    self.view.userInteractionEnabled = NO;
     YWTemplateCollectionViewCell *cell = (YWTemplateCollectionViewCell *)[_collectionViews[_collectionViewIndex] cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_cellIndex inSection:0]];
-    [cell startRecorderAnimationWithDuration:view.model.subsectionVideoTime.floatValue];
+    NSString *urlStr = [view.model.subsectionVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    AVURLAsset *urlAsset=[AVURLAsset assetWithURL:[NSURL URLWithString:urlStr]];
+    NSLog(@"%d=============%f", urlAsset.duration.timescale, CMTimeGetSeconds(urlAsset.duration));
+    [cell startRecorderAnimationWithDuration:CMTimeGetSeconds(urlAsset.duration)];
 }
 
-- (void)recorderDown {
-    self.view.userInteractionEnabled = YES;
+#pragma mark - YWTemplateCollectionViewCellDelegate
+- (void)templateCollectionViewCellRecorderDown:(YWTemplateCollectionViewCell *)cell {
+    [_recorderView startRecorder];
 }
 
 #pragma mark - YWCustomSegViewDelegate
@@ -298,7 +305,7 @@
                     break;
                 }
             }
-            if (!state) {
+            if (state) {
                 YWEditCoverViewController *vc = [[YWEditCoverViewController alloc] init];
                 vc.trends = _trends;
                 vc.template = _template;
@@ -343,7 +350,7 @@
             model = _dataSource3[0];
         }
         if (model) {
-            _playView.urlStr = model.subsectionVideoUrl;
+            _playView.urlStr = model.subsectionRecorderVideoUrl?:model.subsectionVideoUrl;
             //        _playView.urlStr = _template.templateVideoUrl;
             model.subsectionVideoPerformanceStatus = model.subsectionVideoPerformanceStatus.integerValue==1?@"1":@"0";
             _recorderView.model = model;
@@ -379,6 +386,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     YWTemplateCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"item" forIndexPath:indexPath];
+    cell.delegate = self;
     cell.textFont = [UIFont systemFontOfSize:12];
     cell.viewAlpha = 0.3;
     NSArray *array = @[_dataSource1, _dataSource2, _dataSource3];

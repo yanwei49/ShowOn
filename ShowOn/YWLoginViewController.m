@@ -365,11 +365,12 @@
     } otherFailure:^(id responseObject) {
         [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
     } failure:^(NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"网络错误"];
     }];
 }
 
 - (void)requestRegister {
-    NSDictionary *parameters = @{@"account": _accountTextField.text?:@"", @"password": _passwordTextField.text?:@"", @"accountTypeId": @(2), @"nickname": _othersUser.userName?:@"", @"birthday": _othersUser.userBirthday?:@"", @"sex": _othersUser.userSex?:@"", _othersUser.userInfos?:@"introduction": @""};
+    NSDictionary *parameters = @{@"account": _othersUser.userId?:@"", @"password": @"", @"accountTypeId": @(2), @"nickname": _othersUser.userName?:@"", @"birthday": _othersUser.userBirthday?:@"", @"sex": _othersUser.userSex?:@"", _othersUser.userInfos?:@"introduction": @""};
     [[YWHttpManager shareInstance] requestRegister:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         _othersUser = [parser userWithDict:responseObject[@"user"]];

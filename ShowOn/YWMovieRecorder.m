@@ -141,11 +141,11 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 
 - (void)startRecorder {
-    _backView.hidden = YES;
     //根据设备输出获得连接
     AVCaptureConnection *captureConnection=[_captureMovieFileOutput connectionWithMediaType:AVMediaTypeVideo];
     //根据连接取得设备输出的数据
     if (![_captureMovieFileOutput isRecording]) {
+        _backView.hidden = YES;
         if ([_delegate respondsToSelector:@selector(movieRecorderBegin:)]) {
             [_delegate movieRecorderBegin:self];
         }
@@ -166,7 +166,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
         [_captureMovieFileOutput stopRecording];//停止录制
     }
 }
-
 
 - (void)delayMethod {
     NSInteger cnt = _timeLabel.text.integerValue;
@@ -213,8 +212,13 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 -(void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error{
     NSLog(@"视频录制完成.");
+    _model.recorderVideoUrl = outputFileURL;
+    if ([_delegate respondsToSelector:@selector(movieRecorderDown:)]) {
+        [_delegate movieRecorderDown:self];
+    }
 //    NSError *saveError;
-//    NSData *data = [NSData dataWithContentsOfURL:outputFileURL options:NSDataReadingMappedIfSafe error:&saveError];
+//    NSData *data = [NSData dataWithContentsOfURL:outputFileURL];
+//    NSLog(@"%@======", saveError);
 //    if ([_delegate respondsToSelector:@selector(movieRecorderDownWithData:subsectionVideoSort:subSort:)]) {
 //        [_delegate movieRecorderDownWithData:data subsectionVideoSort:_subsectionVideoSort subsectionVideoType:_subsectionVideoType];
 //    }
@@ -225,14 +229,16 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     UIBackgroundTaskIdentifier lastBackgroundTaskIdentifier = _backgroundTaskIdentifier;
     _backgroundTaskIdentifier=UIBackgroundTaskInvalid;
     ALAssetsLibrary *assetsLibrary=[[ALAssetsLibrary alloc]init];
+    NSLog(@"======================");
     [assetsLibrary writeVideoAtPathToSavedPhotosAlbum:outputFileURL completionBlock:^(NSURL *assetURL, NSError *error) {
         if (error) {
             NSLog(@"保存视频到相簿过程中发生错误，错误信息：%@",error.localizedDescription);
         }
-        _model.recorderVideoUrl = assetURL;
-        if ([_delegate respondsToSelector:@selector(movieRecorderDown:)]) {
-            [_delegate movieRecorderDown:self];
-        }
+        NSLog(@"======================");
+//        _model.recorderVideoUrl = assetURL;
+//        if ([_delegate respondsToSelector:@selector(movieRecorderDown:)]) {
+//            [_delegate movieRecorderDown:self];
+//        }
         if (lastBackgroundTaskIdentifier!=UIBackgroundTaskInvalid) {
             [[UIApplication sharedApplication] endBackgroundTask:lastBackgroundTaskIdentifier];
         }

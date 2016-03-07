@@ -153,13 +153,13 @@
 - (void)movieFrameImage {
     [_coverImages removeAllObjects];
     for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
-//        if (model.recorderVideoUrl) {
-        if (model.subsectionVideoUrl) {
+        if (model.recorderVideoUrl) {
+//        if (model.subsectionVideoUrl) {
             AVURLAsset *urlAsset=[AVURLAsset assetWithURL:model.recorderVideoUrl];
             NSLog(@"-=============%lld", urlAsset.duration.value);
-            for (NSInteger i=0; i<1; i++) {
-//                UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i];
-                UIImage *image = [self thumbnailImageRequestUrl:[NSURL URLWithString:[model.subsectionVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] time:10*i];
+            for (NSInteger i=0; i<(int)CMTimeGetSeconds(urlAsset.duration); i++) {
+                UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i];
+//                UIImage *image = [self thumbnailImageRequestUrl:[NSURL URLWithString:[model.subsectionVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] time:10*i];
 //                UIImage *rotationImage = [self rotation:image];
                 UIImage *rotationImage = [self fixOrientation:image];
 //                CGFloat w = (rotationImage.size.width/200>rotationImage.size.height/100)?rotationImage.size.width*rotationImage.size.height/100:200;
@@ -346,7 +346,7 @@
     CMTime actualTime;
     CGImageRef cgImage= [imageGenerator copyCGImageAtTime:time actualTime:&actualTime error:&error];
     if(error){
-        NSLog(@"截取视频缩略图时发生错误，错误信息：%@",error.localizedDescription);
+        DebugLog(@"截取视频缩略图时发生错误，错误信息：%@",error.localizedDescription);
         return nil;
     }
     CMTimeShow(actualTime);

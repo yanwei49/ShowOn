@@ -42,7 +42,7 @@
 #define Commit_Comment_Method                 @"juer/dynamic/comments?json"                 //发表评论
 #define Save_Trends_Method                    @"juer/dynamic/draftOrDynamicVideo?json"      //发布动态、保存到草稿箱
 #define Article_List_Method                   @"juer/dynamic/teletextList?json"             //图文列表
-
+#define Play_Method                           @""             //播放
 
 
 #endif
