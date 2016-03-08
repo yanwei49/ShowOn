@@ -78,7 +78,7 @@
         _timer.fireDate = [NSDate distantFuture];
         [self playEnd];
     }else {
-        _numsLabel.text = [NSString stringWithFormat:@"%ld", _cnt-1];
+        _numsLabel.text = [NSString stringWithFormat:@"%ld", (long)_cnt-1];
     }
     _cnt--;
 }

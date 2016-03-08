@@ -40,7 +40,11 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self requestUserList];
+    if (!_templateId) {
+        [self requestUserList];
+    }else {
+        [self requestVedioPlayUserList];
+    }
 }
 
 - (void)createSubViews {
@@ -83,6 +87,36 @@
             _tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
                 _currentPage ++;
                 [self requestUserList];
+            }];
+        }
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
+    } failure:^(NSError *error) {
+        [_tableView.header endRefreshing];
+        [_tableView.footer endRefreshing];
+    }];
+}
+
+- (void)requestVedioPlayUserList {
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"templateId": _templateId, @"page": @(_currentPage)};
+    [_httpManager requestTemplatePlayUserList:parameters success:^(id responseObject) {
+        if (!_currentPage) {
+            [_dataSource removeAllObjects];
+        }
+        YWParser *parser = [[YWParser alloc] init];
+        NSArray *array = [parser userWithArray:responseObject[@"userList"]];
+        [_dataSource addObjectsFromArray:array];
+        [self noContentViewShowWithState:_dataSource.count?NO:YES];
+        if (array.count<20) {
+            _tableView.footer = nil;
+        }else {
+            _tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+                _currentPage ++;
+                [self requestVedioPlayUserList];
             }];
         }
         [_tableView.header endRefreshing];

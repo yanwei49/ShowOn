@@ -30,6 +30,7 @@
 #import "YWMovieTemplateModel.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "MPMoviePlayerViewController+Rotation.h"
+#import "YWFollowingViewController.h"
 
 @interface YWTrendsDetailViewController()<UITableViewDataSource, UITableViewDelegate, YWFocusTableViewCellDelegate, YWMovieCommentTableViewCellDelegate, YWMovieOtherInfosTableViewCellDelegate, UIActionSheetDelegate>
 
@@ -159,7 +160,7 @@
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": _trends.trendsId, @"praiseTypeId": @(1)};
     [_httpManager requestSupport:parameters success:^(id responseObject) {
         _trends.trendsIsSupport = _trends.trendsIsSupport.integerValue?@"0":@"1";
-        _trends.trendsSuppotNumbers = [NSString stringWithFormat:@"%ld", _trends.trendsIsSupport.integerValue?_trends.trendsSuppotNumbers.integerValue+1:_trends.trendsSuppotNumbers.integerValue-1];
+        _trends.trendsSuppotNumbers = [NSString stringWithFormat:@"%ld", (long)_trends.trendsIsSupport.integerValue?(long)_trends.trendsSuppotNumbers.integerValue+1:(long)_trends.trendsSuppotNumbers.integerValue-1];
         [_tableView reloadData];
     } otherFailure:^(id responseObject) {
         
@@ -214,7 +215,7 @@
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"collectionTargetId": _trends.trendsId,@"collectionTypeId": @(1)};
     [_httpManager requestCollect:parameters success:^(id responseObject) {
         _trends.trendsIsCollect = _trends.trendsIsCollect.integerValue?@"0":@"1";
-        _trends.trendsCollectionNumbers = [NSString stringWithFormat:@"%ld", _trends.trendsIsCollect.integerValue?_trends.trendsCollectionNumbers.integerValue+1:_trends.trendsCollectionNumbers.integerValue-1];
+        _trends.trendsCollectionNumbers = [NSString stringWithFormat:@"%ld", (long)_trends.trendsIsCollect.integerValue?(long)_trends.trendsCollectionNumbers.integerValue+1:(long)_trends.trendsCollectionNumbers.integerValue-1];
         [_tableView reloadData];
     } otherFailure:^(id responseObject) {
         
@@ -372,7 +373,9 @@
 }
 
 - (void)movieOtherInfosTableViewCellDidSelectMore:(YWMovieOtherInfosTableViewCell *)cell {
-
+    YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
+    vc.templateId = cell.trends.trendsMovie.movieTemplate.templateId;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)movieOtherInfosTableViewCellDidSelectCollect:(YWMovieOtherInfosTableViewCell *)cell {

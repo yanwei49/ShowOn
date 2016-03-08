@@ -11,5 +11,6 @@
 @interface YWFollowingViewController : YWBaseViewController
 
 @property (nonatomic, assign) NSInteger relationType;
+@property (nonatomic, strong) NSString *templateId;
 
 @end

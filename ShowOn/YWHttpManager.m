@@ -11,8 +11,8 @@
 #import "YWHttpGlobalDefine.h"
 #import "YWSubsectionVideoModel.h"
 
-//#define kHostURL               @"http://120.25.146.161/"
-#define kHostURL               @"http://192.168.1.121:8080/"
+#define kHostURL               @"http://120.25.146.161/"
+//#define kHostURL               @"http://192.168.1.121:8080/"
 #define HOST_URL(methodName)   [NSString stringWithFormat:@"%@%@",kHostURL,methodName]
 
 @interface YWHttpManager()
@@ -451,5 +451,15 @@ static YWHttpManager * manager;
     }];
 }
 
+- (void)requestTemplatePlayUserList:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
+    [self setDefaultHeaders];
+    [_httpManager GET:HOST_URL(Template_User_List_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            failure(error);
+        });
+    }];
+}
 
 @end

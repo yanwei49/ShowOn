@@ -170,7 +170,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 - (void)delayMethod {
     NSInteger cnt = _timeLabel.text.integerValue;
     cnt--;
-    _timeLabel.text = [NSString stringWithFormat:@"%ld", cnt];
+    _timeLabel.text = [NSString stringWithFormat:@"%ld", (long)cnt];
     if (!cnt) {
         [_timeLabel removeFromSuperview];
         [_timer invalidate];

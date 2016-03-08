@@ -351,7 +351,6 @@
     }
     CMTimeShow(actualTime);
     UIImage *image=[UIImage imageWithCGImage:cgImage];//转化为UIImage
-    NSLog(@"-=============%ld", image.imageOrientation);
 
     CGImageRelease(cgImage);
     

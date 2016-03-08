@@ -974,10 +974,31 @@
     "code": "",
     "msg": "",
     "userList": [{
-         "userId": ""               //用户Id
-         "headPortrait": ""         //用户头像
-         "nickname": ""             //昵称
-         "relationTypeId": ""       //用户类型
-    }]
+                 "userId": ""               //用户Id
+                 "headPortrait": ""         //用户头像
+                 "nickname": ""             //昵称
+                 "relationTypeId": ""       //用户类型
+                 }]
+}
+
+23.
+/***
+ *    增加接口，模板表演者用户的信息列表
+ */
+//参数：
+{
+    "userId": ""        //当前登录用户的userid
+    "templateId": ""    //模板id
+}
+//返回值：
+{
+    "code": "",
+    "msg": "",
+    "userList": [{
+                 "userId": ""               //用户Id
+                 "headPortrait": ""         //用户头像
+                 "nickname": ""             //昵称
+                 "relationTypeId": ""       //用户类型
+                 }]
 }
 

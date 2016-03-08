@@ -35,7 +35,6 @@
     }
     CMTimeShow(actualTime);
     UIImage *image=[UIImage imageWithCGImage:cgImage];//转化为UIImage
-    NSLog(@"-=============%ld", image.imageOrientation);
     
     CGImageRelease(cgImage);
     
@@ -84,7 +83,7 @@
     NSString *urlStr = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     AVURLAsset *urlAsset=[AVURLAsset assetWithURL:[NSURL URLWithString:urlStr]];
     NSInteger time = (NSInteger)CMTimeGetSeconds(urlAsset.duration);
-    NSString *timeString = [NSString stringWithFormat:@"%2ld分%ld秒", time/60, time%60];
+    NSString *timeString = [NSString stringWithFormat:@"%2ld分%ld秒", (long)time/60, (long)time%60];
     
     return timeString;
 }
@@ -93,7 +92,7 @@
     NSString *urlStr = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     AVURLAsset *urlAsset=[AVURLAsset assetWithURL:[NSURL URLWithString:urlStr]];
     NSInteger time = (NSInteger)CMTimeGetSeconds(urlAsset.duration);
-    NSString *timeString = [NSString stringWithFormat:@"%lds", time];
+    NSString *timeString = [NSString stringWithFormat:@"%lds", (long)time];
     
     return timeString;
 }

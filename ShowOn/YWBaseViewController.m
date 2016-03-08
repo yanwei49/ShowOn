@@ -114,7 +114,7 @@
         UIAlertController *alter = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alter addAction:[UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         }]];
-        [self.navigationController pushViewController:alter animated:YES];
+        [self presentViewController:alter animated:YES completion:nil];
     }else {
         UIAlertView *alter = [[UIAlertView alloc] initWithTitle:title message:nil delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
         [alter show];

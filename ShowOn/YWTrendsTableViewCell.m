@@ -137,7 +137,7 @@
 - (void)setTrends:(YWTrendsModel *)trends {
     _trends = trends;
     [_imageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
-    _supportButton.selected = trends.trendsIsSupport;
+    _supportButton.selected = trends.trendsIsSupport.integerValue;
     _contentLabel.text = trends.trendsContent;
     _supportLabel.text = trends.trendsSuppotNumbers;
     _timeLabel.text = trends.trendsPubdate;
