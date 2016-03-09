@@ -105,7 +105,6 @@ static CGFloat cnt = 0;
         CGRect frame = _progressView.frame;
         frame.origin.x = left;
         _progressView.frame = frame;
-        NSLog(@"=====================%f", left);
     }];
     cnt += 0.1;
     if (cnt<=_totalTime) {

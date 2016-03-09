@@ -154,22 +154,11 @@
     [_coverImages removeAllObjects];
     for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
         if (model.recorderVideoUrl) {
-//        if (model.subsectionVideoUrl) {
             AVURLAsset *urlAsset=[AVURLAsset assetWithURL:model.recorderVideoUrl];
-            NSLog(@"-=============%lld", urlAsset.duration.value);
             for (NSInteger i=0; i<(int)CMTimeGetSeconds(urlAsset.duration); i++) {
                 UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i];
-//                UIImage *image = [self thumbnailImageRequestUrl:[NSURL URLWithString:[model.subsectionVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] time:10*i];
-//                UIImage *rotationImage = [self rotation:image];
                 UIImage *rotationImage = [self fixOrientation:image];
-//                CGFloat w = (rotationImage.size.width/200>rotationImage.size.height/100)?rotationImage.size.width*rotationImage.size.height/100:200;
-//                CGFloat h = (rotationImage.size.width/200<rotationImage.size.height/100)?rotationImage.size.height*rotationImage.size.width/200:100;
-//                UIImage *scaleImage = [YWTools image:rotationImage scaledToSize:CGSizeMake(w, h)];
-//                UIImage *cutImage = [YWTools cutImage:rotationImage withRect:CGRectMake(0, 0, 200, 100)];
                 [_coverImages addObject:rotationImage];
-//                if (!i) {
-//                    _coverImageView.image = _coverImages[0];
-//                }
             }
         }
     }

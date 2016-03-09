@@ -285,7 +285,6 @@
     YWTemplateCollectionViewCell *cell = (YWTemplateCollectionViewCell *)[_collectionViews[_collectionViewIndex] cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_cellIndex inSection:0]];
     NSString *urlStr = [view.model.subsectionVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     AVURLAsset *urlAsset=[AVURLAsset assetWithURL:[NSURL URLWithString:urlStr]];
-    NSLog(@"%d=============%f", urlAsset.duration.timescale, CMTimeGetSeconds(urlAsset.duration));
     [cell startRecorderAnimationWithDuration:CMTimeGetSeconds(urlAsset.duration)];
 }
 
@@ -319,6 +318,7 @@
                 }
                 vc.recorderState = state;
                 [self.navigationController pushViewController:vc animated:YES];
+                view.userInteractionEnabled = NO;
             }else {
                 UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请先录制视频" message:nil delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
                 [alter show];

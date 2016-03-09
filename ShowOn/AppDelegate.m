@@ -55,7 +55,7 @@
     [UMSocialQQHandler setSupportWebView:YES];
     [UMSocialSinaHandler openSSOWithRedirectURL:SINA_SSO_URL];
     
-    [[RCIM sharedRCIM] initWithAppKey:@"25wehl3uwaqmw"];
+    [[RCIM sharedRCIM] initWithAppKey:@"z3v5yqkbvtks0"];
     [[IQKeyboardManager sharedManager] setEnable:NO];
     [[IQKeyboardManager sharedManager] setEnableAutoToolbar:NO];
 }

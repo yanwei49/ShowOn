@@ -234,16 +234,15 @@
 
 #pragma mark - request
 - (void)requestReset {
-    if (![self verification]) {
-        return;
+    if ([self verification]) {
+        NSDictionary *parameters = @{@"account": _accountTextField.text, @"password": _passwordTextField.text};
+        [[YWHttpManager shareInstance] requestResetPassword:parameters success:^(id responseObject) {
+            [SVProgressHUD showSuccessWithStatus:@"重置成功，请重新登录"];
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        } otherFailure:^(id responseObject) {
+        } failure:^(NSError *error) {
+        }];
     }
-    NSDictionary *parameters = @{@"account": _accountTextField.text, @"password": _passwordTextField.text};
-    [[YWHttpManager shareInstance] requestResetPassword:parameters success:^(id responseObject) {
-        [SVProgressHUD showSuccessWithStatus:@"重置成功，请重新登录"];
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    } otherFailure:^(id responseObject) {
-    } failure:^(NSError *error) {
-    }];
 }
 
 - (void)requestVerification {
@@ -254,7 +253,6 @@
     [self delayMethod];
     [[YWHttpManager shareInstance] requestVerification:parameters success:^(id responseObject) {
         _verificationCode = responseObject[@"verificationCode"];
-        NSLog(@"=========%@", responseObject[@"verificationCode"]);
     } otherFailure:^(id responseObject) {
     } failure:^(NSError *error) {
     }];
@@ -277,32 +275,7 @@
 
 #pragma mark - UITextFieldDelegate
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    if (textField.text) {
-        if ([textField isEqual:_accountTextField]) {
-            if ([NSString isMobileNumber:_accountTextField.text]) {
-                [_accountTextField resignFirstResponder];
-                [_passwordTextField becomeFirstResponder];
-            }else {
-                [self showErrorWithString:@"请输入正确的手机号"];
-            }
-        }else if ([textField isEqual:_passwordTextField]) {
-            if ([NSString isValidatePwd:_passwordTextField.text]) {
-                [_passwordTextField resignFirstResponder];
-                [_repeatPasswordTextField becomeFirstResponder];
-            }else {
-                [self showErrorWithString:@"密码只能为6-12为数字或字母"];
-            }
-        }else if ([textField isEqual:_repeatPasswordTextField]) {
-            if ([textField.text isEqualToString:_passwordTextField.text]) {
-                [_repeatPasswordTextField resignFirstResponder];
-                [_verificationTextField becomeFirstResponder];
-            }else {
-                [self showErrorWithString:@"两次密码不一样，请重新输入"];
-            }
-        }else {
-            [_verificationTextField resignFirstResponder];
-        }
-    }
+    [textField resignFirstResponder];
 }
 
 - (void)showErrorWithString:(NSString *)message {

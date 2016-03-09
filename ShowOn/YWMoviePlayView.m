@@ -66,7 +66,6 @@
                 CGPoint point1 = [pan locationInView:pan.view];
                 CGFloat time = (point1.x - point.x)/2;
                 [self setCurrentPlayWithTime:time];
-                NSLog(@"=========%.2f", time);
                 point = point1;
             }
                 break;
@@ -170,7 +169,7 @@
  *  @param notification 通知对象
  */
 -(void)playbackFinished:(NSNotification *)notification{
-    NSLog(@"视频播放完成.");
+    DebugLog(@"视频播放完成.");
     _progress.progress = 0;
     _playOrPause.selected = NO;
     _playOrPause.hidden = NO;
@@ -192,7 +191,7 @@
     [_player addPeriodicTimeObserverForInterval:CMTimeMake(1.0, 10.0) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         float current=CMTimeGetSeconds(time);
         float total=CMTimeGetSeconds([playerItem duration]);
-        NSLog(@"当前已经播放%.2fs. %.2f",current, total);
+        DebugLog(@"当前已经播放%.2fs. %.2f",current, total);
         if (current) {
             [this.progress setProgress:(current/total) animated:YES];
         }

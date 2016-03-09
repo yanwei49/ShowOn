@@ -23,6 +23,7 @@
     UIButton       *_sendVerificationButton;
     UIButton       *_registerButton;
     NSString       *_verificationCode;
+    NSInteger       _timeCount;
 }
 
 - (void)viewDidLoad {
@@ -186,7 +187,8 @@
 }
 
 - (void)actionSendVerification:(UIButton *)button {
-    [self setEditing:YES];
+    _timeCount = 60;
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
     if (_accountTextField.text && _accountTextField.text.length) {
         [self requestVerification];
     }else {
@@ -195,7 +197,7 @@
 }
 
 - (void)actionRegister:(UIButton *)button {
-    [self setEditing:YES];
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
     NSArray *message = @[@"请输入账号", @"请输入密码", @"请重新输入密码", @"请输入验证码", @"验证码错误"];
     if (!_accountTextField.text || !_accountTextField.text.length) {
         [self showErrorWithString:message[0]];
@@ -236,23 +238,21 @@
     [self delayMethod];
     [[YWHttpManager shareInstance] requestVerification:parameters success:^(id responseObject) {
         _verificationCode = responseObject[@"verificationCode"];
-        NSLog(@"=========%@", responseObject[@"verificationCode"]);
     } otherFailure:^(id responseObject) {
     } failure:^(NSError *error) {
     }];
 }
 
 - (void)delayMethod {
-    static int cnt = 60;
     _sendVerificationButton.backgroundColor = [UIColor lightGrayColor];
-    if (!cnt--) {
+    if (!_timeCount--) {
         _sendVerificationButton.userInteractionEnabled = YES;
         [_sendVerificationButton setTitle:@"发送验证码" forState:UIControlStateNormal];
         _sendVerificationButton.backgroundColor = [UIColor orangeColor];
-        cnt = 60;
+        _timeCount = 60;
     }else {
         _sendVerificationButton.userInteractionEnabled = NO;
-        [_sendVerificationButton setTitle:[NSString stringWithFormat:@"%ld s", (long)cnt] forState:UIControlStateNormal];
+        [_sendVerificationButton setTitle:[NSString stringWithFormat:@"%ld s", (long)_timeCount] forState:UIControlStateNormal];
         [self performSelector:@selector(delayMethod) withObject:self afterDelay:1];
     }
 }
@@ -274,32 +274,6 @@
 #pragma mark - UITextFieldDelegate
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [textField resignFirstResponder];
-    if (textField.text) {
-        if ([textField isEqual:_accountTextField]) {
-            if ([NSString isMobileNumber:_accountTextField.text]) {
-                [_accountTextField resignFirstResponder];
-                [_passwordTextField becomeFirstResponder];
-            }else {
-                [self showErrorWithString:@"请输入正确的手机号"];
-            }
-        }else if ([textField isEqual:_passwordTextField]) {
-            if ([NSString isValidatePwd:_passwordTextField.text]) {
-                [_passwordTextField resignFirstResponder];
-                [_repeatPasswordTextField becomeFirstResponder];
-            }else {
-                [self showErrorWithString:@"密码只能为6-12为数字或字母"];
-            }
-        }else if ([textField isEqual:_repeatPasswordTextField]) {
-            if ([textField.text isEqualToString:_passwordTextField.text]) {
-                [_repeatPasswordTextField resignFirstResponder];
-                [_verificationTextField becomeFirstResponder];
-            }else {
-                [self showErrorWithString:@"两次密码不一样，请重新输入"];
-            }
-        }else {
-            [_verificationTextField resignFirstResponder];
-        }
-    }
 }
 
 - (void)showErrorWithString:(NSString *)message {

@@ -11,8 +11,8 @@
 #import "YWHttpGlobalDefine.h"
 #import "YWSubsectionVideoModel.h"
 
-#define kHostURL               @"http://120.25.146.161/"
-//#define kHostURL               @"http://192.168.1.121:8080/"
+//#define kHostURL               @"http://120.25.146.161/"
+#define kHostURL               @"http://192.168.1.105:8080/"
 #define HOST_URL(methodName)   [NSString stringWithFormat:@"%@%@",kHostURL,methodName]
 
 @interface YWHttpManager()

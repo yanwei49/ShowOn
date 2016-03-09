@@ -105,7 +105,7 @@
  *  @param clientData 回调时传递的数据
  */
 void soundCompleteCallback(SystemSoundID soundID,void * clientData){
-    NSLog(@"播放完成...");
+//    NSLog(@"播放完成...");
     
 }
 

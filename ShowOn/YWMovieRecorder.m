@@ -58,7 +58,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     //获得输入设备
     AVCaptureDevice *captureDevice=[self getCameraDeviceWithPosition:AVCaptureDevicePositionFront];//取得前置摄像头
     if (!captureDevice) {
-        NSLog(@"取得前置摄像头时出现问题.");
+        DebugLog(@"取得前置摄像头时出现问题.");
         return;
     }
     //添加一个音频输入设备
@@ -68,12 +68,12 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     //根据输入设备初始化设备输入对象，用于获得输入数据
     _captureDeviceInput=[[AVCaptureDeviceInput alloc]initWithDevice:captureDevice error:&error];
     if (error) {
-        NSLog(@"取得设备输入对象时出错，错误原因：%@",error.localizedDescription);
+        DebugLog(@"取得设备输入对象时出错，错误原因：%@",error.localizedDescription);
         return;
     }
     AVCaptureDeviceInput *audioCaptureDeviceInput=[[AVCaptureDeviceInput alloc]initWithDevice:audioCaptureDevice error:&error];
     if (error) {
-        NSLog(@"取得设备输入对象时出错，错误原因：%@",error.localizedDescription);
+        DebugLog(@"取得设备输入对象时出错，错误原因：%@",error.localizedDescription);
         return;
     }
     //初始化设备输出对象，用于获得输出数据
@@ -208,20 +208,14 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 
 #pragma mark - 视频输出代理
 -(void)captureOutput:(AVCaptureFileOutput *)captureOutput didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray *)connections{
-    NSLog(@"开始录制...");
+    DebugLog(@"开始录制...");
 }
 -(void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error{
-    NSLog(@"视频录制完成.");
+    DebugLog(@"视频录制完成.");
     _model.recorderVideoUrl = outputFileURL;
     if ([_delegate respondsToSelector:@selector(movieRecorderDown:)]) {
         [_delegate movieRecorderDown:self];
     }
-//    NSError *saveError;
-//    NSData *data = [NSData dataWithContentsOfURL:outputFileURL];
-//    NSLog(@"%@======", saveError);
-//    if ([_delegate respondsToSelector:@selector(movieRecorderDownWithData:subsectionVideoSort:subSort:)]) {
-//        [_delegate movieRecorderDownWithData:data subsectionVideoSort:_subsectionVideoSort subsectionVideoType:_subsectionVideoType];
-//    }
     //视频录入完成之后在后台将视频存储到相簿
     _enableRotation=YES;
     _playButton.hidden = NO;
@@ -229,20 +223,14 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     UIBackgroundTaskIdentifier lastBackgroundTaskIdentifier = _backgroundTaskIdentifier;
     _backgroundTaskIdentifier=UIBackgroundTaskInvalid;
     ALAssetsLibrary *assetsLibrary=[[ALAssetsLibrary alloc]init];
-    NSLog(@"======================");
     [assetsLibrary writeVideoAtPathToSavedPhotosAlbum:outputFileURL completionBlock:^(NSURL *assetURL, NSError *error) {
         if (error) {
-            NSLog(@"保存视频到相簿过程中发生错误，错误信息：%@",error.localizedDescription);
+            DebugLog(@"保存视频到相簿过程中发生错误，错误信息：%@",error.localizedDescription);
         }
-        NSLog(@"======================");
-//        _model.recorderVideoUrl = assetURL;
-//        if ([_delegate respondsToSelector:@selector(movieRecorderDown:)]) {
-//            [_delegate movieRecorderDown:self];
-//        }
         if (lastBackgroundTaskIdentifier!=UIBackgroundTaskInvalid) {
             [[UIApplication sharedApplication] endBackgroundTask:lastBackgroundTaskIdentifier];
         }
-        NSLog(@"成功保存视频到相簿.");
+        DebugLog(@"成功保存视频到相簿.");
     }];
     
 }
@@ -286,7 +274,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
  *  @param notification 通知对象
  */
 -(void)deviceConnected:(NSNotification *)notification{
-    NSLog(@"设备已连接...");
+    DebugLog(@"设备已连接...");
 }
 
 /**
@@ -295,7 +283,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
  *  @param notification 通知对象
  */
 -(void)deviceDisconnected:(NSNotification *)notification{
-    NSLog(@"设备已断开.");
+    DebugLog(@"设备已断开.");
 }
 
 /**
@@ -313,7 +301,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
  *  @param notification 通知对象
  */
 -(void)sessionRuntimeError:(NSNotification *)notification{
-    NSLog(@"会话发生错误.");
+    DebugLog(@"会话发生错误.");
 }
 
 #pragma mark - 私有方法
@@ -347,7 +335,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
         propertyChange(captureDevice);
         [captureDevice unlockForConfiguration];
     }else{
-        NSLog(@"设置设备属性过程发生错误，错误信息：%@",error.localizedDescription);
+        DebugLog(@"设置设备属性过程发生错误，错误信息：%@",error.localizedDescription);
     }
 }
 
