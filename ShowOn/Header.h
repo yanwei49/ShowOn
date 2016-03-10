@@ -21,16 +21,16 @@
 #define Is480Height      kScreenHeight == 480
 
 //友盟KEY
-#define UMengAppKey @"55c8131667e58e98db000611"
+#define UMengAppKey @"56d91e79e0f55a16240000a1"
 
 //微信appId，appSecret，url
-#define WECHAT_APP_ID @"wx1d8933e2e4464950"
-#define WECHAT_APP_SECRET @"ba13e560c481c7dacb0ab692672d0535"
+#define WECHAT_APP_ID @"wx6b79801c978776bb"
+#define WECHAT_APP_SECRET @"2a58a741210ffdbb6aace788ee1e13c4"
 #define WECHAT_APP_URL @"http://www.umeng.com/social"
 
 //QQ appId，appKey，url
-#define QQ_APP_ID @"100424468"
-#define QQ_APP_KEY @"c7394704798a158208a74ab60104f0ba"
+#define QQ_APP_ID @"1105153857"
+#define QQ_APP_KEY @"jlExH7be6XAlsIVl"
 #define QQ_APP_URL @"http://www.umeng.com/social"
 
 //Sina SSO url
