@@ -29,7 +29,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = Subject_color;
     _dataSource = [[NSMutableArray alloc] init];
     _httpManager = [YWHttpManager shareInstance];
     _currentPage = 0;

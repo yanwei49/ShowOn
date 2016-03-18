@@ -36,7 +36,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = Subject_color;
     
     [[IQKeyboardManager sharedManager] setEnable:YES];
     [[IQKeyboardManager sharedManager] setEnableAutoToolbar:YES];
@@ -52,8 +52,8 @@
 
 - (void)createSubViews {
     _backButton = [[UIButton alloc] init];
-    _backButton.backgroundColor = [UIColor whiteColor];
-    [_backButton setImage:[UIImage imageNamed:@"back_orange.png"] forState:UIControlStateNormal];
+    _backButton.backgroundColor = Subject_color;
+    [_backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
     [_backButton addTarget:self action:@selector(actionBack) forControlEvents:UIControlEventTouchUpInside];
     _backButton.hidden = _backButtonHiddenState;
     [self.view addSubview:_backButton];
@@ -74,7 +74,7 @@
     _accountTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.view addSubview:_accountTextField];
     [_accountTextField makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_centerY).offset(Is480Height?-20:0);
+        make.top.equalTo(self.view.mas_centerY).offset(Is480Height?-40:-20);
         make.centerX.equalTo(self.view.mas_centerX);
         make.height.offset(30);
         make.width.offset(kScreenWidth-80);
@@ -103,7 +103,7 @@
     _loginButton.layer.cornerRadius = 5;
     _loginButton.layer.masksToBounds = YES;
     [_loginButton setTitle:@"登录" forState:UIControlStateNormal];
-    _loginButton.backgroundColor = [UIColor orangeColor];
+    _loginButton.backgroundColor = RGBColor(255, 192, 1);
     _loginButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [_loginButton addTarget:self action:@selector(actionLogin:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_loginButton];
@@ -111,13 +111,12 @@
         make.centerX.equalTo(_accountTextField.mas_centerX);
         make.height.offset(30);
         make.top.equalTo(_passwordTextField.mas_bottom).offset(10);
-        make.width.offset(80);
+        make.width.offset(kScreenWidth-80);
     }];
 
     _registerButton = [[UIButton alloc] init];
-    _registerButton.backgroundColor = [UIColor whiteColor];
+    _registerButton.backgroundColor = Subject_color;
     [_registerButton setTitle:@"注册账号" forState:UIControlStateNormal];
-    [_registerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     _registerButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [_registerButton addTarget:self action:@selector(actionRegister:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_registerButton];
@@ -128,9 +127,8 @@
     }];
     
     _forgetPasswordButton = [[UIButton alloc] init];
-    _forgetPasswordButton.backgroundColor = [UIColor whiteColor];
+    _forgetPasswordButton.backgroundColor = Subject_color;
     [_forgetPasswordButton setTitle:@"忘记密码?" forState:UIControlStateNormal];
-    [_forgetPasswordButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     _forgetPasswordButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [_forgetPasswordButton addTarget:self action:@selector(actionForgetPassword:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_forgetPasswordButton];
@@ -141,7 +139,7 @@
     }];
     
     _otherLoginMethodBackgroundView = [[UIView alloc] init];
-    _otherLoginMethodBackgroundView.backgroundColor = [UIColor whiteColor];
+    _otherLoginMethodBackgroundView.backgroundColor = Subject_color;
     [self.view addSubview:_otherLoginMethodBackgroundView];
     [_otherLoginMethodBackgroundView makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.offset(Is480Height?-20:-40);
@@ -153,7 +151,7 @@
     NSArray *imageNames = @[@"wechat.png", @"qq.png", @"weibo.png"];
     for (NSInteger i=0; i<3; i++) {
         UIButton *button = [[UIButton alloc] init];
-        button.backgroundColor = [UIColor whiteColor];
+        button.backgroundColor = Subject_color;
         button.tag = 100+i;
         [button addTarget:self action:@selector(actionOtherLoginMethod:) forControlEvents:UIControlEventTouchUpInside];
         [_otherLoginMethodBackgroundView addSubview:button];
@@ -167,7 +165,7 @@
         }];
         
         UIImageView *imageView = [[UIImageView alloc] init];
-        imageView.backgroundColor = [UIColor whiteColor];
+        imageView.backgroundColor = Subject_color;
         imageView.image = [UIImage imageNamed:imageNames[i]];
         [button addSubview:imageView];
         [imageView makeConstraints:^(MASConstraintMaker *make) {
@@ -176,7 +174,8 @@
         }];
         
         UILabel *label =[[UILabel alloc] init];
-        label.backgroundColor = [UIColor whiteColor];
+        label.backgroundColor = Subject_color;
+        label.textColor = [UIColor whiteColor];
         label.text = titles[i];
         label.textAlignment = NSTextAlignmentCenter;
         label.font = [UIFont systemFontOfSize:15];
@@ -186,38 +185,38 @@
             make.height.offset(20);
         }];
     }
-    
-    UILabel  *label = [[UILabel alloc] init];
-    label.backgroundColor = [UIColor whiteColor];
-    label.font = [UIFont systemFontOfSize:25];
-    label.text = @"我就是角儿!";
-    [self.view addSubview:label];
-    [label makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(_accountTextField.mas_top).offset(Is480Height?-10:-40);
-        make.height.offset(30);
-        make.centerX.equalTo(self.view.mas_centerX);
-    }];
+//    
+//    UILabel  *label = [[UILabel alloc] init];
+//    label.backgroundColor = [UIColor whiteColor];
+//    label.font = [UIFont systemFontOfSize:25];
+//    label.text = @"我就是角儿!";
+//    [self.view addSubview:label];
+//    [label makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(_accountTextField.mas_top).offset(Is480Height?-10:-40);
+//        make.height.offset(30);
+//        make.centerX.equalTo(self.view.mas_centerX);
+//    }];
     
     UIImageView *imageView = [[UIImageView alloc] init];
     imageView.backgroundColor = [UIColor greenColor];
     [self.view addSubview:imageView];
     [imageView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(Is480Height?30:60);
+        make.top.offset(Is480Height?60:90);
         make.centerX.equalTo(self.view.mas_centerX);
         make.width.offset(200);
         make.height.offset(Is480Height?80:100);
     }];
-    
-    UILabel  *label1 = [[UILabel alloc] init];
-    label1.backgroundColor = [UIColor whiteColor];
-    label1.font = [UIFont systemFontOfSize:30];
-    label1.text = @"角儿 JUER";
-    [self.view addSubview:label1];
-    [label1 makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(imageView.mas_bottom);
-        make.height.offset(40);
-        make.centerX.equalTo(self.view.mas_centerX);
-    }];
+//    
+//    UILabel  *label1 = [[UILabel alloc] init];
+//    label1.backgroundColor = [UIColor whiteColor];
+//    label1.font = [UIFont systemFontOfSize:30];
+//    label1.text = @"角儿 JUER";
+//    [self.view addSubview:label1];
+//    [label1 makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(imageView.mas_bottom);
+//        make.height.offset(40);
+//        make.centerX.equalTo(self.view.mas_centerX);
+//    }];
 }
 
 #pragma mark - action

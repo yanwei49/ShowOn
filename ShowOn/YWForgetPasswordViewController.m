@@ -27,7 +27,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = Subject_color;
     
     [[IQKeyboardManager sharedManager] setEnable:YES];
     [[IQKeyboardManager sharedManager] setEnableAutoToolbar:YES];
@@ -43,10 +43,9 @@
 
 - (void)createBackButton {
     UIButton *button = [[UIButton alloc] init];
-    button.backgroundColor = [UIColor whiteColor];
+    button.backgroundColor = Subject_color;
     [button setTitle:@"返回" forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:15];
-    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(actionBack:) forControlEvents:UIControlEventTouchUpInside];
     button.layer.masksToBounds = YES;
     button.layer.cornerRadius = 5;
@@ -64,9 +63,10 @@
 
 - (void)createSubViews {
     UILabel *label = [[UILabel alloc] init];
-    label.backgroundColor = [UIColor whiteColor];
+    label.backgroundColor = Subject_color;
+    label.textColor = [UIColor whiteColor];
     label.font = [UIFont systemFontOfSize:20];
-    label.text = @"注册角儿JUER账号";
+    label.text = @"找回角儿JUER账号密码";
     [self.view addSubview:label];
     [label makeConstraints:^(MASConstraintMaker *make) {
         make.top.offset(100);
@@ -101,12 +101,12 @@
     _passwordTextField.layer.masksToBounds = YES;
     _passwordTextField.layer.borderWidth = 1;
     _passwordTextField.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _passwordTextField.placeholder = @" 输入密码";
+    _passwordTextField.placeholder = @" 新密码";
     _passwordTextField.font = [UIFont systemFontOfSize:16];
     _passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.view addSubview:_passwordTextField];
     [_passwordTextField makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_accountTextField.mas_bottom).offset(5);
+        make.top.equalTo(_accountTextField.mas_bottom).offset(10);
         make.centerX.equalTo(self.view.mas_centerX);
         make.height.offset(30);
         make.width.offset(kScreenWidth-80);
@@ -120,12 +120,12 @@
     _repeatPasswordTextField.layer.masksToBounds = YES;
     _repeatPasswordTextField.layer.borderWidth = 1;
     _repeatPasswordTextField.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _repeatPasswordTextField.placeholder = @" 请输入6-12位数字或字母密码";
+    _repeatPasswordTextField.placeholder = @" 确认密码";
     _repeatPasswordTextField.font = [UIFont systemFontOfSize:16];
     _repeatPasswordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.view addSubview:_repeatPasswordTextField];
     [_repeatPasswordTextField makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_passwordTextField.mas_bottom).offset(5);
+        make.top.equalTo(_passwordTextField.mas_bottom).offset(10);
         make.centerX.equalTo(self.view.mas_centerX);
         make.height.offset(30);
         make.width.offset(kScreenWidth-80);
@@ -144,7 +144,7 @@
     _verificationTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.view addSubview:_verificationTextField];
     [_verificationTextField makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_repeatPasswordTextField.mas_bottom).offset(5);
+        make.top.equalTo(_repeatPasswordTextField.mas_bottom).offset(10);
         make.left.equalTo(_repeatPasswordTextField.mas_left);
         make.height.offset(30);
         make.width.offset(kScreenWidth-180);
@@ -154,7 +154,7 @@
     _sendVerificationButton.layer.cornerRadius = 5;
     _sendVerificationButton.layer.masksToBounds = YES;
     [_sendVerificationButton setTitle:@"发送验证码" forState:UIControlStateNormal];
-    _sendVerificationButton.backgroundColor = [UIColor orangeColor];
+    _sendVerificationButton.backgroundColor = RGBColor(255, 192, 1);
     _sendVerificationButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [_sendVerificationButton addTarget:self action:@selector(actionSendVerification:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_sendVerificationButton];
@@ -169,15 +169,15 @@
     _resetButton.layer.cornerRadius = 5;
     _resetButton.layer.masksToBounds = YES;
     [_resetButton setTitle:@"重置密码" forState:UIControlStateNormal];
-    _resetButton.backgroundColor = [UIColor orangeColor];
+    _resetButton.backgroundColor = RGBColor(255, 192, 1);
     _resetButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [_resetButton addTarget:self action:@selector(actionReset:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_resetButton];
     [_resetButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_accountTextField.mas_centerX);
         make.height.offset(30);
-        make.top.equalTo(_verificationTextField.mas_bottom).offset(40);
-        make.width.offset(80);
+        make.top.equalTo(_verificationTextField.mas_bottom).offset(60);
+        make.width.offset(kScreenWidth-80);
     }];
 }
 

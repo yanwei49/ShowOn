@@ -16,12 +16,50 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="start_1.png" translatesAutoresizingMaskIntoConstraints="NO" id="tcw-dm-1fT">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="tcw-dm-1fT" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="G24-rt-USc"/>
+                            <constraint firstItem="tcw-dm-1fT" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" id="SdX-2R-Nox">
+                                <variation key="widthClass=compact" constant="-20"/>
+                            </constraint>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="tcw-dm-1fT" secondAttribute="bottom" id="fCZ-5d-L0e"/>
+                            <constraint firstAttribute="trailing" secondItem="tcw-dm-1fT" secondAttribute="trailing" id="yGh-vo-X5K"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="tcw-dm-1fT"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="G24-rt-USc"/>
+                                <exclude reference="SdX-2R-Nox"/>
+                                <exclude reference="yGh-vo-X5K"/>
+                                <exclude reference="fCZ-5d-L0e"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="tcw-dm-1fT"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="G24-rt-USc"/>
+                                <include reference="SdX-2R-Nox"/>
+                                <include reference="yGh-vo-X5K"/>
+                                <include reference="fCZ-5d-L0e"/>
+                            </mask>
+                        </variation>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52.5" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="start_1.png" width="750" height="1334"/>
+    </resources>
 </document>

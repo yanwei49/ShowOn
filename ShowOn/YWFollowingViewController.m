@@ -53,12 +53,13 @@
     _searchBar.placeholder = @"搜索片名/用户名";
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.backgroundColor = RGBColor(50, 50, 50);
     [_tableView registerClass:[YWFollowingTableViewCell class] forCellReuseIdentifier:@"cell"];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableHeaderView = _searchBar;
     _tableView.tableFooterView = [[UIView alloc] init];
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.right.offset(0);

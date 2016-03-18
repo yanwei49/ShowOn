@@ -20,10 +20,10 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
+        self.contentView.backgroundColor = RGBColor(50, 50, 50);
         
         _avatorImageView = [[UIImageView alloc] init];
-        _avatorImageView.backgroundColor = [UIColor whiteColor];
+        _avatorImageView.backgroundColor = RGBColor(50, 50, 50);
         _avatorImageView.layer.masksToBounds = YES;
         _avatorImageView.layer.cornerRadius = 30;
         [self.contentView addSubview:_avatorImageView];
@@ -34,7 +34,8 @@
         }];
         
         _nameLabel = [[UILabel alloc] init];
-        _nameLabel.backgroundColor = [UIColor whiteColor];
+        _nameLabel.backgroundColor = RGBColor(50, 50, 50);
+        _nameLabel.textColor = [UIColor whiteColor];
         _nameLabel.font = [UIFont systemFontOfSize:16];
         [self.contentView addSubview:_nameLabel];
         [_nameLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -50,14 +51,22 @@
         _friendTypeButton.titleLabel.font = [UIFont systemFontOfSize:15];
         _friendTypeButton.layer.masksToBounds = YES;
         _friendTypeButton.layer.cornerRadius = 5;
-        _friendTypeButton.layer.borderWidth = 1;
-        _friendTypeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//        _friendTypeButton.layer.borderWidth = 1;
+//        _friendTypeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
         [self.contentView addSubview:_friendTypeButton];
         [_friendTypeButton makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.contentView.mas_centerY);
             make.right.offset(-20);
             make.width.offset(80);
-            make.height.offset(35);
+            make.height.offset(30);
+        }];
+        
+        UIView *line = [[UIView alloc] init];
+        line.backgroundColor = [UIColor blackColor];
+        [self.contentView addSubview:line];
+        [line makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.left.right.offset(0);
+            make.height.offset(0.5);
         }];
     }
     

@@ -28,7 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = Subject_color;
     
     [[IQKeyboardManager sharedManager] setEnable:YES];
     [[IQKeyboardManager sharedManager] setEnableAutoToolbar:YES];
@@ -44,10 +44,9 @@
 
 - (void)createBackButton {
     UIButton *button = [[UIButton alloc] init];
-    button.backgroundColor = [UIColor whiteColor];
+    button.backgroundColor = Subject_color;
     [button setTitle:@"返回" forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:15];
-    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(actionBack:) forControlEvents:UIControlEventTouchUpInside];
     button.layer.masksToBounds = YES;
     button.layer.cornerRadius = 5;
@@ -64,7 +63,8 @@
 
 - (void)createSubViews {
     UILabel *label = [[UILabel alloc] init];
-    label.backgroundColor = [UIColor whiteColor];
+    label.backgroundColor = Subject_color;
+    label.textColor = [UIColor whiteColor];
     label.font = [UIFont systemFontOfSize:20];
     label.text = @"注册角儿JUER账号";
     [self.view addSubview:label];
@@ -106,7 +106,7 @@
     _passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.view addSubview:_passwordTextField];
     [_passwordTextField makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_accountTextField.mas_bottom).offset(5);
+        make.top.equalTo(_accountTextField.mas_bottom).offset(10);
         make.centerX.equalTo(self.view.mas_centerX);
         make.height.offset(30);
         make.width.offset(kScreenWidth-80);
@@ -125,7 +125,7 @@
     _repeatPasswordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.view addSubview:_repeatPasswordTextField];
     [_repeatPasswordTextField makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_passwordTextField.mas_bottom).offset(5);
+        make.top.equalTo(_passwordTextField.mas_bottom).offset(10);
         make.centerX.equalTo(self.view.mas_centerX);
         make.height.offset(30);
         make.width.offset(kScreenWidth-80);
@@ -144,7 +144,7 @@
     _verificationTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.view addSubview:_verificationTextField];
     [_verificationTextField makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_repeatPasswordTextField.mas_bottom).offset(5);
+        make.top.equalTo(_repeatPasswordTextField.mas_bottom).offset(10);
         make.left.equalTo(_repeatPasswordTextField.mas_left);
         make.height.offset(30);
         make.width.offset(kScreenWidth-180);
@@ -154,7 +154,7 @@
     _sendVerificationButton.layer.cornerRadius = 5;
     _sendVerificationButton.layer.masksToBounds = YES;
     [_sendVerificationButton setTitle:@"发送验证码" forState:UIControlStateNormal];
-    _sendVerificationButton.backgroundColor = [UIColor orangeColor];
+    _sendVerificationButton.backgroundColor = RGBColor(255, 192, 1);
     _sendVerificationButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [_sendVerificationButton addTarget:self action:@selector(actionSendVerification:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_sendVerificationButton];
@@ -169,15 +169,15 @@
     _registerButton.layer.cornerRadius = 5;
     _registerButton.layer.masksToBounds = YES;
     [_registerButton setTitle:@"注册" forState:UIControlStateNormal];
-    _registerButton.backgroundColor = [UIColor orangeColor];
+    _registerButton.backgroundColor = RGBColor(255, 192, 1);
     _registerButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [_registerButton addTarget:self action:@selector(actionRegister:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_registerButton];
     [_registerButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_accountTextField.mas_centerX);
         make.height.offset(30);
-        make.top.equalTo(_verificationTextField.mas_bottom).offset(40);
-        make.width.offset(80);
+        make.top.equalTo(_verificationTextField.mas_bottom).offset(60);
+        make.width.offset(kScreenWidth-80);
     }];
 }
 

@@ -10,6 +10,7 @@
 		566AE2741C3DE19900781A7E /* YWCustomTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566AE2731C3DE19900781A7E /* YWCustomTabBarViewController.m */; };
 		566BF5EB1C4717CF002C5591 /* YWTemplateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566BF5EA1C4717CF002C5591 /* YWTemplateListViewController.m */; };
 		566BF5EE1C47191F002C5591 /* YWTemplateListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 566BF5ED1C47191F002C5591 /* YWTemplateListTableViewCell.m */; };
+		566D99511C9A303400608B53 /* start_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 566D99501C9A303400608B53 /* start_1.png */; };
 		566E7BA81C86628A008D2B4F /* 测试结果.txt in Resources */ = {isa = PBXBuildFile; fileRef = 566E7BA71C86628A008D2B4F /* 测试结果.txt */; };
 		566F0DA01C48716500353311 /* YWTrendsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 566F0D9F1C48716500353311 /* YWTrendsModel.m */; };
 		5678555B1C7552BB008DEB1C /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 567855581C7552BB008DEB1C /* down.png */; };
@@ -294,6 +295,7 @@
 		566BF5EA1C4717CF002C5591 /* YWTemplateListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTemplateListViewController.m; sourceTree = "<group>"; };
 		566BF5EC1C47191F002C5591 /* YWTemplateListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTemplateListTableViewCell.h; sourceTree = "<group>"; };
 		566BF5ED1C47191F002C5591 /* YWTemplateListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTemplateListTableViewCell.m; sourceTree = "<group>"; };
+		566D99501C9A303400608B53 /* start_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = start_1.png; sourceTree = "<group>"; };
 		566E7BA71C86628A008D2B4F /* 测试结果.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "测试结果.txt"; sourceTree = "<group>"; };
 		566F0D9E1C48716500353311 /* YWTrendsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTrendsModel.h; sourceTree = "<group>"; };
 		566F0D9F1C48716500353311 /* YWTrendsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTrendsModel.m; sourceTree = "<group>"; };
@@ -770,6 +772,7 @@
 		568DBFF61C5619DA00CFD1BC /* resouce */ = {
 			isa = PBXGroup;
 			children = (
+				566D99501C9A303400608B53 /* start_1.png */,
 				77BFCC191C7862DF001D49BA /* choose_normal_small.png */,
 				77BFCC1A1C7862DF001D49BA /* choose_normal_small@2x.png */,
 				77BFCC1B1C7862DF001D49BA /* choose_normal_small@3x.png */,
@@ -1824,6 +1827,7 @@
 				568DC0671C5619DA00CFD1BC /* @_normal.png in Resources */,
 				568DC0711C5619DB00CFD1BC /* back@2x.png in Resources */,
 				568DC0821C5619DB00CFD1BC /* collect_normal.png in Resources */,
+				566D99511C9A303400608B53 /* start_1.png in Resources */,
 				568DC0D61C5619DB00CFD1BC /* 对话框@3x.png in Resources */,
 				568DC0891C5619DB00CFD1BC /* expand@2x.png in Resources */,
 				568DC0871C5619DB00CFD1BC /* collect_selected@3x.png in Resources */,
