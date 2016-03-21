@@ -32,12 +32,12 @@
 
 @implementation YWHotItemViewController
 {
-    UISegmentedControl  *_segmentedControl;
-    UITableView         *_tableView;
-    NSMutableArray      *_dataSource;
-    NSMutableArray      *_trends;
-    NSMutableArray      *_comments;
-    YWHttpManager       *_httpManager;
+    UISegmentedControl      *_segmentedControl;
+    UITableView             *_tableView;
+    NSMutableArray          *_dataSource;
+    NSMutableArray          *_trends;
+    NSMutableArray          *_comments;
+    YWHttpManager           *_httpManager;
 }
 
 - (void)viewDidLoad {
@@ -105,7 +105,11 @@
         [_trends removeAllObjects];
         [_comments removeAllObjects];
         [_dataSource removeAllObjects];
+        NSArray *subVideos = _template.templateSubsectionVideos;
         _template = [parser templateWithDict:responseObject[@"templateInfo"]];
+        if (!_template.templateSubsectionVideos.count) {
+            _template.templateSubsectionVideos = subVideos;
+        }
         [_trends addObjectsFromArray:_template.templateTrends];
         [_comments addObjectsFromArray:_template.templateComments];
         [_dataSource addObjectsFromArray:_trends];

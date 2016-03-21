@@ -19,6 +19,7 @@
 #import "UMSocialSinaHandler.h"
 #import "YWCustomTabBarViewController.h"
 #import "YWDataBaseManager.h"
+#import "YWFriendListManager.h"
 
 @interface AppDelegate ()<UITabBarControllerDelegate, YWCustomTabBarViewControllerDelegate>
 
@@ -37,6 +38,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:LoginSuccess object:nil];
     [self configureAPIKey];
     _tabBarLastSelectIndex = -1;
+    [YWFriendListManager shareInstance];
 
     if ([[YWDataBaseManager shareInstance] loginUser]) {
         [self createTabBar];

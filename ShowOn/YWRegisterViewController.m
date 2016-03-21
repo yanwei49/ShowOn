@@ -9,6 +9,11 @@
 #import "YWRegisterViewController.h"
 #import "NSString+isValidate.h"
 #import "YWHttpManager.h"
+#import "YWParser.h"
+#import "YWUserModel.h"
+#import "YWDataBaseManager.h"
+#import "YWFriendListManager.h"
+#import <RongIMKit/RongIMKit.h>
 
 @interface YWRegisterViewController ()<UITextFieldDelegate>
 
@@ -261,9 +266,25 @@
     NSDictionary *parameters = @{@"account": _accountTextField.text, @"password": _passwordTextField.text, @"accountTypeId": @(1), @"nickname": @"", @"birthday": @"", @"sex": @"", @"introduction": @""};
     [[YWHttpManager shareInstance] requestRegister:parameters success:^(id responseObject) {
         [SVProgressHUD showSuccessWithStatus:@"注册成功"];
+        YWParser *parser = [[YWParser alloc] init];
+        YWUserModel *user = [parser userWithDict:responseObject[@"user"]];
+        [[YWDataBaseManager shareInstance] addLoginUser:user];
         [self registerSuccess];
+        [YWFriendListManager shareInstance];
+        [self connectRongYunSevers:user];
     } otherFailure:^(id responseObject) {
     } failure:^(NSError *error) {
+    }];
+}
+
+- (void)connectRongYunSevers:(YWUserModel *)loginUser {
+    [[RCIM sharedRCIM] connectWithToken:loginUser.userToken success:^(NSString *userId) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            DebugLog(@"连接融云成功");
+        });
+    } error:^(RCConnectErrorCode status) {
+    } tokenIncorrect:^{
+        [self requestRegister];
     }];
 }
 

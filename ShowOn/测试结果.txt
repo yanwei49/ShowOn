@@ -264,4 +264,22 @@
 }
 
 
+/**********************/
+模板详情的评论列表加一个字段，返回用户的点赞状态(key为：isSupport)
+接口：juer/dynamic/templateInfo?json
+
+发表动态评论成功后动态详情接口返回的动态列表仍然是空数组
+接口：juer/dynamic/trendsInfo?json
+
+点赞列表数据有问题，点赞的动态属性全部为空字符串
+接口：juer/dynamic/supportList?json
+
+评论列表返回的数据有空对象null（key为：commentsTargetUser，trends）
+接口：juer/dynamic/commentList?json
+
+举报接口再加一个字段，当举报为视频时，接收一个举报的文字描述（key为infos），举报用户可以不要这个key
+接口：juer/user/inform?json
+
+请求用户列的参数relationTypeId为0的时候返回给我所有用户列表，不分页
+接口：juer/user/getFriendList?json
 

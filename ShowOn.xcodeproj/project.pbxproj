@@ -13,6 +13,7 @@
 		566D99511C9A303400608B53 /* start_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 566D99501C9A303400608B53 /* start_1.png */; };
 		566E7BA81C86628A008D2B4F /* 测试结果.txt in Resources */ = {isa = PBXBuildFile; fileRef = 566E7BA71C86628A008D2B4F /* 测试结果.txt */; };
 		566F0DA01C48716500353311 /* YWTrendsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 566F0D9F1C48716500353311 /* YWTrendsModel.m */; };
+		567758181C9F81EA001A630A /* YWAllUserRCIM.m in Sources */ = {isa = PBXBuildFile; fileRef = 567758171C9F81EA001A630A /* YWAllUserRCIM.m */; };
 		5678555B1C7552BB008DEB1C /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 567855581C7552BB008DEB1C /* down.png */; };
 		5678555C1C7552BB008DEB1C /* down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 567855591C7552BB008DEB1C /* down@2x.png */; };
 		5678555D1C7552BB008DEB1C /* down@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5678555A1C7552BB008DEB1C /* down@3x.png */; };
@@ -151,6 +152,7 @@
 		569257EE1C744FDC000EFB95 /* YWUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 569257ED1C744FDC000EFB95 /* YWUserTableViewCell.m */; };
 		56A6BFAE1C59CA8800AEA490 /* YWAiTeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A6BFAD1C59CA8800AEA490 /* YWAiTeModel.m */; };
 		56A6BFB11C59CE0700AEA490 /* YWSupportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A6BFB01C59CE0700AEA490 /* YWSupportModel.m */; };
+		56AE59561C9FE83A00915654 /* YWFriendListManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 56AE59551C9FE83A00915654 /* YWFriendListManager.m */; };
 		56B72F391C73099E00E3ACE6 /* YWTrendsCategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B72F381C73099E00E3ACE6 /* YWTrendsCategoryView.m */; };
 		56CCBB951C745DAE00AEA45B /* YWUserProtocolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CCBB941C745DAE00AEA45B /* YWUserProtocolViewController.m */; };
 		56CFFFC51C745E0D00BE9E6F /* YWSuggestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CFFFC41C745E0D00BE9E6F /* YWSuggestionViewController.m */; };
@@ -299,6 +301,8 @@
 		566E7BA71C86628A008D2B4F /* 测试结果.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "测试结果.txt"; sourceTree = "<group>"; };
 		566F0D9E1C48716500353311 /* YWTrendsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTrendsModel.h; sourceTree = "<group>"; };
 		566F0D9F1C48716500353311 /* YWTrendsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTrendsModel.m; sourceTree = "<group>"; };
+		567758161C9F81EA001A630A /* YWAllUserRCIM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWAllUserRCIM.h; sourceTree = "<group>"; };
+		567758171C9F81EA001A630A /* YWAllUserRCIM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWAllUserRCIM.m; sourceTree = "<group>"; };
 		567855581C7552BB008DEB1C /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
 		567855591C7552BB008DEB1C /* down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down@2x.png"; sourceTree = "<group>"; };
 		5678555A1C7552BB008DEB1C /* down@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down@3x.png"; sourceTree = "<group>"; };
@@ -457,6 +461,8 @@
 		56A6BFAD1C59CA8800AEA490 /* YWAiTeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWAiTeModel.m; sourceTree = "<group>"; };
 		56A6BFAF1C59CE0700AEA490 /* YWSupportModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWSupportModel.h; sourceTree = "<group>"; };
 		56A6BFB01C59CE0700AEA490 /* YWSupportModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWSupportModel.m; sourceTree = "<group>"; };
+		56AE59541C9FE83A00915654 /* YWFriendListManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWFriendListManager.h; sourceTree = "<group>"; };
+		56AE59551C9FE83A00915654 /* YWFriendListManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFriendListManager.m; sourceTree = "<group>"; };
 		56B72F371C73099E00E3ACE6 /* YWTrendsCategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTrendsCategoryView.h; sourceTree = "<group>"; };
 		56B72F381C73099E00E3ACE6 /* YWTrendsCategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTrendsCategoryView.m; sourceTree = "<group>"; };
 		56CCBB931C745DAE00AEA45B /* YWUserProtocolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWUserProtocolViewController.h; sourceTree = "<group>"; };
@@ -535,7 +541,7 @@
 		56F5D3961C17E1BE008C33CA /* video1.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video1.mov; sourceTree = "<group>"; };
 		56F5D3971C17E1BE008C33CA /* video2.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video2.mov; sourceTree = "<group>"; };
 		56FC719C1C75A30B006D1BDD /* YWTemplateTrendsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTemplateTrendsTableViewCell.h; sourceTree = "<group>"; };
-		56FC719D1C75A30B006D1BDD /* YWTemplateTrendsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTemplateTrendsTableViewCell.m; sourceTree = "<group>"; };
+		56FC719D1C75A30B006D1BDD /* YWTemplateTrendsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTemplateTrendsTableViewCell.m; sourceTree = "<group>"; wrapsLines = 0; };
 		56FE99C61C0FBAB8007BA29B /* ShowOn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShowOn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56FE99CA1C0FBAB8007BA29B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		56FE99CC1C0FBAB8007BA29B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1165,6 +1171,8 @@
 				56FE9A241C0FCA4D007BA29B /* Header.h */,
 				77D0F0C11C11B36100134A17 /* PrefixHeader.pch */,
 				56FE99C91C0FBAB8007BA29B /* Supporting Files */,
+				567758161C9F81EA001A630A /* YWAllUserRCIM.h */,
+				567758171C9F81EA001A630A /* YWAllUserRCIM.m */,
 			);
 			path = ShowOn;
 			sourceTree = "<group>";
@@ -1638,6 +1646,8 @@
 				56F5D3821C17CB91008C33CA /* movie play */,
 				77D0F0FF1C11CABB00134A17 /* YWHttpManager.h */,
 				77D0F1001C11CABB00134A17 /* YWHttpManager.m */,
+				56AE59541C9FE83A00915654 /* YWFriendListManager.h */,
+				56AE59551C9FE83A00915654 /* YWFriendListManager.m */,
 				77D0F1021C11CAC900134A17 /* YWParser.h */,
 				77D0F1031C11CAC900134A17 /* YWParser.m */,
 				774A1E581C2FCD5600671945 /* YWDataBaseManager.h */,
@@ -2048,6 +2058,7 @@
 				568D286E1C49CDCA00DAA9B9 /* YWArticleDetailViewController.m in Sources */,
 				566F0DA01C48716500353311 /* YWTrendsModel.m in Sources */,
 				77D0F0F11C11C52000134A17 /* YWCommentTableViewCell.m in Sources */,
+				56AE59561C9FE83A00915654 /* YWFriendListManager.m in Sources */,
 				567C151C1C731761006A365D /* YWKeyboardHeadView.m in Sources */,
 				56F4AF251C1279A1008A6828 /* NSString+isValidate.m in Sources */,
 				56FE99CB1C0FBAB8007BA29B /* main.m in Sources */,
@@ -2088,6 +2099,7 @@
 				7710ABB71C20EB80006FF4EF /* YWMovieModel.m in Sources */,
 				56FC719E1C75A30B006D1BDD /* YWTemplateTrendsTableViewCell.m in Sources */,
 				568DBFF11C560BCD00CFD1BC /* YWEditCoverViewController.m in Sources */,
+				567758181C9F81EA001A630A /* YWAllUserRCIM.m in Sources */,
 				77D0F0E21C11C3E400134A17 /* YWExperienceViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

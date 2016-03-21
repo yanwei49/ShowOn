@@ -68,7 +68,7 @@
             [_dataSource removeAllObjects];
         }
         YWParser *parser = [[YWParser alloc] init];
-        NSArray *array = [parser aiTeWithArray:responseObject[@"aiTeList"]];
+        NSArray *array = [parser commentsWithArray:responseObject[@"commentList"]];
         [_dataSource addObjectsFromArray:array];
         [self noContentViewShowWithState:_dataSource.count?NO:YES];
         if (array.count<20) {

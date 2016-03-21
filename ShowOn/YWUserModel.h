@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 typedef enum : NSUInteger {
-    kEachOtherNoFocus,      //无关系
+    kEachOtherNoFocus,      //所有用户
     kFocus,                 //关注的人
     kBeFocus,               //粉丝
     kBlackList,             //黑名单

@@ -168,7 +168,7 @@
 }
 
 - (void)requestUserDetails {
-    NSDictionary *parameters = @{@"userId": _loginUser.userId};
+    NSDictionary *parameters = @{@"userId": _loginUser.userId?:@""};
     [_httpManager requestUserDetail:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         _loginUser = [parser userWithDict:responseObject[@"user"]];

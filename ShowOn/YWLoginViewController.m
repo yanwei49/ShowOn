@@ -16,6 +16,8 @@
 #import "YWUserModel.h"
 #import "YWParser.h"
 #import "YWDataBaseManager.h"
+#import "YWFriendListManager.h"
+#import <RongIMKit/RongIMKit.h>
 
 @interface YWLoginViewController ()<UITextFieldDelegate>
 
@@ -185,17 +187,6 @@
             make.height.offset(20);
         }];
     }
-//    
-//    UILabel  *label = [[UILabel alloc] init];
-//    label.backgroundColor = [UIColor whiteColor];
-//    label.font = [UIFont systemFontOfSize:25];
-//    label.text = @"我就是角儿!";
-//    [self.view addSubview:label];
-//    [label makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(_accountTextField.mas_top).offset(Is480Height?-10:-40);
-//        make.height.offset(30);
-//        make.centerX.equalTo(self.view.mas_centerX);
-//    }];
     
     UIImageView *imageView = [[UIImageView alloc] init];
     imageView.backgroundColor = [UIColor greenColor];
@@ -206,17 +197,6 @@
         make.width.offset(200);
         make.height.offset(Is480Height?80:100);
     }];
-//    
-//    UILabel  *label1 = [[UILabel alloc] init];
-//    label1.backgroundColor = [UIColor whiteColor];
-//    label1.font = [UIFont systemFontOfSize:30];
-//    label1.text = @"角儿 JUER";
-//    [self.view addSubview:label1];
-//    [label1 makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(imageView.mas_bottom);
-//        make.height.offset(40);
-//        make.centerX.equalTo(self.view.mas_centerX);
-//    }];
 }
 
 #pragma mark - action
@@ -226,11 +206,17 @@
 
 - (void)actionLogin:(UIButton *)button {
     _loginType = 1;
-//    [self loginSuccess];
-//    return;
     [_accountTextField resignFirstResponder];
     [_passwordTextField resignFirstResponder];
     if (_accountTextField.text.length && _passwordTextField.text.length) {
+        if (![NSString isMobileNumber:_accountTextField.text]) {
+            [self showErrorWithString:@"请输入正确的手机号"];
+            return;
+        }
+        if (![NSString isValidatePwd:_passwordTextField.text]) {
+            [self showErrorWithString:@"密码只能为6-12为数字或字母"];
+            return;
+        }
         [self requestLogin];
     }else {
         [self showErrorWithString:@"请输入账号和密码"];
@@ -274,6 +260,7 @@
             //            NSLog(@"username is %@, uid is %@, token is %@ url is %@",snsAccount.userName,snsAccount.usid,snsAccount.accessToken,snsAccount.iconURL);
             _othersUser.userName = snsAccount.userName;
             _othersUser.portraitUri = snsAccount.iconURL;
+            _othersUser.userId = snsAccount.usid;
             _loginType = 3;
             
             [self requestRegister];
@@ -361,6 +348,8 @@
         _othersUser = [parser userWithDict:responseObject[@"user"]];
         [[YWDataBaseManager shareInstance] addLoginUser:_othersUser];
         [self loginSuccess];
+        [YWFriendListManager shareInstance];
+        [self connectRongYunSevers:_othersUser];
     } otherFailure:^(id responseObject) {
         [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
     } failure:^(NSError *error) {
@@ -376,11 +365,29 @@
         [[YWDataBaseManager shareInstance] addLoginUser:_othersUser];
         [SVProgressHUD showSuccessWithStatus:@"登录成功"];
         [self loginSuccess];
+        [YWFriendListManager shareInstance];
+        [self connectRongYunSevers:_othersUser];
     } otherFailure:^(id responseObject) {
     } failure:^(NSError *error) {
     }];
 }
 
+- (void)connectRongYunSevers:(YWUserModel *)loginUser {
+    [[RCIM sharedRCIM] connectWithToken:loginUser.userToken success:^(NSString *userId) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            DebugLog(@"连接融云成功");
+        });
+    } error:^(RCConnectErrorCode status) {
+        DebugLog(@"连接失败");
+    } tokenIncorrect:^{
+        DebugLog(@"连接失败");
+        if (_loginType != 1) {
+            [self requestRegister];
+        }else {
+            [self requestLogin];
+        }
+    }];
+}
 
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -390,27 +397,6 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    if (textField.text) {
-        if ([textField isEqual:_accountTextField]) {
-            if ([NSString isMobileNumber:_accountTextField.text]) {
-                [_accountTextField resignFirstResponder];
-                [_passwordTextField becomeFirstResponder];
-            }else {
-                [self showErrorWithString:@"请输入正确的手机号"];
-            }
-        }else {
-            if ([NSString isValidatePwd:_passwordTextField.text]) {
-                [_passwordTextField resignFirstResponder];
-            }else {
-                [self showErrorWithString:@"密码只能为6-12为数字或字母"];
-            }
-        }
-    }else {
-        NSArray *tfs = @[_accountTextField, _passwordTextField];
-        NSArray *message = @[@"请输入账号", @"请输入密码"];
-        NSInteger index = [tfs indexOfObject:textField];
-        [self showErrorWithString:message[index]];
-    }
 }
 
 - (void)showErrorWithString:(NSString *)message {

@@ -120,6 +120,7 @@
 
 #pragma mark - request
 - (void)requestCommitContent {
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
     [SVProgressHUD showWithStatus:@"提交中，请稍等。。。"];
     NSMutableString *userId = [NSMutableString stringWithString:@""];
     for (YWUserModel *user in _selectUsers) {
@@ -147,7 +148,7 @@
         commentsTargetId = _template.templateId;
     }
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"commentsTargetId": commentsTargetId, @"commentsTypeId": commentsTypeId, @"commentsContent": _textView.text, @"aiTeuserIds": userId, @"dependId": dependId};
-    [_httpManager requestAiTeList:parameters success:^(id responseObject) {
+    [_httpManager requestCommitComment:parameters success:^(id responseObject) {
         [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
         [self dismissViewControllerAnimated:YES completion:nil];
     } otherFailure:^(id responseObject) {
@@ -160,7 +161,8 @@
 - (void)requestRepeat {
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"trendsId": _trends.trendsId, @"forwardComments": @(2)};
     [_httpManager requestRepeat:parameters success:^(id responseObject) {
-        
+        [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
+        [self dismissViewControllerAnimated:YES completion:nil];
     } otherFailure:^(id responseObject) {
         
     } failure:^(NSError *error) {
@@ -193,6 +195,14 @@
     }else {
         _placeholderLabel.text = @"说点什么吧！";
     }
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+    }
+    
+    return YES;
 }
 
 @end

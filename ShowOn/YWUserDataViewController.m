@@ -347,7 +347,7 @@
 }
 
 - (void)requestReport {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"informTypeId": @"1", @"informTargetId": _user.userId};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"informTypeId": @"1", @"informTargetId": _user.userId, @"infos": @""};
     [_httpManager requestReport:parameters success:^(id responseObject) {
         [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
     } otherFailure:^(id responseObject) {

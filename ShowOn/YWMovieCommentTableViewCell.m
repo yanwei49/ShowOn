@@ -114,6 +114,7 @@
     _userNameLabel.text = comment.commentUser.userName;
     _timeLabel.text = comment.commentTime;
     _contentLabel.text = comment.commentContent;
+    _supportButton.selected = comment.isSupport.integerValue;
 }
 
 +(CGFloat)cellHeightWithComment:(YWCommentModel *)comment {

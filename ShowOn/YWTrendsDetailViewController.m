@@ -121,17 +121,23 @@
 
 #pragma mark - action
 - (void)actionRightItem:(UIButton *)button {
-    UIAlertController *sheet = [UIAlertController alertControllerWithTitle:@"举报" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    [sheet addAction:[UIAlertAction actionWithTitle:@"带有色情或政治内容" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        
-    }]];
-    [sheet addAction:[UIAlertAction actionWithTitle:@"其    他" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        
-    }]];
-    [sheet addAction:[UIAlertAction actionWithTitle:@"取    消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-        
-    }]];
-    [self presentViewController:sheet animated:YES completion:nil];
+    if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
+        UIAlertController *sheet = [UIAlertController alertControllerWithTitle:@"举报" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        [sheet addAction:[UIAlertAction actionWithTitle:@"带有色情或政治内容" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [self requestReport:0];
+        }]];
+        [sheet addAction:[UIAlertAction actionWithTitle:@"其    他" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [self requestReport:0];
+        }]];
+        [sheet addAction:[UIAlertAction actionWithTitle:@"取    消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+            
+        }]];
+        [self presentViewController:sheet animated:YES completion:nil];
+    }else {
+        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"举报" delegate:self cancelButtonTitle:@"取    消" destructiveButtonTitle:nil otherButtonTitles:@"带有色情或政治内容", @"其    他", nil];
+        sheet.tag = 110;
+        [sheet showInView:self.view];
+    }
 }
 
 - (void)actionWriteComment:(UIButton *)button {
@@ -139,6 +145,7 @@
     YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
     nv.title = @"写评论";
     vc.trends = _trends;
+    vc.type = 1;
     [self presentViewController:nv animated:YES completion:nil];
 }
 
@@ -174,6 +181,18 @@
     [_httpManager requestSupport:parameters success:^(id responseObject) {
         comment.isSupport = @"1";
         [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)requestReport:(NSInteger)index {
+    NSArray *arr = @[@"带色情或政治内容", @"其他"];
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"informTypeId": @"2", @"informTargetId": _trends.trendsId, @"infos": arr[index]};
+    [_httpManager requestReport:parameters success:^(id responseObject) {
+        [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
     } otherFailure:^(id responseObject) {
         
     } failure:^(NSError *error) {
@@ -283,6 +302,7 @@
             YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
             YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
             nv.title = @"写评论";
+            vc.type = 2;
             vc.trends = _trends;
             vc.comment = _trends.trendsComments[indexPath.row-2];
             [self presentViewController:nv animated:YES completion:nil];
@@ -295,10 +315,16 @@
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
-        if (buttonIndex == 0) {
-            [self requestRepeat];
-        }else if (buttonIndex == 1) {
-            [self requestShare];
+        if (actionSheet.tag == 110) {
+            if (buttonIndex != actionSheet.cancelButtonIndex) {
+                [self requestReport:buttonIndex];
+            }
+        }else {
+            if (buttonIndex == 0) {
+                [self requestRepeat];
+            }else if (buttonIndex == 1) {
+                [self requestShare];
+            }
         }
     }else {
         [self login];

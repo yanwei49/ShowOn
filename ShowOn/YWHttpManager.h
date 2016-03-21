@@ -314,5 +314,14 @@
  */
 - (void)requestTemplatePlayUserList:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
 
+/**
+ *  发表评论
+ *
+ *  @param parameters 请求参数
+ *  @param success    成功block
+ *  @param failure    失败block
+ */
+- (void)requestCommitComment:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
+
 
 @end

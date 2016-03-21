@@ -84,7 +84,7 @@
     AVURLAsset *urlAsset=[AVURLAsset assetWithURL:[NSURL URLWithString:urlStr]];
     NSInteger time = (NSInteger)CMTimeGetSeconds(urlAsset.duration);
     NSString *timeString = [NSString stringWithFormat:@"%2ld分%ld秒", (long)time/60, (long)time%60];
-    
+
     return timeString;
 }
 

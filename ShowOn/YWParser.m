@@ -124,7 +124,7 @@
     comment.beCommentUser = [self userWithDict:[dict objectForKey:@"commentsTargetUser"]];
     comment.commentType = [[dict objectForKey:@"commentsTypeId"] integerValue];
     comment.commentId = [dict objectForKey:@"commentsId"];
-    comment.isSupport = [dict objectForKey:@""];
+    comment.isSupport = [dict objectForKey:@"isSupport"];
     comment.commentTime = [dict objectForKey:@"editTime"];
     comment.commentContent = [dict objectForKey:@"commentsContent"];
     comment.commentsTargetId = [dict objectForKey:@"commentsTargetId"];
