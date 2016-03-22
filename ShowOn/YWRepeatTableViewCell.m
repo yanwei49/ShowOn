@@ -1,12 +1,12 @@
 //
-//  YWFocusTableViewCell.m
+//  YWRepeatTableViewCell.m
 //  ShowOn
 //
-//  Created by 颜魏 on 15/12/3.
-//  Copyright © 2015年 yanwei. All rights reserved.
+//  Created by David Yu on 22/3/16.
+//  Copyright © 2016年 yanwei. All rights reserved.
 //
 
-#import "YWFocusTableViewCell.h"
+#import "YWRepeatTableViewCell.h"
 #import "YWMoviePlayView.h"
 #import "YWFocusCommentTableViewCell.h"
 #import "YWMovieModel.h"
@@ -17,11 +17,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "YWTools.h"
 
-@interface YWFocusTableViewCell()<UITableViewDelegate, UITableViewDataSource>
-
-@end
-
-@implementation YWFocusTableViewCell
+@implementation YWRepeatTableViewCell
 {
     UIImageView      *_avatorImageView;
     UILabel          *_userNameLabel;
@@ -32,9 +28,9 @@
     YWMoviePlayView  *_playMovieView;
     UIButton         *_playButton;
     UIButton         *_cooperateButton;
-    UITableView      *_tableView;
     UIImageView      *_imageView;
     UIButton         *_playingButton;
+    UILabel          *_forwardLabel;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -132,26 +128,47 @@
             make.width.offset(60);
         }];
         
-        _playMovieView = [[YWMoviePlayView alloc] initWithFrame:CGRectMake(0, 65, kScreenWidth, 200) playUrl:@""];
-        _playMovieView.backgroundColor = Subject_color;
+        _forwardLabel = [[UILabel alloc] init];
+        _forwardLabel.numberOfLines = 0;
+        _forwardLabel.text = @"";
+        _forwardLabel.backgroundColor = RGBColor(30, 30, 30);
+        _forwardLabel.textColor = [UIColor whiteColor];
+        _forwardLabel.font = [UIFont systemFontOfSize:14];
+        [self.contentView addSubview:_forwardLabel];
+        [_forwardLabel makeConstraints:^(MASConstraintMaker *make) {
+            make.top.offset(65);
+            make.left.offset(10);
+            make.right.offset(-10);
+        }];
+        
+        UIView *line = [[UIView alloc] init];
+        line.backgroundColor = RGBColor(30, 30, 30);
+        [self.contentView addSubview:line];
+        [line makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.offset(0);
+            make.top.offset(67);
+            make.height.offset(0.5);
+        }];
+
+        _playMovieView = [[YWMoviePlayView alloc] initWithFrame:CGRectMake(5, 65, kScreenWidth-10, 200) playUrl:@""];
+        _playMovieView.backgroundColor = RGBColor(30, 30, 30);
         _playMovieView.layer.masksToBounds = YES;
         _playMovieView.layer.cornerRadius = 5;
         [self.contentView addSubview:_playMovieView];
-//        [_playMovieView makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.offset(65);
-//            make.left.offset(5);
-//            make.right.offset(-5);
-//            make.height.offset(200);
-//        }];
-        
+        //        [_playMovieView makeConstraints:^(MASConstraintMaker *make) {
+        //            make.top.offset(65);
+        //            make.left.offset(5);
+        //            make.right.offset(-5);
+        //            make.height.offset(200);
+        //        }];
         
         _imageView = [[UIImageView alloc] init];
         _imageView.backgroundColor = RGBColor(30, 30, 30);
         _imageView.layer.masksToBounds = YES;
         _imageView.layer.cornerRadius = 5;
-        [view addSubview:_imageView];
+        [self.contentView addSubview:_imageView];
         [_imageView makeConstraints:^(MASConstraintMaker *make) {
-            make.top.offset(65);
+            make.top.equalTo(_forwardLabel.mas_bottom).offset(5);
             make.left.offset(5);
             make.right.offset(-5);
             make.height.offset(200);
@@ -166,7 +183,7 @@
             make.centerX.equalTo(_imageView.mas_centerX);
             make.width.height.offset(100);
         }];
-
+        
         _contentLabel = [[UILabel alloc] init];
         _contentLabel.numberOfLines = 0;
         _contentLabel.text = @"";
@@ -175,23 +192,9 @@
         _contentLabel.font = [UIFont systemFontOfSize:14];
         [self.contentView addSubview:_contentLabel];
         [_contentLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_imageView.mas_bottom).offset(5);
+            make.top.equalTo(_playMovieView.mas_bottom).offset(5);
             make.left.offset(10);
             make.right.offset(-10);
-        }];
-
-        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        _tableView.backgroundColor = RGBColor(30, 30, 30);
-        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.scrollEnabled = NO;
-        _tableView.userInteractionEnabled = NO;
-        [_tableView registerClass:[YWFocusCommentTableViewCell class] forCellReuseIdentifier:@"cell"];
-        _tableView.delegate = self;
-        _tableView.dataSource = self;
-        [self.contentView addSubview:_tableView];
-        [_tableView makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.left.right.offset(0);
-            make.top.equalTo(_contentLabel.mas_bottom).offset(5);
         }];
     }
     
@@ -199,76 +202,59 @@
 }
 
 - (void)actionPlaying:(UIButton *)button {
-    if ([_delegate respondsToSelector:@selector(focusTableViewCellDidSelectPlaying:)]) {
-        [_delegate focusTableViewCellDidSelectPlaying:self];
+    if ([_delegate respondsToSelector:@selector(repeatTableViewCellDidSelectPlaying:)]) {
+        [_delegate repeatTableViewCellDidSelectPlaying:self];
     }
 }
 
 - (void)actionCooperateButton:(UIButton *)button {
-    if ([_delegate respondsToSelector:@selector(focusTableViewCellDidSelectCooperate:)]) {
-        [_delegate focusTableViewCellDidSelectCooperate:self];
+    if ([_delegate respondsToSelector:@selector(repeatTableViewCellDidSelectCooperate:)]) {
+        [_delegate repeatTableViewCellDidSelectCooperate:self];
     }
 }
 
 - (void)actionPlay:(UIButton *)button {
-    if ([_delegate respondsToSelector:@selector(focusTableViewCellDidSelectPlay:)]) {
-        [_delegate focusTableViewCellDidSelectPlay:self];
+    if ([_delegate respondsToSelector:@selector(repeatTableViewCellDidSelectPlay:)]) {
+        [_delegate repeatTableViewCellDidSelectPlay:self];
     }
 }
 
 - (void)setTrends:(YWTrendsModel *)trends {
     _trends = trends;
-//    _imageView.hidden = YES;
-//    _playingButton.hidden = YES;
+    //    _imageView.hidden = YES;
+    //    _playingButton.hidden = YES;
     _playMovieView.hidden = YES;
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
-//    _playMovieView.urlStr = trends.trendsMovie.movieUrl?:[_trends.trendsMovie.movieTemplate.templateSubsectionVideos[0] subsectionVideoUrl];
     _cooperateButton.hidden = (trends.trendsType.integerValue != 2)?YES:NO;
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
+    //    _playMovieView.urlStr = trends.trendsMovie.movieUrl?:(trends.trendsMovie.movieTemplate.templateSubsectionVideos.count?[trends.trendsMovie.movieTemplate.templateSubsectionVideos[0] subsectionVideoUrl]:@"");
     [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsUser.portraitUri] placeholderImage:kPlaceholderMoiveImage];
     if (trends.trendsType.integerValue == 2) {
         NSMutableString *str = [NSMutableString string];
         [str appendString:trends.trendsUser.userName];
-        for (NSInteger i=0; i<trends.trendsOtherPlayUsers.count; i++) {
+        for (NSInteger i=0; i<trends.trendsMovieCooperateUsers.count; i++) {
             [str appendString:@"+"];
-            [str appendString:[trends.trendsOtherPlayUsers[i] userName]];
+            [str appendString:[trends.trendsMovieCooperateUsers[i] userName]];
         }
         _userNameLabel.text = str;
     }else if (trends.trendsType.integerValue == 1) {
         _userNameLabel.text = trends.trendsUser.userName;
     }
-    _timeLabel.text = trends.trendsMovie.movieTemplate.templateVideoTime;
-//    _timeLabel.text = [NSString stringWithFormat:@"%@", [YWTools timMinuteStringWithUrl:trends.trendsMovie.movieUrl?:trends.trendsMovie.movieTemplate.templateVideoUrl]];
-//    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][0]?:@"0", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][1]?:@"0"];
+    _timeLabel.text = [NSString stringWithFormat:@"%@", [YWTools timMinuteStringWithUrl:trends.trendsMovie.movieUrl?:trends.trendsMovie.movieTemplate.templateVideoUrl]];
+    //    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][0]?:@"0", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][1]?:@"0"];
+    _forwardLabel.text = trends.trendsForwardComments;
     _contentLabel.text = trends.trendsContent;
-    _numsLabel.text = [NSString stringWithFormat:@"播放%@次", trends.trendsMoviePlayCount];
+    _numsLabel.text = [NSString stringWithFormat:@"播放%@次", trends.trendsMoviePlayCount?:@"0"];
+    
 }
 
-+(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends type:(TrendsCellType)type {
-    CGFloat height = 200+15+60;
++(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends {
+    CGFloat height = 200+15+60+5;
     CGRect rect = [trends.trendsContent boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
+    CGRect rect1 = [trends.trendsForwardComments boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
     height += rect.size.height;
-    if (type == kTrendsListType && trends.trendsComments.count) {
-        height += [YWFocusCommentTableViewCell cellHeightWithComment:trends.trendsComments[0]];
-    }
+    height += rect1.size.height;
     
     return height;
-}
-
-#pragma mark - UITableViewDelegate
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _trends.trendsComments.count?1:0;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    YWFocusCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.comment = _trends.trendsComments[indexPath.row];
-    
-    return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [YWFocusCommentTableViewCell cellHeightWithComment:_trends.trendsComments[indexPath.row]];
 }
 
 

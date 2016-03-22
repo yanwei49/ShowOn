@@ -1,12 +1,14 @@
+
+
 //
-//  YWFocusTableViewCell.m
+//  YWRepeatDetailTableViewCell.m
 //  ShowOn
 //
-//  Created by 颜魏 on 15/12/3.
-//  Copyright © 2015年 yanwei. All rights reserved.
+//  Created by David Yu on 22/3/16.
+//  Copyright © 2016年 yanwei. All rights reserved.
 //
 
-#import "YWFocusTableViewCell.h"
+#import "YWRepeatDetailTableViewCell.h"
 #import "YWMoviePlayView.h"
 #import "YWFocusCommentTableViewCell.h"
 #import "YWMovieModel.h"
@@ -17,11 +19,11 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "YWTools.h"
 
-@interface YWFocusTableViewCell()<UITableViewDelegate, UITableViewDataSource>
+@interface YWRepeatDetailTableViewCell()<UITableViewDelegate, UITableViewDataSource>
 
 @end
 
-@implementation YWFocusTableViewCell
+@implementation YWRepeatDetailTableViewCell
 {
     UIImageView      *_avatorImageView;
     UILabel          *_userNameLabel;
@@ -35,6 +37,7 @@
     UITableView      *_tableView;
     UIImageView      *_imageView;
     UIButton         *_playingButton;
+    UILabel          *_forwardLabel;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -132,17 +135,39 @@
             make.width.offset(60);
         }];
         
+        _forwardLabel = [[UILabel alloc] init];
+        _forwardLabel.numberOfLines = 0;
+        _forwardLabel.text = @"";
+        _forwardLabel.backgroundColor = RGBColor(30, 30, 30);
+        _forwardLabel.textColor = [UIColor whiteColor];
+        _forwardLabel.font = [UIFont systemFontOfSize:14];
+        [self.contentView addSubview:_forwardLabel];
+        [_forwardLabel makeConstraints:^(MASConstraintMaker *make) {
+            make.top.offset(65);
+            make.left.offset(10);
+            make.right.offset(-10);
+        }];
+        
+        UIView *line = [[UIView alloc] init];
+        line.backgroundColor = RGBColor(30, 30, 30);
+        [self.contentView addSubview:line];
+        [line makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.offset(0);
+            make.top.offset(67);
+            make.height.offset(0.5);
+        }];
+
         _playMovieView = [[YWMoviePlayView alloc] initWithFrame:CGRectMake(0, 65, kScreenWidth, 200) playUrl:@""];
         _playMovieView.backgroundColor = Subject_color;
         _playMovieView.layer.masksToBounds = YES;
         _playMovieView.layer.cornerRadius = 5;
         [self.contentView addSubview:_playMovieView];
-//        [_playMovieView makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.offset(65);
-//            make.left.offset(5);
-//            make.right.offset(-5);
-//            make.height.offset(200);
-//        }];
+        //        [_playMovieView makeConstraints:^(MASConstraintMaker *make) {
+        //            make.top.offset(65);
+        //            make.left.offset(5);
+        //            make.right.offset(-5);
+        //            make.height.offset(200);
+        //        }];
         
         
         _imageView = [[UIImageView alloc] init];
@@ -166,7 +191,7 @@
             make.centerX.equalTo(_imageView.mas_centerX);
             make.width.height.offset(100);
         }];
-
+        
         _contentLabel = [[UILabel alloc] init];
         _contentLabel.numberOfLines = 0;
         _contentLabel.text = @"";
@@ -179,7 +204,7 @@
             make.left.offset(10);
             make.right.offset(-10);
         }];
-
+        
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableView.backgroundColor = RGBColor(30, 30, 30);
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -199,30 +224,30 @@
 }
 
 - (void)actionPlaying:(UIButton *)button {
-    if ([_delegate respondsToSelector:@selector(focusTableViewCellDidSelectPlaying:)]) {
-        [_delegate focusTableViewCellDidSelectPlaying:self];
+    if ([_delegate respondsToSelector:@selector(repeatDetailTableViewCellDidSelectPlaying:)]) {
+        [_delegate repeatDetailTableViewCellDidSelectPlaying:self];
     }
 }
 
 - (void)actionCooperateButton:(UIButton *)button {
-    if ([_delegate respondsToSelector:@selector(focusTableViewCellDidSelectCooperate:)]) {
-        [_delegate focusTableViewCellDidSelectCooperate:self];
+    if ([_delegate respondsToSelector:@selector(repeatDetailTableViewCellDidSelectCooperate:)]) {
+        [_delegate repeatDetailTableViewCellDidSelectCooperate:self];
     }
 }
 
 - (void)actionPlay:(UIButton *)button {
-    if ([_delegate respondsToSelector:@selector(focusTableViewCellDidSelectPlay:)]) {
-        [_delegate focusTableViewCellDidSelectPlay:self];
+    if ([_delegate respondsToSelector:@selector(repeatDetailTableViewCellDidSelectPlay:)]) {
+        [_delegate repeatDetailTableViewCellDidSelectPlay:self];
     }
 }
 
 - (void)setTrends:(YWTrendsModel *)trends {
     _trends = trends;
-//    _imageView.hidden = YES;
-//    _playingButton.hidden = YES;
+    //    _imageView.hidden = YES;
+    //    _playingButton.hidden = YES;
     _playMovieView.hidden = YES;
     [_imageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
-//    _playMovieView.urlStr = trends.trendsMovie.movieUrl?:[_trends.trendsMovie.movieTemplate.templateSubsectionVideos[0] subsectionVideoUrl];
+    //    _playMovieView.urlStr = trends.trendsMovie.movieUrl?:[_trends.trendsMovie.movieTemplate.templateSubsectionVideos[0] subsectionVideoUrl];
     _cooperateButton.hidden = (trends.trendsType.integerValue != 2)?YES:NO;
     [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:trends.trendsUser.portraitUri] placeholderImage:kPlaceholderMoiveImage];
     if (trends.trendsType.integerValue == 2) {
@@ -237,17 +262,20 @@
         _userNameLabel.text = trends.trendsUser.userName;
     }
     _timeLabel.text = trends.trendsMovie.movieTemplate.templateVideoTime;
-//    _timeLabel.text = [NSString stringWithFormat:@"%@", [YWTools timMinuteStringWithUrl:trends.trendsMovie.movieUrl?:trends.trendsMovie.movieTemplate.templateVideoUrl]];
-//    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][0]?:@"0", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][1]?:@"0"];
+    //    _timeLabel.text = [NSString stringWithFormat:@"%@", [YWTools timMinuteStringWithUrl:trends.trendsMovie.movieUrl?:trends.trendsMovie.movieTemplate.templateVideoUrl]];
+    //    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][0]?:@"0", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][1]?:@"0"];
+    _forwardLabel.text = trends.trendsForwardComments;
     _contentLabel.text = trends.trendsContent;
     _numsLabel.text = [NSString stringWithFormat:@"播放%@次", trends.trendsMoviePlayCount];
 }
 
-+(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends type:(TrendsCellType)type {
-    CGFloat height = 200+15+60;
++(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends type:(RepeatTrendsCellType)type {
+    CGFloat height = 200+15+60+5;
     CGRect rect = [trends.trendsContent boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
+    CGRect rect1 = [trends.trendsForwardComments boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
     height += rect.size.height;
-    if (type == kTrendsListType && trends.trendsComments.count) {
+    height += rect1.size.height;
+    if (type == kRepeatTrendsListType && trends.trendsComments.count) {
         height += [YWFocusCommentTableViewCell cellHeightWithComment:trends.trendsComments[0]];
     }
     
@@ -270,7 +298,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [YWFocusCommentTableViewCell cellHeightWithComment:_trends.trendsComments[indexPath.row]];
 }
-
 
 
 @end

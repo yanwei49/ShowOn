@@ -25,8 +25,9 @@
 #import "YWWriteCommentViewController.h"
 #import "YWNavigationController.h"
 #import "MPMoviePlayerViewController+Rotation.h"
+#import "YWRepeatTableViewCell.h"
 
-@interface YWHotItemViewController ()<UITableViewDataSource, UITableViewDelegate, YWMovieCommentTableViewCellDelegate, YWTemplateTrendsTableViewCellDelegate, YWHotTableViewCellDelegate, UIActionSheetDelegate>
+@interface YWHotItemViewController ()<UITableViewDataSource, UITableViewDelegate, YWMovieCommentTableViewCellDelegate, YWTemplateTrendsTableViewCellDelegate, YWHotTableViewCellDelegate, UIActionSheetDelegate, YWRepeatTableViewCellDelegate>
 
 @end
 
@@ -75,6 +76,7 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_tableView registerClass:[YWMovieCommentTableViewCell class] forCellReuseIdentifier:@"commentCell"];
     [_tableView registerClass:[YWHotTableViewCell class] forCellReuseIdentifier:@"templateCell"];
+    [_tableView registerClass:[YWRepeatTableViewCell class] forCellReuseIdentifier:@"repeatTrendsCell"];
     [_tableView registerClass:[YWTemplateTrendsTableViewCell class] forCellReuseIdentifier:@"trendsCell"];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -159,11 +161,19 @@
             
             return cell;
         }else {
-            YWTemplateTrendsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"trendsCell"];
-            cell.delegate = self;
-            cell.trends = _dataSource[indexPath.row];
-            
-            return cell;
+            if ([_dataSource[indexPath.row] trendsType].integerValue == 3) {
+                YWRepeatTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"repeatTrendsCell"];
+                cell.delegate = self;
+                cell.trends = _dataSource[indexPath.row];
+                
+                return cell;
+            }else {
+                YWTemplateTrendsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"trendsCell"];
+                cell.delegate = self;
+                cell.trends = _dataSource[indexPath.row];
+                
+                return cell;
+            }
         }
     }else {
         YWMovieCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"commentCell"];
@@ -179,7 +189,11 @@
         if (!indexPath.section) {
             return 200;
         }else {
-            return [YWTemplateTrendsTableViewCell cellHeightWithTrends:_dataSource[indexPath.row]];
+            if ([_dataSource[indexPath.row] trendsType].integerValue == 3) {
+                return [YWRepeatTableViewCell cellHeightWithTrends:_dataSource[indexPath.row]];
+            }else {
+                return [YWTemplateTrendsTableViewCell cellHeightWithTrends:_dataSource[indexPath.row]];
+            }
         }
     }else {
         return 80;
@@ -284,6 +298,43 @@
         [self requestCommentSupport:cell.comment];
     }else {
         [self login];
+    }
+}
+
+#pragma mark - YWRepeatTableViewCell
+- (void)repeatTableViewCellDidSelectCooperate:(YWRepeatTableViewCell *)cell {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
+        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.trends = cell.trends;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else {
+        [self login];
+    }
+}
+
+- (void)repeatTableViewCellDidSelectPlay:(YWRepeatTableViewCell *)cell {
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
+        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.trends = cell.trends;
+        vc.template = _template;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else {
+        [self login];
+    }
+}
+
+- (void)repeatTableViewCellDidSelectPlaying:(YWRepeatTableViewCell *)cell {
+    if (cell.trends.trendsMovie.movieUrl.length) {
+        NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSURL *url = [NSURL URLWithString:urlStr];
+        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [moviePlayerViewController rotateVideoViewWithDegrees:90];
+        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+        [self requestPlayModelId:cell.trends.trendsId withType:2];
+    }else {
+        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+        vc.trends = cell.trends;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

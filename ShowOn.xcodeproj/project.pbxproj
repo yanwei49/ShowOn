@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		562610C41CA0C59C00672D29 /* YWRepeatDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 562610C31CA0C59C00672D29 /* YWRepeatDetailTableViewCell.m */; };
 		566AE2741C3DE19900781A7E /* YWCustomTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566AE2731C3DE19900781A7E /* YWCustomTabBarViewController.m */; };
 		566BF5EB1C4717CF002C5591 /* YWTemplateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566BF5EA1C4717CF002C5591 /* YWTemplateListViewController.m */; };
 		566BF5EE1C47191F002C5591 /* YWTemplateListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 566BF5ED1C47191F002C5591 /* YWTemplateListTableViewCell.m */; };
@@ -150,6 +151,7 @@
 		568DC0D81C5619F300CFD1BC /* 接口.txt in Resources */ = {isa = PBXBuildFile; fileRef = 568DC0D71C5619F300CFD1BC /* 接口.txt */; };
 		569257EB1C744C58000EFB95 /* YWUserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 569257EA1C744C58000EFB95 /* YWUserListViewController.m */; };
 		569257EE1C744FDC000EFB95 /* YWUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 569257ED1C744FDC000EFB95 /* YWUserTableViewCell.m */; };
+		56998BCA1CA0C1F600AF19B8 /* YWRepeatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56998BC91CA0C1F600AF19B8 /* YWRepeatTableViewCell.m */; };
 		56A6BFAE1C59CA8800AEA490 /* YWAiTeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A6BFAD1C59CA8800AEA490 /* YWAiTeModel.m */; };
 		56A6BFB11C59CE0700AEA490 /* YWSupportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A6BFB01C59CE0700AEA490 /* YWSupportModel.m */; };
 		56AE59561C9FE83A00915654 /* YWFriendListManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 56AE59551C9FE83A00915654 /* YWFriendListManager.m */; };
@@ -290,6 +292,8 @@
 /* Begin PBXFileReference section */
 		1FBD5358C72CBD7E36FE23EC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28C9BEA80C5B71E2D4466F42 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		562610C21CA0C59C00672D29 /* YWRepeatDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWRepeatDetailTableViewCell.h; sourceTree = "<group>"; };
+		562610C31CA0C59C00672D29 /* YWRepeatDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWRepeatDetailTableViewCell.m; sourceTree = "<group>"; };
 		56679BC31C3B393700272C44 /* json.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = json.geojson; sourceTree = "<group>"; };
 		566AE2721C3DE19900781A7E /* YWCustomTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCustomTabBarViewController.h; sourceTree = "<group>"; };
 		566AE2731C3DE19900781A7E /* YWCustomTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCustomTabBarViewController.m; sourceTree = "<group>"; };
@@ -457,6 +461,8 @@
 		569257EC1C744FDC000EFB95 /* YWUserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWUserTableViewCell.h; sourceTree = "<group>"; };
 		569257ED1C744FDC000EFB95 /* YWUserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWUserTableViewCell.m; sourceTree = "<group>"; };
 		5695FFD51C4C61600070544A /* Directions.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = Directions.geojson; sourceTree = "<group>"; };
+		56998BC81CA0C1F600AF19B8 /* YWRepeatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWRepeatTableViewCell.h; sourceTree = "<group>"; };
+		56998BC91CA0C1F600AF19B8 /* YWRepeatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWRepeatTableViewCell.m; sourceTree = "<group>"; };
 		56A6BFAC1C59CA8800AEA490 /* YWAiTeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWAiTeModel.h; sourceTree = "<group>"; };
 		56A6BFAD1C59CA8800AEA490 /* YWAiTeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWAiTeModel.m; sourceTree = "<group>"; };
 		56A6BFAF1C59CE0700AEA490 /* YWSupportModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWSupportModel.h; sourceTree = "<group>"; };
@@ -1341,6 +1347,10 @@
 				569257ED1C744FDC000EFB95 /* YWUserTableViewCell.m */,
 				56FC719C1C75A30B006D1BDD /* YWTemplateTrendsTableViewCell.h */,
 				56FC719D1C75A30B006D1BDD /* YWTemplateTrendsTableViewCell.m */,
+				56998BC81CA0C1F600AF19B8 /* YWRepeatTableViewCell.h */,
+				56998BC91CA0C1F600AF19B8 /* YWRepeatTableViewCell.m */,
+				562610C21CA0C59C00672D29 /* YWRepeatDetailTableViewCell.h */,
+				562610C31CA0C59C00672D29 /* YWRepeatDetailTableViewCell.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -2022,6 +2032,7 @@
 				56FE9A1C1C0FC242007BA29B /* YWTrendsViewController.m in Sources */,
 				5689DBCC1C4476080095936F /* YWHotView.m in Sources */,
 				56CFFFC51C745E0D00BE9E6F /* YWSuggestionViewController.m in Sources */,
+				562610C41CA0C59C00672D29 /* YWRepeatDetailTableViewCell.m in Sources */,
 				770EC2C71C1088E100A4D2E9 /* YWSearchCollectionReusableView.m in Sources */,
 				56F5D38A1C17D44F008C33CA /* YWToolboxPlay.m in Sources */,
 				77D0F0FA1C11C6D500134A17 /* YWExperienceTableViewCell.m in Sources */,
@@ -2070,6 +2081,7 @@
 				77D0F0CA1C11C19C00134A17 /* YWTrendsTableViewCell.m in Sources */,
 				566AE2741C3DE19900781A7E /* YWCustomTabBarViewController.m in Sources */,
 				77D0F0D61C11C39300134A17 /* YWATMeViewController.m in Sources */,
+				56998BCA1CA0C1F600AF19B8 /* YWRepeatTableViewCell.m in Sources */,
 				77D0F0DC1C11C3C000134A17 /* YWSupportViewController.m in Sources */,
 				77D0F0EE1C11C50A00134A17 /* YWATMeTableViewCell.m in Sources */,
 				77AD0CAD1C1DA34800A1FD75 /* YWCommentModel.m in Sources */,
