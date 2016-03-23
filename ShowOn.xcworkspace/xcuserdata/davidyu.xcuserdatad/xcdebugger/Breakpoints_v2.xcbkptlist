@@ -2,4 +2,102 @@
 <Bucket
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ShowOn/YWBaseViewController.m"
+            timestampString = "480388407.446457"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
+            landmarkName = "-requestPlayModelId:withType:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__52-[YWBaseViewController requestPlayModelId:withType:]_block_invoke"
+                  moduleName = "ShowOn"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/davidyu/Desktop/ShowOn/ShowOn/YWBaseViewController.m"
+                  timestampString = "480388407.448701"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "96"
+                  endingLineNumber = "96"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__52-[YWBaseViewController requestPlayModelId:withType:]_block_invoke_2"
+                  moduleName = "ShowOn"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/davidyu/Desktop/ShowOn/ShowOn/YWBaseViewController.m"
+                  timestampString = "480388407.448915"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "96"
+                  endingLineNumber = "96"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ShowOn/YWBaseViewController.m"
+            timestampString = "480388408.065373"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
+            landmarkName = "-requestPlayModelId:withType:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__52-[YWBaseViewController requestPlayModelId:withType:]_block_invoke_2"
+                  moduleName = "ShowOn"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/davidyu/Desktop/ShowOn/ShowOn/YWBaseViewController.m"
+                  timestampString = "480388408.067774"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__52-[YWBaseViewController requestPlayModelId:withType:]_block_invoke_3"
+                  moduleName = "ShowOn"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/davidyu/Desktop/ShowOn/ShowOn/YWBaseViewController.m"
+                  timestampString = "480388408.067939"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

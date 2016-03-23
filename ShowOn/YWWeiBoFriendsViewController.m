@@ -59,6 +59,7 @@
 //            user.portraitUri = [dict objectForKey:@"profile_image_url"];
 //            [_dataSource addObject:users];
             [accounts appendString:[dict objectForKey:@"uid"]];
+            [accounts appendString:@"|"];
         }
         [self requestWeiboUserWithAccounts:accounts];
         [_tableView reloadData];

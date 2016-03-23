@@ -29,6 +29,7 @@
     _httpManager = [YWHttpManager shareInstance];
     
     [self createNoContentView];
+    [self requestPlayModelId:@"1" withType:2];
 }
 
 - (void)createNoContentView {
@@ -89,7 +90,7 @@
 
 #pragma mark - request 
 - (void)requestPlayModelId:(NSString *)modelId withType:(NSInteger)type {
-    NSDictionary *parameters = @{@"modelId": modelId, @"type": @(type)};
+    NSDictionary *parameters = @{@"id": modelId, @"type": @(type)};
     [[YWHttpManager shareInstance] requestPlay:parameters success:^(id responseObject) {
         
     } otherFailure:^(id responseObject) {
