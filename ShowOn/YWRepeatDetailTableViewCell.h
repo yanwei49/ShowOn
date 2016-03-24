@@ -20,6 +20,7 @@ typedef enum : NSUInteger {
 - (void)repeatDetailTableViewCellDidSelectCooperate:(YWRepeatDetailTableViewCell *)cell;
 - (void)repeatDetailTableViewCellDidSelectPlay:(YWRepeatDetailTableViewCell *)cell;
 - (void)repeatDetailTableViewCellDidSelectPlaying:(YWRepeatDetailTableViewCell *)cell;
+- (void)repeatDetailTableViewCellDidSelectAvator:(YWRepeatDetailTableViewCell *)cell;
 
 @end
 

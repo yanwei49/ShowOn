@@ -10,8 +10,12 @@
 #define GoFarmApp_TLHttpGlobalDefine_h
 
 
+//#define kHostURL               @"http://120.25.146.161/"
+#define kHostURL               @"http://192.168.1.136:8080/"
+#define HOST_URL(methodName)   [NSString stringWithFormat:@"%@%@",kHostURL,methodName]
+
 #define BUNDLE_VERSION                        [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey]
-#define TIME_OUT                              20
+#define TIME_OUT                              400
 #define VERSION_HEADER                        @"version"
 
 #define Register_Method                       @"juer/user/register?json"                    //注册
@@ -45,7 +49,7 @@
 #define Play_Method                           @"juer/dynamic/statistics?json"               //播放统计
 #define WeiBo_User_Method                     @"dynamic/sinaUserList?json"                  //微博用户
 #define Template_Sub_Category_Method          @"dynamic/moreTemplateType?json"              //获取模板子分类列表
-#define Template_Sub_Category_List_Method     @""             //获取模板某个子分类下的模板列表
+#define Template_Sub_Category_List_Method     @"dynamic/subTemplateList?json"               //获取模板某个子分类下的模板列表
 #define Template_User_List_Method             @""             //获取模板表演用户列表
 
 

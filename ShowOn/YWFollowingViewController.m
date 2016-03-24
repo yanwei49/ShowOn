@@ -11,9 +11,10 @@
 #import "YWHttpManager.h"
 #import "YWParser.h"
 #import "YWUserModel.h"
-#import "YWSearchViewController.h"
 #import "YWDataBaseManager.h"
 #import "MJRefresh.h"
+#import "YWWeiBoFriendsViewController.h"
+#import "YWSearchViewController.h"
 
 @interface YWFollowingViewController ()<UITableViewDelegate, UITableViewDataSource, YWFollowingTableViewCellDelegate, UISearchBarDelegate>
 
@@ -45,6 +46,7 @@
     }else {
         [self requestVedioPlayUserList];
     }
+    [_tableView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
 }
 
 - (void)createSubViews {
@@ -192,8 +194,13 @@
 
 #pragma mark - UISearchBarDelegate
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-    YWSearchViewController *searchVC = [[YWSearchViewController alloc] init];
-    [self.navigationController pushViewController:searchVC animated:YES];
+    if ([[YWDataBaseManager shareInstance] loginUser].userPassword.length) {
+        YWSearchViewController *searchVC = [[YWSearchViewController alloc] init];
+        [self.navigationController pushViewController:searchVC animated:YES];
+    }else {
+        YWWeiBoFriendsViewController *wbVC = [[YWWeiBoFriendsViewController alloc] init];
+        [self.navigationController pushViewController:wbVC animated:YES];
+    }
     
     return NO;
 }

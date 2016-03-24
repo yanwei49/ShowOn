@@ -12,5 +12,6 @@
 @interface YWHotItemViewController : YWBaseViewController
 
 @property (nonatomic, strong) YWMovieTemplateModel *template;
+@property (nonatomic, assign) NSInteger segSelectIndex;
 
 @end

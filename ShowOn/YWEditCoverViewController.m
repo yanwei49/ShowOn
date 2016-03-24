@@ -98,7 +98,7 @@
     _coverImageSV.contentSize = CGSizeMake(120*images.count, 100);
     for (NSInteger i=0; i<images.count; i++) {
         UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(120*i, 10, 120, 80)];
-        iv.contentMode = UIViewContentModeScaleToFill;
+        iv.contentMode = UIViewContentModeScaleAspectFill;
         iv.backgroundColor = RGBColor(30, 30, 30);
         iv.image = images[i];
         [_coverImageSV addSubview:iv];
@@ -157,7 +157,7 @@
             AVURLAsset *urlAsset=[AVURLAsset assetWithURL:model.recorderVideoUrl];
             for (NSInteger i=0; i<(int)CMTimeGetSeconds(urlAsset.duration); i++) {
                 UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i];
-                UIImage *rotationImage = [self fixOrientation:image];
+                UIImage *rotationImage = [self rotation:image];
                 [_coverImages addObject:rotationImage];
             }
         }

@@ -14,6 +14,8 @@
 #import "YWTrendsDetailViewController.h"
 #import "YWDataBaseManager.h"
 #import "MJRefresh.h"
+#import "YWHotItemViewController.h"
+#import "YWCommentModel.h"
 
 @interface YWCommentViewController()<UITableViewDataSource, UITableViewDelegate, YWCommentTableViewCellDelegate>
 
@@ -40,6 +42,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self requestCommentList];
+    [_tableView setContentOffset:CGPointMake(0, 0)];
 }
 
 - (void)createSubViews {
@@ -52,7 +55,8 @@
     _tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.offset(0);
+        make.left.bottom.right.offset(0);
+        make.top.offset(64);
     }];
     _tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _currentPage = 0;
@@ -109,9 +113,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    YWTrendsDetailViewController *hotVC = [[YWTrendsDetailViewController alloc] init];
-    hotVC.trends = [_dataSource[indexPath.row] trends];
-    [self.navigationController pushViewController:hotVC animated:YES];
+    YWCommentModel *comment = _dataSource[indexPath.row];
+    if (comment.commentType == 1 || comment.commentType == 2) {
+        YWTrendsDetailViewController *trendsDVC = [[YWTrendsDetailViewController alloc] init];
+        trendsDVC.trends = comment.commentTrends;
+        [self.navigationController pushViewController:trendsDVC animated:YES];
+    }else {
+        YWHotItemViewController *hotVC = [[YWHotItemViewController alloc] init];
+        hotVC.template = comment.commentTemplate;
+        hotVC.segSelectIndex = 1;
+        [self.navigationController pushViewController:hotVC animated:YES];
+    }
 }
 
 #pragma mark - YWCommentTableViewCellDelegate

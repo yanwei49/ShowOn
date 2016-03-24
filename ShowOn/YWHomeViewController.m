@@ -108,6 +108,7 @@
 
 - (void)createHotView {
     _tableView.hidden = YES;
+//    [self noContentViewShowWithState:NO];
     if (_hotView) {
         _hotView.hidden = NO;
         self.navigationController.navigationBarHidden = YES;
@@ -143,7 +144,7 @@
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser articleWithArray:responseObject[@"articleList"]];
         [_dataSource addObjectsFromArray:array];
-        [self noContentViewShowWithState:_dataSource.count?NO:YES];
+//        [self noContentViewShowWithState:_dataSource.count?NO:YES];
         if (array.count<20) {
             _tableView.footer = nil;
         }else {

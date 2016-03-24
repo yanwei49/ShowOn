@@ -11,30 +11,26 @@
 
 @implementation YWMessageViewController
 
+-(id)init
+{
+    self =[super init];
+    if (self) {
+        //设置要显示的会话类型
+        [self setDisplayConversationTypes:@[@(ConversationType_PRIVATE)]];
+        //设置圆角
+        [self setConversationAvatarStyle:RC_USER_AVATAR_CYCLE];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = Subject_color;
+
+    [self setDisplayConversationTypeArray:@[@(ConversationType_PRIVATE)]];
     self.conversationListTableView.tableFooterView = [[UIView alloc] init];
-
-    
-}
-
-- (void)createBackLeftItem {
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(10, 5, 70, 34)];
-    button.backgroundColor = [UIColor whiteColor];
-    [button setTitle:@"返回" forState:UIControlStateNormal];
-    button.titleLabel.font = [UIFont systemFontOfSize:15];
-    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(actionBack:) forControlEvents:UIControlEventTouchUpInside];
-    button.layer.masksToBounds = YES;
-    button.layer.cornerRadius = 5;
-    button.layer.borderWidth = 1;
-    button.layer.borderColor =[UIColor lightGrayColor].CGColor;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-}
-
-- (void)actionBack:(UIButton *)button {
-    [self.navigationController popViewControllerAnimated:YES];
+    self.conversationListTableView.backgroundColor = [UIColor whiteColor];
+    self.isShowNetworkIndicatorView = NO;
 }
 
 - (void)onSelectedTableRow:(RCConversationModelType)conversationModelType

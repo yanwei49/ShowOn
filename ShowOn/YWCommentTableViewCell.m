@@ -137,7 +137,7 @@
     _timeLabel.text = comment.commentTime;
     _contentLabel.text = comment.beCommentContent;
     if (comment.commentType == 1) {
-        NSMutableString *name = [NSMutableString stringWithString:comment.commentTrends.trendsUser.userName];
+        NSMutableString *name = [NSMutableString stringWithString:comment.commentTrends.trendsUser.userName?:@""];
         for (YWUserModel *user in comment.commentTrends.trendsMovieCooperateUsers) {
             [name appendFormat:@"+"];
             [name appendFormat:@"%@", user.userName];

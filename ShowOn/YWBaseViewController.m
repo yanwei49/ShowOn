@@ -29,7 +29,6 @@
     _httpManager = [YWHttpManager shareInstance];
     
     [self createNoContentView];
-    [self requestPlayModelId:@"1" withType:2];
 }
 
 - (void)createNoContentView {
@@ -37,7 +36,8 @@
     _noContentView.backgroundColor = Subject_color;
     [self.view addSubview:_noContentView];
     [_noContentView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.bottom.offset(0);
+        make.left.right.bottom.offset(0);
+        make.top.offset(40+64);
     }];
     
     UILabel *label = [[UILabel alloc] init];

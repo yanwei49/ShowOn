@@ -745,7 +745,7 @@
             "commentsTargetId"  //'被评论的目标ID',
             "editTime"          //'评论时间',
             "commentIsSupport": ""  //评论是否被当前登录用户点赞过
-            "commentsTypeId"    //'评论类型ID 1、动态,2、评论'
+            "commentsTypeId"        //评论的类型（1、动态,2、回复动态评论,3、模板 4、回复模板评论）
             "user": {
                 "userId": ""               //用户Id
                 "headPortrait": ""         //用户头像
@@ -766,6 +766,22 @@
                     }
                 }
             }
+            "template": {
+                 "templateId": ""            //模板id
+                 "templateName": ""          //模板名称
+                 "templateVideoUrl": ""      //模板视频URL
+                 "templateVideoCoverImage": ""  //模板封面
+                 "templateSubsectionVideos": [{   //模板分段视频
+                      "subsectionVideoId"             //'分段视频ID',
+                      "videoUrl"                      //'视频URL',
+                      "templateId"                    //'模版ID',
+                      "sort"                          //'序号',
+                      "performanceStatusId"           //'演出状态ID 1、已演,2、未演'
+                      "userId"                        //'演出过这段视频的用户ID',
+                      "subsectionVideoTypeId"         //'分段视频类型ID 1、顺序模式(3、近景,4、中景,5、远景,),2、景别模式(6、特写,7、中景,8、远景)',
+                      "subsectionVideoUrl"            //如果该动态录制过了这个分段视频则返回录制完的视频url
+                      }]
+             }
     }]
 }
 

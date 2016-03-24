@@ -57,6 +57,8 @@
         _avatorImageView = [[UIImageView alloc] init];
         _avatorImageView.layer.masksToBounds = YES;
         _avatorImageView.layer.cornerRadius = 20;
+        _avatorImageView.userInteractionEnabled = YES;
+        [_avatorImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionTap)]];
         _avatorImageView.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:_avatorImageView];
         [_avatorImageView makeConstraints:^(MASConstraintMaker *make) {
@@ -216,6 +218,12 @@
     }
 }
 
+- (void)actionTap {
+    if ([_delegate respondsToSelector:@selector(focusTableViewCellDidSelectAvator:)]) {
+        [_delegate focusTableViewCellDidSelectAvator:self];
+    }
+}
+
 - (void)setTrends:(YWTrendsModel *)trends {
     _trends = trends;
 //    _imageView.hidden = YES;
@@ -240,7 +248,7 @@
 //    _timeLabel.text = [NSString stringWithFormat:@"%@", [YWTools timMinuteStringWithUrl:trends.trendsMovie.movieUrl?:trends.trendsMovie.movieTemplate.templateVideoUrl]];
 //    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][0]?:@"0", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][1]?:@"0"];
     _contentLabel.text = trends.trendsContent;
-    _numsLabel.text = [NSString stringWithFormat:@"播放%@次", trends.trendsMoviePlayCount];
+    _numsLabel.text = [NSString stringWithFormat:@"播放%@次", trends.trendsMoviePlayCount?:@"0"];
 }
 
 +(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends type:(TrendsCellType)type {

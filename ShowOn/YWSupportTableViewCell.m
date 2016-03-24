@@ -131,11 +131,11 @@
         }
         _userNameLabel.text = name;
     }else {
-        [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:support.comment.commentUser.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
-        [_imageView sd_setImageWithURL:[NSURL URLWithString:support.comment.commentTrends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
-        _contentLabel.text = support.comment.commentContent;
-        _timeLabel.text = support.comment.commentTime;
-        _userNameLabel.text = support.comment.commentUser.userName;
+        [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:support.comments.commentUser.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
+        [_imageView sd_setImageWithURL:[NSURL URLWithString:support.comments.commentTrends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
+        _contentLabel.text = support.comments.commentContent;
+        _timeLabel.text = support.comments.commentTime;
+        _userNameLabel.text = support.comments.commentUser.userName;
     }
 }
 

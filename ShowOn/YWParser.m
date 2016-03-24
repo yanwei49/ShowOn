@@ -129,6 +129,7 @@
     comment.commentContent = [dict objectForKey:@"commentsContent"];
     comment.commentsTargetId = [dict objectForKey:@"commentsTargetId"];
     comment.commentTrends = [self trendsWithDict:[dict objectForKey:@"trends"]];
+    comment.commentTemplate = [self templateWithDict:[dict objectForKey:@"template"]];
     
     return comment;
 }
@@ -158,7 +159,7 @@
     YWSupportModel *support = [[YWSupportModel alloc] init];
     support.supportType = [dict objectForKey:@"supportType"];
     if (![[dict objectForKey:@"comment"] isKindOfClass:[NSNull class]]) {
-        support.comment = [self commentWithDict:[dict objectForKey:@"comment"]];
+        support.comments = [self commentWithDict:[dict objectForKey:@"comment"]];
     }
     if (![[dict objectForKey:@"trends"] isKindOfClass:[NSNull class]]) {
         support.trends = [self trendsWithDict:[dict objectForKey:@"trends"]];

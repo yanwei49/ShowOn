@@ -32,6 +32,7 @@
 #import "MPMoviePlayerViewController+Rotation.h"
 #import "YWFollowingViewController.h"
 #import "YWRepeatDetailTableViewCell.h"
+#import "YWHttpGlobalDefine.h"
 
 @interface YWTrendsDetailViewController()<UITableViewDataSource, UITableViewDelegate, YWFocusTableViewCellDelegate, YWMovieCommentTableViewCellDelegate, YWMovieOtherInfosTableViewCellDelegate, UIActionSheetDelegate, YWRepeatDetailTableViewCellDelegate>
 
@@ -166,7 +167,7 @@
 }
 
 - (void)requestTrendsSupport {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": _trends.trendsId, @"praiseTypeId": @(1)};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": _trends.trendsId, @"praiseTypeId": @(1), @"state": @(!_trends.trendsIsSupport)};
     [_httpManager requestSupport:parameters success:^(id responseObject) {
         _trends.trendsIsSupport = _trends.trendsIsSupport.integerValue?@"0":@"1";
         _trends.trendsSuppotNumbers = [NSString stringWithFormat:@"%ld", (long)_trends.trendsIsSupport.integerValue?(long)_trends.trendsSuppotNumbers.integerValue+1:(long)_trends.trendsSuppotNumbers.integerValue-1];
@@ -179,9 +180,9 @@
 }
 
 - (void)requestCommentSupport:(YWCommentModel *)comment {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": comment.commentId, @"praiseTypeId": @(2)};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": comment.commentId, @"praiseTypeId": @(2), @"state": @(!comment.isSupport.integerValue)};
     [_httpManager requestSupport:parameters success:^(id responseObject) {
-        comment.isSupport = @"1";
+        comment.isSupport = [NSString stringWithFormat:@"%ld", (long)!comment.isSupport.integerValue];
         [_tableView reloadData];
     } otherFailure:^(id responseObject) {
         
@@ -192,7 +193,7 @@
 
 - (void)requestReport:(NSInteger)index {
     NSArray *arr = @[@"带色情或政治内容", @"其他"];
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"informTypeId": @"2", @"informTargetId": _trends.trendsId, @"infos": arr[index]};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"informTypeId": @"2", @"informTargetId": _trends.trendsId, @"informContent": arr[index]};
     [_httpManager requestReport:parameters success:^(id responseObject) {
         [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
     } otherFailure:^(id responseObject) {
@@ -212,28 +213,21 @@
 }
 
 - (void)requestShare {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"trendsId": _trends.trendsId};
-    [_httpManager requestShare:parameters success:^(id responseObject) {
-        [UMSocialSnsService presentSnsIconSheetView:self appKey:UMengAppKey shareText:@"来自【角儿】" shareImage:nil shareToSnsNames:@[UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQzone,UMShareToSina,UMShareToQQ] delegate:nil];
-        NSString *url = responseObject[@"url"];
-        NSString *title = _trends.trendsContent.length>0?_trends.trendsContent:@"";
-        [UMSocialData defaultData].extConfig.qqData.url = url;
-        [UMSocialData defaultData].extConfig.qzoneData.url =  url;
-        [UMSocialData defaultData].extConfig.qqData.title =  title;
-        [UMSocialData defaultData].extConfig.qzoneData.title =  title;
-        [UMSocialData defaultData].extConfig.wechatSessionData.url =  url;
-        [UMSocialData defaultData].extConfig.wechatTimelineData.url =  url;
-        [UMSocialData defaultData].extConfig.wechatSessionData.title =  title;
-        [UMSocialData defaultData].extConfig.wechatTimelineData.title =  title;
-    } otherFailure:^(id responseObject) {
-        
-    } failure:^(NSError *error) {
-        
-    }];
+    NSString *url = [NSString stringWithFormat:@"%@&trendsId=%@", HOST_URL(Share_Method) , _trends.trendsId];
+    [UMSocialSnsService presentSnsIconSheetView:self appKey:UMengAppKey shareText:@"来自【角儿】" shareImage:nil shareToSnsNames:@[UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQzone,UMShareToSina,UMShareToQQ] delegate:nil];
+    NSString *title = _trends.trendsContent.length>0?_trends.trendsContent:@"";
+    [UMSocialData defaultData].extConfig.qqData.url = url;
+    [UMSocialData defaultData].extConfig.qzoneData.url =  url;
+    [UMSocialData defaultData].extConfig.qqData.title =  title;
+    [UMSocialData defaultData].extConfig.qzoneData.title =  title;
+    [UMSocialData defaultData].extConfig.wechatSessionData.url =  url;
+    [UMSocialData defaultData].extConfig.wechatTimelineData.url =  url;
+    [UMSocialData defaultData].extConfig.wechatSessionData.title =  title;
+    [UMSocialData defaultData].extConfig.wechatTimelineData.title =  title;
 }
 
 - (void)requestTrendsCollect {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"collectionTargetId": _trends.trendsId,@"collectionTypeId": @(1)};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"collectionTargetId": _trends.trendsId,@"collectionTypeId": @(1), @"state": @(!_trends.trendsIsCollect.integerValue)};
     [_httpManager requestCollect:parameters success:^(id responseObject) {
         _trends.trendsIsCollect = _trends.trendsIsCollect.integerValue?@"0":@"1";
         _trends.trendsCollectionNumbers = [NSString stringWithFormat:@"%ld", (long)_trends.trendsIsCollect.integerValue?(long)_trends.trendsCollectionNumbers.integerValue+1:(long)_trends.trendsCollectionNumbers.integerValue-1];
@@ -256,12 +250,14 @@
         {
             if (_trends.trendsType.integerValue == 3) {
                 YWRepeatDetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell1"];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell.delegate = self;
                 cell.trends = _trends;
                 
                 return cell;
             }else {
                 YWFocusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell.delegate = self;
                 cell.trends = _trends;
                 
@@ -381,6 +377,12 @@
     }
 }
 
+- (void)repeatDetailTableViewCellDidSelectAvator:(YWRepeatDetailTableViewCell *)cell {
+    YWUserDataViewController *vc = [[YWUserDataViewController alloc] init];
+    vc.user = cell.trends.trendsUser;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark - YWFocusTableViewCellDelegate
 - (void)focusTableViewCellDidSelectCooperate:(YWFocusTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
@@ -417,6 +419,12 @@
     }
 }
 
+- (void)focusTableViewCellDidSelectAvator:(YWFocusTableViewCell *)cell {
+    YWUserDataViewController *vc = [[YWUserDataViewController alloc] init];
+    vc.user = cell.trends.trendsUser;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark - YWMovieOtherInfosTableViewCellDelegate
 - (void)movieOtherInfosTableViewCellDidSelectShare:(YWMovieOtherInfosTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
@@ -451,6 +459,7 @@
 - (void)movieOtherInfosTableViewCellDidSelectMore:(YWMovieOtherInfosTableViewCell *)cell {
     YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
     vc.templateId = cell.trends.trendsMovie.movieTemplate.templateId;
+    vc.title = @"表演者列表";
     [self.navigationController pushViewController:vc animated:YES];
 }
 

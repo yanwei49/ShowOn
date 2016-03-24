@@ -26,6 +26,7 @@
 #import "YWNavigationController.h"
 #import "MPMoviePlayerViewController+Rotation.h"
 #import "YWRepeatTableViewCell.h"
+#import "YWUserDataViewController.h"
 
 @interface YWHotItemViewController ()<UITableViewDataSource, UITableViewDelegate, YWMovieCommentTableViewCellDelegate, YWTemplateTrendsTableViewCellDelegate, YWHotTableViewCellDelegate, UIActionSheetDelegate, YWRepeatTableViewCellDelegate>
 
@@ -67,6 +68,9 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self requestTemplateDetail];
+    if (_segSelectIndex) {
+        _segmentedControl.selectedSegmentIndex = _segSelectIndex;
+    }
 }
 
 #pragma mark - private
@@ -116,6 +120,7 @@
         [_comments addObjectsFromArray:_template.templateComments];
         [_dataSource addObjectsFromArray:_trends];
         [_tableView reloadData];
+        [self actionSegValueChange];
     } otherFailure:^(id responseObject) {
         
     } failure:^(NSError *error) {
@@ -124,9 +129,9 @@
 }
 
 - (void)requestCommentSupport:(YWCommentModel *)comment {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": comment.commentId, @"praiseTypeId": @(2)};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": comment.commentId, @"praiseTypeId": @(2), @"state": @(!comment.isSupport.integerValue)};
     [_httpManager requestSupport:parameters success:^(id responseObject) {
-        comment.isSupport = @"1";
+        comment.isSupport = [NSString stringWithFormat:@"%ld", (long)!comment.isSupport.integerValue];
         [_tableView reloadData];
     } otherFailure:^(id responseObject) {
         
@@ -236,6 +241,8 @@
         YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
         nv.title = @"写评论";
         vc.comment = _dataSource[indexPath.row];
+        vc.template = _template;
+        vc.type = 5;
         [self presentViewController:nv animated:YES completion:nil];
     }else {
         if (!indexPath.section) {
@@ -250,6 +257,7 @@
                     YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
                     YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
                     nv.title = @"写评论";
+                    vc.type = 4;
                     vc.template = _template;
                     [self presentViewController:nv animated:YES completion:nil];
                 }]];
@@ -277,6 +285,7 @@
         YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
         YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
         nv.title = @"写评论";
+        vc.type = 4;
         vc.template = _template;
         [self presentViewController:nv animated:YES completion:nil];
     }
@@ -338,6 +347,12 @@
     }
 }
 
+- (void)repeatTableViewCellDidSelectAvator:(YWRepeatTableViewCell *)cell {
+    YWUserDataViewController *vc = [[YWUserDataViewController alloc] init];
+    vc.user = cell.trends.trendsUser;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark - YWTemplateTrendsTableViewCellDelegate
 - (void)templateTrendsTableViewCellDidSelectCooperate:(YWTemplateTrendsTableViewCell *)cell {
     if ([[YWDataBaseManager shareInstance] loginUser]) {
@@ -373,6 +388,12 @@
         vc.trends = cell.trends;
         [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+- (void)templateTrendsTableViewCellDidSelectAvator:(YWTemplateTrendsTableViewCell *)cell {
+    YWUserDataViewController *vc = [[YWUserDataViewController alloc] init];
+    vc.user = cell.trends.trendsUser;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

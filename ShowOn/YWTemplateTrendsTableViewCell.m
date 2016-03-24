@@ -52,6 +52,8 @@
         _avatorImageView = [[UIImageView alloc] init];
         _avatorImageView.layer.masksToBounds = YES;
         _avatorImageView.layer.cornerRadius = 20;
+        _avatorImageView.userInteractionEnabled = YES;
+        [_avatorImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionTap)]];
         _avatorImageView.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:_avatorImageView];
         [_avatorImageView makeConstraints:^(MASConstraintMaker *make) {
@@ -193,6 +195,12 @@
 - (void)actionPlay:(UIButton *)button {
     if ([_delegate respondsToSelector:@selector(templateTrendsTableViewCellDidSelectPlay:)]) {
         [_delegate templateTrendsTableViewCellDidSelectPlay:self];
+    }
+}
+
+- (void)actionTap {
+    if ([_delegate respondsToSelector:@selector(templateTrendsTableViewCellDidSelectAvator:)]) {
+        [_delegate templateTrendsTableViewCellDidSelectAvator:self];
     }
 }
 

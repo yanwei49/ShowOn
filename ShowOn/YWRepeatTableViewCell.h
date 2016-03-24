@@ -15,6 +15,7 @@
 - (void)repeatTableViewCellDidSelectCooperate:(YWRepeatTableViewCell *)cell;
 - (void)repeatTableViewCellDidSelectPlay:(YWRepeatTableViewCell *)cell;
 - (void)repeatTableViewCellDidSelectPlaying:(YWRepeatTableViewCell *)cell;
+- (void)repeatTableViewCellDidSelectAvator:(YWRepeatTableViewCell *)cell;
 
 @end
 

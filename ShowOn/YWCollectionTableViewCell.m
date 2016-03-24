@@ -206,7 +206,7 @@
             [str appendString:[trends.trendsMovieCooperateUsers[i] userName]];
         }
         _userNameLabel.text = str;
-    }else if (trends.trendsType.integerValue == 1) {
+    }else {
         _userNameLabel.text = trends.trendsUser.userName;
     }
     _timeLabel.text = trends.trendsMovie.movieTemplate.templateVideoTime;

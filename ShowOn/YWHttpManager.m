@@ -11,10 +11,6 @@
 #import "YWHttpGlobalDefine.h"
 #import "YWSubsectionVideoModel.h"
 
-//#define kHostURL               @"http://120.25.146.161/"
-#define kHostURL               @"http://192.168.1.136:8080/"
-#define HOST_URL(methodName)   [NSString stringWithFormat:@"%@%@",kHostURL,methodName]
-
 @interface YWHttpManager()
 {
     AFHTTPRequestOperationManager *_httpManager;
@@ -346,17 +342,6 @@ static YWHttpManager * manager;
 - (void)requestRepeat:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
     [self setDefaultHeaders];
     [_httpManager POST:HOST_URL(Repeat_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            failure(error);
-        });
-    }];
-}
-
-- (void)requestShare:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
-    [self setDefaultHeaders];
-    [_httpManager GET:HOST_URL(Share_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{

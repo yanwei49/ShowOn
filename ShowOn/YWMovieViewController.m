@@ -264,7 +264,7 @@
     if (!indexPath.row) {
         UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"moreItem" forIndexPath:indexPath];
         UIImageView *img = [[UIImageView alloc] initWithFrame:cell.contentView.bounds];
-        img.image = [UIImage imageNamed:@"@_normal.png"];
+        img.image = [UIImage imageNamed:@"add_img.png"];
         [cell.contentView addSubview:img];
         
         return cell;

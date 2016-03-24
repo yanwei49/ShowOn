@@ -318,7 +318,7 @@
                 }
                 vc.recorderState = state;
                 [self.navigationController pushViewController:vc animated:YES];
-                view.userInteractionEnabled = NO;
+//                view.userInteractionEnabled = NO;
             }else {
                 UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请先录制视频" message:nil delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
                 [alter show];

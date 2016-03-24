@@ -17,6 +17,30 @@
 #import "YWMovieTemplateModel.h"
 #import "YWTrendsModel.h"
 
+@implementation UIView (AnimationOptionsForCurve)
+
++ (UIViewAnimationOptions)animationOptionsForCurve:(UIViewAnimationCurve)curve
+{
+    switch (curve) {
+        case UIViewAnimationCurveEaseInOut:
+            return UIViewAnimationOptionCurveEaseInOut;
+            break;
+        case UIViewAnimationCurveEaseIn:
+            return UIViewAnimationOptionCurveEaseIn;
+            break;
+        case UIViewAnimationCurveEaseOut:
+            return UIViewAnimationOptionCurveEaseOut;
+            break;
+        case UIViewAnimationCurveLinear:
+            return UIViewAnimationOptionCurveLinear;
+            break;
+    }
+    
+    return kNilOptions;
+}
+
+@end
+
 @interface YWWriteCommentViewController ()<YWKeyboardHeadViewDelegate, UITextViewDelegate, YWUserListViewControllerDelegate>
 
 @end
@@ -28,6 +52,21 @@
     UILabel             *_placeholderLabel;
     NSMutableArray      *_selectUsers;
     YWHttpManager       *_httpManager;
+}
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    }
+    return self;
+}
+
+-(void)dealloc {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad {
@@ -48,13 +87,13 @@
     label.textColor = [UIColor lightGrayColor];
     label.font = [UIFont systemFontOfSize:13];
     if (_type == 3) {
-        label.text = [NSString stringWithFormat:@"转发动态：%@", _trends.trendsContent];
+        label.text = [NSString stringWithFormat:@"转发动态：%@", _trends.trendsContent?:@""];
     }else if (_type == 2 || _type == 5) {
-        label.text = [NSString stringWithFormat:@"回复评论：%@", _comment.commentContent];
+        label.text = [NSString stringWithFormat:@"回复评论：%@", _comment.commentContent?:@""];
     }else if (_type == 1) {
-        label.text = [NSString stringWithFormat:@"评论动态：%@", _trends.trendsContent];
+        label.text = [NSString stringWithFormat:@"评论动态：%@", _trends.trendsContent?:@""];
     }else if (_type == 4) {
-        label.text = [NSString stringWithFormat:@"评论模板：%@", _template.templateName];
+        label.text = [NSString stringWithFormat:@"评论模板：%@", _template.templateName?:@""];
     }
     [self.view addSubview:label];
     [label makeConstraints:^(MASConstraintMaker *make) {
@@ -132,22 +171,29 @@
     NSString *dependId = @"";
     NSString *commentsTypeId = @"1";
     NSString *commentsTargetId = @"";
-    if (_comment && _trends) {
+    NSString *dependType = @"";
+    if (_type == 2) {
         dependId = _trends.trendsId;
         commentsTypeId = @"2";
         commentsTargetId = _comment.commentId;
-    }else if (_comment && _template) {
+        dependType = @"1";
+    }else if (_type == 5) {
         dependId = _template.templateId;
-        commentsTypeId = @"4";
+        commentsTypeId = @"2";
         commentsTargetId = _comment.commentId;
-    }else if (_trends) {
+        dependType = @"2";
+    }else if (_type == 1) {
+        dependId = _trends.trendsId;
         commentsTypeId = @"1";
         commentsTargetId = _trends.trendsId;
-    }else {
+        dependType = @"1";
+    }else if (_type == 4) {
+        commentsTargetId = _comment.commentId;
         commentsTypeId = @"3";
         commentsTargetId = _template.templateId;
+        dependType = @"2";
     }
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"commentsTargetId": commentsTargetId, @"commentsTypeId": commentsTypeId, @"commentsContent": _textView.text, @"aiTeuserIds": userId, @"dependId": dependId};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"commentsTargetId": commentsTargetId, @"commentsTypeId": commentsTypeId, @"commentsContent": _textView.text, @"aiTeuserIds": userId, @"dependId": dependId, @"dependType": dependType};
     [_httpManager requestCommitComment:parameters success:^(id responseObject) {
         [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -204,5 +250,39 @@
     
     return YES;
 }
+
+#pragma mark - keyboard notification
+- (void)keyboardWillShow:(NSNotification *)notification {
+    CGRect keyboardRect = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    UIViewAnimationCurve curve = [[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    [_keyboardHead mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view.mas_bottom).offset(-keyboardRect.size.height);
+    }];
+    [UIView animateWithDuration:duration delay:0.0f options:[UIView animationOptionsForCurve:curve] animations:^{
+            [self.view setNeedsLayout];
+            [self.view layoutIfNeeded];
+        }
+    completion:^(BOOL finished) {
+    }];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    UIViewAnimationCurve curve = [[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    [_keyboardHead mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view.mas_bottom).offset(0);
+    }];
+    [UIView animateWithDuration:duration delay:0.0f options:[UIView animationOptionsForCurve:curve] animations:^{
+            [self.view setNeedsLayout];
+            [self.view layoutIfNeeded];
+        }
+    completion:^(BOOL finished) {
+    }];
+}
+
 
 @end

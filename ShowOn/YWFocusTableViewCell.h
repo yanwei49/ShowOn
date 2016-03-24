@@ -20,6 +20,7 @@ typedef enum : NSUInteger {
 - (void)focusTableViewCellDidSelectCooperate:(YWFocusTableViewCell *)cell;
 - (void)focusTableViewCellDidSelectPlay:(YWFocusTableViewCell *)cell;
 - (void)focusTableViewCellDidSelectPlaying:(YWFocusTableViewCell *)cell;
+- (void)focusTableViewCellDidSelectAvator:(YWFocusTableViewCell *)cell;
 
 @end
 

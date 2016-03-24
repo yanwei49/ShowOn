@@ -73,7 +73,7 @@
         [self createHotView];
         _isPushHotItem = NO;
     }
-    _headView.user = _loginUser;
+    _headView.user = _loginUser?:[[YWUserModel alloc] init];
     YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     tabBar.hiddenState = NO;
 }
@@ -111,7 +111,6 @@
         self.navigationController.navigationBarHidden = YES;
         _hotView.dataSource = _templateArray;
         _hotView.delegate = self;
-        _hotView.dataSource = _templateArray;
         [self.view addSubview:_hotView];
         [_hotView makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(20);

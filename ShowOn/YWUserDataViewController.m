@@ -56,12 +56,14 @@
     [super viewDidLoad];
     self.view.backgroundColor = Subject_color;
     if ([_user.userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userId]) {
+        _isSelf = YES;
         [self createRightItemWithTitle:@"保存"];
     }else {
+        _isSelf = NO;
         [self createRightItemWithImage:@"more_normal.png"];
     }
     _httpManager = [YWHttpManager shareInstance];
-    _dataSource = [[NSMutableArray alloc] initWithArray:@[@"个人签名", @"性别", @"地区", @"年龄", @"星座", @"身高", @"三围"]];
+    _dataSource = [[NSMutableArray alloc] initWithArray:@[@"昵称",@"个人签名", @"性别", @"地区", @"年龄", @"星座", @"身高", @"三围"]];
     _sexArray = @[@"男", @"女"];
     _constellationArray = @[@"白羊座", @"金牛座", @"双子座", @"巨蟹座", @"狮子座", @"处女座", @"天秤座", @"天蝎座", @"射手座", @"摩羯座", @"水瓶座", @"双鱼座"];
     _trendsArray = [[NSMutableArray alloc] init];
@@ -314,17 +316,20 @@
 
 - (void)requestSaveUserDetails {
     NSMutableArray *array = [NSMutableArray array];
-    for (NSInteger i=0; i<7; i++) {
+    for (NSInteger i=0; i<8; i++) {
         UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
         UITextField *tf = (UITextField *)cell.accessoryView;
         [array addObject:tf.text?:@""];
     }
     [SVProgressHUD showWithStatus:@"修改中..."];
-    NSDictionary *parameters = @{@"userId": _user.userId, @"introduction": array[0], @"sex": [array[1] isEqualToString:@"女"]?@"2":@"1", @"district": array[2], @"birthday": array[3], @"constellation": array[4], @"height": array[5], @"bwh": array[6]};
+    NSDictionary *parameters = @{@"userId": _user.userId, @"nickName": array[0], @"introduction": array[1], @"sex": [array[2] isEqualToString:@"女"]?@"2":@"1", @"district": array[3], @"birthday": array[4], @"constellation": array[5], @"height": array[6], @"bwh": array[7]};
     [_httpManager requestSaveUserDetails:parameters image:_headImage success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         _user = [parser userWithDict:responseObject[@"user"]];
-        [[YWDataBaseManager shareInstance] updateLoginUser:_user];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [[YWDataBaseManager shareInstance] cleanLoginUsers];
+            [[YWDataBaseManager shareInstance] addLoginUser:_user];
+        });
         [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
         [self.navigationController popViewControllerAnimated:YES];
     } otherFailure:^(id responseObject) {
@@ -347,7 +352,7 @@
 }
 
 - (void)requestReport {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"informTypeId": @"1", @"informTargetId": _user.userId, @"infos": @""};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"informTypeId": @"1", @"informTargetId": _user.userId, @"informContent": @""};
     [_httpManager requestReport:parameters success:^(id responseObject) {
         [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
     } otherFailure:^(id responseObject) {
@@ -466,7 +471,7 @@
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.textLabel.text = _dataSource[indexPath.row];
         cell.accessoryType = UITableViewCellAccessoryDetailButton;
-        NSArray *contents = @[_user.userInfos?:@"", _user.userSex?(_user.userSex.integerValue?@"男":@"女"):@"", _user.userDistrict?:@"", _user.userBirthday?:@"", _user.userConstellation?:@"", _user.userheight?:@"", _user.userBwh?:@""];
+        NSArray *contents = @[_user.userName?:@"", _user.userInfos?:@"", _user.userSex?(_user.userSex.integerValue?@"男":@"女"):@"", _user.userDistrict?:@"", _user.userBirthday?:@"", _user.userConstellation?:@"", _user.userheight?:@"", _user.userBwh?:@""];
         UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth-200, cell.bounds.size.height)];
         tf.delegate = self;
         tf.text = contents[indexPath.row];
@@ -655,7 +660,7 @@
 - (void)mineTableHeadViewDidSelectSendMessage {
     YWChatRoomViewComtroller *vc = [[YWChatRoomViewComtroller alloc] init];
     vc.conversationType = ConversationType_PRIVATE;
-    vc.targetId = _user.userId;
+    vc.targetId = _user.userAccount;
     vc.userName = _user.userName;
     vc.title = _user.userName;
     [self.navigationController pushViewController:vc animated:YES];

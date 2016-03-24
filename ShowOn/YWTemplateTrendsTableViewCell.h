@@ -15,6 +15,7 @@
 - (void)templateTrendsTableViewCellDidSelectCooperate:(YWTemplateTrendsTableViewCell *)cell;
 - (void)templateTrendsTableViewCellDidSelectPlay:(YWTemplateTrendsTableViewCell *)cell;
 - (void)templateTrendsTableViewCellDidSelectPlaying:(YWTemplateTrendsTableViewCell *)cell;
+- (void)templateTrendsTableViewCellDidSelectAvator:(YWTemplateTrendsTableViewCell *)cell;
 
 @end
 

@@ -14,6 +14,8 @@
 #import "YWTrendsDetailViewController.h"
 #import "YWDataBaseManager.h"
 #import "MJRefresh.h"
+#import "YWCommentModel.h"
+#import "YWSupportModel.h"
 
 @interface YWSupportViewController()<UITableViewDataSource, UITableViewDelegate>
 
@@ -112,7 +114,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     YWTrendsDetailViewController *hotVC = [[YWTrendsDetailViewController alloc] init];
-    hotVC.trends = [_dataSource[indexPath.row] trends];
+    if ([_dataSource[indexPath.row] supportType].integerValue == 1) {
+        hotVC.trends = [_dataSource[indexPath.row] trends];
+    }else {
+        YWCommentModel *comments = [_dataSource[indexPath.row] comments];
+        hotVC.trends = comments.commentTrends;
+    }
     [self.navigationController pushViewController:hotVC animated:YES];
 }
 

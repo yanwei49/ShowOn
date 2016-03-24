@@ -283,3 +283,34 @@
 请求用户列的参数relationTypeId为0的时候返回给我所有用户列表，不分页
 接口：juer/user/getFriendList?json
 
+
+/**********************/
+模板录制次数统计不对
+
+
+点赞接口加一个参数  点赞状态state      1.点赞   0.取消赞
+接口：juer/dynamic/praise?json
+
+
+收藏接口的collectionTypeId的值的确定
+
+
+回复模板的评论成功后没有数据
+
+
+动态详情的评论列表返回给我发表评论用户的信息
+user：{
+    userId
+    nickname
+    headPortrait
+}
+
+模板详情动态列表的转发动态没有返回转发动态的相关数据
+trendsForwardComments
+
+
+注册用户如果没有昵称时，随机生成一个用户昵称
+
+
+报错用户资料接口多接受一个key，用户昵称：nickName
+接口：juer/user/updateUserInfo?json

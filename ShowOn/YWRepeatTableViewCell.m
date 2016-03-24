@@ -53,6 +53,8 @@
         _avatorImageView = [[UIImageView alloc] init];
         _avatorImageView.layer.masksToBounds = YES;
         _avatorImageView.layer.cornerRadius = 20;
+        _avatorImageView.userInteractionEnabled = YES;
+        [_avatorImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionTap)]];
         _avatorImageView.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:_avatorImageView];
         [_avatorImageView makeConstraints:^(MASConstraintMaker *make) {
@@ -219,6 +221,12 @@
     }
 }
 
+- (void)actionTap {
+    if ([_delegate respondsToSelector:@selector(repeatTableViewCellDidSelectAvator:)]) {
+        [_delegate repeatTableViewCellDidSelectAvator:self];
+    }
+}
+
 - (void)setTrends:(YWTrendsModel *)trends {
     _trends = trends;
     //    _imageView.hidden = YES;
@@ -236,12 +244,13 @@
             [str appendString:[trends.trendsMovieCooperateUsers[i] userName]];
         }
         _userNameLabel.text = str;
-    }else if (trends.trendsType.integerValue == 1) {
+    }else {
         _userNameLabel.text = trends.trendsUser.userName;
     }
     _timeLabel.text = [NSString stringWithFormat:@"%@", [YWTools timMinuteStringWithUrl:trends.trendsMovie.movieUrl?:trends.trendsMovie.movieTemplate.templateVideoUrl]];
     //    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][0]?:@"0", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][1]?:@"0"];
-    _forwardLabel.text = trends.trendsForwardComments;
+    NSString *str = [NSString stringWithFormat:@"转发：%@", trends.trendsForwardComments];
+    _forwardLabel.text = str;
     _contentLabel.text = trends.trendsContent;
     _numsLabel.text = [NSString stringWithFormat:@"播放%@次", trends.trendsMoviePlayCount?:@"0"];
     
@@ -250,7 +259,8 @@
 +(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends {
     CGFloat height = 200+15+60+5;
     CGRect rect = [trends.trendsContent boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
-    CGRect rect1 = [trends.trendsForwardComments boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
+    NSString *str = [NSString stringWithFormat:@"转发：%@", trends.trendsForwardComments];
+    CGRect rect1 = [str boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
     height += rect.size.height;
     height += rect1.size.height;
     

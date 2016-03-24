@@ -41,6 +41,7 @@
     _currentPage = 0;
 
     [self createSubViews];
+    [self requestTemplateSubCategory];
 }
 
 - (void)createSubViews {
@@ -60,12 +61,12 @@
     }];
     _collectionView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _currentPage = 0;
-        [self requestSupportList];
+        [self requestTemplateSubCategory];
     }];
 }
 
 #pragma mark - request
-- (void)requestSupportList {
+- (void)requestTemplateSubCategory {
     [_httpManager requestTemplateSubCategory:nil success:^(id responseObject) {
         if (!_currentPage) {
             [_dataSource removeAllObjects];
@@ -84,7 +85,7 @@
         }else {
             _collectionView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
                 _currentPage ++;
-                [self requestSupportList];
+                [self requestTemplateSubCategory];
             }];
         }
         [_collectionView.header endRefreshing];

@@ -60,6 +60,8 @@
         _avatorImageView = [[UIImageView alloc] init];
         _avatorImageView.layer.masksToBounds = YES;
         _avatorImageView.layer.cornerRadius = 20;
+        _avatorImageView.userInteractionEnabled = YES;
+        [_avatorImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionTap)]];
         _avatorImageView.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:_avatorImageView];
         [_avatorImageView makeConstraints:^(MASConstraintMaker *make) {
@@ -176,7 +178,7 @@
         _imageView.layer.cornerRadius = 5;
         [view addSubview:_imageView];
         [_imageView makeConstraints:^(MASConstraintMaker *make) {
-            make.top.offset(65);
+            make.top.equalTo(_forwardLabel.mas_bottom).offset(5);
             make.left.offset(5);
             make.right.offset(-5);
             make.height.offset(200);
@@ -241,6 +243,12 @@
     }
 }
 
+- (void)actionTap {
+    if ([_delegate respondsToSelector:@selector(repeatDetailTableViewCellDidSelectAvator:)]) {
+        [_delegate repeatDetailTableViewCellDidSelectAvator:self];
+    }
+}
+
 - (void)setTrends:(YWTrendsModel *)trends {
     _trends = trends;
     //    _imageView.hidden = YES;
@@ -258,13 +266,13 @@
             [str appendString:[trends.trendsOtherPlayUsers[i] userName]];
         }
         _userNameLabel.text = str;
-    }else if (trends.trendsType.integerValue == 1) {
+    }else {
         _userNameLabel.text = trends.trendsUser.userName;
     }
     _timeLabel.text = trends.trendsMovie.movieTemplate.templateVideoTime;
     //    _timeLabel.text = [NSString stringWithFormat:@"%@", [YWTools timMinuteStringWithUrl:trends.trendsMovie.movieUrl?:trends.trendsMovie.movieTemplate.templateVideoUrl]];
     //    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][0]?:@"0", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][1]?:@"0"];
-    _forwardLabel.text = trends.trendsForwardComments;
+    _forwardLabel.text = [NSString stringWithFormat:@"转发：%@", trends.trendsForwardComments?:@""];
     _contentLabel.text = trends.trendsContent;
     _numsLabel.text = [NSString stringWithFormat:@"播放%@次", trends.trendsMoviePlayCount];
 }
@@ -272,7 +280,8 @@
 +(CGFloat)cellHeightWithTrends:(YWTrendsModel *)trends type:(RepeatTrendsCellType)type {
     CGFloat height = 200+15+60+5;
     CGRect rect = [trends.trendsContent boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
-    CGRect rect1 = [trends.trendsForwardComments boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
+    NSString *str = [NSString stringWithFormat:@"转发：%@", trends.trendsForwardComments?:@""];
+    CGRect rect1 = [str boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
     height += rect.size.height;
     height += rect1.size.height;
     if (type == kRepeatTrendsListType && trends.trendsComments.count) {
