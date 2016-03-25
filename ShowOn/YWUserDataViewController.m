@@ -126,8 +126,7 @@
     _tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.right.offset(0);
-        make.top.offset(64);
+        make.top.left.bottom.right.offset(0);
     }];
     
     _dataPickerBackView = [[UIView alloc] init];
@@ -223,7 +222,7 @@
 
 - (void)actionDown:(UIButton *)button {
     _dataPickerBackView.hidden = YES;
-    UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
+    UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
     UITextField *tf = (UITextField *)cell.accessoryView;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setLocale:[NSLocale currentLocale]];
@@ -436,7 +435,7 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    if (_selectIndex == 1) {
+    if (_selectIndex == 2) {
         return _sexArray.count;
     }else {
         return _constellationArray.count;
@@ -444,7 +443,7 @@
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    if (_selectIndex == 1) {
+    if (_selectIndex == 2) {
         return _sexArray[row];
     }else {
         return _constellationArray[row];
@@ -455,7 +454,7 @@
     pickerView.hidden = YES;
     UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_selectIndex inSection:0]];
     UITextField *tf = (UITextField *)cell.accessoryView;
-    tf.text = (_selectIndex == 1)?_sexArray[row]:_constellationArray[row];
+    tf.text = (_selectIndex == 2)?_sexArray[row]:_constellationArray[row];
 }
 
 #pragma mark - UITableViewDelegate
@@ -480,7 +479,7 @@
         tf.font = [UIFont systemFontOfSize:15];
         cell.accessoryView = tf;
         tf.userInteractionEnabled = (!_isSelf)?NO:YES;
-        if (indexPath.row == 1 || indexPath.row == 3 || indexPath.row == 4) {
+        if (indexPath.row == 2 || indexPath.row == 4 || indexPath.row == 5) {
             tf.userInteractionEnabled = NO;
         }
         
@@ -549,12 +548,12 @@
     [self hiddenPickView];
     _selectIndex = index;
     switch (index) {
-        case 1:
-        case 4:
+        case 2:
+        case 5:
             _pickerView.hidden = NO;
             [_pickerView reloadAllComponents];
             break;
-        case 3:
+        case 4:
             _dataPickerBackView.hidden = NO;
             break;
         default:

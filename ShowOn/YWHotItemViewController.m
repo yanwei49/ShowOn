@@ -40,6 +40,8 @@
     NSMutableArray          *_trends;
     NSMutableArray          *_comments;
     YWHttpManager           *_httpManager;
+    BOOL                     _commentIsSelf;
+    YWCommentModel          *_commentComment;
 }
 
 - (void)viewDidLoad {
@@ -87,8 +89,7 @@
     _tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.right.offset(0);
-        make.top.offset(64);
+        make.top.left.bottom.right.offset(0);
     }];
 }
 
@@ -105,7 +106,7 @@
 
 #pragma mark - request
 - (void)requestTemplateDetail {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"templateId": _template.templateId};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"templateId": _template.templateId};
     [_httpManager requestTemplateDetail:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         [_trends removeAllObjects];
@@ -132,6 +133,25 @@
     NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": comment.commentId, @"praiseTypeId": @(2), @"state": @(!comment.isSupport.integerValue)};
     [_httpManager requestSupport:parameters success:^(id responseObject) {
         comment.isSupport = [NSString stringWithFormat:@"%ld", (long)!comment.isSupport.integerValue];
+        [_tableView reloadData];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)requestDeleteCommnet {
+    NSDictionary *parameters = @{@"commentId": _commentComment.commentId};
+    [_httpManager requestDeleteComment:parameters success:^(id responseObject) {
+        NSMutableArray *array = [NSMutableArray arrayWithArray:_template.templateComments];
+        for (YWCommentModel *cm in array) {
+            if ([cm.commentId isEqualToString:_commentComment.commentId]) {
+                [array removeObject:cm];
+                break;
+            }
+        }
+        _template.templateComments = array;
         [_tableView reloadData];
     } otherFailure:^(id responseObject) {
         
@@ -237,13 +257,36 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [_tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (_segmentedControl.selectedSegmentIndex) {
-        YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
-        YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
-        nv.title = @"写评论";
-        vc.comment = _dataSource[indexPath.row];
-        vc.template = _template;
-        vc.type = 5;
-        [self presentViewController:nv animated:YES completion:nil];
+        if ([[YWDataBaseManager shareInstance] loginUser]) {
+            _commentComment = _dataSource[indexPath.row];
+            _commentIsSelf = [[[YWDataBaseManager shareInstance] loginUser].userId isEqualToString:[_dataSource[indexPath.row] commentUser].userId];
+            if ([[UIDevice currentDevice] systemVersion].floatValue >= 8.0) {
+                UIAlertController *sheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+                if (_commentIsSelf) {
+                    [sheet addAction:[UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [self requestDeleteCommnet];
+                    }]];
+                }
+                [sheet addAction:[UIAlertAction actionWithTitle:@"回复" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [self commentComment];
+                }]];
+                [sheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                }]];
+                [self presentViewController:sheet animated:YES completion:nil];
+            }else {
+                if (_commentIsSelf) {
+                    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"删除", @"回复", nil];
+                    actionSheet.tag = 120;
+                    [actionSheet showInView:self.view];
+                }else {
+                    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"回复", nil];
+                    actionSheet.tag = 120;
+                    [actionSheet showInView:self.view];
+                }
+            }
+        }else {
+            [self login];
+        }
     }else {
         if (!indexPath.section) {
             if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
@@ -275,19 +318,43 @@
     }
 }
 
+- (void)commentComment {
+    YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
+    YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
+    nv.title = @"写评论";
+    vc.comment = _commentComment;
+    vc.template = _template;
+    vc.type = 5;
+    [self presentViewController:nv animated:YES completion:nil];
+}
+
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
-        vc.template = _template;
-        [self.navigationController pushViewController:vc animated:YES];
-    }else if (buttonIndex == 1) {
-        YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
-        YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
-        nv.title = @"写评论";
-        vc.type = 4;
-        vc.template = _template;
-        [self presentViewController:nv animated:YES completion:nil];
+    if (actionSheet.tag == 120) {
+        if (_commentIsSelf) {
+            if (buttonIndex == 0) {
+                [self requestDeleteCommnet];
+            }else if (buttonIndex == 1) {
+                [self commentComment];
+            }
+        }else {
+            if (buttonIndex == 0) {
+                [self commentComment];
+            }
+        }
+    }else {
+        if (buttonIndex == 0) {
+            YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+            vc.template = _template;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else if (buttonIndex == 1) {
+            YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
+            YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
+            nv.title = @"写评论";
+            vc.type = 4;
+            vc.template = _template;
+            [self presentViewController:nv animated:YES completion:nil];
+        }
     }
 }
 

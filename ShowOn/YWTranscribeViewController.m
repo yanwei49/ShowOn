@@ -67,6 +67,12 @@
             }
         }
     }
+    if (!_template.templateSubsectionVideos.count) {
+        YWSubsectionVideoModel *sub = [[YWSubsectionVideoModel alloc] init];
+        sub.subsectionVideoUrl = _template.templateVideoUrl;
+        sub.subsectionVideoType = @"3";
+        _template.templateSubsectionVideos = @[sub];
+    }
     
     [self createSubViews];
 }

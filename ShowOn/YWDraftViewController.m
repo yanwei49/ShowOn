@@ -45,7 +45,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self requestDraftList];
-    [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+//    [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
 }
 
 - (void)createSubViews {
@@ -59,8 +59,7 @@
     _collectionView.dataSource = self;
     [self.view addSubview:_collectionView];
     [_collectionView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.right.offset(0);
-        make.top.offset(64);
+        make.top.left.bottom.right.offset(0);
     }];
     _collectionView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _currentPage = 0;

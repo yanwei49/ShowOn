@@ -247,8 +247,8 @@
     }else {
         _userNameLabel.text = trends.trendsUser.userName;
     }
-    _timeLabel.text = [NSString stringWithFormat:@"%@", [YWTools timMinuteStringWithUrl:trends.trendsMovie.movieUrl?:trends.trendsMovie.movieTemplate.templateVideoUrl]];
-    //    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][0]?:@"0", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][1]?:@"0"];
+//    _timeLabel.text = [NSString stringWithFormat:@"%@", [YWTools timMinuteStringWithUrl:trends.trendsMovie.movieUrl?:trends.trendsMovie.movieTemplate.templateVideoUrl]];
+    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][0]?:@"0", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][1]?:@"0"];
     NSString *str = [NSString stringWithFormat:@"转发：%@", trends.trendsForwardComments];
     _forwardLabel.text = str;
     _contentLabel.text = trends.trendsContent;

@@ -159,7 +159,7 @@
     [_sendVerificationButton addTarget:self action:@selector(actionSendVerification:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_sendVerificationButton];
     [_sendVerificationButton makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_verificationTextField.mas_right);
+        make.left.equalTo(_verificationTextField.mas_right).offset(10);
         make.height.offset(30);
         make.top.equalTo(_verificationTextField.mas_top);
         make.right.equalTo(_accountTextField.mas_right);

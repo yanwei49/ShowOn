@@ -21,6 +21,8 @@
 		567855611C75564D008DEB1C /* movie_background_image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 567855601C75564D008DEB1C /* movie_background_image.jpg */; };
 		567855631C755653008DEB1C /* article_background_image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 567855621C755653008DEB1C /* article_background_image.jpg */; };
 		5678556B1C757182008DEB1C /* YWPrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5678556A1C757182008DEB1C /* YWPrivacyViewController.m */; };
+		567A27B71CA4BD93003ADAC9 /* juer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 567A27B51CA4BD93003ADAC9 /* juer@2x.png */; };
+		567A27B81CA4BD93003ADAC9 /* juer@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 567A27B61CA4BD93003ADAC9 /* juer@3x.png */; };
 		567A77B31C891D86000F336A /* YWTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 567A77B21C891D86000F336A /* YWTools.m */; };
 		567A77B61C894367000F336A /* MPMoviePlayerViewController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 567A77B51C894367000F336A /* MPMoviePlayerViewController+Rotation.m */; };
 		567C151C1C731761006A365D /* YWKeyboardHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 567C151B1C731761006A365D /* YWKeyboardHeadView.m */; };
@@ -314,6 +316,8 @@
 		567855621C755653008DEB1C /* article_background_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = article_background_image.jpg; sourceTree = "<group>"; };
 		567855691C757182008DEB1C /* YWPrivacyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWPrivacyViewController.h; sourceTree = "<group>"; };
 		5678556A1C757182008DEB1C /* YWPrivacyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWPrivacyViewController.m; sourceTree = "<group>"; };
+		567A27B51CA4BD93003ADAC9 /* juer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "juer@2x.png"; sourceTree = "<group>"; };
+		567A27B61CA4BD93003ADAC9 /* juer@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "juer@3x.png"; sourceTree = "<group>"; };
 		567A77B11C891D86000F336A /* YWTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTools.h; sourceTree = "<group>"; };
 		567A77B21C891D86000F336A /* YWTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTools.m; sourceTree = "<group>"; };
 		567A77B41C894367000F336A /* MPMoviePlayerViewController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MPMoviePlayerViewController+Rotation.h"; sourceTree = "<group>"; };
@@ -785,6 +789,8 @@
 		568DBFF61C5619DA00CFD1BC /* resouce */ = {
 			isa = PBXGroup;
 			children = (
+				567A27B51CA4BD93003ADAC9 /* juer@2x.png */,
+				567A27B61CA4BD93003ADAC9 /* juer@3x.png */,
 				5685DF951CA370630000F135 /* add_img@2x.png */,
 				5685DF961CA370630000F135 /* add_img@3x.png */,
 				566D99501C9A303400608B53 /* start_1.png */,
@@ -1805,6 +1811,7 @@
 				56F5D3661C17AED0008C33CA /* UMSCommentInputControlleriPad.xib in Resources */,
 				56F5D37B1C17AED0008C33CA /* ios-social-sdk-share-detail.html in Resources */,
 				771FEAD81C77F8AD009F71FB /* change_shot_button@3x.png in Resources */,
+				567A27B81CA4BD93003ADAC9 /* juer@3x.png in Resources */,
 				568DC0D81C5619F300CFD1BC /* 接口.txt in Resources */,
 				568DC0C01C5619DB00CFD1BC /* smile_normal@2x.png in Resources */,
 				56FE99D91C0FBAB8007BA29B /* LaunchScreen.storyboard in Resources */,
@@ -1838,6 +1845,7 @@
 				771FEACA1C77F87A009F71FB /* red_point_button.png in Resources */,
 				56F5D39A1C17E1BE008C33CA /* video1.mov in Resources */,
 				568DC0841C5619DB00CFD1BC /* collect_normal@3x.png in Resources */,
+				567A27B71CA4BD93003ADAC9 /* juer@2x.png in Resources */,
 				568DC0861C5619DB00CFD1BC /* collect_selected@2x.png in Resources */,
 				77BFCC241C7862DF001D49BA /* choose_selected_small@3x.png in Resources */,
 				568DC0731C5619DB00CFD1BC /* back_orange.png in Resources */,

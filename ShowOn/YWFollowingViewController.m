@@ -46,7 +46,7 @@
     }else {
         [self requestVedioPlayUserList];
     }
-    [_tableView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+//    [_tableView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
 }
 
 - (void)createSubViews {
@@ -64,8 +64,7 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.right.offset(0);
-        make.top.offset(64);
+        make.top.left.bottom.right.offset(0);
     }];
     _tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _currentPage = 0;

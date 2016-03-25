@@ -76,9 +76,9 @@
     _accountTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.view addSubview:_accountTextField];
     [_accountTextField makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_centerY).offset(Is480Height?-40:-20);
+        make.top.equalTo(self.view.mas_centerY).offset(Is480Height?-50:-30);
         make.centerX.equalTo(self.view.mas_centerX);
-        make.height.offset(30);
+        make.height.offset(35);
         make.width.offset(kScreenWidth-80);
     }];
     
@@ -95,9 +95,9 @@
     _passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.view addSubview:_passwordTextField];
     [_passwordTextField makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_accountTextField.mas_bottom).offset(5);
+        make.top.equalTo(_accountTextField.mas_bottom).offset(10);
         make.centerX.equalTo(self.view.mas_centerX);
-        make.height.offset(30);
+        make.height.offset(35);
         make.width.offset(kScreenWidth-80);
     }];
 
@@ -111,7 +111,7 @@
     [self.view addSubview:_loginButton];
     [_loginButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_accountTextField.mas_centerX);
-        make.height.offset(30);
+        make.height.offset(35);
         make.top.equalTo(_passwordTextField.mas_bottom).offset(10);
         make.width.offset(kScreenWidth-80);
     }];
@@ -189,7 +189,8 @@
     }
     
     UIImageView *imageView = [[UIImageView alloc] init];
-    imageView.backgroundColor = [UIColor greenColor];
+    imageView.backgroundColor = Subject_color;
+    imageView.image = [UIImage imageNamed:@"juer.png"];
     [self.view addSubview:imageView];
     [imageView makeConstraints:^(MASConstraintMaker *make) {
         make.top.offset(Is480Height?60:90);

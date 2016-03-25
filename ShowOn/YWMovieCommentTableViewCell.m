@@ -113,13 +113,22 @@
     [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:comment.commentUser.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
     _userNameLabel.text = comment.commentUser.userName;
     _timeLabel.text = comment.commentTime;
-    _contentLabel.text = comment.commentContent;
+    if (comment.beCommentUser) {
+        NSString *string = [NSString stringWithFormat:@"回复%@：%@", comment.beCommentUser.userName, comment.commentContent];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:string];
+        [str addAttributes:@{NSForegroundColorAttributeName: [UIColor blueColor]} range:NSMakeRange(0, 3+comment.beCommentUser.userName.length)];
+        _contentLabel.attributedText = str;
+
+    }else {
+        _contentLabel.text = comment.commentContent;
+    }
     _supportButton.selected = comment.isSupport.integerValue;
 }
 
 +(CGFloat)cellHeightWithComment:(YWCommentModel *)comment {
     CGFloat height = 60;
-    CGRect rect = [comment.commentContent boundingRectWithSize:CGSizeMake(kScreenWidth-50, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
+    NSString *string = [NSString stringWithFormat:@"回复%@：%@", comment.beCommentUser.userName, comment.commentContent];
+    CGRect rect = [string boundingRectWithSize:CGSizeMake(kScreenWidth-50, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil];
     if (rect.size.height>20) {
         height += rect.size.height-20;
     }

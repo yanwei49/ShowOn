@@ -224,8 +224,8 @@
     }else if (trends.trendsType.integerValue == 1) {
         _userNameLabel.text = trends.trendsUser.userName;
     }
-    _timeLabel.text = [NSString stringWithFormat:@"%@", [YWTools timMinuteStringWithUrl:trends.trendsMovie.movieUrl?:trends.trendsMovie.movieTemplate.templateVideoUrl]];
-//    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][0]?:@"0", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][1]?:@"0"];
+//    _timeLabel.text = [NSString stringWithFormat:@"%@", [YWTools timMinuteStringWithUrl:trends.trendsMovie.movieUrl?:trends.trendsMovie.movieTemplate.templateVideoUrl]];
+    _timeLabel.text = [NSString stringWithFormat:@"%@分%@秒", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][0]?:@"0", [trends.trendsMovie.movieTemplate.templateVideoTime componentsSeparatedByString:@":"][1]?:@"0"];
     _contentLabel.text = trends.trendsContent;
     _numsLabel.text = [NSString stringWithFormat:@"播放%@次", trends.trendsMoviePlayCount?:@"0"];
     

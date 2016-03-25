@@ -39,12 +39,13 @@
     [self configureAPIKey];
     _tabBarLastSelectIndex = -1;
     [YWFriendListManager shareInstance];
-
-    if ([[YWDataBaseManager shareInstance] loginUser]) {
-        [self createTabBar];
-    }else {
-        [self createLogin];
-    }
+    [self createTabBar];
+//
+//    if ([[YWDataBaseManager shareInstance] loginUser]) {
+//        [self createTabBar];
+//    }else {
+//        [self createLogin];
+//    }
     [self.window makeKeyAndVisible];
     
     return YES;
