@@ -56,8 +56,8 @@
     _tableView.tableFooterView = footView;
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.right.offset(0);
-        make.top.offset(64);
+        make.top.left.right.offset(0);
+        make.height.offset(kScreenHeight-64);
     }];
 }
 

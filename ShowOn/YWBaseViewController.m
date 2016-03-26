@@ -20,43 +20,35 @@
 {
     
     YWHttpManager       *_httpManager;
-    UIView              *_noContentView;
+    UILabel             *_noContentLabel;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]){
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
+//    self.automaticallyAdjustsScrollViewInsets = NO;
+//    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]){
+//        self.edgesForExtendedLayout = UIRectEdgeNone;
+//    }
     self.view.backgroundColor = Subject_color;
     _httpManager = [YWHttpManager shareInstance];
     
-    [self createNoContentView];
+//    [self createNoContentView];
 }
 
 - (void)createNoContentView {
-    _noContentView = [[UIView alloc] init];
-    _noContentView.backgroundColor = Subject_color;
-    [self.view addSubview:_noContentView];
-    [_noContentView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.offset(0);
-        make.top.offset(40+64);
-    }];
-    
-    UILabel *label = [[UILabel alloc] init];
-    label.backgroundColor = Subject_color;
-    label.textColor = RGBColor(230, 230, 230);
-    label.text = @"暂无内容";
-    label.textAlignment = NSTextAlignmentCenter;
-    label.font = [UIFont systemFontOfSize:15];
-    [_noContentView addSubview:label];
-    [label makeConstraints:^(MASConstraintMaker *make) {
+    _noContentLabel = [[UILabel alloc] init];
+    _noContentLabel.backgroundColor = Subject_color;
+    _noContentLabel.textColor = RGBColor(230, 230, 230);
+    _noContentLabel.text = @"暂无内容";
+    _noContentLabel.textAlignment = NSTextAlignmentCenter;
+    _noContentLabel.font = [UIFont systemFontOfSize:15];
+    _noContentLabel.hidden = YES;
+    [self.view addSubview:_noContentLabel];
+    [_noContentLabel makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.offset(0);
+        make.centerY.equalTo(self.view.mas_centerY).offset(30);
         make.height.offset(20);
-        make.centerY.equalTo(_noContentView.mas_centerY);
     }];
-    _noContentView.hidden = YES;
 }
 
 #pragma mark - create right/left item
@@ -128,8 +120,13 @@
 
 #pragma mark - noContentView show state
 - (void)noContentViewShowWithState:(BOOL)state {
-    _noContentView.hidden = !state;
-    [self.view bringSubviewToFront:_noContentView];
+    if (state) {
+        _noContentLabel.hidden = NO;
+        [self.view bringSubviewToFront:_noContentLabel];
+    }else {
+        _noContentLabel.hidden = YES;
+        [self.view insertSubview:_noContentLabel atIndex:0];
+    }
 }
 
 

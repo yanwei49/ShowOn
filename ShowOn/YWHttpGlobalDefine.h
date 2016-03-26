@@ -10,8 +10,8 @@
 #define GoFarmApp_TLHttpGlobalDefine_h
 
 
-//#define kHostURL               @"http://120.25.146.161/"
-#define kHostURL               @"http://192.168.1.122:8080/"
+#define kHostURL               @"http://120.25.146.161/"
+//#define kHostURL               @"http://192.168.1.122:8080/"
 #define HOST_URL(methodName)   [NSString stringWithFormat:@"%@%@",kHostURL,methodName]
 
 #define BUNDLE_VERSION                        [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey]
@@ -47,11 +47,11 @@
 #define Save_Trends_Method                    @"juer/dynamic/draftOrDynamicVideo?json"      //发布动态、保存到草稿箱
 #define Article_List_Method                   @"juer/dynamic/teletextList?json"             //图文列表
 #define Play_Method                           @"juer/dynamic/statistics?json"               //播放统计
-#define WeiBo_User_Method                     @"dynamic/sinaUserList?json"                  //微博用户
-#define Template_Sub_Category_Method          @"dynamic/moreTemplateType?json"              //获取模板子分类列表
-#define Template_Sub_Category_List_Method     @"dynamic/subTemplateList?json"               //获取模板某个子分类下的模板列表
+#define WeiBo_User_Method                     @"juer/dynamic/sinaUserList?json"             //微博用户
+#define Template_Sub_Category_Method          @"juer/dynamic/moreTemplateType?json"         //获取模板子分类列表
+#define Template_Sub_Category_List_Method     @"juer/dynamic/subTemplateList?json"          //获取模板某个子分类下的模板列表
 #define Template_User_List_Method             @""             //获取模板表演用户列表
-#define Delete_Comment_Method                 @""             //删除评论
+#define Delete_Comment_Method                 @"juer/dynamic/deleteComment?json"            //删除评论
 
 
 #endif

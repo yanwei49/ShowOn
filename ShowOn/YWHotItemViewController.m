@@ -152,7 +152,9 @@
             }
         }
         _template.templateComments = array;
-        [_tableView reloadData];
+        [_comments removeAllObjects];
+        [_comments addObjectsFromArray:_template.templateComments];
+        [self actionSegValueChange];
     } otherFailure:^(id responseObject) {
         
     } failure:^(NSError *error) {

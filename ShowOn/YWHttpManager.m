@@ -460,7 +460,7 @@ static YWHttpManager * manager;
 
 - (void)requestDeleteComment:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
     [self setDefaultHeaders];
-    [_httpManager GET:HOST_URL(Delete_Comment_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [_httpManager POST:HOST_URL(Delete_Comment_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{

@@ -481,6 +481,11 @@
                 "headPortrait": ""         //用户头像
                 "nickname": ""             //昵称
             }
+                    "commentsTargetUser": {
+                    "userId": ""               //用户Id
+                    "headPortrait": ""         //用户头像
+                    "nickname": ""             //昵称
+                    }
     }]
 }
 

@@ -35,10 +35,10 @@
                                 <exclude reference="tcw-dm-1fT"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="fCZ-5d-L0e"/>
                                 <exclude reference="G24-rt-USc"/>
                                 <exclude reference="SdX-2R-Nox"/>
                                 <exclude reference="yGh-vo-X5K"/>
-                                <exclude reference="fCZ-5d-L0e"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -46,10 +46,10 @@
                                 <include reference="tcw-dm-1fT"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="fCZ-5d-L0e"/>
                                 <include reference="G24-rt-USc"/>
                                 <include reference="SdX-2R-Nox"/>
                                 <include reference="yGh-vo-X5K"/>
-                                <include reference="fCZ-5d-L0e"/>
                             </mask>
                         </variation>
                     </view>

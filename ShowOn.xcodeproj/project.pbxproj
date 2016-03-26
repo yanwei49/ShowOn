@@ -1251,7 +1251,7 @@
 			children = (
 				568DBF641C55BE0E00CFD1BC /* search */,
 				56FE9A141C0FC18D007BA29B /* hot */,
-				56FE9A151C0FC197007BA29B /* templa */,
+				56FE9A151C0FC197007BA29B /* template */,
 			);
 			name = viewcontroller;
 			sourceTree = "<group>";
@@ -1404,7 +1404,7 @@
 			name = hot;
 			sourceTree = "<group>";
 		};
-		56FE9A151C0FC197007BA29B /* templa */ = {
+		56FE9A151C0FC197007BA29B /* template */ = {
 			isa = PBXGroup;
 			children = (
 				56FE9A171C0FC234007BA29B /* YWTemplateViewController.h */,
@@ -1412,7 +1412,7 @@
 				566BF5E91C4717CF002C5591 /* YWTemplateListViewController.h */,
 				566BF5EA1C4717CF002C5591 /* YWTemplateListViewController.m */,
 			);
-			name = templa;
+			name = template;
 			sourceTree = "<group>";
 		};
 		633C4F8F77FB0DA0579932AD /* Pods */ = {

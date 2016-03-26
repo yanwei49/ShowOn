@@ -616,39 +616,71 @@
 
 #pragma mark - YWMineTableHeadViewDelegate
 - (void)mineTableHeadView:(YWMineTableHeadView *)view didSelectButtonWithIndex:(NSInteger)index {
-    switch (index) {
-        case 0:
-        {
-            YWTrendsViewController *vc = [[YWTrendsViewController alloc] init];
-            vc.title = @"动态";
-            [self.navigationController pushViewController:vc animated:YES];
+    if (_isSelf) {
+        switch (index) {
+            case 0:
+            {
+                YWTrendsViewController *vc = [[YWTrendsViewController alloc] init];
+                vc.title = @"动态";
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
+            case 1:
+            {
+                YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
+                vc.relationType = 1;
+                vc.title = @"关注";
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
+            case 2:
+            {
+                YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
+                vc.relationType = 2;
+                vc.title = @"粉丝";
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
+            case 3:
+            {
+                YWCollectionViewController *vc = [[YWCollectionViewController alloc] init];
+                vc.title = @"收藏";
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
+            default:
+                break;
         }
-            break;
-        case 1:
-        {
-            YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
-            vc.relationType = 1;
-            vc.title = @"关注";
-            [self.navigationController pushViewController:vc animated:YES];
+    }else {
+        switch (index) {
+            case 0:
+            {
+                YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
+                vc.relationType = 1;
+                vc.title = @"关注";
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
+            case 1:
+            {
+                YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
+                vc.relationType = 2;
+                vc.title = @"粉丝";
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
+            case 2:
+            {
+                YWTrendsViewController *vc = [[YWTrendsViewController alloc] init];
+                vc.title = @"动态";
+                vc.isFriendTrendsList = YES;
+                vc.user = _user;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
+            default:
+                break;
         }
-            break;
-        case 2:
-        {
-            YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
-            vc.relationType = 2;
-            vc.title = @"粉丝";
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-            break;
-        case 3:
-        {
-            YWCollectionViewController *vc = [[YWCollectionViewController alloc] init];
-            vc.title = @"收藏";
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-            break;
-        default:
-            break;
     }
 }
 

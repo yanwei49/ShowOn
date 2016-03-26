@@ -136,17 +136,17 @@
     _replyLabel.text = comment.commentContent;
     _timeLabel.text = comment.commentTime;
     _contentLabel.text = comment.beCommentContent;
-    if (comment.commentType == 1) {
-        NSMutableString *name = [NSMutableString stringWithString:comment.commentTrends.trendsUser.userName?:@""];
-        for (YWUserModel *user in comment.commentTrends.trendsMovieCooperateUsers) {
-            [name appendFormat:@"+"];
-            [name appendFormat:@"%@", user.userName];
-        }
-        _userNameLabel.text = name;
-    }else {
-        _userNameLabel.text = comment.beCommentUser.userName;
-    }
-
+//    if (comment.commentType == 1) {
+//        NSMutableString *name = [NSMutableString stringWithString:comment.commentTrends.trendsUser.userName?:@""];
+//        for (YWUserModel *user in comment.commentTrends.trendsMovieCooperateUsers) {
+//            [name appendFormat:@"+"];
+//            [name appendFormat:@"%@", user.userName];
+//        }
+//        _userNameLabel.text = name;
+//    }else {
+//        _userNameLabel.text = comment.beCommentUser.userName;
+//    }
+    _userNameLabel.text = comment.commentUser.userName;
 }
 
 + (CGFloat)cellHeightForMode:(YWCommentModel *)model {
