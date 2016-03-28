@@ -393,7 +393,7 @@
         default:
             break;
     }
-    NSDictionary *parameters = @{@"state": @(state), @"userId": [[YWDataBaseManager shareInstance] loginUser].userId};
+    NSDictionary *parameters = @{@"blackState": @(state), @"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"friendId": _user.userId};
     [_httpManager requestChangeRelationType:parameters success:^(id responseObject) {
         _user.userRelationType = state;
         _headView.user = _user;

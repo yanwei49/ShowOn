@@ -202,6 +202,8 @@
     _empiricalLabel.text = [NSString stringWithFormat:@"经验值 %@", user.userEmpirical?:@"0"];
     _authenticationLabel.text = user.userAuthentication;
     _infosLabel.text = user.userInfos;
+    NSArray *array = @[@"+ 关注", @"取消关注", @"相互关注", @"取消黑名单", @"取消关注"];
+    [_addFocusButton setTitle:array[user.userRelationType] forState:UIControlStateNormal];
     NSArray *titles = _isSelf?@[@"动态", @"关注", @"粉丝", @"收藏"]:@[@"关注", @"粉丝", @"作品"];
     for (NSInteger i=0; i<titles.count; i++) {
         UIButton *button = _buttonArrays[i];

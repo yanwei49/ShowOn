@@ -11,6 +11,7 @@
 #import "YWUserModel.h"
 #import "YWTrendsModel.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "YWMovieModel.h"
 
 @implementation YWCommentTableViewCell
 {
@@ -147,6 +148,7 @@
 //        _userNameLabel.text = comment.beCommentUser.userName;
 //    }
     _userNameLabel.text = comment.commentUser.userName;
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:comment.commentTrends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
 }
 
 + (CGFloat)cellHeightForMode:(YWCommentModel *)model {

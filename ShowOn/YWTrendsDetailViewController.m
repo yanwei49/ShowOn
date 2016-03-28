@@ -311,7 +311,7 @@
     switch (indexPath.row) {
         case 0:
             if (_trends.trendsType.integerValue == 3) {
-                return [YWRepeatDetailTableViewCell cellHeightWithTrends:_trends type:kRepeatTrendsListType];
+                return [YWRepeatDetailTableViewCell cellHeightWithTrends:_trends type:kRepeatTrendsDetailType];
             }else {
                 return [YWFocusTableViewCell cellHeightWithTrends:_trends type:kTrendsDetailType];
             }

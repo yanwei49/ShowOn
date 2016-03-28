@@ -73,6 +73,7 @@
         [self createHotView];
         _isPushHotItem = NO;
     }
+    _loginUser = [[YWDataBaseManager shareInstance] loginUser];
     _headView.user = _loginUser?:[[YWUserModel alloc] init];
     YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     tabBar.hiddenState = NO;

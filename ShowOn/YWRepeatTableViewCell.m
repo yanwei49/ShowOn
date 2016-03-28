@@ -194,7 +194,7 @@
         _contentLabel.font = [UIFont systemFontOfSize:14];
         [self.contentView addSubview:_contentLabel];
         [_contentLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_playMovieView.mas_bottom).offset(5);
+            make.top.equalTo(_imageView.mas_bottom).offset(5);
             make.left.offset(10);
             make.right.offset(-10);
         }];
