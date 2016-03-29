@@ -79,7 +79,7 @@
     NSArray *classNames = @[@"YWHomeViewController", @"YWMovieViewController", @"YWMineViewController"];
     NSArray *titles = @[@"", @"", @""];
     NSArray *imageNames = @[@"article_normal.png", @"shoot_normal.png", @"mine_normal.png"];
-    NSArray *selectImageNames = @[@"more_selected.png", @"shoot_selected.png", @"more_selected.png"];
+    NSArray *selectImageNames = @[@"article_selected.png", @"shoot_selected.png", @"mine_selected.png"];
     _tabBar.titles = titles;
     _tabBar.imageNames = imageNames;
     _tabBar.selectImageNames = selectImageNames;

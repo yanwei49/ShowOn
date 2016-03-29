@@ -188,7 +188,7 @@
         commentsTargetId = _trends.trendsId;
         dependType = @"1";
     }else if (_type == 4) {
-        commentsTargetId = _comment.commentId;
+        dependId = _template.templateId;
         commentsTypeId = @"3";
         commentsTargetId = _template.templateId;
         dependType = @"2";

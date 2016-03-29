@@ -67,7 +67,7 @@
             }
         }
     }
-    if (!_template.templateSubsectionVideos.count) {
+    if (_template.templateSubsectionVideos.count == 1 && ![_template.templateSubsectionVideos.firstObject subsectionVideoType]) {
         YWSubsectionVideoModel *sub = [[YWSubsectionVideoModel alloc] init];
         sub.subsectionVideoUrl = _template.templateVideoUrl;
         sub.subsectionVideoType = @"3";
