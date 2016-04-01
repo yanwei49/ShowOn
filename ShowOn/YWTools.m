@@ -30,7 +30,8 @@
     CMTime actualTime;
     CGImageRef cgImage= [imageGenerator copyCGImageAtTime:time actualTime:&actualTime error:&error];
     if(error){
-        NSLog(@"截取视频缩略图时发生错误，错误信息：%@",error.localizedDescription);
+        DebugLog(@"%@==",url);
+        DebugLog(@"截取视频缩略图时发生错误，错误信息：%@",error.localizedDescription);
         return nil;
     }
     CMTimeShow(actualTime);

@@ -116,7 +116,7 @@
     if (comment.beCommentUser.userId) {
         NSString *string = [NSString stringWithFormat:@"回复%@：%@", comment.beCommentUser.userName, comment.commentContent];
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:string];
-        [str addAttributes:@{NSForegroundColorAttributeName: [UIColor blueColor]} range:NSMakeRange(1, comment.beCommentUser.userName.length)];
+        [str addAttributes:@{NSForegroundColorAttributeName: [UIColor blueColor]} range:NSMakeRange(2, comment.beCommentUser.userName.length)];
         _contentLabel.attributedText = str;
     }else {
         _contentLabel.text = comment.commentContent;

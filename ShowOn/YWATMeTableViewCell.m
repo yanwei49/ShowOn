@@ -11,6 +11,9 @@
 #import "YWTrendsModel.h"
 #import "YWCommentModel.h"
 #import "YWUserModel.h"
+#import "YWMovieModel.h"
+#import "YWMovieTemplateModel.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @implementation YWATMeTableViewCell
 {
@@ -117,7 +120,7 @@
 
 - (void)setAiTe:(YWAiTeModel *)aiTe {
     _aiTe = aiTe;
-    if (aiTe.aiTeType.integerValue) {
+    if (aiTe.aiTeType.integerValue == 1) {
         NSMutableString *name = [NSMutableString stringWithString:aiTe.trends.trendsUser.userName];
         for (YWUserModel *user in aiTe.trends.trendsMovieCooperateUsers) {
             [name appendFormat:@"+"];
@@ -126,10 +129,16 @@
         _userNameLabel.text = name;
         _contentLabel.text = aiTe.trends.trendsContent;
         _timeLabel.text = aiTe.trends.trendsPubdate;
+        [_imageView sd_setImageWithURL:[NSURL URLWithString:aiTe.trends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
     }else {
         _userNameLabel.text = aiTe.comment.commentUser.userName;
         _contentLabel.text = aiTe.comment.commentContent;
         _timeLabel.text = aiTe.comment.commentTime;
+        if (aiTe.comment.commentTrends.trendsId.length) {
+            [_imageView sd_setImageWithURL:[NSURL URLWithString:aiTe.comment.commentTrends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
+        }else {
+            [_imageView sd_setImageWithURL:[NSURL URLWithString:aiTe.comment.commentTemplate.templateVideoCoverImage] placeholderImage:kPlaceholderMoiveImage];
+        }
     }
 }
 

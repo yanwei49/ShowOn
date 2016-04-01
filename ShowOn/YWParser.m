@@ -108,7 +108,7 @@
     trends.trendsIsCollect = [dict objectForKey:@"dynamicIsCollect"];
     trends.trendsComments = [self commentsWithArray:[dict objectForKey:@"commentList"]];
     trends.trendsMovieCooperateUsers = [self userWithArray:[dict objectForKey:@"trendsMovieCooperateUsers"]];
-//    trends.trendsSubsectionVideos = [self subsectionVideoWithArray:[dict objectForKey:@"trendsSubsectionVideos"]];
+    trends.trendsSubsectionVideos = [self subsectionVideoWithArray:[dict objectForKey:@"trendsSubsectionVideos"]];
     trends.trendsOtherPlayUsers = [self userWithArray:[dict objectForKey:@"trendsOtherPlayUsers"]];
     trends.trendsMovie = [self movieWithDict:[dict objectForKey:@"dynamicVideo"]];
     trends.trendsContent = [dict objectForKey:@"dynamicContent"];
@@ -151,7 +151,7 @@
     aite.aiTeType = [dict objectForKey:@"teletextId"];
     aite.trends = [self trendsWithDict:[dict objectForKey:@"trends"]];
     aite.comment = [self commentWithDict:[dict objectForKey:@"comment"]];
-    
+
     return aite;
 }
 

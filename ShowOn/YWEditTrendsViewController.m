@@ -276,8 +276,10 @@
             if (model.subsectionVideoSort.integerValue == i+1) {
                 if (model.recorderVideoUrl) {
                     url = model.recorderVideoUrl;
-                }else {
+                }else if(model.subsectionVideoUrl.length) {
                     url = [NSURL URLWithString:model.subsectionVideoUrl];
+                }else if (model.subsectionRecorderVideoUrl.length) {
+                    url = [NSURL URLWithString:model.subsectionRecorderVideoUrl];
                 }
                 break;
             }

@@ -130,14 +130,18 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 
 - (void)actionPlay {
-    _playButton.hidden = YES;
-    _timeLabel = [[UILabel alloc] initWithFrame:_playButton.frame];
-    _timeLabel.textColor = [UIColor whiteColor];
-    _timeLabel.textAlignment = NSTextAlignmentCenter;
-    _timeLabel.text = @"3";
-    _timeLabel.font = [UIFont boldSystemFontOfSize:50];
-    [self addSubview:_timeLabel];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(delayMethod) userInfo:nil repeats:YES];
+    if (_model.subsectionRecorderVideoUrl.length) {
+        NSLog(@"已经录制完了");
+    }else {
+        _playButton.hidden = YES;
+        _timeLabel = [[UILabel alloc] initWithFrame:_playButton.frame];
+        _timeLabel.textColor = [UIColor whiteColor];
+        _timeLabel.textAlignment = NSTextAlignmentCenter;
+        _timeLabel.text = @"3";
+        _timeLabel.font = [UIFont boldSystemFontOfSize:50];
+        [self addSubview:_timeLabel];
+        _timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(delayMethod) userInfo:nil repeats:YES];
+    }
 }
 
 - (void)startRecorder {

@@ -11,6 +11,8 @@
 #import "YWHttpManager.h"
 #import "YWParser.h"
 #import "YWUserTableViewCell.h"
+#import "YWDataBaseManager.h"
+#import "YWUserModel.h"
 
 @interface YWUserListViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -52,6 +54,7 @@
     }
     if ([_delegate respondsToSelector:@selector(userListViewControllerDidSelectUsers:)]) {
         [_delegate userListViewControllerDidSelectUsers:users];
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -77,7 +80,7 @@
 
 #pragma mark - request
 - (void)requestUserList {
-    NSDictionary *parameters = @{@"relationTypeId": @(1), @"userId": @"", @"page": @(_currentPage)};
+    NSDictionary *parameters = @{@"relationTypeId": @(1), @"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"page": @(_currentPage)};
     [_httpManager requestUserList:parameters success:^(id responseObject) {
         if (!_currentPage) {
             [_dataSource removeAllObjects];

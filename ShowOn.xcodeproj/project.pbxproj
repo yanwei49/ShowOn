@@ -205,8 +205,6 @@
 		56F5D38A1C17D44F008C33CA /* YWToolboxPlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F5D3891C17D44F008C33CA /* YWToolboxPlay.m */; };
 		56F5D38E1C17DCD2008C33CA /* videoRing.caf in Resources */ = {isa = PBXBuildFile; fileRef = 56F5D38D1C17DCD2008C33CA /* videoRing.caf */; };
 		56F5D3981C17E1BE008C33CA /* 斑马斑马.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 56F5D3941C17E1BE008C33CA /* 斑马斑马.mp3 */; };
-		56F5D3991C17E1BE008C33CA /* 突然想起你.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 56F5D3951C17E1BE008C33CA /* 突然想起你.mp3 */; };
-		56F5D39A1C17E1BE008C33CA /* video1.mov in Resources */ = {isa = PBXBuildFile; fileRef = 56F5D3961C17E1BE008C33CA /* video1.mov */; };
 		56F5D39B1C17E1BE008C33CA /* video2.mov in Resources */ = {isa = PBXBuildFile; fileRef = 56F5D3971C17E1BE008C33CA /* video2.mov */; };
 		56FC719E1C75A30B006D1BDD /* YWTemplateTrendsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FC719D1C75A30B006D1BDD /* YWTemplateTrendsTableViewCell.m */; };
 		56FE99CB1C0FBAB8007BA29B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE99CA1C0FBAB8007BA29B /* main.m */; };
@@ -556,8 +554,6 @@
 		56F5D3891C17D44F008C33CA /* YWToolboxPlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWToolboxPlay.m; sourceTree = "<group>"; };
 		56F5D38D1C17DCD2008C33CA /* videoRing.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = videoRing.caf; sourceTree = "<group>"; };
 		56F5D3941C17E1BE008C33CA /* 斑马斑马.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "斑马斑马.mp3"; sourceTree = "<group>"; };
-		56F5D3951C17E1BE008C33CA /* 突然想起你.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "突然想起你.mp3"; sourceTree = "<group>"; };
-		56F5D3961C17E1BE008C33CA /* video1.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video1.mov; sourceTree = "<group>"; };
 		56F5D3971C17E1BE008C33CA /* video2.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video2.mov; sourceTree = "<group>"; };
 		56FC719C1C75A30B006D1BDD /* YWTemplateTrendsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTemplateTrendsTableViewCell.h; sourceTree = "<group>"; };
 		56FC719D1C75A30B006D1BDD /* YWTemplateTrendsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTemplateTrendsTableViewCell.m; sourceTree = "<group>"; wrapsLines = 0; };
@@ -1190,8 +1186,6 @@
 				56FE99FE1C0FBAF7007BA29B /* mine */,
 				56FE99D51C0FBAB8007BA29B /* Assets.xcassets */,
 				56F5D3941C17E1BE008C33CA /* 斑马斑马.mp3 */,
-				56F5D3951C17E1BE008C33CA /* 突然想起你.mp3 */,
-				56F5D3961C17E1BE008C33CA /* video1.mov */,
 				56F5D3971C17E1BE008C33CA /* video2.mov */,
 				56FE99D71C0FBAB8007BA29B /* LaunchScreen.storyboard */,
 				56FE99DA1C0FBAB8007BA29B /* Info.plist */,
@@ -1856,7 +1850,6 @@
 				77BFCC231C7862DF001D49BA /* choose_selected_small@2x.png in Resources */,
 				56F5D3641C17AED0008C33CA /* UMSCommentDetailController.xib in Resources */,
 				771FEACA1C77F87A009F71FB /* red_point_button.png in Resources */,
-				56F5D39A1C17E1BE008C33CA /* video1.mov in Resources */,
 				568DC0841C5619DB00CFD1BC /* collect_normal@3x.png in Resources */,
 				567A27B71CA4BD93003ADAC9 /* juer@2x.png in Resources */,
 				568DC0861C5619DB00CFD1BC /* collect_selected@2x.png in Resources */,
@@ -1924,7 +1917,6 @@
 				568DC07F1C5619DB00CFD1BC /* choose_selected.png in Resources */,
 				568DC0CD1C5619DB00CFD1BC /* wechat@3x.png in Resources */,
 				56F5D38E1C17DCD2008C33CA /* videoRing.caf in Resources */,
-				56F5D3991C17E1BE008C33CA /* 突然想起你.mp3 in Resources */,
 				568DC0D01C5619DB00CFD1BC /* weibo@3x.png in Resources */,
 				568DC0A31C5619DB00CFD1BC /* qq_space@3x.png in Resources */,
 				56F5D3691C17AED0008C33CA /* UMSLoginViewController.xib in Resources */,

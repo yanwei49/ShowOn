@@ -64,7 +64,7 @@
 - (void)getUserInfoWithUserId:(NSString *)userId completion:(void (^)(RCUserInfo *))completion{
     if ([userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userAccount]) {
         RCUserInfo *user = [[RCUserInfo alloc]init];
-        user.userId = [[YWDataBaseManager shareInstance] loginUser].userAccount;
+        user.userId = [[YWDataBaseManager shareInstance] loginUser].userId;
         user.name = [[YWDataBaseManager shareInstance] loginUser].userName;
         user.portraitUri = [[YWDataBaseManager shareInstance] loginUser].portraitUri;
         

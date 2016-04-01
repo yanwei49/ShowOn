@@ -14,6 +14,10 @@
 #import "YWTrendsDetailViewController.h"
 #import "YWDataBaseManager.h"
 #import "MJRefresh.h"
+#import "YWTrendsModel.h"
+#import "YWCommentModel.h"
+#import "YWAiTeModel.h"
+#import "YWHotItemViewController.h"
 
 @interface YWATMeViewController()<UITableViewDataSource, UITableViewDelegate, YWATMeTableViewCellDelegate>
 
@@ -110,9 +114,24 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    YWTrendsDetailViewController *hotVC = [[YWTrendsDetailViewController alloc] init];
-    hotVC.trends = [_dataSource[indexPath.row] trends];
-    [self.navigationController pushViewController:hotVC animated:YES];
+    if ([[_dataSource[indexPath.row] aiTeType] integerValue] == 1) {
+        YWTrendsDetailViewController *hotVC = [[YWTrendsDetailViewController alloc] init];
+        hotVC.trends = [_dataSource[indexPath.row] trends];
+        [self.navigationController pushViewController:hotVC animated:YES];
+    }else {
+        YWAiTeModel *at = _dataSource[indexPath.row];
+        YWCommentModel *comment = at.comment;
+        if (comment.commentTrends.trendsId.length) {
+            YWTrendsDetailViewController *hotVC = [[YWTrendsDetailViewController alloc] init];
+            hotVC.trends = comment.commentTrends;
+            [self.navigationController pushViewController:hotVC animated:YES];
+        }else {
+            YWHotItemViewController *hotVC = [[YWHotItemViewController alloc] init];
+            hotVC.template = comment.commentTemplate;
+            hotVC.segSelectIndex = 1;
+            [self.navigationController pushViewController:hotVC animated:YES];
+        }
+    }
 }
 
 #pragma mark - YWATMeTableViewCellDelegate

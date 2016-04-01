@@ -10,12 +10,10 @@
 
 @class YWTrendsModel;
 @class YWCommentModel;
-@class YWMovieTemplateModel;
 @interface YWSupportModel : NSObject
 
 @property (nonatomic, strong) NSString *supportType;
 @property (nonatomic, strong) YWTrendsModel *trends;
 @property (nonatomic, strong) YWCommentModel *comments;
-@property (nonatomic, strong) YWMovieTemplateModel *template;
 
 @end
