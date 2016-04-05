@@ -92,6 +92,9 @@
     subsectionVideo.subsectionVideoTemplateId = [dict objectForKey:@"templateId"];
     subsectionVideo.subsectionVideoTime = [dict objectForKey:@"timeLength"];
     subsectionVideo.subsectionRecorderVideoUrl = [dict objectForKey:@"subsectionVideoUrl"];
+    if (subsectionVideo.subsectionRecorderVideoUrl.length) {
+        subsectionVideo.subsectionVideoPerformanceStatus = @"1";
+    }
     
     return subsectionVideo;
 }
