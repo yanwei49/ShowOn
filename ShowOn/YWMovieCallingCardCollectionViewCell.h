@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class YWMovieCallingCardCollectionViewCell;
+@class YWTrendsModel;
 @protocol YWMovieCallingCardCollectionViewCellDelegate <NSObject>
 
 - (void)movieCallingCardCollectionViewCellStateButtonWithSelected:(YWMovieCallingCardCollectionViewCell *)cell;
@@ -18,5 +19,7 @@
 @interface YWMovieCallingCardCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, assign) id<YWMovieCallingCardCollectionViewCellDelegate> delegate;
+@property (nonatomic, strong) YWTrendsModel *model;
+@property (nonatomic, assign) BOOL state;
 
 @end

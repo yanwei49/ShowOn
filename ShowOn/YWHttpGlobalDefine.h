@@ -10,8 +10,8 @@
 #define GoFarmApp_TLHttpGlobalDefine_h
 
 
-//#define kHostURL               @"http://120.25.146.161/"
-#define kHostURL               @"http://192.168.1.111:8080/"
+#define kHostURL               @"http://120.25.146.161/"
+//#define kHostURL               @"http://192.168.1.129:8080/"
 #define HOST_URL(methodName)   [NSString stringWithFormat:@"%@%@",kHostURL,methodName]
 
 #define BUNDLE_VERSION                        [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey]
@@ -41,7 +41,7 @@
 #define Report_Method                         @"juer/user/inform?json"                      //举报
 #define Feedback_Method                       @"juer/dynamic/feedBack?json"                 //用户反馈
 #define Repeat_Method                         @"juer/dynamic/forwardDynamic?json"           //转发
-#define Share_Method                          @""          //分享
+#define Share_Method                          @"juer/dynamic/dynamicShare?json"             //动态分享
 #define Collect_Method                        @"juer/dynamic/collection?json"               //收藏
 #define Commit_Comment_Method                 @"juer/dynamic/comments?json"                 //发表评论
 #define Save_Trends_Method                    @"juer/dynamic/draftOrDynamicVideo?json"      //发布动态、保存到草稿箱
@@ -52,6 +52,10 @@
 #define Template_Sub_Category_List_Method     @"juer/dynamic/subTemplateList?json"          //获取模板某个子分类下的模板列表
 #define Template_User_List_Method             @""             //获取模板表演用户列表
 #define Delete_Comment_Method                 @"juer/dynamic/deleteComment?json"            //删除评论
+#define Movie_List_Method                     @"juer/dynamic/videoList?json"                //获取可制作为名片的视频列表
+#define Commit_Movie_Method                   @"juer/dynamic/videoCard?json"                //提交视频名片
+#define Share_Movie_Method                    @"juer/dynamic/cardShare?json"                //视频名片分享
+#define User_Protocol_Method                  @"juer/dynamic/protocol?json"                 //用户协议
 
 
 #endif

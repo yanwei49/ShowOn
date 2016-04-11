@@ -14,6 +14,7 @@
 #import "YWDataBaseManager.h"
 #import "YWFriendListManager.h"
 #import <RongIMKit/RongIMKit.h>
+#import "YWUserProtocolViewController.h"
 
 @interface YWRegisterViewController ()<UITextFieldDelegate>
 
@@ -40,6 +41,11 @@
     
     [self createBackButton];
     [self createSubViews];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
 }
 
 -(void)dealloc {
@@ -173,7 +179,7 @@
     _registerButton = [[UIButton alloc] init];
     _registerButton.layer.cornerRadius = 5;
     _registerButton.layer.masksToBounds = YES;
-    [_registerButton setTitle:@"注册" forState:UIControlStateNormal];
+    [_registerButton setTitle:@"同意并注册" forState:UIControlStateNormal];
     _registerButton.backgroundColor = RGBColor(255, 192, 1);
     _registerButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [_registerButton addTarget:self action:@selector(actionRegister:) forControlEvents:UIControlEventTouchUpInside];
@@ -184,11 +190,36 @@
         make.top.equalTo(_verificationTextField.mas_bottom).offset(60);
         make.width.offset(kScreenWidth-80);
     }];
+    
+    UIButton *button = [[UIButton alloc] init];
+    [button setTitle:@" 用户协议 " forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(actionUserProtocol) forControlEvents:UIControlEventTouchUpInside];
+    button.titleLabel.font = [UIFont systemFontOfSize:14];
+    [self.view addSubview:button];
+    [button makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_registerButton.mas_bottom).offset(10);
+        make.right.equalTo(_registerButton.mas_right);
+        make.height.offset(20);
+    }];
+    
+    UIView *view = [[UIView alloc] init];
+    view.backgroundColor = [UIColor whiteColor];
+    [button addSubview:view];
+    [view makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.offset(-2);
+        make.height.offset(1);
+        make.left.right.offset(0);
+    }];
 }
 
 #pragma mark - action
 - (void)actionBack:(UIButton *)button {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)actionUserProtocol {
+    YWUserProtocolViewController *vc = [[YWUserProtocolViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)actionSendVerification:(UIButton *)button {

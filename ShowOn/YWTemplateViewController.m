@@ -56,8 +56,7 @@
     _collectionView.dataSource = self;
     [self.view addSubview:_collectionView];
     [_collectionView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.right.offset(0);
-        make.top.offset(64);
+        make.top.left.bottom.right.offset(0);
     }];
     _collectionView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _currentPage = 0;

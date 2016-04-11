@@ -12,7 +12,7 @@
 @class YWCommentModel;
 @interface YWAiTeModel : NSObject
 
-@property (nonatomic, strong) NSString *aiTeType;
+@property (nonatomic, strong) NSString *aiTeType;   //1.动态 2.评论
 @property (nonatomic, strong) YWTrendsModel *trends;
 @property (nonatomic, strong) YWCommentModel *comment;
 

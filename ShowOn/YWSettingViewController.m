@@ -13,6 +13,7 @@
 #import "YWPrivacyViewController.h"
 #import <SDImageCache.h>
 #import "YWDataBaseManager.h"
+#import "NSObject+Cache.h"
 
 @interface YWSettingViewController()<UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
 
@@ -28,7 +29,7 @@
     [super viewDidLoad];
     self.title = @"设置";
     self.view.backgroundColor = Subject_color;
-    _dataSource = [[NSMutableArray alloc] initWithArray:@[@"隐私", @"黑名单", @"清楚缓存", @"建议反馈", @"关于角儿（用户使用协议）"]];
+    _dataSource = [[NSMutableArray alloc] initWithArray:@[@"黑名单", @"清楚缓存", @"建议反馈", @"关于角儿（用户使用协议）"]];
     
     [self createSubViews];
 }
@@ -69,34 +70,16 @@
 
 #pragma mark - pravite
 - (NSString *)obtainCache {
-    return [NSString stringWithFormat:@"%.1f", [self cacheSize]];
-}
-
--(CGFloat) cacheSize {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *cachesDir = [paths objectAtIndex:0];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *files = [fileManager subpathsAtPath:cachesDir];
-    __block int theFileSize = 0;
-    [files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSString* file = obj;
-        theFileSize += [[[fileManager attributesOfItemAtPath:[NSString stringWithFormat:@"%@/%@", cachesDir, file] error:nil] objectForKey:NSFileSize] intValue];
-    }];
-    theFileSize += [[SDImageCache sharedImageCache] getSize];
-    
-    return theFileSize / 1024.0 / 1024.0;
+    return [NSString stringWithFormat:@"%.2f", [NSObject obtainCacheSize]];
 }
 
 - (void) cleanCache {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *cachesDir = [paths objectAtIndex:0];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *files = [fileManager subpathsAtPath:cachesDir];
-    [files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSString* file = obj;
-        [fileManager removeItemAtPath:[NSString stringWithFormat:@"%@/%@", cachesDir, file] error:nil];
+    [NSObject clearCache:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD showSuccessWithStatus:@"清除缓存成功"];
+            [_tableView reloadData];
+        });
     }];
-    [[SDImageCache sharedImageCache] cleanDisk];
 }
 
 - (void)showCleanCache {
@@ -122,7 +105,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    if (indexPath.row == 2) {
+    if (indexPath.row == 1) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 20)];
         view.backgroundColor = Subject_color;
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, 60, 20)];
@@ -153,10 +136,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if (indexPath.row != 2) {
-        NSArray *className = @[@"YWPrivacyViewController", @"YWFollowingViewController", @"", @"YWSuggestionViewController", @"YWUserProtocolViewController"];
+    if (indexPath.row != 1) {
+        NSArray *className = @[@"YWFollowingViewController", @"", @"YWSuggestionViewController", @"YWUserProtocolViewController"];
         UIViewController *vc = [[NSClassFromString(className[indexPath.row]) alloc] init];
-        if (indexPath.row == 1) {
+        if (indexPath.row == 0) {
             YWFollowingViewController *c = (YWFollowingViewController *)vc;
             c.title = @"黑名单";
             c.relationType = 3;

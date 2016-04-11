@@ -7,6 +7,10 @@
 //
 
 #import "YWMovieCallingCardCollectionViewCell.h"
+#import "YWMovieTemplateModel.h"
+#import "YWMovieModel.h"
+#import "YWTrendsModel.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @implementation YWMovieCallingCardCollectionViewCell
 {
@@ -32,7 +36,8 @@
         _stateButton = [[UIButton alloc] init];
         [_stateButton setImage:[UIImage imageNamed:@"choose_normal_small.png"] forState:UIControlStateNormal];
         [_stateButton setImage:[UIImage imageNamed:@"choose_selected_small.png"] forState:UIControlStateSelected];
-        [_stateButton addTarget:self action:@selector(actionOnClick:) forControlEvents:UIControlEventTouchUpInside];
+        _stateButton.userInteractionEnabled = NO;
+//        [_stateButton addTarget:self action:@selector(actionOnClick:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_stateButton];
         [_stateButton makeConstraints:^(MASConstraintMaker *make) {
             make.top.left.offset(20);
@@ -65,11 +70,23 @@
     return self;
 }
 
-- (void)actionOnClick:(UIButton *)button {
-    button.selected = !button.selected;
-    if (button.selected && [_delegate respondsToSelector:@selector(movieCallingCardCollectionViewCellStateButtonWithSelected:)]) {
-        [_delegate movieCallingCardCollectionViewCellStateButtonWithSelected:self];
-    }
+//- (void)actionOnClick:(UIButton *)button {
+//    button.selected = !button.selected;
+//    if (button.selected && [_delegate respondsToSelector:@selector(movieCallingCardCollectionViewCellStateButtonWithSelected:)]) {
+//        [_delegate movieCallingCardCollectionViewCellStateButtonWithSelected:self];
+//    }
+//}
+
+- (void)setModel:(YWTrendsModel *)model {
+    _model = model;
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:model.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
+    _timeLabel.text = model.trendsPubdate;
+    _nameLabel.text = model.trendsMovie.movieTemplate.templateName;
+}
+
+- (void)setState:(BOOL)state {
+    _state = state;
+    _stateButton.selected = state;
 }
 
 @end

@@ -10,4 +10,6 @@
 
 @interface YWExperienceViewController : YWBaseViewController
 
+@property (nonatomic, strong) NSString *experience;
+
 @end

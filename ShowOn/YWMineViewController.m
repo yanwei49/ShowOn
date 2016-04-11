@@ -246,6 +246,9 @@
         if (indexPath.row == 4) {
             YWTrendsViewController *v = (YWTrendsViewController *)vc;
             v.isFriendTrendsList = YES;
+        }else if (indexPath.row == 5) {
+            YWExperienceViewController *v = (YWExperienceViewController *)vc;
+            v.experience = _loginUser.userEmpirical;
         }
         [self.navigationController pushViewController:vc animated:YES];
     }else {

@@ -7,6 +7,7 @@
 //
 
 #import "YWUserProtocolViewController.h"
+#import "YWHttpGlobalDefine.h"
 
 @interface YWUserProtocolViewController ()
 
@@ -19,18 +20,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = Subject_color;
+    self.navigationController.navigationBarHidden = NO;
     self.title = @"用户协议";
     
     _webView = [[UIWebView alloc] init];
     _webView.backgroundColor = Subject_color;
     [self.view addSubview:_webView];
     [_webView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(64);
-        make.left.right.bottom.offset(0);
+        make.top.left.right.bottom.offset(0);
     }];
-    NSString* path = [[NSBundle mainBundle] pathForResource:@"protocol" ofType:@"html"];
-    NSURL* url = [NSURL fileURLWithPath:path?:@""];
-    NSURLRequest* request = [NSURLRequest requestWithURL:url] ;
+    NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:HOST_URL(User_Protocol_Method)]] ;
     [_webView loadRequest:request];
 }
 

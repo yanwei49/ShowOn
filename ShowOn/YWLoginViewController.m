@@ -257,7 +257,7 @@
     UMSocialSnsPlatform *snsPlatform = [UMSocialSnsPlatformManager getSocialPlatformWithName:UMShareToWechatSession];
     snsPlatform.loginClickHandler(self,[UMSocialControllerService defaultControllerService],YES,^(UMSocialResponseEntity *response){
         if (response.responseCode == UMSResponseCodeSuccess) {
-            UMSocialAccountEntity *snsAccount = [[UMSocialAccountManager socialAccountDictionary]valueForKey:UMShareToWechatSession];
+            UMSocialAccountEntity *snsAccount = [[UMSocialAccountManager socialAccountDictionary] valueForKey:UMShareToWechatSession];
             //            NSLog(@"username is %@, uid is %@, token is %@ url is %@",snsAccount.userName,snsAccount.usid,snsAccount.accessToken,snsAccount.iconURL);
             _othersUser.userName = snsAccount.userName;
             _othersUser.portraitUri = snsAccount.iconURL;
@@ -272,21 +272,35 @@
 
 - (void)weiboLogin
 {
+//    UMSocialSnsPlatform *snsPlatform = [UMSocialSnsPlatformManager getSocialPlatformWithName:UMShareToSina];
+//    snsPlatform.loginClickHandler(self,[UMSocialControllerService defaultControllerService],YES,^(UMSocialResponseEntity *response){
+//        [[UMSocialDataService defaultDataService] requestSocialAccountWithCompletion:^(UMSocialResponseEntity *accountResponse){
+//            NSDictionary *_socialDict = [accountResponse.data objectForKey:@"accounts"];
+//            _othersUser.userId = [[_socialDict objectForKey:@"sina"] objectForKey:@"usid"];
+//            if (_othersUser.userId) {
+//                _othersUser.userSex = [[_socialDict objectForKey:@"sina"] objectForKey:@"gender"];
+//                _othersUser.userId = [[_socialDict objectForKey:@"sina"] objectForKey:@"usid"];
+//                _othersUser.userName = [[_socialDict objectForKey:@"sina"] objectForKey:@"username"];
+//                _othersUser.portraitUri = [[_socialDict objectForKey:@"sina"] objectForKey:@"icon"];
+//                [[NSUserDefaults standardUserDefaults] setObject:[[_socialDict objectForKey:@"sina"] objectForKey:@"accessToken"] forKey:@"accessToken"];
+//                _loginType = 4;
+//                [self requestRegister];
+//            }
+//        }];
+//    });
     UMSocialSnsPlatform *snsPlatform = [UMSocialSnsPlatformManager getSocialPlatformWithName:UMShareToSina];
     snsPlatform.loginClickHandler(self,[UMSocialControllerService defaultControllerService],YES,^(UMSocialResponseEntity *response){
-        [[UMSocialDataService defaultDataService] requestSocialAccountWithCompletion:^(UMSocialResponseEntity *accountResponse){
-            NSDictionary *_socialDict = [accountResponse.data objectForKey:@"accounts"];
-            _othersUser.userId = [[_socialDict objectForKey:@"sina"] objectForKey:@"usid"];
-            if (_othersUser.userId) {
-                _othersUser.userSex = [[_socialDict objectForKey:@"sina"] objectForKey:@"gender"];
-                _othersUser.userId = [[_socialDict objectForKey:@"sina"] objectForKey:@"usid"];
-                _othersUser.userName = [[_socialDict objectForKey:@"sina"] objectForKey:@"username"];
-                _othersUser.portraitUri = [[_socialDict objectForKey:@"sina"] objectForKey:@"icon"];
-                
-                _loginType = 4;
-                [self requestRegister];
-            }
-        }];
+        if (response.responseCode == UMSResponseCodeSuccess) {
+            UMSocialAccountEntity *snsAccount = [[UMSocialAccountManager socialAccountDictionary] valueForKey:UMShareToSina];
+            _othersUser.userId = snsAccount.usid;
+//            _othersUser.userSex = snsAccount.gender;
+            _othersUser.userName = snsAccount.userName;
+            _othersUser.portraitUri = snsAccount.iconURL;
+            [[NSUserDefaults standardUserDefaults] setObject:snsAccount.accessToken forKey:@"accessToken"];
+            _loginType = 4;
+            
+            [self requestRegister];
+        }
     });
 }
 

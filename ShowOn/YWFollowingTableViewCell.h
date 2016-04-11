@@ -19,6 +19,7 @@
 @interface YWFollowingTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) YWUserModel  *user;
+@property (nonatomic, assign) BOOL relationButtonState;
 @property (nonatomic, assign) id<YWFollowingTableViewCellDelegate> delegate;
 
 

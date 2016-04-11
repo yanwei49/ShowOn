@@ -35,6 +35,11 @@
 //    [self createNoContentView];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [YWNoCotentView showNoCotentViewWithState:NO];
+}
+
 - (void)createNoContentView {
     _noContentLabel = [[UILabel alloc] init];
     _noContentLabel.backgroundColor = Subject_color;

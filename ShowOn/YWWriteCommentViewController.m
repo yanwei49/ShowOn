@@ -232,6 +232,8 @@
         [names appendString:user.userName];
     }
     _textView.text = [NSString stringWithFormat:@"%@%@", _textView.text, names];
+    _placeholderLabel.text = @"";
+
 }
 
 #pragma mark - UITextViewDelegate

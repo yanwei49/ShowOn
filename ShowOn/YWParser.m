@@ -16,6 +16,7 @@
 #import "YWTrendsModel.h"
 #import "YWAiTeModel.h"
 #import "YWSupportModel.h"
+#import "YWMovieCardModel.h"
 
 @implementation YWParser
 
@@ -27,7 +28,7 @@
     user.userPassword = [dict objectForKey:@"password"];
     user.userToken = [dict objectForKey:@"token"];
     user.portraitUri = [dict objectForKey:@"headPortrait"];
-    user.userEmpirical = [dict objectForKey:@"empiricalValue"];
+    user.userEmpirical = [[dict objectForKey:@"empiricalValue"] length]?[dict objectForKey:@"empiricalValue"]:@"0";
     user.userSex = [dict objectForKey:@"sex"];
     user.userName = [dict objectForKey:@"nickname"];
     user.userRank = [dict objectForKey:@"grade"];
@@ -171,6 +172,23 @@
     return support;
 }
 
+- (YWMovieCardModel *)movieCardWithDict:(NSDictionary *)dict {
+    YWMovieCardModel *model = [[YWMovieCardModel alloc] init];
+    model.cardId = [dict objectForKey:@"cardId"];
+    model.authentication = [dict objectForKey:@"authentication"];
+    model.address = [dict objectForKey:@"address"];
+    model.age = [dict objectForKey:@"age"];
+    model.constellation = [dict objectForKey:@"constellation"];
+    model.height = [dict objectForKey:@"height"];
+    model.bwh = [dict objectForKey:@"bwh"];
+    model.announce = [dict objectForKey:@"announce"];
+    model.email = [dict objectForKey:@"email"];
+    model.info = [dict objectForKey:@"info"];
+    model.trends = [self trendsWithDict:[dict objectForKey:@"trends"]];
+    
+    return model;
+}
+
 - (NSArray *)subsectionVideoWithArray:(NSArray *)array {
     NSMutableArray *subsectionVideos = [NSMutableArray array];
     [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -238,6 +256,15 @@
     NSMutableArray *supports = [NSMutableArray array];
     [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [supports addObject:[self supportWithDict:obj]];
+    }];
+    
+    return supports;
+}
+
+- (NSArray *)movieCardWithArray:(NSArray *)array {
+    NSMutableArray *supports = [NSMutableArray array];
+    [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [supports addObject:[self movieCardWithDict:obj]];
     }];
     
     return supports;

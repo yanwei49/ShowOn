@@ -59,19 +59,14 @@
     }];
 }
 
-//cursor	false	int	返回结果的游标，下一页用返回值里的next_cursor，上一页用previous_cursor，默认为0。
 #pragma mark - request
 - (void)requestWeiBoFriend {
-    NSDictionary *parameters = @{@"access_token": @"", @"uid": [[YWDataBaseManager shareInstance] loginUser].userAccount?:@"", @"cursor": @"0", @"count": @(190)};
+    NSDictionary *parameters = @{@"access_token": [[NSUserDefaults standardUserDefaults] objectForKey:@"accessToken"], @"uid": [[YWDataBaseManager shareInstance] loginUser].userAccount?:@""};
     [[YWHttpManager shareInstance] requestWeiBoFriendList:parameters success:^(id responseObject) {
         NSArray *users = [responseObject objectForKey:@"users"];
         NSMutableString *accounts = [NSMutableString stringWithString:@""];
         for (NSDictionary *dict in users) {
-//            YWUserModel *user = [[YWUserModel alloc] init];
-//            user.userName = [dict objectForKey:@"name"];
-//            user.portraitUri = [dict objectForKey:@"profile_image_url"];
-//            [_dataSource addObject:users];
-            [accounts appendString:[dict objectForKey:@"uid"]];
+            [accounts appendString:[NSString stringWithFormat:@"%@", [dict objectForKey:@"id"]]];
             [accounts appendString:@"|"];
         }
         [self requestWeiboUserWithAccounts:accounts];
@@ -88,6 +83,7 @@
         YWParser *parser = [[YWParser alloc] init];
         [_dataSource addObjectsFromArray:[parser userWithArray:responseObject[@"userList"]]];
         [_tableView reloadData];
+        [YWNoCotentView showNoCotentViewWithState:_dataSource.count?NO:YES];
     } otherFailure:^(id responseObject) {
     } failure:^(NSError *error) {
     }];

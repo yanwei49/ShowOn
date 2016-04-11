@@ -80,6 +80,11 @@
     [self changeFriendRelationType];
 }
 
+- (void)setRelationButtonState:(BOOL)relationButtonState {
+    _relationButtonState = relationButtonState;
+    _friendTypeButton.hidden = relationButtonState;
+}
+
 - (void)changeFriendRelationType {
     switch (_user.userRelationType) {
         case kBeFocus:

@@ -332,5 +332,23 @@
  */
 - (void)requestDeleteComment:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
 
+/**
+ *  可制作为名片的视频列表
+ *
+ *  @param parameters 请求参数
+ *  @param success    成功block
+ *  @param failure    失败block
+ */
+- (void)requestMovieList:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
+
+
+/**
+ *  提交视频名片
+ *
+ *  @param parameters 请求参数
+ *  @param success    成功block
+ *  @param failure    失败block
+ */
+- (void)requestCommitMovieCard:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
 
 @end

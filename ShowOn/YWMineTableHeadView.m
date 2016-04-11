@@ -83,7 +83,7 @@
         _authenticationLabel.backgroundColor = Subject_color;
         _authenticationLabel.textColor = [UIColor whiteColor];
         _authenticationLabel.textAlignment = NSTextAlignmentLeft;
-        _authenticationLabel.text = @"认证信息";
+        _authenticationLabel.text = @"认证信息：";
         _authenticationLabel.font = [UIFont systemFontOfSize:13];
         [self addSubview:_authenticationLabel];
         [_authenticationLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -200,12 +200,12 @@
     [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:kPlaceholderUserAvatorImage];
     _nameLabel.text = [NSString stringWithFormat:@"%@       %@", user.userName?:@"", user.userRank?:@""];
     _empiricalLabel.text = [NSString stringWithFormat:@"经验值 %@", user.userEmpirical?:@"0"];
-    _authenticationLabel.text = user.userAuthentication;
+    _authenticationLabel.text = [NSString stringWithFormat:@"认证信息：%@", user.userAuthentication?:@""];
     _infosLabel.text = user.userInfos;
     NSArray *array = @[@"+ 关注", @"取消关注", @"相互关注", @"取消黑名单", @"取消关注"];
     NSArray *colors = @[[UIColor redColor], RGBColor(244, 244, 244), RGBColor(244, 244, 244), RGBColor(244, 244, 244), RGBColor(244, 244, 244)];
     NSArray *fColors = @[[UIColor whiteColor], [UIColor blackColor], [UIColor blackColor], [UIColor blackColor], [UIColor blackColor], [UIColor blackColor]];
-    [_sendMessageButton setTitleColor:fColors[user.userRelationType] forState:UIControlStateNormal];
+    [_addFocusButton setTitleColor:fColors[user.userRelationType] forState:UIControlStateNormal];
     _addFocusButton.backgroundColor = colors[user.userRelationType];
     [_addFocusButton setTitle:array[user.userRelationType] forState:UIControlStateNormal];
     NSArray *titles = _isSelf?@[@"动态", @"关注", @"粉丝", @"收藏"]:@[@"关注", @"粉丝", @"作品"];

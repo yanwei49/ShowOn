@@ -156,6 +156,7 @@
         [_tableView.header endRefreshing];
         [_tableView.footer endRefreshing];
         [_tableView reloadData];
+        [YWNoCotentView showNoCotentViewWithState:_dataSource.count?NO:YES];
     } otherFailure:^(id responseObject) {
         [_tableView.header endRefreshing];
         [_tableView.footer endRefreshing];

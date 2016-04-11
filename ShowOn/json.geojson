@@ -1023,3 +1023,84 @@
                  }]
 }
 
+
+/***
+ *    完整视频列表（动态和草稿箱里面的都算）
+ */
+//参数：
+{
+    "userId": ""        //当前登录用户的userid
+}
+{
+    "code": ""
+    "msg": ""
+    "movieList": [{
+          "dynamicId": ""          //动态id
+          "dynamicTypeId": ""        //动态类型
+          "dynamicVideo": {
+              "videoName": ""              //视频名称
+              "videoCoverImage": ""        //视频封面
+              "videoUrl": ""               //动态视频url（如果动态是录制了完整视频则返回完整视频url，否则返回空）
+              "movieTemplate": {
+                  "templateId": ""            //模板id
+                  "templateName": ""          //模板名称
+              }
+          }
+      }]
+}
+
+/***
+ *    保存视频名片
+ */
+//参数：
+{
+    "userId": ""                //当前登录用户的userid
+    "authentication": ""        //地区
+    "address": ""               //年龄
+    "age": ""                   //星座
+    "constellation": ""         //身高
+    "height": ""                //三围
+    "announce": ""              //通告
+    "email": ""                 //邮箱
+    "info": ""                  //文字简介
+    "trendsId": ""              //动态Id
+}
+{
+    "code": ""
+    "msg": ""
+}
+
+#define Trends_List_Method                    @"juer/dynamic/trendsList?json"               //动态列表
+
+"code": ""
+"msg": ""
+"trendsList": [{
+
+}]
+"movieCardList": [{
+      "userId": ""                //当前登录用户的userid
+      "authentication": ""        //认证
+      "address": ""               //地区
+      "bwh": ""                   //三围
+      "age": ""                   //年龄
+      "constellation": ""         //星座
+      "height": ""                //身高
+      "announce": ""              //通告
+      "email": ""                 //邮箱
+      "info": ""                  //文字简介
+      "trends": {
+          "dynamicId": ""          //动态id
+          "dynamicTypeId": ""        //动态类型
+          "dynamicVideo": {
+              "videoName": ""              //视频名称
+              "videoCoverImage": ""        //视频封面
+              "videoUrl": ""               //动态视频url（如果动态是录制了完整视频则返回完整视频url，否则返回空）
+              "movieTemplate": {
+                  "templateId": ""            //模板id
+                  "templateName": ""          //模板名称
+              }
+          }
+      }
+                  
+}]
+

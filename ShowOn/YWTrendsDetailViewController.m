@@ -33,6 +33,7 @@
 #import "YWFollowingViewController.h"
 #import "YWRepeatDetailTableViewCell.h"
 #import "YWHttpGlobalDefine.h"
+#import "YWPlayUserViewController.h"
 
 @interface YWTrendsDetailViewController()<UITableViewDataSource, UITableViewDelegate, YWFocusTableViewCellDelegate, YWMovieCommentTableViewCellDelegate, YWMovieOtherInfosTableViewCellDelegate, UIActionSheetDelegate, YWRepeatDetailTableViewCellDelegate>
 
@@ -518,10 +519,13 @@
 }
 
 - (void)movieOtherInfosTableViewCellDidSelectMore:(YWMovieOtherInfosTableViewCell *)cell {
-    YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
-    vc.templateId = cell.trends.trendsMovie.movieTemplate.templateId;
-    vc.title = @"表演者列表";
+    YWPlayUserViewController *vc = [[YWPlayUserViewController alloc] init];
+    vc.users = _trends.trendsOtherPlayUsers;
     [self.navigationController pushViewController:vc animated:YES];
+//    YWFollowingViewController *vc = [[YWFollowingViewController alloc] init];
+//    vc.templateId = cell.trends.trendsMovie.movieTemplate.templateId;
+//    vc.title = @"表演者列表";
+//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)movieOtherInfosTableViewCellDidSelectCollect:(YWMovieOtherInfosTableViewCell *)cell {

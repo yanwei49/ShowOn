@@ -22,8 +22,10 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "MPMoviePlayerViewController+Rotation.h"
 #import "YWRepeatDetailTableViewCell.h"
+#import "YWMovieCardModel.h"
+#import "YWMovieCardTableViewCell.h"
 
-@interface YWTrendsViewController ()<UITableViewDelegate, UITableViewDataSource, YWFocusTableViewCellDelegate, UISearchBarDelegate, YWTrendsCategoryViewDelegate, YWRepeatDetailTableViewCellDelegate>
+@interface YWTrendsViewController ()<UITableViewDelegate, UITableViewDataSource, YWFocusTableViewCellDelegate, UISearchBarDelegate, YWTrendsCategoryViewDelegate, YWRepeatDetailTableViewCellDelegate, YWMovieCardTableViewCellDelegate>
 
 @end
 
@@ -37,12 +39,23 @@
     YWTrendsCategoryView    *_categoryView;
     NSMutableArray          *_allTrendsArray;
     NSInteger                _currentPage;
+    UISegmentedControl      *_segmentedControl;
+    NSMutableArray          *_movieCardDataSource;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    if (!_isFriendTrendsList) {
+        _segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"视频名片", @"动态"]];
+        _segmentedControl.frame = CGRectMake(0, 0, 100, 35);
+        _segmentedControl.selectedSegmentIndex = 1;
+        [_segmentedControl addTarget:self action:@selector(actionSegValueChange) forControlEvents:UIControlEventValueChanged];
+        _segmentedControl.tintColor = [UIColor redColor];
+        self.navigationItem.titleView = _segmentedControl;
+    }
     _dataSource = [[NSMutableArray alloc] init];
+    _movieCardDataSource = [[NSMutableArray alloc] init];
     _allTrendsArray = [[NSMutableArray alloc] init];
     _httpManager = [YWHttpManager shareInstance];
     _currentPage = 0;
@@ -57,7 +70,6 @@
     }else {
         [self requestTrendsList];
     }
-//    [_tableView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
 }
 
 - (void)createSubViews {
@@ -70,6 +82,7 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_tableView registerClass:[YWFocusTableViewCell class] forCellReuseIdentifier:@"cell"];
     [_tableView registerClass:[YWRepeatDetailTableViewCell class] forCellReuseIdentifier:@"cell1"];
+    [_tableView registerClass:[YWMovieCardTableViewCell class] forCellReuseIdentifier:@"cell2"];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableHeaderView = _searchBar;
@@ -107,17 +120,30 @@
     }];
 }
 
+- (void)actionSegValueChange {
+    [_dataSource removeAllObjects];
+    if (_segmentedControl.selectedSegmentIndex) {
+        [self trendsCategoryView:_categoryView didSelectCategoryWithIndex:_trendsType];
+    }else {
+        [_dataSource addObjectsFromArray:_movieCardDataSource];
+        [_tableView reloadData];
+    }
+    [YWNoCotentView showNoCotentViewWithState:_dataSource.count?NO:YES];
+}
+
 #pragma mark - request
 - (void)requestFriendTrendsList {
     NSDictionary *parameters = @{@"userId": _user.userId?:[[YWDataBaseManager shareInstance] loginUser].userId, @"loginUseruserId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"page": @(_currentPage)};
     [_httpManager requestFriendsTrendsList:parameters success:^(id responseObject) {
         if (!_currentPage) {
             [_allTrendsArray removeAllObjects];
+            [_movieCardDataSource removeAllObjects];
         }
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser trendsWithArray:responseObject[@"trendsList"]];
+        NSArray *movieCard = [parser movieCardWithArray:responseObject[@"movieCardList"]];
+        [_movieCardDataSource addObjectsFromArray:movieCard];
         [_allTrendsArray addObjectsFromArray:array];
-        [self trendsCategoryView:_categoryView didSelectCategoryWithIndex:_trendsType];
         [self noContentViewShowWithState:_allTrendsArray.count?NO:YES];
         if (array.count<20) {
             _tableView.footer = nil;
@@ -129,7 +155,7 @@
         }
         [_tableView.header endRefreshing];
         [_tableView.footer endRefreshing];
-        [_tableView reloadData];
+        [self actionSegValueChange];
     } otherFailure:^(id responseObject) {
         [_tableView.header endRefreshing];
         [_tableView.footer endRefreshing];
@@ -144,11 +170,13 @@
     [_httpManager requestTrendsList:parameters success:^(id responseObject) {
         if (!_currentPage) {
             [_allTrendsArray removeAllObjects];
+            [_movieCardDataSource removeAllObjects];
         }
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser trendsWithArray:responseObject[@"trendsList"]];
+        NSArray *movieCard = [parser movieCardWithArray:responseObject[@"movieCardList"]];
+        [_movieCardDataSource addObjectsFromArray:movieCard];
         [_allTrendsArray addObjectsFromArray:array];
-        [self trendsCategoryView:_categoryView didSelectCategoryWithIndex:_trendsType];
         [self noContentViewShowWithState:_allTrendsArray.count?NO:YES];
         if (array.count<20) {
             _tableView.footer = nil;
@@ -160,7 +188,7 @@
         }
         [_tableView.header endRefreshing];
         [_tableView.footer endRefreshing];
-        [_tableView reloadData];
+        [self actionSegValueChange];
     } otherFailure:^(id responseObject) {
         [_tableView.header endRefreshing];
         [_tableView.footer endRefreshing];
@@ -189,34 +217,50 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([_dataSource[indexPath.row] trendsType].integerValue == 3) {
-        YWRepeatDetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell1"];
+    if (_segmentedControl && !_segmentedControl.selectedSegmentIndex) {
+        YWMovieCardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell2"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.delegate = self;
-        cell.trends = _dataSource[indexPath.row];
+        cell.model = _dataSource[indexPath.row];
         
         return cell;
     }else {
-        YWFocusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-        cell.delegate = self;
-        cell.trends = _dataSource[indexPath.row];
-        
-        return cell;
+        if ([_dataSource[indexPath.row] trendsType].integerValue == 3) {
+            YWRepeatDetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell1"];
+            cell.delegate = self;
+            cell.trends = _dataSource[indexPath.row];
+            
+            return cell;
+        }else {
+            YWFocusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+            cell.delegate = self;
+            cell.trends = _dataSource[indexPath.row];
+            
+            return cell;
+        }
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([_dataSource[indexPath.row] trendsType].integerValue == 3) {
-        return [YWRepeatDetailTableViewCell cellHeightWithTrends:_dataSource[indexPath.row] type:kRepeatTrendsListType];
+    if (_segmentedControl && !_segmentedControl.selectedSegmentIndex) {
+        return [YWMovieCardTableViewCell cellHeightWithModel:_dataSource[indexPath.row]];
     }else {
-        return [YWFocusTableViewCell cellHeightWithTrends:_dataSource[indexPath.row] type:kTrendsListType];
+        if ([_dataSource[indexPath.row] trendsType].integerValue == 3) {
+            return [YWRepeatDetailTableViewCell cellHeightWithTrends:_dataSource[indexPath.row] type:kRepeatTrendsListType];
+        }else {
+            return [YWFocusTableViewCell cellHeightWithTrends:_dataSource[indexPath.row] type:kTrendsListType];
+        }
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 30;
+    return (_segmentedControl && !_segmentedControl.selectedSegmentIndex)?0.0001:30;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (_segmentedControl && !_segmentedControl.selectedSegmentIndex) {
+        return nil;
+    }
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 30)];
     view.backgroundColor = RGBColor(50, 50, 50);
     UIButton *button = [[UIButton alloc] init];
@@ -238,9 +282,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    YWTrendsDetailViewController *vc = [[YWTrendsDetailViewController alloc] init];
-    vc.trends = _dataSource[indexPath.row];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (_segmentedControl && !_segmentedControl.selectedSegmentIndex) {
+        
+    }else {
+        YWTrendsDetailViewController *vc = [[YWTrendsDetailViewController alloc] init];
+        vc.trends = _dataSource[indexPath.row];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark - YWRepeatDetailTableViewCellDelegate
@@ -323,5 +371,13 @@
     return NO;
 }
 
+#pragma mark - YWMovieCardTableViewCellDelegate
+- (void)movieCardTableViewCellDidSelectPlayingButton:(YWMovieCardTableViewCell *)cell {
+    NSString *urlStr = [cell.model.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+    [moviePlayerViewController rotateVideoViewWithDegrees:90];
+    [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+}
 
 @end

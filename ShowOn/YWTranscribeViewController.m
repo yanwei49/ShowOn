@@ -59,14 +59,14 @@
     _template = _trends?_trends.trendsMovie.movieTemplate:_template;
 //    _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(run) userInfo:nil repeats:YES];
 //    _timer.fireDate = [NSDate distantFuture];
-    if (_trends) {
-        for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
-            model.subsectionVideoPerformanceStatus = @"2";
-            if (model.subsectionRecorderVideoUrl.length) {
-                model.subsectionVideoUrl = model.subsectionRecorderVideoUrl;
-            }
-        }
-    }
+//    if (_trends) {
+//        for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
+//            model.subsectionVideoPerformanceStatus = @"2";
+//            if (model.subsectionRecorderVideoUrl.length) {
+//                model.subsectionVideoUrl = model.subsectionRecorderVideoUrl;
+//            }
+//        }
+//    }
     if (_template.templateSubsectionVideos.count == 1 && ![_template.templateSubsectionVideos.firstObject subsectionVideoType]) {
         YWSubsectionVideoModel *sub = [[YWSubsectionVideoModel alloc] init];
         sub.subsectionVideoUrl = _template.templateVideoUrl;

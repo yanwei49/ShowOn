@@ -106,7 +106,7 @@
 
 #pragma mark - request
 - (void)requestTemplateDetail {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"templateId": _template.templateId};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"templateId": _template.templateId?:@""};
     [_httpManager requestTemplateDetail:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         [_trends removeAllObjects];

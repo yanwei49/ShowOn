@@ -297,8 +297,8 @@ static YWHttpManager * manager;
 
 - (void)requestWeiBoFriendList:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
     [self setDefaultHeaders];
-    [_httpManager GET:HOST_URL(@"https://api.weibo.com/2/friendships/friends.json") parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
+    [_httpManager GET:@"https://api.weibo.com/2/friendships/friends.json" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success(responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             failure(error);
@@ -469,6 +469,26 @@ static YWHttpManager * manager;
     }];
 }
 
+- (void)requestMovieList:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
+    [self setDefaultHeaders];
+    [_httpManager GET:HOST_URL(Movie_List_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            failure(error);
+        });
+    }];
+}
 
+- (void)requestCommitMovieCard:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
+    [self setDefaultHeaders];
+    [_httpManager POST:HOST_URL(Commit_Movie_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            failure(error);
+        });
+    }];
+}
 
 @end

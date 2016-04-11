@@ -35,26 +35,24 @@
 - (void)createSubViews {
     _textView = [[UITextView alloc] init];
     _textView.backgroundColor = [UIColor whiteColor];
-    _textView.font = [UIFont systemFontOfSize:15];
     _textView.delegate = self;
+    _textView.font = [UIFont systemFontOfSize:15];
     [self.view addSubview:_textView];
     [_textView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(74);
-        make.left.offset(10);
-        make.height.offset(150);
-        make.right.offset(-10);
+        make.top.offset(0);
+        make.left.right.offset(0);
+        make.height.offset(300);
     }];
     
     _placeholderLabel = [[UILabel alloc] init];
-    _placeholderLabel.font = [UIFont systemFontOfSize:15];
-    _placeholderLabel.text = @"请留下您宝贵的意见吧！";
+    _placeholderLabel.text = @" 请留下您宝贵的意见吧！";
     _placeholderLabel.textColor = [UIColor lightGrayColor];
+    _placeholderLabel.font = [UIFont systemFontOfSize:15];
     [self.view addSubview:_placeholderLabel];
     [_placeholderLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(84);
-        make.left.offset(15);
-        make.height.offset(15);
-        make.right.offset(-10);
+        make.top.offset(6+64);
+        make.left.right.offset(0);
+        make.height.offset(20);
     }];
 }
 
@@ -87,7 +85,7 @@
     if (textView.text.length) {
         _placeholderLabel.text = @"";
     }else {
-        _placeholderLabel.text = @"说点什么吧！";
+        _placeholderLabel.text = @" 请留下您宝贵的意见吧！";
     }
 }
 

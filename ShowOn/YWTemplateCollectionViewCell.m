@@ -150,7 +150,7 @@ static CGFloat cnt = 0;
         make.left.offset(0);
     }];
     _subsectionVideo = subsectionVideo;
-    _nameLabel.text = [YWTools timMinuteStringWithUrl:subsectionVideo.subsectionVideoUrl];
+//    _nameLabel.text = [YWTools timMinuteStringWithUrl:subsectionVideo.subsectionVideoUrl];
 //    NSString *urlStr = [subsectionVideo.subsectionVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 //    AVURLAsset *urlAsset=[AVURLAsset assetWithURL:[NSURL URLWithString:urlStr]];
 //    _nameLabel.text = [NSString stringWithFormat:@"%.1fs", CMTimeGetSeconds(urlAsset.duration)];

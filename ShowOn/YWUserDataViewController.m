@@ -25,6 +25,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "MPMoviePlayerViewController+Rotation.h"
 #import "YWTranscribeViewController.h"
+#import "YWEditMovieCallingCardViewController.h"
 
 @interface YWUserDataViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YWMineTableHeadViewDelegate, YWCustomSegViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, YWTrendsTableViewCellDelegate, YWTrendsCategoryViewDelegate, UIActionSheetDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -50,6 +51,7 @@
     YWTrendsCategoryView   *_categoryView;
     YWTrendsCategoryView   *_userCategoryView;
     UIImage                *_headImage;
+    UIView                 *_footView;
 }
 
 - (void)viewDidLoad {
@@ -114,6 +116,15 @@
         make.height.offset(40);
     }];
 
+    _footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
+    _footView.backgroundColor = Subject_color;
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(40, 40, kScreenWidth-80, 40)];
+    button.backgroundColor = RGBColor(30, 30, 30);
+    [button setTitle:@"制作视频名片" forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:15];
+    [button addTarget:self action:@selector(actionMovieCard) forControlEvents:UIControlEventTouchUpInside];
+    [_footView addSubview:button];
+    
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     _tableView.backgroundColor = Subject_color;
     _tableView.separatorStyle = UITableViewCellSelectionStyleNone;
@@ -123,7 +134,11 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableHeaderView = view;
-    _tableView.tableFooterView = [[UIView alloc] init];
+    if (_isSelf) {
+        _tableView.tableFooterView = _footView;
+    }else {
+        _tableView.tableFooterView = [[UIView alloc] init];
+    }
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.offset(0);
@@ -287,6 +302,11 @@
     albumPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     albumPicker.delegate = self;
     [self presentViewController:albumPicker animated:YES completion:NULL];
+}
+
+- (void)actionMovieCard {
+    YWEditMovieCallingCardViewController *vc = [[YWEditMovieCallingCardViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - request
@@ -699,7 +719,9 @@
 }
 
 - (void)mineTableHeadViewDidSelectAvator {
-    [self actionAvator];
+    if (_isSelf) {
+        [self actionAvator];
+    }
 }
 
 @end

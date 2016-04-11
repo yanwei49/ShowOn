@@ -76,6 +76,7 @@
             make.top.equalTo(_avatorImageView.mas_top);
             make.left.equalTo(_avatorImageView.mas_right).offset(10);
             make.height.offset(20);
+            make.width.offset(kScreenWidth-150-60);
         }];
         
         _timeLabel = [[UILabel alloc] init];
@@ -236,9 +237,12 @@
     if (trends.trendsType.integerValue == 2) {
         NSMutableString *str = [NSMutableString string];
         [str appendString:trends.trendsUser.userName];
-        for (NSInteger i=0; i<trends.trendsOtherPlayUsers.count; i++) {
+        for (NSInteger i=0; i<trends.trendsMovieCooperateUsers.count; i++) {
+            if ([[trends.trendsMovieCooperateUsers[i] userId] isEqualToString:trends.trendsUser.userId]) {
+                break;
+            }
             [str appendString:@"+"];
-            [str appendString:[trends.trendsOtherPlayUsers[i] userName]];
+            [str appendString:[trends.trendsMovieCooperateUsers[i] userName]];
         }
         _userNameLabel.text = str;
     }else if (trends.trendsType.integerValue == 1) {

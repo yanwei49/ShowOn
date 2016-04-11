@@ -90,6 +90,7 @@
         [_collectionView.header endRefreshing];
         [_collectionView.footer endRefreshing];
         [_collectionView reloadData];
+        [YWNoCotentView showNoCotentViewWithState:_dataSource.count?NO:YES];
     } otherFailure:^(id responseObject) {
         [_collectionView.header endRefreshing];
         [_collectionView.footer endRefreshing];

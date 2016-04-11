@@ -44,4 +44,7 @@
 //解析点赞列表
 - (NSArray *)supportWithArray:(NSArray *)array;
 
+//解析视频名片列表
+- (NSArray *)movieCardWithArray:(NSArray *)array;
+
 @end
