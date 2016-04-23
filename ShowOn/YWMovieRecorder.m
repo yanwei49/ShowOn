@@ -45,7 +45,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 
 - (void)initSubViews {
     _playButton = [[UIButton alloc] initWithFrame:CGRectMake(self.bounds.size.width/2-30, self.bounds.size.height/2-30, 60, 60)];
-    [_playButton setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
+    [_playButton setImage:[UIImage imageNamed:@"red_point.png"] forState:UIControlStateNormal];
     [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
     [_playButton addTarget:self action:@selector(actionPlay) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_playButton];
@@ -115,7 +115,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [self addSubview:_backView];
     
     _playButton = [[UIButton alloc] initWithFrame:CGRectMake(self.bounds.size.width/2-30, self.bounds.size.height/2-30, 60, 60)];
-    [_playButton setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
+    [_playButton setImage:[UIImage imageNamed:@"red_point.png"] forState:UIControlStateNormal];
     [_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
     [_playButton addTarget:self action:@selector(actionPlay) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_playButton];
@@ -237,6 +237,47 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
         DebugLog(@"成功保存视频到相簿.");
     }];
     
+//    [self obtainMovieWithUrl:outputFileURL];
+}
+
+- (void)obtainMovieWithUrl:(NSURL *)url {
+    CMTime nextClipStartTime =kCMTimeZero;
+    //创建可变的音频视频组合
+    AVMutableComposition* mixComposition =[AVMutableComposition composition];
+    //视频采集
+    AVURLAsset* videoAsset =[[AVURLAsset alloc] initWithURL:url options:nil];
+    CMTimeRange video_timeRange =CMTimeRangeMake(kCMTimeZero,videoAsset.duration);
+    AVMutableCompositionTrack *a_compositionVideoTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+    [a_compositionVideoTrack insertTimeRange:video_timeRange ofTrack:[[videoAsset tracksWithMediaType:AVMediaTypeVideo]objectAtIndex:0] atTime:nextClipStartTime error:nil];
+    
+    AVAssetExportSession* _assetExport =[[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetMediumQuality];
+    _assetExport.outputFileType =AVFileTypeQuickTimeMovie;
+    _assetExport.outputURL = url;
+    _assetExport.shouldOptimizeForNetworkUse=YES;
+    
+    [_assetExport exportAsynchronouslyWithCompletionHandler:
+     ^(void ) {
+//         [MBProgressHUDhideHUDForView:self.viewanimated:YES];
+//         //播放
+//         NSURL*url = [NSURLfileURLWithPath:outputFilePath];
+//         MPMoviePlayerViewController *theMovie =[[MPMoviePlayerViewControlleralloc]initWithContentURL:url];
+//         [selfpresentMoviePlayerViewControllerAnimated:theMovie];
+//         theMovie.moviePlayer.movieSourceType=MPMovieSourceTypeFile;
+//         [theMovie.moviePlayerplay];
+     }];
+    UIBackgroundTaskIdentifier lastBackgroundTaskIdentifier = _backgroundTaskIdentifier;
+    _backgroundTaskIdentifier=UIBackgroundTaskInvalid;
+    ALAssetsLibrary *assetsLibrary=[[ALAssetsLibrary alloc]init];
+    [assetsLibrary writeVideoAtPathToSavedPhotosAlbum:url completionBlock:^(NSURL *assetURL, NSError *error) {
+        if (error) {
+            DebugLog(@"保存视频到相簿过程中发生错误，错误信息：%@",error.localizedDescription);
+        }
+        if (lastBackgroundTaskIdentifier!=UIBackgroundTaskInvalid) {
+            [[UIApplication sharedApplication] endBackgroundTask:lastBackgroundTaskIdentifier];
+        }
+        DebugLog(@"成功保存视频到相簿.");
+    }];
+    NSLog(@"完成！输出路径==%@", url);
 }
 
 #pragma mark - 通知

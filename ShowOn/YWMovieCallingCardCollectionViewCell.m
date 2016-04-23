@@ -89,4 +89,10 @@
     _stateButton.selected = state;
 }
 
+- (void)setStateButtonHidden:(BOOL)stateButtonHidden {
+    _stateButtonHidden = stateButtonHidden;
+    _stateButton.hidden = stateButtonHidden;
+}
+
+
 @end

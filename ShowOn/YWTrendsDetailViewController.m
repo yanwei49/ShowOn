@@ -156,7 +156,7 @@
 
 #pragma mark - request
 - (void)requestTrendsDetail {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"trendsId": _trends.trendsId};
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId?:@"", @"trendsId": _trends.trendsId};
     [_httpManager requestTrendsDetail:parameters success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         _trends = [parser trendsWithDict:responseObject[@"trends"]];
@@ -433,9 +433,13 @@
         [self presentViewController:moviePlayerViewController animated:YES completion:nil];
         [self requestPlayModelId:cell.trends.trendsId withType:2];
     }else {
-        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
-        vc.trends = cell.trends;
-        [self.navigationController pushViewController:vc animated:YES];
+        if ([[YWDataBaseManager shareInstance] loginUser]) {
+            YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+            vc.trends = cell.trends;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else {
+            [self login];
+        }
     }
 }
 
@@ -475,9 +479,13 @@
         [self presentViewController:moviePlayerViewController animated:YES completion:nil];
         [self requestPlayModelId:cell.trends.trendsId withType:2];
     }else {
-        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
-        vc.trends = cell.trends;
-        [self.navigationController pushViewController:vc animated:YES];
+        if ([[YWDataBaseManager shareInstance] loginUser]) {
+            YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+            vc.trends = cell.trends;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else {
+            [self login];
+        }
     }
 }
 

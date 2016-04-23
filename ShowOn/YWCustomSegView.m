@@ -27,7 +27,7 @@
         _itemTitles = itemTitles;
         _ywTextFont = [UIFont systemFontOfSize:15];
         _ywTextColor = [UIColor whiteColor];
-        _ywSelectTextColor = [UIColor greenColor];
+        _ywSelectTextColor = RGBColor(255, 194, 0);
         _ywBackgroundColor = Subject_color;
         _ywSelectBackgroundColor = Subject_color;
         _itemSelectIndex = 0;

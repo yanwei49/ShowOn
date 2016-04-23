@@ -355,7 +355,7 @@
     if (![self verification]) {
         return;
     }
-    NSDictionary *parameters = @{@"account":_accountTextField.text, @"password":_passwordTextField.text};
+    NSDictionary *parameters = @{@"account":_accountTextField.text, @"password":_passwordTextField.text, @"type": @(1)};
     [SVProgressHUD showWithStatus:@"登录中..."];
     [[YWHttpManager shareInstance] requestLogin:parameters success:^(id responseObject) {
         [SVProgressHUD showSuccessWithStatus:@"登录成功"];

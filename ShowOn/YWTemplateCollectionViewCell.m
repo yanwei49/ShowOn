@@ -173,14 +173,16 @@ static CGFloat cnt = 0;
     self.contentView.layer.borderWidth = 0;
     _downImageView.hidden = YES;
     _progressView.hidden = YES;
-    if (subsectionVideo.subsectionVideoPerformanceStatus.integerValue == 1) {
-        _downImageView.hidden = NO;
-    }else if (subsectionVideo.subsectionVideoPerformanceStatus.integerValue == 2) {
-        _downImageView.hidden = YES;
-    }else {
-        _progressView.hidden = NO;
-//        self.contentView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-//        self.contentView.layer.borderWidth = 5;
+    if (!_isPlay) {
+        if (subsectionVideo.subsectionVideoPerformanceStatus.integerValue == 1) {
+            _downImageView.hidden = NO;
+        }else if (subsectionVideo.subsectionVideoPerformanceStatus.integerValue == 2) {
+            _downImageView.hidden = YES;
+        }else {
+            _progressView.hidden = NO;
+            //        self.contentView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            //        self.contentView.layer.borderWidth = 5;
+        }
     }
 }
 

@@ -21,5 +21,6 @@
 @property (nonatomic, assign) id<YWMovieCallingCardCollectionViewCellDelegate> delegate;
 @property (nonatomic, strong) YWTrendsModel *model;
 @property (nonatomic, assign) BOOL state;
+@property (nonatomic, assign) BOOL stateButtonHidden;
 
 @end

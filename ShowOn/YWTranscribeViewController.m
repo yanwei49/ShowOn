@@ -18,8 +18,9 @@
 #import "YWMovieModel.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "MPMoviePlayerViewController+Rotation.h"
+#import "YWPreviewViewController.h"
 
-@interface YWTranscribeViewController ()<YWCustomSegViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWMoviePlayViewDelegate, YWMovieRecorderDelegate, YWTemplateCollectionViewCellDelegate>
+@interface YWTranscribeViewController ()<YWCustomSegViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YWMoviePlayViewDelegate, YWMovieRecorderDelegate, YWTemplateCollectionViewCellDelegate, UIActionSheetDelegate>
 
 @end
 
@@ -120,6 +121,7 @@
     _playView = [[YWMoviePlayView alloc] initWithFrame:CGRectMake(5, 5, kScreenWidth-10, 250) playUrl:@""];
     _playView.backgroundColor = Subject_color;
     _playView.layer.masksToBounds = YES;
+//    _playView.progressHiddenState = NO;
 //    _playView.isCountdown = YES;
     _playView.delegate = self;
     _playView.layer.cornerRadius = 5;
@@ -292,6 +294,7 @@
     NSString *urlStr = [view.model.subsectionVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     AVURLAsset *urlAsset=[AVURLAsset assetWithURL:[NSURL URLWithString:urlStr]];
     [cell startRecorderAnimationWithDuration:CMTimeGetSeconds(urlAsset.duration)];
+    [_playView play];
 }
 
 #pragma mark - YWTemplateCollectionViewCellDelegate
@@ -311,20 +314,8 @@
                 }
             }
             if (state) {
-                YWEditCoverViewController *vc = [[YWEditCoverViewController alloc] init];
-                vc.trends = _trends;
-                vc.template = _template;
-//                vc.recorderMovies = _recorderMovies;
-                BOOL state = YES;
-                for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
-                    if (model.subsectionVideoPerformanceStatus.integerValue != 1) {
-                        state = NO;
-                        break;
-                    }
-                }
-                vc.recorderState = state;
-                [self.navigationController pushViewController:vc animated:YES];
-//                view.userInteractionEnabled = NO;
+                UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"预览", @"制作封面", nil];
+                [sheet showInView:self.view];
             }else {
                 UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请先录制视频" message:nil delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
                 [alter show];
@@ -372,6 +363,30 @@
     }
 }
 
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        YWPreviewViewController *vc = [[YWPreviewViewController alloc] init];
+        vc.template = _template;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if (buttonIndex == 1) {
+        YWEditCoverViewController *vc = [[YWEditCoverViewController alloc] init];
+        vc.trends = _trends;
+        vc.template = _template;
+        //                vc.recorderMovies = _recorderMovies;
+        BOOL state = YES;
+        for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
+            if (model.subsectionVideoPerformanceStatus.integerValue != 1) {
+                state = NO;
+                break;
+            }
+        }
+        vc.recorderState = state;
+        [self.navigationController pushViewController:vc animated:YES];
+        //                view.userInteractionEnabled = NO;
+    }
+}
+
 #pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     switch ([_collectionViews indexOfObject:collectionView]) {
@@ -414,7 +429,7 @@
         }
     }
     YWSubsectionVideoModel *subsectionVideoModel = array[cIndex][indexPath.row];
-    _playView.urlStr = subsectionVideoModel.subsectionVideoUrl;
+    _playView.urlStr = subsectionVideoModel.subsectionRecorderVideoUrl?:subsectionVideoModel.subsectionVideoUrl;
     subsectionVideoModel.subsectionVideoPerformanceStatus = subsectionVideoModel.subsectionVideoPerformanceStatus.integerValue==1?@"1":@"0";
     _recorderView.model = subsectionVideoModel;
     for (UICollectionView *cv in _collectionViews) {

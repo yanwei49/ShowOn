@@ -26,6 +26,7 @@
 #import "MPMoviePlayerViewController+Rotation.h"
 #import "YWTranscribeViewController.h"
 #import "YWEditMovieCallingCardViewController.h"
+#import "YWOtherMovieViewController.h"
 
 @interface YWUserDataViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YWMineTableHeadViewDelegate, YWCustomSegViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, YWTrendsTableViewCellDelegate, YWTrendsCategoryViewDelegate, UIActionSheetDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -65,7 +66,7 @@
         [self createRightItemWithImage:@"more_normal.png"];
     }
     _httpManager = [YWHttpManager shareInstance];
-    _dataSource = [[NSMutableArray alloc] initWithArray:@[@"昵称",@"个人签名", @"性别", @"地区", @"年龄", @"星座", @"身高", @"三围"]];
+    _dataSource = [[NSMutableArray alloc] initWithArray:@[@"昵称",@"个人签名", @"性别", @"地区", @"年龄", @"星座", @"身高", @"三围", @"个人其他视频"]];
     _sexArray = @[@"男", @"女"];
     _constellationArray = @[@"白羊座", @"金牛座", @"双子座", @"巨蟹座", @"狮子座", @"处女座", @"天秤座", @"天蝎座", @"射手座", @"摩羯座", @"水瓶座", @"双鱼座"];
     _trendsArray = [[NSMutableArray alloc] init];
@@ -119,7 +120,9 @@
     _footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
     _footView.backgroundColor = Subject_color;
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(40, 40, kScreenWidth-80, 40)];
-    button.backgroundColor = RGBColor(30, 30, 30);
+    button.backgroundColor = RGBColor(241, 81, 81);
+    button.layer.masksToBounds = YES;
+    button.layer.cornerRadius = 5;
     [button setTitle:@"制作视频名片" forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:15];
     [button addTarget:self action:@selector(actionMovieCard) forControlEvents:UIControlEventTouchUpInside];
@@ -490,18 +493,20 @@
         cell.contentView.backgroundColor = RGBColor(52, 52, 52);
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.textLabel.text = _dataSource[indexPath.row];
-        cell.accessoryType = UITableViewCellAccessoryDetailButton;
         NSArray *contents = @[_user.userName?:@"", _user.userInfos?:@"", _user.userSex?(_user.userSex.integerValue?@"男":@"女"):@"", _user.userDistrict?:@"", _user.userBirthday?:@"", _user.userConstellation?:@"", _user.userheight?:@"", _user.userBwh?:@""];
-        UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth-200, cell.bounds.size.height)];
-        tf.delegate = self;
-        tf.text = contents[indexPath.row];
-        tf.textColor = [UIColor whiteColor];
-        tf.textAlignment = NSTextAlignmentRight;
-        tf.font = [UIFont systemFontOfSize:15];
-        cell.accessoryView = tf;
-        tf.userInteractionEnabled = (!_isSelf)?NO:YES;
-        if (indexPath.row == 2 || indexPath.row == 4 || indexPath.row == 5) {
-            tf.userInteractionEnabled = NO;
+        if (indexPath.row != contents.count) {
+            cell.accessoryType = UITableViewCellAccessoryDetailButton;
+            UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth-200, cell.bounds.size.height)];
+            tf.delegate = self;
+            tf.text = contents[indexPath.row];
+            tf.textColor = [UIColor whiteColor];
+            tf.textAlignment = NSTextAlignmentRight;
+            tf.font = [UIFont systemFontOfSize:15];
+            cell.accessoryView = tf;
+            tf.userInteractionEnabled = (!_isSelf)?NO:YES;
+            if (indexPath.row == 2 || indexPath.row == 4 || indexPath.row == 5) {
+                tf.userInteractionEnabled = NO;
+            }
         }
         
         return cell;
@@ -554,9 +559,15 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (!_itemSelectIndex) {
         if (_isSelf) {
-            UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
-            [cell.accessoryView becomeFirstResponder];
-            [self didSelectCellWithIndex:indexPath.row];
+            if (indexPath.row != _dataSource.count-1) {
+                UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+                [cell.accessoryView becomeFirstResponder];
+                [self didSelectCellWithIndex:indexPath.row];
+            }else {
+                YWOtherMovieViewController *vc = [[YWOtherMovieViewController alloc] init];
+                vc.user = _user;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
         }
     }else {
         YWTrendsDetailViewController *hotVC = [[YWTrendsDetailViewController alloc] init];
@@ -612,6 +623,11 @@
     [self hiddenPickView];
     _userCategoryView.hidden = YES;
     _categoryView.hidden = YES;
+    if (!index) {
+        _tableView.tableFooterView = _footView;
+    }else {
+        _tableView.tableFooterView = [[UIView alloc] init];
+    }
     [_tableView reloadData];
 }
 

@@ -61,10 +61,16 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenHotView) name:@"HiddenHotView" object:nil];
 }
 
+#pragma mark - NSNotification
 - (void)hiddenHotView {
     self.navigationController.navigationBarHidden = NO;
     _hotView.hidden = YES;
     _tableView.hidden = NO;
+    [YWNoCotentView showNoCotentViewWithState:NO];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"HiddenHotView" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -103,6 +109,7 @@
 }
 
 - (void)createHotView {
+    [YWNoCotentView showNoCotentViewWithState:NO];
     _tableView.hidden = YES;
     if (_hotView) {
         _hotView.hidden = NO;

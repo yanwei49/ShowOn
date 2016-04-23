@@ -71,6 +71,7 @@
     self.navigationController.navigationBarHidden = NO;
     _hotView.hidden = YES;
     _movie1.hidden = NO;
+    [YWNoCotentView showNoCotentViewWithState:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

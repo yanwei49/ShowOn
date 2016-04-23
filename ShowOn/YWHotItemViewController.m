@@ -52,7 +52,7 @@
     _segmentedControl.frame = CGRectMake(0, 0, 100, 35);
     _segmentedControl.selectedSegmentIndex = 0;
     [_segmentedControl addTarget:self action:@selector(actionSegValueChange) forControlEvents:UIControlEventValueChanged];
-    _segmentedControl.tintColor = [UIColor redColor];
+    _segmentedControl.tintColor = RGBColor(255, 194, 0);
     self.navigationItem.titleView = _segmentedControl;
     _dataSource = [[NSMutableArray alloc] init];
     _trends = [[NSMutableArray alloc] init];
@@ -410,9 +410,13 @@
         [self presentViewController:moviePlayerViewController animated:YES completion:nil];
         [self requestPlayModelId:cell.trends.trendsId withType:2];
     }else {
-        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
-        vc.trends = cell.trends;
-        [self.navigationController pushViewController:vc animated:YES];
+        if ([[YWDataBaseManager shareInstance] loginUser]) {
+            YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+            vc.trends = cell.trends;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else {
+            [self login];
+        }
     }
 }
 
@@ -453,9 +457,13 @@
         [self presentViewController:moviePlayerViewController animated:YES completion:nil];
         [self requestPlayModelId:cell.trends.trendsId withType:2];
     }else {
-        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
-        vc.trends = cell.trends;
-        [self.navigationController pushViewController:vc animated:YES];
+        if ([[YWDataBaseManager shareInstance] loginUser]) {
+            YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+            vc.trends = cell.trends;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else {
+            [self login];
+        }
     }
 }
 

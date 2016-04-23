@@ -122,9 +122,28 @@
         [self addProgressObserver];
         [self addObserverToPlayerItem:playerItem];
         [self addNotification];
+        _progress.progress = 0;
 
         [_player pause];
     }
+}
+
+- (void)setUrl:(NSURL *)url {
+    _url = url;
+    _isPlay = NO;
+    _isRepeat = NO;
+    [self removeNotification];
+    [self removeObserverFromPlayerItem:_player.currentItem];
+    AVAsset *movieAsset = [AVURLAsset URLAssetWithURL:url options:nil];
+    AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:movieAsset];
+    [self addObserverToPlayerItem:playerItem];
+    //切换视频
+    [_player replaceCurrentItemWithPlayerItem:playerItem];
+    [_player pause];
+    _progress.progress = 0;
+    //    [_player play];
+    [self addProgressObserver];
+    [self addNotification];
 }
 
 - (void)setUrlStr:(NSString *)urlStr {
@@ -141,6 +160,7 @@
     //切换视频
     [_player replaceCurrentItemWithPlayerItem:playerItem];
     [_player pause];
+    _progress.progress = 0;
 //    [_player play];
     [self addProgressObserver];
     [self addNotification];
@@ -148,6 +168,11 @@
 
 - (void)setIsCountdown:(BOOL)isCountdown {
     _isCountdown = isCountdown;
+}
+
+- (void)setProgressHiddenState:(BOOL)progressHiddenState {
+    _progressHiddenState = progressHiddenState;
+    _progress.hidden = progressHiddenState;
 }
 
 #pragma mark - 通知
@@ -191,9 +216,9 @@
     [_player addPeriodicTimeObserverForInterval:CMTimeMake(1.0, 10.0) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         float current=CMTimeGetSeconds(time);
         float total=CMTimeGetSeconds([playerItem duration]);
-        DebugLog(@"当前已经播放%.2fs. %.2f",current, total);
+        DebugLog(@"当前已经播放%.2fs, %.2f, %.2f",current, total, current/total);
         if (current) {
-            [this.progress setProgress:(current/total) animated:YES];
+            [this.progress setProgress:(current/total) animated:NO];
         }
     }];
 }
@@ -305,6 +330,7 @@
 }
 
 - (void)play {
+    _playOrPause.hidden = YES;
     [_player play];
 }
 

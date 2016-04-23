@@ -217,15 +217,15 @@
         [self showErrorWithString:@"请输入正确的信息"];
         return NO;
     }
-    if ([NSString isMobileNumber:_accountTextField.text]) {
+    if (![NSString isMobileNumber:_accountTextField.text]) {
         [self showErrorWithString:@"请输入正确的手机号"];
         return NO;
     }
-    if ([NSString isValidatePwd:_passwordTextField.text]) {
+    if (![NSString isValidatePwd:_passwordTextField.text]) {
         [self showErrorWithString:@"密码只能为6-12为数字或字母"];
         return NO;
     }
-    if ([_repeatPasswordTextField.text isEqualToString:_passwordTextField.text]) {
+    if (![_repeatPasswordTextField.text isEqualToString:_passwordTextField.text]) {
         [self showErrorWithString:@"两次密码不一样，请重新输入"];
         return NO;
     }
@@ -240,6 +240,7 @@
             [SVProgressHUD showSuccessWithStatus:@"重置成功，请重新登录"];
             [self.navigationController popToRootViewControllerAnimated:YES];
         } otherFailure:^(id responseObject) {
+            [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
         } failure:^(NSError *error) {
         }];
     }

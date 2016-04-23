@@ -24,6 +24,7 @@
 #import "YWRepeatDetailTableViewCell.h"
 #import "YWMovieCardModel.h"
 #import "YWMovieCardTableViewCell.h"
+#import "YWEditMovieCallingCardViewController.h"
 
 @interface YWTrendsViewController ()<UITableViewDelegate, UITableViewDataSource, YWFocusTableViewCellDelegate, UISearchBarDelegate, YWTrendsCategoryViewDelegate, YWRepeatDetailTableViewCellDelegate, YWMovieCardTableViewCellDelegate>
 
@@ -41,17 +42,18 @@
     NSInteger                _currentPage;
     UISegmentedControl      *_segmentedControl;
     NSMutableArray          *_movieCardDataSource;
+    UIView                  *_footView;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     if (!_isFriendTrendsList) {
-        _segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"视频名片", @"动态"]];
+        _segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"资料", @"动态"]];
         _segmentedControl.frame = CGRectMake(0, 0, 100, 35);
         _segmentedControl.selectedSegmentIndex = 1;
         [_segmentedControl addTarget:self action:@selector(actionSegValueChange) forControlEvents:UIControlEventValueChanged];
-        _segmentedControl.tintColor = [UIColor redColor];
+        _segmentedControl.tintColor = RGBColor(255, 194, 0);
         self.navigationItem.titleView = _segmentedControl;
     }
     _dataSource = [[NSMutableArray alloc] init];
@@ -77,6 +79,17 @@
     _searchBar.delegate = self;
     _searchBar.placeholder = @"搜索片名/用户名";
 
+    _footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
+    _footView.backgroundColor = Subject_color;
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(40, 40, kScreenWidth-80, 40)];
+    button.backgroundColor = RGBColor(241, 81, 81);
+    button.layer.masksToBounds = YES;
+    button.layer.cornerRadius = 5;
+    [button setTitle:@"制作视频名片" forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:15];
+    [button addTarget:self action:@selector(actionMovieCard) forControlEvents:UIControlEventTouchUpInside];
+    [_footView addSubview:button];
+    
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     _tableView.backgroundColor = Subject_color;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -120,12 +133,19 @@
     }];
 }
 
+- (void)actionMovieCard {
+    YWEditMovieCallingCardViewController *vc = [[YWEditMovieCallingCardViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)actionSegValueChange {
     [_dataSource removeAllObjects];
     if (_segmentedControl.selectedSegmentIndex) {
+        _tableView.tableFooterView = [[UIView alloc] init];
         [self trendsCategoryView:_categoryView didSelectCategoryWithIndex:_trendsType];
     }else {
         [_dataSource addObjectsFromArray:_movieCardDataSource];
+        _tableView.tableFooterView = _footView;
         [_tableView reloadData];
     }
     [YWNoCotentView showNoCotentViewWithState:_dataSource.count?NO:YES];

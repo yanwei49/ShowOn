@@ -24,7 +24,7 @@
 @property (nonatomic, strong) YWMovieTemplateModel *template;
 @property (nonatomic, strong) YWSubsectionVideoModel *subsectionVideo;
 @property (nonatomic, assign) id<YWTemplateCollectionViewCellDelegate> delegate;
-//@property (nonatomic, assign) BOOL progressHiddenState;
+@property (nonatomic, assign) BOOL isPlay;
 
 //开始录制动画
 - (void)startRecorderAnimationWithDuration:(CGFloat)time;

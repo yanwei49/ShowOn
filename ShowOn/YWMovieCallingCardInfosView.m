@@ -23,8 +23,8 @@
     if (self) {
         self.backgroundColor = Subject_color;
         _tfs = [[NSMutableArray alloc] init];
-        NSArray *titles = @[@"认证信息:", @"地区:", @"年龄:", @"星座:", @"身高:", @"三围:", @"通告:", @"邮箱:", @"简介:"];
-        NSArray *placeholders = @[@"请输入认证信息", @"请输入地区", @"请输入年龄", @"请输入星座", @"请输入身高", @"请输入三围", @"请输入通告", @"请输入邮箱", @"请输入简介"];
+        NSArray *titles = @[@"姓名:", @"地区:", @"年龄:", @"星座:", @"身高:", @"三围:", @"通告:", @"邮箱:", @"简介:"];
+        NSArray *placeholders = @[@"请输入姓名", @"请输入地区", @"请输入年龄", @"请输入星座", @"请输入身高", @"请输入三围", @"请输入通告", @"请输入邮箱", @"请输入简介"];
         UIView *view = [[UIView alloc] init];
         view.backgroundColor = RGBColor(50, 50, 50);
         [self addSubview:view];
@@ -63,7 +63,7 @@
             make.top.offset(60);
             make.height.offset(40);
             make.left.equalTo(10);
-            make.width.offset(70);
+            make.width.offset(40);
         }];
         
         UITextField *tf = [[UITextField alloc] init];

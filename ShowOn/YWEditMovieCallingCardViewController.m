@@ -72,7 +72,7 @@
 #pragma mark - action
 - (void)actionRightItem:(UIButton *)button {
     [_reusableview endEditing:YES];
-    NSArray *array = @[@"请填写您的年龄", @"请填写您的三围", @"请填写您的身高", @"请选择您要制作视频名片的视频", @"请填写您的或邮箱"];
+    NSArray *array = @[@"请填写您的年龄", @"请填写您的三围", @"请填写您的身高", @"请选择您要制作视频名片的视频", @"请填写您的或邮箱", @"请填写您的姓名"];
     if (!_movieCard.age.length) {
         [self showAlterWithTitle:array[0]];
         return;
@@ -87,6 +87,9 @@
         return;
     }else if (_selectIndex == -1) {
         [self showAlterWithTitle:array[3]];
+        return;
+    }else if (!_movieCard.authentication.length) {
+        [self showAlterWithTitle:array[5]];
         return;
     }
     _movieCard.trends = _dataSource[_selectIndex];

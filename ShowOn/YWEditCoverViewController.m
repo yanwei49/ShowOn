@@ -157,7 +157,7 @@
             AVURLAsset *urlAsset=[AVURLAsset assetWithURL:model.recorderVideoUrl];
             for (NSInteger i=0; i<(int)CMTimeGetSeconds(urlAsset.duration); i++) {
                 UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i];
-                UIImage *rotationImage = [self rotation:image];
+                UIImage *rotationImage = [self fixOrientation:image];
                 [_coverImages addObject:rotationImage];
             }
         }
@@ -330,6 +330,7 @@
      * requestTime:缩略图创建时间
      * actualTime:缩略图实际生成的时间
      */
+    imageGenerator.appliesPreferredTrackTransform = YES;    // 截图的时候调整到正确的方向
     NSError *error=nil;
     CMTime time=CMTimeMakeWithSeconds(timeBySecond, 10);//CMTime是表示电影时间信息的结构体，第一个参数表示是视频第几秒，第二个参数表示每秒帧数.(如果要活的某一秒的第几帧可以使用CMTimeMake方法)
     CMTime actualTime;

@@ -25,35 +25,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.automaticallyAdjustsScrollViewInsets = NO;
-//    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]){
-//        self.edgesForExtendedLayout = UIRectEdgeNone;
-//    }
     self.view.backgroundColor = Subject_color;
     _httpManager = [YWHttpManager shareInstance];
-    
-//    [self createNoContentView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [YWNoCotentView showNoCotentViewWithState:NO];
-}
-
-- (void)createNoContentView {
-    _noContentLabel = [[UILabel alloc] init];
-    _noContentLabel.backgroundColor = Subject_color;
-    _noContentLabel.textColor = RGBColor(230, 230, 230);
-    _noContentLabel.text = @"暂无内容";
-    _noContentLabel.textAlignment = NSTextAlignmentCenter;
-    _noContentLabel.font = [UIFont systemFontOfSize:15];
-    _noContentLabel.hidden = YES;
-    [self.view addSubview:_noContentLabel];
-    [_noContentLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.offset(0);
-        make.centerY.equalTo(self.view.mas_centerY).offset(30);
-        make.height.offset(20);
-    }];
 }
 
 #pragma mark - create right/left item

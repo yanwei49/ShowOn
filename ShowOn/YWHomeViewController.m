@@ -56,6 +56,7 @@
     self.navigationController.navigationBarHidden = NO;
     _hotView.hidden = YES;
     _tableView.hidden = NO;
+    [YWNoCotentView showNoCotentViewWithState:_dataSource.count?NO:YES];
 }
 
 - (void)dealloc {
@@ -132,6 +133,7 @@
     [self createHotView];
     YWCustomTabBarViewController *tabBar = (YWCustomTabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     tabBar.itemSelectIndex = -1;
+    [YWNoCotentView showNoCotentViewWithState:NO ];
 }
 
 #pragma mark - request
@@ -144,7 +146,6 @@
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser articleWithArray:responseObject[@"articleList"]];
         [_dataSource addObjectsFromArray:array];
-//        [self noContentViewShowWithState:_dataSource.count?NO:YES];
         if (array.count<20) {
             _tableView.footer = nil;
         }else {
@@ -156,7 +157,9 @@
         [_tableView.header endRefreshing];
         [_tableView.footer endRefreshing];
         [_tableView reloadData];
-        [YWNoCotentView showNoCotentViewWithState:_dataSource.count?NO:YES];
+        if (_hotView.hidden) {
+            [YWNoCotentView showNoCotentViewWithState:_dataSource.count?NO:YES];
+        }
     } otherFailure:^(id responseObject) {
         [_tableView.header endRefreshing];
         [_tableView.footer endRefreshing];

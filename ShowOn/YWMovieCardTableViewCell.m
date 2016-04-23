@@ -97,7 +97,7 @@
     _model = model;
     [_titles removeAllObjects];
     [_contents removeAllObjects];
-    NSArray *titles = @[@"认证", @"年龄", @"地区", @"星座", @"身高", @"三围", @"通告", @"邮箱"];
+    NSArray *titles = @[@"姓名", @"年龄", @"地区", @"星座", @"身高", @"三围", @"通告", @"邮箱"];
     NSArray *array = @[model.authentication?:@"", model.age?:@"", model.address?:@"", model.constellation?:@"", model.height?:@"", model.bwh?:@"", model.announce?:@"", model.email?:@""];
     for (NSInteger i=0; i<array.count; i++) {
         if ([array[i] length]) {
@@ -106,7 +106,7 @@
         }
     }
     [_tableView updateConstraints:^(MASConstraintMaker *make) {
-        make.height.offset(30*_titles.count);
+        make.height.offset(40*_titles.count);
     }];
     [_tableView reloadData];
     _contentLabel.text = model.info;
@@ -121,8 +121,8 @@
             cnt += 1;
         }
     }
-    CGFloat height = 30*cnt;
-    CGRect rect = [model.trends.trendsContent boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14]} context:nil];
+    CGFloat height = 40*cnt;
+    CGRect rect = [model.info boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14]} context:nil];
     
     return height+200+rect.size.height+10;
 }
@@ -154,7 +154,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 30;
+    return 40;
 }
 
 @end

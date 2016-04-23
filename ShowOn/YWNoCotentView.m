@@ -34,6 +34,7 @@ static YWNoCotentView *view;
             make.centerY.equalTo(self.mas_centerY);
             make.centerX.equalTo(self.mas_centerX);
         }];
+        self.userInteractionEnabled = NO;
     }
     
     return self;
