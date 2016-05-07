@@ -24,6 +24,6 @@
 @property (nonatomic, strong) NSString *subsectionVideoPerformanceStatus;       //分段视频演出状态（0、录制中  1、已演,2、未演）
 @property (nonatomic, strong) NSString *subsectionVideoTemplateId;              //分段视频所属模板id
 @property (nonatomic, strong) NSString *subsectionVideoPlayUserId;              //分段视频表演用户id
-
+@property (nonatomic, strong) NSString *subsectionAudioUrl;                     //分段视频音频Url
 
 @end

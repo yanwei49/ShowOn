@@ -10,9 +10,9 @@
 
 @class YWSubsectionVideoModel;
 @class YWMovieRecorder;
+@class YWMovieModel;
 @protocol YWMovieRecorderDelegate <NSObject>
 
-//- (void)movieRecorderDownWithData:(NSData *)data subsectionVideoSort:(NSString *)subsectionVideoSort subsectionVideoType:(NSString *)subsectionVideoType;
 - (void)movieRecorderDown:(YWMovieRecorder *)view;
 - (void)movieRecorderBegin:(YWMovieRecorder *)view;
 
@@ -21,8 +21,7 @@
 @interface YWMovieRecorder : UIView
 
 @property (nonatomic, strong) YWSubsectionVideoModel *model;
-//@property (nonatomic, strong) NSString *subsectionVideoSort;
-//@property (nonatomic, strong) NSString *subsectionVideoType;
+@property (nonatomic, strong) YWMovieModel *movie;
 @property (nonatomic, assign) id<YWMovieRecorderDelegate> delegate;
 
 //激活

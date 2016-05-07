@@ -59,7 +59,7 @@
     releaseButton.layer.masksToBounds = YES;
     releaseButton.layer.cornerRadius = 5;
     [releaseButton setTitle:@"发布" forState:UIControlStateNormal];
-    [releaseButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [releaseButton setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
     [releaseButton addTarget:self action:@selector(actionRelease:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:releaseButton];
     [releaseButton makeConstraints:^(MASConstraintMaker *make) {
@@ -120,7 +120,7 @@
         UIButton *button = [[UIButton alloc] init];
         button.backgroundColor = Subject_color;
         button.titleLabel.font = [UIFont systemFontOfSize:14];
-        [button setTitleColor:[UIColor orangeColor] forState:UIControlStateSelected];
+        [button setTitleColor:[UIColor yellowColor] forState:UIControlStateSelected];
         [button addTarget:self action:@selector(actionOnClick:) forControlEvents:UIControlEventTouchUpInside];
         [button setTitle:titles[i] forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:@"choose_normal_small.png"] forState:UIControlStateNormal];
@@ -138,7 +138,7 @@
 
 #pragma mark - private
 - (NSURL *)movieMerge {
-    if (_recorderState) {
+//    if (_recorderState) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self mergeAndSaveComplete:^(id responseObject) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -150,7 +150,7 @@
                 return responseObject;
             }];
         });
-    }
+//    }
     return nil;
 }
 
@@ -266,27 +266,42 @@
     AVMutableComposition *mixComposition = [[AVMutableComposition alloc] init];
     // 2 - Video track
     AVMutableCompositionTrack *firstTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+    AVMutableCompositionTrack *audioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
     AVAsset *lastAsset;
     AVMutableVideoCompositionInstruction * MainInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
     AVMutableVideoCompositionLayerInstruction *FirstlayerInstruction;
     AVMutableVideoCompositionLayerInstruction *SecondlayerInstruction;
     for (NSInteger i=0; i<_template.templateSubsectionVideos.count; i++) {
-        NSURL *url;
+        NSURL *movieUrl;
+        NSURL *audioUrl;
         for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
+            if (model.subsectionAudioUrl.length) {
+                audioUrl = [NSURL URLWithString:model.subsectionAudioUrl];
+            }
             if (model.subsectionVideoSort.integerValue == i+1) {
                 if (model.recorderVideoUrl) {
-                    url = model.recorderVideoUrl;
+                    movieUrl = model.recorderVideoUrl;
                 }else if(model.subsectionVideoUrl.length) {
-                    url = [NSURL URLWithString:model.subsectionVideoUrl];
+                    movieUrl = [NSURL URLWithString:model.subsectionVideoUrl];
                 }else if (model.subsectionRecorderVideoUrl.length) {
-                    url = [NSURL URLWithString:model.subsectionRecorderVideoUrl];
+                    movieUrl = [NSURL URLWithString:model.subsectionRecorderVideoUrl];
                 }
                 break;
             }
         }
-        AVAsset *medioAsset = [AVAsset assetWithURL:url];
+        if (!movieUrl) {
+            break;
+        }
+        AVAsset *medioAsset = [AVAsset assetWithURL:movieUrl];
+        AVAsset *audioAsset;
+        if (audioUrl) {
+            audioAsset = [AVAsset assetWithURL:audioUrl];
+        }
         if (!i) {
             [firstTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, medioAsset.duration) ofTrack:[[medioAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
+            if (audioUrl) {
+                [audioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, CMTimeAdd(kCMTimeZero, medioAsset.duration)) ofTrack:[[audioAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
+            }
             //FIXING ORIENTATION//
             FirstlayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:firstTrack];
             AVAssetTrack *FirstAssetTrack = [[medioAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
@@ -309,6 +324,9 @@
             [FirstlayerInstruction setOpacity:0.0 atTime:medioAsset.duration];
         }else {
             [firstTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, medioAsset.duration) ofTrack:[[medioAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:lastAsset.duration error:nil];
+            if (audioUrl) {
+                [audioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, CMTimeAdd(kCMTimeZero, medioAsset.duration)) ofTrack:[[audioAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:lastAsset.duration error:nil];
+            }
             MainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeAdd(lastAsset.duration, medioAsset.duration));
             SecondlayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:firstTrack];
             AVAssetTrack *SecondAssetTrack = [[medioAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
@@ -341,10 +359,15 @@
     }
     
     // 4 - Get path
+    if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"MOVIE_COUNT"] length]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1000" forKey:@"MOVIE_COUNT"];
+    }
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *myPathDocs =  [documentsDirectory stringByAppendingPathComponent:
-                             [NSString stringWithFormat:@"mergeVideo-%d.mov",arc4random() % 1000]];
+                             [NSString stringWithFormat:@"mergeVideo-%ld.mov",[[[NSUserDefaults standardUserDefaults] objectForKey:@"MOVIE_COUNT"] integerValue]+1]];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%ld", [[[NSUserDefaults standardUserDefaults] objectForKey:@"MOVIE_COUNT"] integerValue]+1] forKey:@"MOVIE_COUNT"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     NSURL *url = [NSURL fileURLWithPath:myPathDocs];
     // 5 - Create exporter
     AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetHighestQuality];
@@ -420,12 +443,24 @@
 }
 
 #pragma mark - UITextViewDelegate
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    return YES;
+}
+
 - (void)textViewDidChange:(UITextView *)textView {
     if (textView.text.length) {
         _placeholderLabel.text = @"";
     }else {
         _placeholderLabel.text = @"写点什么吧...";
     }
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [_contentTextView resignFirstResponder];
 }
 
 @end

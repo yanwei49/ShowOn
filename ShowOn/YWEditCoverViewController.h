@@ -10,11 +10,13 @@
 
 @class YWTrendsModel;
 @class YWMovieTemplateModel;
+@class YWUserModel;
 @interface YWEditCoverViewController : YWBaseViewController
 
 //@property (nonatomic, strong) NSArray *recorderMovies;
 @property (nonatomic, strong) YWTrendsModel *trends;
 @property (nonatomic, strong) YWMovieTemplateModel *template;
 @property (nonatomic, assign) BOOL recorderState;
+@property (nonatomic, strong) YWUserModel *user;
 
 @end

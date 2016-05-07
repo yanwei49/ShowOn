@@ -13,6 +13,9 @@
 #import "YWSubsectionVideoModel.h"
 #import "YWTools.h"
 #import "YWCutImageViewController.h"
+#import "YWMovieModel.h"
+#import "YWHttpManager.h"
+#import "YWUserModel.h"
 
 @interface YWEditCoverViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, YWCutImageViewControllerDelegate>
 
@@ -45,7 +48,7 @@
     downButton.layer.masksToBounds = YES;
     downButton.layer.cornerRadius = 5;
     [downButton setTitle:@"完成" forState:UIControlStateNormal];
-    [downButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [downButton setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
     [downButton addTarget:self action:@selector(actionDown:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:downButton];
     [downButton makeConstraints:^(MASConstraintMaker *make) {
@@ -94,6 +97,18 @@
     [self.view addSubview:_cutView];
 }
 
+#pragma mark - request
+- (void)requestCommitCasting {
+    [[YWHttpManager shareInstance] requestWriteCasting:@{@"userId": _user.userId} coverImage:_coverImageView.image movieUrl:_user.casting.movieRecorderUrl success:^(id responseObject) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
+    } otherFailure:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
 - (void)createScorllImagesWithImages:(NSArray *)images {
     _coverImageSV.contentSize = CGSizeMake(120*images.count, 100);
     for (NSInteger i=0; i<images.count; i++) {
@@ -128,13 +143,17 @@
 
 - (void)actionDown:(UIButton *)button {
     if (_coverImageView.image) {
-        YWEditTrendsViewController *vc = [[YWEditTrendsViewController alloc] init];
-        vc.trends = _trends;
-        vc.template = _template;
-//        vc.recorderMovies = _recorderMovies;
-        vc.recorderState = _recorderState;
-        vc.image = _coverImageView.image;
-        [self.navigationController pushViewController:vc animated:YES];
+        if (_user) {
+            [self requestCommitCasting];
+        }else {
+            YWEditTrendsViewController *vc = [[YWEditTrendsViewController alloc] init];
+            vc.trends = _trends;
+            vc.template = _template;
+            //        vc.recorderMovies = _recorderMovies;
+            vc.recorderState = _recorderState;
+            vc.image = _coverImageView.image;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }else {
         UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请选择封面" message:nil delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
         [alter show];
@@ -152,13 +171,22 @@
 
 - (void)movieFrameImage {
     [_coverImages removeAllObjects];
-    for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
-        if (model.recorderVideoUrl) {
-            AVURLAsset *urlAsset=[AVURLAsset assetWithURL:model.recorderVideoUrl];
-            for (NSInteger i=0; i<(int)CMTimeGetSeconds(urlAsset.duration); i++) {
-                UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i];
-                UIImage *rotationImage = [self fixOrientation:image];
-                [_coverImages addObject:rotationImage];
+    if (_user) {
+        AVURLAsset *urlAsset=[AVURLAsset assetWithURL:_user.casting.movieRecorderUrl];
+        for (NSInteger i=0; i<(int)CMTimeGetSeconds(urlAsset.duration); i++) {
+            UIImage *image = [self thumbnailImageRequestUrl:_user.casting.movieRecorderUrl time:10*i];
+            UIImage *rotationImage = [self fixOrientation:image];
+            [_coverImages addObject:rotationImage];
+        }
+    }else {
+        for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
+            if (model.recorderVideoUrl) {
+                AVURLAsset *urlAsset=[AVURLAsset assetWithURL:model.recorderVideoUrl];
+                for (NSInteger i=0; i<(int)CMTimeGetSeconds(urlAsset.duration); i++) {
+                    UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i];
+                    UIImage *rotationImage = [self fixOrientation:image];
+                    [_coverImages addObject:rotationImage];
+                }
             }
         }
     }

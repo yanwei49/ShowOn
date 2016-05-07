@@ -15,6 +15,9 @@
 		566D99511C9A303400608B53 /* start_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 566D99501C9A303400608B53 /* start_1.png */; };
 		566E7BA81C86628A008D2B4F /* 测试结果.txt in Resources */ = {isa = PBXBuildFile; fileRef = 566E7BA71C86628A008D2B4F /* 测试结果.txt */; };
 		566F0DA01C48716500353311 /* YWTrendsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 566F0D9F1C48716500353311 /* YWTrendsModel.m */; };
+		56777DFC1CD304AA004C2009 /* juer_title.png in Resources */ = {isa = PBXBuildFile; fileRef = 56777DFB1CD304AA004C2009 /* juer_title.png */; };
+		56777E241CD312E3004C2009 /* YWMovieCardMovieTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56777E231CD312E3004C2009 /* YWMovieCardMovieTableViewCell.m */; };
+		56777E571CD35E07004C2009 /* YWPreViewHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56777E561CD35E07004C2009 /* YWPreViewHeadView.m */; };
 		5678555B1C7552BB008DEB1C /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 567855581C7552BB008DEB1C /* down.png */; };
 		5678555C1C7552BB008DEB1C /* down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 567855591C7552BB008DEB1C /* down@2x.png */; };
 		5678555D1C7552BB008DEB1C /* down@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5678555A1C7552BB008DEB1C /* down@3x.png */; };
@@ -29,14 +32,15 @@
 		567A77B61C894367000F336A /* MPMoviePlayerViewController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 567A77B51C894367000F336A /* MPMoviePlayerViewController+Rotation.m */; };
 		567C151C1C731761006A365D /* YWKeyboardHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 567C151B1C731761006A365D /* YWKeyboardHeadView.m */; };
 		567C151F1C7322AB006A365D /* YWWeiBoFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 567C151E1C7322AB006A365D /* YWWeiBoFriendsViewController.m */; };
+		567E056C1CDC1E64008D2F47 /* YWCastingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 567E056B1CDC1E64008D2F47 /* YWCastingTableViewCell.m */; };
+		567E056F1CDC2269008D2F47 /* YWSelectCastingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 567E056E1CDC2269008D2F47 /* YWSelectCastingViewController.m */; };
+		567E05721CDC731F008D2F47 /* YWReorderCastingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 567E05711CDC731F008D2F47 /* YWReorderCastingViewController.m */; };
 		5683287B1CB503C7001CCC1A /* YWPlayUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5683287A1CB503C7001CCC1A /* YWPlayUserViewController.m */; };
 		56843F821C4F03C50062F7DF /* YWMovieTemplateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56843F811C4F03C50062F7DF /* YWMovieTemplateModel.m */; };
 		56843F851C4F05080062F7DF /* YWSubsectionVideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56843F841C4F05080062F7DF /* YWSubsectionVideoModel.m */; };
 		5685DF971CA370630000F135 /* add_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5685DF951CA370630000F135 /* add_img@2x.png */; };
 		5685DF981CA370630000F135 /* add_img@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5685DF961CA370630000F135 /* add_img@3x.png */; };
 		5689DBCC1C4476080095936F /* YWHotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689DBCB1C4476080095936F /* YWHotView.m */; };
-		568CD1C41CB88B81008C2293 /* juer_title@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 568CD1C21CB88B81008C2293 /* juer_title@2x.png */; };
-		568CD1C51CB88B81008C2293 /* juer_title@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 568CD1C31CB88B81008C2293 /* juer_title@3x.png */; };
 		568CD1CC1CB88E09008C2293 /* juer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 568CD1CA1CB88E09008C2293 /* juer@2x.png */; };
 		568CD1CD1CB88E09008C2293 /* juer@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 568CD1CB1CB88E09008C2293 /* juer@3x.png */; };
 		568CD1CF1CB88E46008C2293 /* juer_.png in Resources */ = {isa = PBXBuildFile; fileRef = 568CD1CE1CB88E46008C2293 /* juer_.png */; };
@@ -325,6 +329,11 @@
 		566E7BA71C86628A008D2B4F /* 测试结果.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "测试结果.txt"; sourceTree = "<group>"; };
 		566F0D9E1C48716500353311 /* YWTrendsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWTrendsModel.h; sourceTree = "<group>"; };
 		566F0D9F1C48716500353311 /* YWTrendsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWTrendsModel.m; sourceTree = "<group>"; };
+		56777DFB1CD304AA004C2009 /* juer_title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = juer_title.png; sourceTree = "<group>"; };
+		56777E221CD312E3004C2009 /* YWMovieCardMovieTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWMovieCardMovieTableViewCell.h; sourceTree = "<group>"; };
+		56777E231CD312E3004C2009 /* YWMovieCardMovieTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWMovieCardMovieTableViewCell.m; sourceTree = "<group>"; };
+		56777E551CD35E07004C2009 /* YWPreViewHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWPreViewHeadView.h; sourceTree = "<group>"; };
+		56777E561CD35E07004C2009 /* YWPreViewHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWPreViewHeadView.m; sourceTree = "<group>"; };
 		567855581C7552BB008DEB1C /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
 		567855591C7552BB008DEB1C /* down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down@2x.png"; sourceTree = "<group>"; };
 		5678555A1C7552BB008DEB1C /* down@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down@3x.png"; sourceTree = "<group>"; };
@@ -347,6 +356,12 @@
 		567C151B1C731761006A365D /* YWKeyboardHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWKeyboardHeadView.m; sourceTree = "<group>"; };
 		567C151D1C7322AB006A365D /* YWWeiBoFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWWeiBoFriendsViewController.h; sourceTree = "<group>"; };
 		567C151E1C7322AB006A365D /* YWWeiBoFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWWeiBoFriendsViewController.m; sourceTree = "<group>"; };
+		567E056A1CDC1E64008D2F47 /* YWCastingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWCastingTableViewCell.h; sourceTree = "<group>"; };
+		567E056B1CDC1E64008D2F47 /* YWCastingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWCastingTableViewCell.m; sourceTree = "<group>"; };
+		567E056D1CDC2269008D2F47 /* YWSelectCastingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWSelectCastingViewController.h; sourceTree = "<group>"; };
+		567E056E1CDC2269008D2F47 /* YWSelectCastingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWSelectCastingViewController.m; sourceTree = "<group>"; };
+		567E05701CDC731F008D2F47 /* YWReorderCastingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWReorderCastingViewController.h; sourceTree = "<group>"; };
+		567E05711CDC731F008D2F47 /* YWReorderCastingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWReorderCastingViewController.m; sourceTree = "<group>"; };
 		568328791CB503C7001CCC1A /* YWPlayUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWPlayUserViewController.h; sourceTree = "<group>"; };
 		5683287A1CB503C7001CCC1A /* YWPlayUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWPlayUserViewController.m; sourceTree = "<group>"; };
 		56843F801C4F03C50062F7DF /* YWMovieTemplateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWMovieTemplateModel.h; sourceTree = "<group>"; };
@@ -357,8 +372,6 @@
 		5685DF961CA370630000F135 /* add_img@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_img@3x.png"; sourceTree = "<group>"; };
 		5689DBCA1C4476080095936F /* YWHotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWHotView.h; sourceTree = "<group>"; };
 		5689DBCB1C4476080095936F /* YWHotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWHotView.m; sourceTree = "<group>"; };
-		568CD1C21CB88B81008C2293 /* juer_title@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "juer_title@2x.png"; sourceTree = "<group>"; };
-		568CD1C31CB88B81008C2293 /* juer_title@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "juer_title@3x.png"; sourceTree = "<group>"; };
 		568CD1CA1CB88E09008C2293 /* juer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "juer@2x.png"; sourceTree = "<group>"; };
 		568CD1CB1CB88E09008C2293 /* juer@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "juer@3x.png"; sourceTree = "<group>"; };
 		568CD1CE1CB88E46008C2293 /* juer_.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = juer_.png; sourceTree = "<group>"; };
@@ -834,8 +847,7 @@
 				568CD1CE1CB88E46008C2293 /* juer_.png */,
 				568CD1CA1CB88E09008C2293 /* juer@2x.png */,
 				568CD1CB1CB88E09008C2293 /* juer@3x.png */,
-				568CD1C21CB88B81008C2293 /* juer_title@2x.png */,
-				568CD1C31CB88B81008C2293 /* juer_title@3x.png */,
+				56777DFB1CD304AA004C2009 /* juer_title.png */,
 				568D6DE61CAA33D10084113A /* article_selected@2x.png */,
 				568D6DE71CAA33D10084113A /* article_selected@3x.png */,
 				568D6DE21CAA33C80084113A /* mine_selected@2x.png */,
@@ -1009,6 +1021,10 @@
 				56B09C811CB33840000EF9AA /* YWMovieCallingCardCollectionViewCell.m */,
 				5679220D1CBB4C62006E26C4 /* YWMovieCardTableViewCell.h */,
 				5679220E1CBB4C62006E26C4 /* YWMovieCardTableViewCell.m */,
+				56777E221CD312E3004C2009 /* YWMovieCardMovieTableViewCell.h */,
+				56777E231CD312E3004C2009 /* YWMovieCardMovieTableViewCell.m */,
+				56777E551CD35E07004C2009 /* YWPreViewHeadView.h */,
+				56777E561CD35E07004C2009 /* YWPreViewHeadView.m */,
 			);
 			name = movieCallingCard;
 			sourceTree = "<group>";
@@ -1472,6 +1488,8 @@
 				770EC2CA1C108E2D00A4D2E9 /* YWMineTableHeadView.m */,
 				56B72F371C73099E00E3ACE6 /* YWTrendsCategoryView.h */,
 				56B72F381C73099E00E3ACE6 /* YWTrendsCategoryView.m */,
+				567E056A1CDC1E64008D2F47 /* YWCastingTableViewCell.h */,
+				567E056B1CDC1E64008D2F47 /* YWCastingTableViewCell.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -1558,6 +1576,10 @@
 			children = (
 				7710ABB21C1F8A88006FF4EF /* YWUserDataViewController.h */,
 				7710ABB31C1F8A88006FF4EF /* YWUserDataViewController.m */,
+				567E056D1CDC2269008D2F47 /* YWSelectCastingViewController.h */,
+				567E056E1CDC2269008D2F47 /* YWSelectCastingViewController.m */,
+				567E05701CDC731F008D2F47 /* YWReorderCastingViewController.h */,
+				567E05711CDC731F008D2F47 /* YWReorderCastingViewController.m */,
 			);
 			name = userData;
 			sourceTree = "<group>";
@@ -1913,13 +1935,11 @@
 				568DC06F1C5619DB00CFD1BC /* article_normal@3x.png in Resources */,
 				568DC0C61C5619DB00CFD1BC /* support_normal@2x.png in Resources */,
 				568DC09D1C5619DB00CFD1BC /* play_list@3x.png in Resources */,
-				568CD1C41CB88B81008C2293 /* juer_title@2x.png in Resources */,
 				56F5D37E1C17AED0008C33CA /* markdown.css in Resources */,
 				568DC0BF1C5619DB00CFD1BC /* smile_normal.png in Resources */,
 				568DC0961C5619DB00CFD1BC /* play.png in Resources */,
 				568DC0D51C5619DB00CFD1BC /* 对话框@2x.png in Resources */,
 				568DC0791C5619DB00CFD1BC /* change_shot.png in Resources */,
-				568CD1C51CB88B81008C2293 /* juer_title@3x.png in Resources */,
 				56F5D3771C17AED0008C33CA /* ios-social-sdk-like.html in Resources */,
 				568DC08E1C5619DB00CFD1BC /* more_normal@2x.png in Resources */,
 				56F5D3751C17AED0008C33CA /* ios-social-sdk-comment-detail.html in Resources */,
@@ -1965,6 +1985,7 @@
 				568DC0B01C5619DB00CFD1BC /* set.png in Resources */,
 				568CD1CC1CB88E09008C2293 /* juer@2x.png in Resources */,
 				771FEAD01C77F88F009F71FB /* play_button.png in Resources */,
+				56777DFC1CD304AA004C2009 /* juer_title.png in Resources */,
 				56F5D3731C17AED0008C33CA /* iOS-social-analytics-releasenote.html in Resources */,
 				566E7BA81C86628A008D2B4F /* 测试结果.txt in Resources */,
 				568DC07D1C5619DB00CFD1BC /* choose_normal@2x.png in Resources */,
@@ -2141,11 +2162,13 @@
 				56CFFFC51C745E0D00BE9E6F /* YWSuggestionViewController.m in Sources */,
 				562610C41CA0C59C00672D29 /* YWRepeatDetailTableViewCell.m in Sources */,
 				56A249781CB5E52A00FAAFED /* YWMovieCardModel.m in Sources */,
+				56777E571CD35E07004C2009 /* YWPreViewHeadView.m in Sources */,
 				56B09C821CB33840000EF9AA /* YWMovieCallingCardCollectionViewCell.m in Sources */,
 				770EC2C71C1088E100A4D2E9 /* YWSearchCollectionReusableView.m in Sources */,
 				56F5D38A1C17D44F008C33CA /* YWToolboxPlay.m in Sources */,
 				56B09C7F1CB337EE000EF9AA /* YWMovieCallingCardInfosView.m in Sources */,
 				77D0F0FA1C11C6D500134A17 /* YWExperienceTableViewCell.m in Sources */,
+				567E056C1CDC1E64008D2F47 /* YWCastingTableViewCell.m in Sources */,
 				77D0F0F41C11C53700134A17 /* YWSupportTableViewCell.m in Sources */,
 				770EC2B81C10772600A4D2E9 /* YWHotTableViewCell.m in Sources */,
 				568D286B1C49CD2000DAA9B9 /* YWArticleModel.m in Sources */,
@@ -2166,6 +2189,7 @@
 				56A6BFAE1C59CA8800AEA490 /* YWAiTeModel.m in Sources */,
 				566BF5EB1C4717CF002C5591 /* YWTemplateListViewController.m in Sources */,
 				56F5D3291C17AAFD008C33CA /* NSMutableAttributedString+NimbusKitAttributedLabel.m in Sources */,
+				567E05721CDC731F008D2F47 /* YWReorderCastingViewController.m in Sources */,
 				5679221F1CBB8F21006E26C4 /* NSObject+Cache.m in Sources */,
 				567922221CBB97CB006E26C4 /* YWNoCotentView.m in Sources */,
 				77D0F0F71C11C55600134A17 /* YWDraftCollectionViewCell.m in Sources */,
@@ -2179,6 +2203,7 @@
 				569257EB1C744C58000EFB95 /* YWUserListViewController.m in Sources */,
 				56F5D3861C17CBCF008C33CA /* YWMovieRecorder.m in Sources */,
 				568DBF6B1C55C0AC00CFD1BC /* YWSearchTemplateTableViewCell.m in Sources */,
+				56777E241CD312E3004C2009 /* YWMovieCardMovieTableViewCell.m in Sources */,
 				568D286E1C49CDCA00DAA9B9 /* YWArticleDetailViewController.m in Sources */,
 				569849E41CC454EB00BB1157 /* YWOtherMovieViewController.m in Sources */,
 				56B09C7C1CB33785000EF9AA /* YWEditMovieCallingCardViewController.m in Sources */,
@@ -2186,6 +2211,7 @@
 				77D0F0F11C11C52000134A17 /* YWCommentTableViewCell.m in Sources */,
 				56AE59561C9FE83A00915654 /* YWFriendListManager.m in Sources */,
 				567C151C1C731761006A365D /* YWKeyboardHeadView.m in Sources */,
+				567E056F1CDC2269008D2F47 /* YWSelectCastingViewController.m in Sources */,
 				56F4AF251C1279A1008A6828 /* NSString+isValidate.m in Sources */,
 				56FE99CB1C0FBAB8007BA29B /* main.m in Sources */,
 				56F5D3811C17CAE1008C33CA /* YWMoviePlayView.m in Sources */,

@@ -9,7 +9,7 @@
 #import "YWHotTableViewCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "YWMovieTemplateModel.h"
-#import "YWMoviePlayView.h"
+//#import "YWMoviePlayView.h"
 #import "YWTools.h"
 
 @implementation YWHotTableViewCell
@@ -19,7 +19,7 @@
     UILabel        *_timeLabel;
     UIButton       *_playButton;
     UILabel        *_numsLabel;
-    YWMoviePlayView *_playMovieView;
+//    YWMoviePlayView *_playMovieView;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -88,12 +88,12 @@
             make.height.offset(40);
             make.bottom.offset(0);
         }];
-        
-        _playMovieView = [[YWMoviePlayView alloc] initWithFrame:CGRectMake(10, 10, kScreenWidth-20, 150) playUrl:@""];
-        _playMovieView.backgroundColor = RGBColor(30, 30, 30);
-        _playMovieView.layer.masksToBounds = YES;
-        _playMovieView.layer.cornerRadius = 5;
-        [self.contentView addSubview:_playMovieView];
+//        
+//        _playMovieView = [[YWMoviePlayView alloc] initWithFrame:CGRectMake(10, 10, kScreenWidth-20, 150) playUrl:@""];
+//        _playMovieView.backgroundColor = RGBColor(30, 30, 30);
+//        _playMovieView.layer.masksToBounds = YES;
+//        _playMovieView.layer.cornerRadius = 5;
+//        [self.contentView addSubview:_playMovieView];
     }
     
     return self;
@@ -115,7 +115,7 @@
     NSString *urlStr = template.templateVideoUrl;
     urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 //    _imageView.image = [YWTools thumbnailImageRequestUrl:[NSURL URLWithString:urlStr] time:0];
-    _playMovieView.hidden = YES;
+//    _playMovieView.hidden = YES;
 }
 
 

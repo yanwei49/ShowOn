@@ -11,8 +11,9 @@
 #import "YWTrendsModel.h"
 #import "YWMovieModel.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "YWMovieCardMovieTableViewCell.h"
 
-@interface YWMovieCardTableViewCell()<UITableViewDataSource, UITableViewDelegate>
+@interface YWMovieCardTableViewCell()<UITableViewDataSource, UITableViewDelegate, YWMovieCardMovieTableViewCellDelegate>
 
 @end
 
@@ -21,9 +22,6 @@
     UITableView     *_tableView;
     NSMutableArray  *_titles;
     NSMutableArray  *_contents;
-    UIImageView     *_imageView;
-    UIButton        *_playingButton;
-    UILabel         *_contentLabel;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -35,8 +33,9 @@
         
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
+        [_tableView registerClass:[YWMovieCardMovieTableViewCell class] forCellReuseIdentifier:@"movieCell"];
         _tableView.backgroundColor = RGBColor(30, 30, 30);
-        _tableView.separatorColor = RGBColor(70, 70, 70);
+        _tableView.separatorStyle = UITableViewCellSelectionStyleNone;
         _tableView.tableFooterView = [[UIView alloc] init];
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.scrollEnabled = NO;
@@ -44,55 +43,14 @@
         _tableView.dataSource = self;
         [self.contentView addSubview:_tableView];
         [_tableView makeConstraints:^(MASConstraintMaker *make) {
-            make.top.left.right.offset(0);
-        }];
-   
-        _contentLabel = [[UILabel alloc] init];
-        _contentLabel.numberOfLines = 0;
-        _contentLabel.text = @"";
-        _contentLabel.backgroundColor = RGBColor(30, 30, 30);
-        _contentLabel.textColor = [UIColor whiteColor];
-        _contentLabel.font = [UIFont systemFontOfSize:14];
-        [self.contentView addSubview:_contentLabel];
-        [_contentLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_tableView.mas_bottom).offset(5);
-            make.left.offset(10);
-            make.right.offset(-10);
-        }];
-        
-        _imageView = [[UIImageView alloc] init];
-        _imageView.backgroundColor = RGBColor(30, 30, 30);
-        _imageView.layer.masksToBounds = YES;
-        _imageView.layer.cornerRadius = 5;
-        [self.contentView addSubview:_imageView];
-        [_imageView makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_contentLabel.mas_bottom).offset(5);
-            make.left.offset(5);
-            make.right.offset(-5);
-            make.height.offset(200);
-        }];
-        
-        _playingButton = [[UIButton alloc] init];
-        [_playingButton setImage:[UIImage imageNamed:@"play_big.png"] forState:UIControlStateNormal];
-        [_playingButton addTarget:self action:@selector(actionPlaying:) forControlEvents:UIControlEventTouchUpInside];
-        [self.contentView addSubview:_playingButton];
-        [_playingButton makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(_imageView.mas_centerY);
-            make.centerX.equalTo(_imageView.mas_centerX);
-            make.width.height.offset(100);
+            make.top.left.right.bottom.offset(0);
         }];
     }
     
     return self;
 }
 
-#pragma mark - action
-- (void)actionPlaying:(UIButton *)button {
-    if ([_delegate respondsToSelector:@selector(movieCardTableViewCellDidSelectPlayingButton:)]) {
-        [_delegate movieCardTableViewCellDidSelectPlayingButton:self];
-    }
-}
-
+#pragma mark - get set
 - (void)setModel:(YWMovieCardModel *)model {
     _model = model;
     [_titles removeAllObjects];
@@ -105,12 +63,7 @@
             [_contents addObject:array[i]];
         }
     }
-    [_tableView updateConstraints:^(MASConstraintMaker *make) {
-        make.height.offset(40*_titles.count);
-    }];
     [_tableView reloadData];
-    _contentLabel.text = model.info;
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:model.trends.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
 }
 
 + (CGFloat)cellHeightWithModel:(YWMovieCardModel *)model {
@@ -122,31 +75,54 @@
         }
     }
     CGFloat height = 40*cnt;
-    CGRect rect = [model.info boundingRectWithSize:CGSizeMake(kScreenWidth-20, 10000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14]} context:nil];
-    
-    return height+200+rect.size.height+10;
+    for (YWTrendsModel *trend in model.trends) {
+        height += 210;
+        CGRect rect = [trend.trendsContent boundingRectWithSize:CGSizeMake(kScreenWidth-20, 100000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14]} context:nil];
+        
+        height += rect.size.height;
+    }
+
+    return height;
+}
+
+#pragma mark - YWMovieCardMovieTableViewCellDelegate
+- (void)movieCardMovieTableViewCellDidSelectPlay:(YWMovieCardMovieTableViewCell *)cell {
+    if ([_delegate respondsToSelector:@selector(movieCardTableViewCellDidSelectPlayingButton:)]) {
+        [_delegate movieCardTableViewCellDidSelectPlayingButton:cell.trends];
+    }
 }
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _titles.count;
+    return _titles.count+_model.trends.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    cell.backgroundColor = RGBColor(50, 50, 50);
-    cell.textLabel.text = _titles[indexPath.row];
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.textLabel.font = [UIFont systemFontOfSize:15];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
-    label.font = [UIFont systemFontOfSize:14];
-    label.textAlignment = NSTextAlignmentRight;
-    label.backgroundColor = RGBColor(50, 50, 50);
-    label.textColor = [UIColor whiteColor];
-    label.text = _contents[indexPath.row];
-    cell.accessoryView = label;
+    if (indexPath.row < _titles.count) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+        cell.backgroundColor = RGBColor(50, 50, 50);
+        cell.textLabel.text = _titles[indexPath.row];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.font = [UIFont systemFontOfSize:15];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+        label.font = [UIFont systemFontOfSize:14];
+        label.textAlignment = NSTextAlignmentRight;
+        label.backgroundColor = RGBColor(50, 50, 50);
+        label.textColor = [UIColor whiteColor];
+        label.text = _contents[indexPath.row];
+        cell.accessoryView = label;
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(20, 39.5, kScreenWidth-20, 0.5)];
+        line.backgroundColor = RGBColor(30, 30, 30);
+        [cell.contentView addSubview:line];
     
-    return cell;
+        return cell;
+    }else {
+        YWMovieCardMovieTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"movieCell"];
+        cell.trends = _model.trends[indexPath.row-_titles.count];
+        cell.delegate = self;
+        
+        return cell;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -154,7 +130,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 40;
+    return (indexPath.row < _titles.count)?40:[YWMovieCardMovieTableViewCell cellHeightWithModel:_model.trends[indexPath.row-_titles.count]];
 }
 
 @end

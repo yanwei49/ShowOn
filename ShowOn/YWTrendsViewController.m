@@ -25,8 +25,11 @@
 #import "YWMovieCardModel.h"
 #import "YWMovieCardTableViewCell.h"
 #import "YWEditMovieCallingCardViewController.h"
+#import "YWMovieModel.h"
+#import "YWCastingTableViewCell.h"
+#import "YWSelectCastingViewController.h"
 
-@interface YWTrendsViewController ()<UITableViewDelegate, UITableViewDataSource, YWFocusTableViewCellDelegate, UISearchBarDelegate, YWTrendsCategoryViewDelegate, YWRepeatDetailTableViewCellDelegate, YWMovieCardTableViewCellDelegate>
+@interface YWTrendsViewController ()<UITableViewDelegate, UITableViewDataSource, YWFocusTableViewCellDelegate, YWTrendsCategoryViewDelegate, YWRepeatDetailTableViewCellDelegate, YWMovieCardTableViewCellDelegate,UIImagePickerControllerDelegate, YWCastingTableViewCellDelegate>
 
 @end
 
@@ -50,7 +53,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     if (!_isFriendTrendsList) {
         _segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"资料", @"动态"]];
-        _segmentedControl.frame = CGRectMake(0, 0, 100, 35);
+        _segmentedControl.frame = CGRectMake(0, 0, 100, 30);
         _segmentedControl.selectedSegmentIndex = 1;
         [_segmentedControl addTarget:self action:@selector(actionSegValueChange) forControlEvents:UIControlEventValueChanged];
         _segmentedControl.tintColor = RGBColor(255, 194, 0);
@@ -75,10 +78,6 @@
 }
 
 - (void)createSubViews {
-    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 40)];
-    _searchBar.delegate = self;
-    _searchBar.placeholder = @"搜索片名/用户名";
-
     _footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
     _footView.backgroundColor = Subject_color;
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(40, 40, kScreenWidth-80, 40)];
@@ -98,7 +97,6 @@
     [_tableView registerClass:[YWMovieCardTableViewCell class] forCellReuseIdentifier:@"cell2"];
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    _tableView.tableHeaderView = _searchBar;
     _tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:_tableView];
     [_tableView makeConstraints:^(MASConstraintMaker *make) {
@@ -135,6 +133,9 @@
 
 - (void)actionMovieCard {
     YWEditMovieCallingCardViewController *vc = [[YWEditMovieCallingCardViewController alloc] init];
+    if (_movieCardDataSource.count) {
+        vc.mc = _movieCardDataSource.firstObject;
+    }
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -145,10 +146,11 @@
         [self trendsCategoryView:_categoryView didSelectCategoryWithIndex:_trendsType];
     }else {
         [_dataSource addObjectsFromArray:_movieCardDataSource];
-        _tableView.tableFooterView = _footView;
+        if (!_isFriendTrendsList) {
+            _tableView.tableFooterView = _footView;
+        }
         [_tableView reloadData];
     }
-    [YWNoCotentView showNoCotentViewWithState:_dataSource.count?NO:YES];
 }
 
 #pragma mark - request
@@ -164,6 +166,7 @@
         NSArray *movieCard = [parser movieCardWithArray:responseObject[@"movieCardList"]];
         [_movieCardDataSource addObjectsFromArray:movieCard];
         [_allTrendsArray addObjectsFromArray:array];
+        _user.casting = [parser movieWithDict:responseObject[@"casting"]];
         [self noContentViewShowWithState:_allTrendsArray.count?NO:YES];
         if (array.count<20) {
             _tableView.footer = nil;
@@ -218,6 +221,46 @@
     }];
 }
 
+- (void)requestSupportWithCasting {
+    if ([[YWDataBaseManager shareInstance] loginUser].userId) {
+        NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": _user.casting.movieId, @"praiseTypeId": @(2), @"state": @(!_user.casting.movieIsSupport.integerValue)};
+        [_httpManager requestSupport:parameters success:^(id responseObject) {
+            _user.casting.movieIsSupport = _user.casting.movieIsSupport.integerValue?@"0":@"1";
+            _user.casting.movieSupports = [NSString stringWithFormat:@"%ld", (long)_user.casting.movieSupports.integerValue?(long)_user.casting.movieSupports.integerValue+1:(long)_user.casting.movieSupports.integerValue-1];
+            [_tableView reloadData];
+        } otherFailure:^(id responseObject) {
+            
+        } failure:^(NSError *error) {
+            
+        }];
+    }
+}
+
+#pragma mark - YWCastingTableViewCellDelegate
+- (void)castingTableViewCellDidSelectPlayButton {
+    if (_user.casting.movieUrl.length) {
+        NSString *urlStr = [_user.casting.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSURL *url = [NSURL URLWithString:urlStr];
+        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [moviePlayerViewController rotateVideoViewWithDegrees:90];
+        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    }else {
+        YWSelectCastingViewController *vc = [[YWSelectCastingViewController alloc] init];
+        vc.user = _user;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- (void)castingTableViewCellDidSelectRecorderButton {
+    YWSelectCastingViewController *vc = [[YWSelectCastingViewController alloc] init];
+    vc.user = _user;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)castingTableViewCellDidSelectSupportButton {
+    [self requestSupportWithCasting];
+}
+
 #pragma mark - YWTrendsCategoryViewDelegate
 - (void)trendsCategoryView:(YWTrendsCategoryView *)view didSelectCategoryWithIndex:(NSInteger)index {
     _categoryView.hidden = YES;
@@ -233,17 +276,29 @@
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _dataSource.count;
+    if (!_segmentedControl.selectedSegmentIndex) {
+        return _dataSource.count+1;
+    }else {
+        return _dataSource.count;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_segmentedControl && !_segmentedControl.selectedSegmentIndex) {
-        YWMovieCardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell2"];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.delegate = self;
-        cell.model = _dataSource[indexPath.row];
-        
-        return cell;
+        if (!indexPath.row) {
+            YWCastingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"castingCell"];
+            cell.delegate = self;
+            cell.user = _user;
+            
+            return cell;
+        }else {
+            YWMovieCardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell2"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.delegate = self;
+            cell.model = _dataSource[indexPath.row];
+            
+            return cell;
+        }
     }else {
         if ([_dataSource[indexPath.row] trendsType].integerValue == 3) {
             YWRepeatDetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell1"];
@@ -263,7 +318,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_segmentedControl && !_segmentedControl.selectedSegmentIndex) {
-        return [YWMovieCardTableViewCell cellHeightWithModel:_dataSource[indexPath.row]];
+        if (!_segmentedControl.selectedSegmentIndex) {
+            return 200;
+        }else {
+            return [YWMovieCardTableViewCell cellHeightWithModel:_dataSource[indexPath.row]];
+        }
     }else {
         if ([_dataSource[indexPath.row] trendsType].integerValue == 3) {
             return [YWRepeatDetailTableViewCell cellHeightWithTrends:_dataSource[indexPath.row] type:kRepeatTrendsListType];
@@ -383,17 +442,9 @@
     }
 }
 
-#pragma mark - UISearchBarDelegate
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-    YWSearchViewController *searchVC = [[YWSearchViewController alloc] init];
-    [self.navigationController pushViewController:searchVC animated:YES];
-   
-    return NO;
-}
-
 #pragma mark - YWMovieCardTableViewCellDelegate
 - (void)movieCardTableViewCellDidSelectPlayingButton:(YWMovieCardTableViewCell *)cell {
-    NSString *urlStr = [cell.model.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *urlStr = [@"" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:urlStr];
     MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
     [moviePlayerViewController rotateVideoViewWithDegrees:90];

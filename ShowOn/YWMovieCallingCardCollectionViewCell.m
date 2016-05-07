@@ -11,6 +11,7 @@
 #import "YWMovieModel.h"
 #import "YWTrendsModel.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "YWMovieModel.h"
 
 @implementation YWMovieCallingCardCollectionViewCell
 {
@@ -30,7 +31,7 @@
         [self.contentView addSubview:_imageView];
         [_imageView makeConstraints:^(MASConstraintMaker *make) {
             make.top.left.bottom.right.offset(0);
-            make.bottom.offset(-20);
+            make.bottom.offset(180);
         }];
         
         _stateButton = [[UIButton alloc] init];
@@ -82,6 +83,12 @@
     [_imageView sd_setImageWithURL:[NSURL URLWithString:model.trendsMovie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
     _timeLabel.text = model.trendsPubdate;
     _nameLabel.text = model.trendsMovie.movieTemplate.templateName;
+}
+
+- (void)setMovie:(YWMovieModel *)movie {
+    _movie = movie;
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:movie.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
+    _nameLabel.text = movie.movieName;
 }
 
 - (void)setState:(BOOL)state {

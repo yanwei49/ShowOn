@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "YWSubsectionVideoModel.h"
+#import "YWMovieModel.h"
 
 typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 
@@ -159,9 +160,13 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
             _backgroundTaskIdentifier=[[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
         }
         //预览图层和视频方向保持一致
+        if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"RECORDER_COUNT"] length]) {
+            [[NSUserDefaults standardUserDefaults] setObject:@"100" forKey:@"RECORDER_COUNT"];
+        }
         captureConnection.videoOrientation=[_captureVideoPreviewLayer connection].videoOrientation;
-        NSString *outputFielPath=[NSTemporaryDirectory() stringByAppendingString:@"myMovie.mov"];
-
+        NSString *outputFielPath=[NSTemporaryDirectory() stringByAppendingString:[NSString stringWithFormat:@"myMovie%ld.mov", [[[NSUserDefaults standardUserDefaults] objectForKey:@"RECORDER_COUNT"] integerValue]+1]];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%ld", [[[NSUserDefaults standardUserDefaults] objectForKey:@"RECORDER_COUNT"] integerValue]+1] forKey:@"RECORDER_COUNT"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         NSURL *fileUrl=[NSURL fileURLWithPath:outputFielPath];
         [_captureMovieFileOutput startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
     }
@@ -230,14 +235,27 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [assetsLibrary writeVideoAtPathToSavedPhotosAlbum:outputFileURL completionBlock:^(NSURL *assetURL, NSError *error) {
         if (error) {
             DebugLog(@"保存视频到相簿过程中发生错误，错误信息：%@",error.localizedDescription);
+        }else {
+//            [self saveSuccess:assetURL];
+            DebugLog(@"成功保存视频到相簿.");
         }
         if (lastBackgroundTaskIdentifier!=UIBackgroundTaskInvalid) {
             [[UIApplication sharedApplication] endBackgroundTask:lastBackgroundTaskIdentifier];
         }
-        DebugLog(@"成功保存视频到相簿.");
     }];
     
 //    [self obtainMovieWithUrl:outputFileURL];
+}
+
+- (void)saveSuccess:(NSURL *)url {
+    if (_movie) {
+        _movie.movieRecorderUrl = url;
+    }else {
+        _model.recorderVideoUrl = url;
+    }
+    if ([_delegate respondsToSelector:@selector(movieRecorderDown:)]) {
+        [_delegate movieRecorderDown:self];
+    }
 }
 
 - (void)obtainMovieWithUrl:(NSURL *)url {

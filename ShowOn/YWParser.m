@@ -48,13 +48,17 @@
     user.userDistrict = [dict objectForKey:@"district"];
     user.userTrends = [self trendsWithArray:[dict objectForKey:@"userTrends"]];
     user.userRelationType = [[dict objectForKey:@"relationTypeId"] integerValue];
+    user.casting = [self movieWithDict:[dict objectForKey:@"casting"]];
     
     return user;
 }
 
 - (YWMovieModel *)movieWithDict:(NSDictionary *)dict {
     YWMovieModel *movie = [[YWMovieModel alloc] init];
+    movie.movieId = [dict objectForKey:@"movieId"];
     movie.movieUrl = [dict objectForKey:@"videoUrl"];
+    movie.movieIsSupport = [dict objectForKey:@"movieIsSupport"];
+    movie.movieSupports = [dict objectForKey:@"movieSupports"];
     movie.movieName = [dict objectForKey:@"videoName"];
     movie.movieCoverImage = [dict objectForKey:@"videoCoverImage"];
     movie.movieTemplate = [self templateWithDict:[dict objectForKey:@"videoTemplate"]];
@@ -92,6 +96,7 @@
     subsectionVideo.subsectionVideoPlayUserId = [dict objectForKey:@"userId"];
     subsectionVideo.subsectionVideoTemplateId = [dict objectForKey:@"templateId"];
     subsectionVideo.subsectionVideoTime = [dict objectForKey:@"timeLength"];
+    subsectionVideo.subsectionAudioUrl = [dict objectForKey:@"subsectionAudioUrl"];
     subsectionVideo.subsectionRecorderVideoUrl = [dict objectForKey:@"subsectionVideoUrl"];
     if (subsectionVideo.subsectionRecorderVideoUrl.length) {
         subsectionVideo.subsectionVideoPerformanceStatus = @"1";
@@ -184,9 +189,22 @@
     model.announce = [dict objectForKey:@"announce"];
     model.email = [dict objectForKey:@"email"];
     model.info = [dict objectForKey:@"info"];
-    model.trends = [self trendsWithDict:[dict objectForKey:@"trends"]];
+    if ([[dict objectForKey:@"trends"] isKindOfClass:[NSArray class]]) {
+        model.trends = [self trendsWithArray:[dict objectForKey:@"trends"]];
+    }else {
+        model.trends = @[[self trendsWithDict:[dict objectForKey:@"trends"]]];
+    }
     
     return model;
+}
+
+- (NSArray *)movieWithArray:(NSArray *)array {
+    NSMutableArray *movies = [NSMutableArray array];
+    [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [movies addObject:[self movieWithDict:obj]];
+    }];
+    
+    return movies;
 }
 
 - (NSArray *)subsectionVideoWithArray:(NSArray *)array {

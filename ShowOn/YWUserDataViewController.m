@@ -27,8 +27,11 @@
 #import "YWTranscribeViewController.h"
 #import "YWEditMovieCallingCardViewController.h"
 #import "YWOtherMovieViewController.h"
+#import "YWCastingTableViewCell.h"
+#import "YWSelectCastingViewController.h"
+#import "YWMovieModel.h"
 
-@interface YWUserDataViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YWMineTableHeadViewDelegate, YWCustomSegViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, YWTrendsTableViewCellDelegate, YWTrendsCategoryViewDelegate, UIActionSheetDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface YWUserDataViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YWMineTableHeadViewDelegate, YWCustomSegViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, YWTrendsTableViewCellDelegate, YWTrendsCategoryViewDelegate, UIActionSheetDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate, YWCastingTableViewCellDelegate>
 
 @end
 
@@ -127,11 +130,11 @@
     button.titleLabel.font = [UIFont systemFontOfSize:15];
     [button addTarget:self action:@selector(actionMovieCard) forControlEvents:UIControlEventTouchUpInside];
     [_footView addSubview:button];
-    
+  
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     _tableView.backgroundColor = Subject_color;
     _tableView.separatorStyle = UITableViewCellSelectionStyleNone;
-//    _tableView.separatorColor = RGBColor(30, 30, 30);
+    [_tableView registerClass:[YWCastingTableViewCell class] forCellReuseIdentifier:@"castingCell"];
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     [_tableView registerClass:[YWTrendsTableViewCell class] forCellReuseIdentifier:@"cell1"];
     _tableView.delegate = self;
@@ -362,7 +365,7 @@
 }
 
 - (void)requestSupportWithTrends:(YWTrendsModel *)trends {
-    NSDictionary *parameters = @{@"userId": _user.userId, @"state": trends.trendsIsSupport?@"0":@"1"};
+    NSDictionary *parameters = @{@"userId": _user.userId, @"praiseTargetId": trends.trendsId, @"praiseTypeId": @(1), @"state": @(!trends.trendsIsSupport)};
     [_httpManager requestSupport:parameters success:^(id responseObject) {
         trends.trendsIsSupport = trends.trendsIsSupport?@"0":@"1";
         [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_trendsArray indexOfObject:trends] inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -371,6 +374,21 @@
     } failure:^(NSError *error) {
         
     }];
+}
+
+- (void)requestSupportWithCasting {
+    if ([[YWDataBaseManager shareInstance] loginUser].userId) {
+        NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": _user.casting.movieId, @"praiseTypeId": @(2), @"state": @(!_user.casting.movieIsSupport.integerValue)};
+        [_httpManager requestSupport:parameters success:^(id responseObject) {
+            _user.casting.movieIsSupport = _user.casting.movieIsSupport.integerValue?@"0":@"1";
+            _user.casting.movieSupports = [NSString stringWithFormat:@"%ld", (long)_user.casting.movieSupports.integerValue?(long)_user.casting.movieSupports.integerValue+1:(long)_user.casting.movieSupports.integerValue-1];
+            [_tableView reloadData];
+        } otherFailure:^(id responseObject) {
+            
+        } failure:^(NSError *error) {
+            
+        }];
+    }
 }
 
 - (void)requestReport {
@@ -453,6 +471,31 @@
     }
 }
 
+#pragma mark - YWCastingTableViewCellDelegate
+- (void)castingTableViewCellDidSelectPlayButton {
+    if (_user.casting.movieUrl.length) {
+        NSString *urlStr = [_user.casting.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSURL *url = [NSURL URLWithString:urlStr];
+        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [moviePlayerViewController rotateVideoViewWithDegrees:90];
+        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    }else {
+        YWSelectCastingViewController *vc = [[YWSelectCastingViewController alloc] init];
+        vc.user = _user;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- (void)castingTableViewCellDidSelectRecorderButton {
+    YWSelectCastingViewController *vc = [[YWSelectCastingViewController alloc] init];
+    vc.user = _user;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)castingTableViewCellDidSelectSupportButton {
+    [self requestSupportWithCasting];
+}
+
 #pragma mark - UIPickerViewDataSource
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
     return 1;
@@ -483,33 +526,41 @@
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return !_itemSelectIndex?_dataSource.count:_trendsArray.count;
+    return !_itemSelectIndex?_dataSource.count+1:_trendsArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (!_itemSelectIndex) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-        cell.backgroundColor = RGBColor(52, 52, 52);
-        cell.contentView.backgroundColor = RGBColor(52, 52, 52);
-        cell.textLabel.textColor = [UIColor whiteColor];
-        cell.textLabel.text = _dataSource[indexPath.row];
-        NSArray *contents = @[_user.userName?:@"", _user.userInfos?:@"", _user.userSex?(_user.userSex.integerValue?@"男":@"女"):@"", _user.userDistrict?:@"", _user.userBirthday?:@"", _user.userConstellation?:@"", _user.userheight?:@"", _user.userBwh?:@""];
-        if (indexPath.row != contents.count) {
-            cell.accessoryType = UITableViewCellAccessoryDetailButton;
-            UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth-200, cell.bounds.size.height)];
-            tf.delegate = self;
-            tf.text = contents[indexPath.row];
-            tf.textColor = [UIColor whiteColor];
-            tf.textAlignment = NSTextAlignmentRight;
-            tf.font = [UIFont systemFontOfSize:15];
-            cell.accessoryView = tf;
-            tf.userInteractionEnabled = (!_isSelf)?NO:YES;
-            if (indexPath.row == 2 || indexPath.row == 4 || indexPath.row == 5) {
-                tf.userInteractionEnabled = NO;
+        if (!indexPath.row) {
+            YWCastingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"castingCell"];
+            cell.delegate = self;
+            cell.user = _user;
+            
+            return cell;
+        }else {
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+            cell.backgroundColor = RGBColor(52, 52, 52);
+            cell.contentView.backgroundColor = RGBColor(52, 52, 52);
+            cell.textLabel.textColor = [UIColor whiteColor];
+            cell.textLabel.text = _dataSource[indexPath.row-1];
+            NSArray *contents = @[_user.userName?:@"", _user.userInfos?:@"", _user.userSex?(_user.userSex.integerValue?@"男":@"女"):@"", _user.userDistrict?:@"", _user.userBirthday?:@"", _user.userConstellation?:@"", _user.userheight?:@"", _user.userBwh?:@""];
+            if (indexPath.row-1 != contents.count) {
+                cell.accessoryType = UITableViewCellAccessoryDetailButton;
+                UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth-200, cell.bounds.size.height)];
+                tf.delegate = self;
+                tf.text = contents[indexPath.row-1];
+                tf.textColor = [UIColor whiteColor];
+                tf.textAlignment = NSTextAlignmentRight;
+                tf.font = [UIFont systemFontOfSize:15];
+                cell.accessoryView = tf;
+                tf.userInteractionEnabled = (!_isSelf)?NO:YES;
+                if (indexPath.row-1 == 2 || indexPath.row-1 == 4 || indexPath.row-1 == 5) {
+                    tf.userInteractionEnabled = NO;
+                }
             }
+            
+            return cell;
         }
-        
-        return cell;
     }else {
         YWTrendsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell1"];
         cell.trends = _trendsArray[indexPath.row];
@@ -520,7 +571,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return !_itemSelectIndex?50:[YWTrendsTableViewCell cellHeightWithTrends:nil];
+    return !_itemSelectIndex?(!indexPath.row)?200:50:[YWTrendsTableViewCell cellHeightWithTrends:nil];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -559,7 +610,10 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (!_itemSelectIndex) {
         if (_isSelf) {
-            if (indexPath.row != _dataSource.count-1) {
+            if (!indexPath.row) {
+                return;
+            }
+            if (indexPath.row-1 != _dataSource.count-1) {
                 UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
                 [cell.accessoryView becomeFirstResponder];
                 [self didSelectCellWithIndex:indexPath.row];
@@ -708,9 +762,11 @@
                 break;
             case 2:
             {
+//                _itemView.itemSelectIndex = 1;
+//                [self customSegView:_itemView didSelectItemWithIndex:1];
                 YWTrendsViewController *vc = [[YWTrendsViewController alloc] init];
-                vc.title = @"动态";
-                vc.isFriendTrendsList = YES;
+//                vc.title = @"动态";
+//                vc.isFriendTrendsList = YES;
                 vc.user = _user;
                 [self.navigationController pushViewController:vc animated:YES];
             }

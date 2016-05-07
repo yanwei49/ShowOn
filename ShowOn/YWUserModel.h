@@ -17,6 +17,7 @@ typedef enum : NSUInteger {
     kWeiboUser              //邀请（微博用户）
 }FriendRelationType;
 
+@class YWMovieModel;
 @interface YWUserModel : NSObject
 
 @property (nonatomic, strong) NSString  *userId;
@@ -45,6 +46,6 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) NSString  *userSupportNums;                //点赞数
 @property (nonatomic, strong) NSArray   *userTrends;                     //用户动态列表
 @property (nonatomic, assign) FriendRelationType  userRelationType;      //关系类型
-
+@property (nonatomic, assign) YWMovieModel *casting;                     //视频简介
 
 @end

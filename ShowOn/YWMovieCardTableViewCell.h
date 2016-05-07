@@ -10,9 +10,10 @@
 
 @class YWMovieCardModel;
 @class YWMovieCardTableViewCell;
+@class YWTrendsModel;
 @protocol YWMovieCardTableViewCellDelegate <NSObject>
 
-- (void)movieCardTableViewCellDidSelectPlayingButton:(YWMovieCardTableViewCell *)cell;
+- (void)movieCardTableViewCellDidSelectPlayingButton:(YWTrendsModel *)trens;
 
 @end
 

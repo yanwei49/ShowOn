@@ -53,6 +53,7 @@
     _selectIndex = 1;
     [self createLeftItemWithTitle:@"首页"];
     [self createSubViews];
+    [self requestTemplateList];
 }
 
 - (instancetype)init {
@@ -80,11 +81,6 @@
         [self createHotView];
         _isPushHotItem = NO;
     }
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self requestTemplateList];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

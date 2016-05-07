@@ -296,16 +296,55 @@
 }
 
 
+//获取个人简介视频模板（无参）
+//返回值
+{
+    "castingList": [{
+            "movieUrl":
+            "movieName":
+            "movieCoverImage":
+    }]
+}
+
+//用户详情接口多返回一个key， casting（个人视频简介） 接口：juer/user/getUserInfo?json     （改）
+{
+    "userId":
+    "casting": {
+        "movieId":                  //简介视频id
+        "movieUrl":                 //简介视频播放地址url
+        "movieCoverImage":          //简介视频封面
+        "movieSupports":            //简介视频点赞数
+        "movieIsSupport":           //简介视频是否点赞
+    }
+}
+
+//点赞接口在加一种情况（对个人简介视频的点赞） 接口：juer/dynamic/praise?json
+//修改说明：当点赞为个人简介视频时，praiseTypeId值为2   praiseTargetId为简介视频id
 
 
+//好友动态列表接口多返回一个字段 casting   接口：juer/dynamic/friendTrendsList?json
+{
+    "trendsList": [{
+    }]
+    "movieCardList": [{
+    }]
+    "casting": {
+        "movieId":                  //简介视频id
+        "movieUrl":                 //简介视频播放地址url
+        "movieCoverImage":          //简介视频封面
+        "movieSupports":            //简介视频点赞数
+        "movieIsSupport":           //简介视频是否点赞
+    }
+}
 
 
-
-
-
-
-
-
+//提交个人简介视频
+//参数 POST请求（数据格式如下）
+{
+    "userId": 
+    [formData appendPartWithFileData:data name:@"video" fileName:@"video.mov" mimeType:@"video/quicktime"];
+    [formData appendPartWithFileData:UIImagePNGRepresentation(image) name:@"img" fileName:@"test.png" mimeType:@"image/png"];
+}
 
 
 

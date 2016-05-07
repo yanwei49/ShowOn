@@ -8,6 +8,9 @@
 
 #import "YWBaseViewController.h"
 
+@class YWMovieCardModel;
 @interface YWEditMovieCallingCardViewController : YWBaseViewController
+
+@property (nonatomic, strong) YWMovieCardModel *mc;
 
 @end

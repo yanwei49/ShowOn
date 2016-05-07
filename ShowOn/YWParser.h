@@ -11,7 +11,7 @@
 @class YWMovieTemplateModel;
 @class YWTrendsModel;
 @class YWUserModel;
-
+@class YWMovieModel;
 @interface YWParser : NSObject
 
 //解析模板列表数据
@@ -46,5 +46,11 @@
 
 //解析视频名片列表
 - (NSArray *)movieCardWithArray:(NSArray *)array;
+
+//解析个人视频简介模板列表
+- (NSArray *)movieWithArray:(NSArray *)array;
+
+//解析个人视频简介模型
+- (YWMovieModel *)movieWithDict:(NSDictionary *)dict;
 
 @end

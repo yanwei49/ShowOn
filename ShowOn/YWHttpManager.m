@@ -367,18 +367,31 @@ static YWHttpManager * manager;
         if (movieUrl) {
             NSData *data = [NSData dataWithContentsOfURL:movieUrl];
             [formData appendPartWithFileData:data name:@"video" fileName:@"video.mov" mimeType:@"video/quicktime"];
-        }else {
-            for (NSInteger i=0; i<recorderMovies.count; i++) {
-                YWSubsectionVideoModel *model = recorderMovies[i];
-                if (model.recorderVideoUrl) {
-                    NSError *error;
-                    NSData *data = [NSData dataWithContentsOfURL:model.recorderVideoUrl options:NSDataReadingMappedIfSafe error:&error];
-                    if (error) {
-                        DebugLog(@"%@====", error);
-                    }
-                    if (data) {
-                        [formData appendPartWithFileData:data name:@"video" fileName:[NSString stringWithFormat:@"video%@-%@-%@.mov", model.subsectionVideoType, model.subsectionVideoSort, model.subSort] mimeType:@"video/quicktime"];
-                    }
+//        }else {
+//            for (NSInteger i=0; i<recorderMovies.count; i++) {
+//                YWSubsectionVideoModel *model = recorderMovies[i];
+//                if (model.recorderVideoUrl) {
+//                    NSError *error;
+//                    NSData *data = [NSData dataWithContentsOfURL:model.recorderVideoUrl options:NSDataReadingMappedIfSafe error:&error];
+//                    if (error) {
+//                        DebugLog(@"%@====", error);
+//                    }
+//                    if (data) {
+//                        [formData appendPartWithFileData:data name:@"video" fileName:[NSString stringWithFormat:@"video%@-%@-%@.mov", model.subsectionVideoType, model.subsectionVideoSort, model.subSort] mimeType:@"video/quicktime"];
+//                    }
+//                }
+//            }
+        }
+        for (NSInteger i=0; i<recorderMovies.count; i++) {
+            YWSubsectionVideoModel *model = recorderMovies[i];
+            if (model.recorderVideoUrl) {
+                NSError *error;
+                NSData *data = [NSData dataWithContentsOfURL:model.recorderVideoUrl options:NSDataReadingMappedIfSafe error:&error];
+                if (error) {
+                    DebugLog(@"%@====", error);
+                }
+                if (data) {
+                    [formData appendPartWithFileData:data name:@"video" fileName:[NSString stringWithFormat:@"video%@-%@-%@.mov", model.subsectionVideoType, model.subsectionVideoSort, model.subSort] mimeType:@"video/quicktime"];
                 }
             }
         }
@@ -490,5 +503,34 @@ static YWHttpManager * manager;
         });
     }];
 }
+
+- (void)requestWriteCasting:(NSDictionary *)parameters coverImage:(UIImage *)image movieUrl:(NSURL *)movieUrl success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
+    [self setDefaultHeaders];
+    [_httpManager POST:HOST_URL(Save_Casting_Method) parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        if (movieUrl) {
+            NSData *data = [NSData dataWithContentsOfURL:movieUrl];
+            [formData appendPartWithFileData:data name:@"video" fileName:@"video.mov" mimeType:@"video/quicktime"];
+        }
+        if (image) {
+            [formData appendPartWithFileData:UIImagePNGRepresentation(image) name:@"img" fileName:@"test.png" mimeType:@"image/png"];
+        }
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+    }];
+}
+
+- (void)requestInfoMovieTemplateList:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure {
+    [self setDefaultHeaders];
+    [_httpManager GET:HOST_URL(Info_Movie_Template_Method) parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            failure(error);
+        });
+    }];
+}
+
 
 @end

@@ -1,30 +1,29 @@
 //
-//  YWMovieCallingCardInfosSView.m
+//  YWPreViewHeadView.m
 //  ShowOn
 //
-//  Created by David Yu on 5/4/16.
+//  Created by David Yu on 29/4/16.
 //  Copyright © 2016年 yanwei. All rights reserved.
 //
 
-#import "YWMovieCallingCardInfosView.h"
+#import "YWPreViewHeadView.h"
 #import "YWMovieCardModel.h"
 
-@interface YWMovieCallingCardInfosView()<UITextFieldDelegate>
+@interface YWPreViewHeadView()<UITextFieldDelegate>
 
 @end
 
-@implementation YWMovieCallingCardInfosView
+
+@implementation YWPreViewHeadView
 {
     NSMutableArray      *_tfs;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame model:(YWMovieCardModel *)model {
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = Subject_color;
         _tfs = [[NSMutableArray alloc] init];
-        NSArray *titles = @[@"姓名:", @"地区:", @"年龄:", @"星座:", @"身高:", @"三围:", @"通告:", @"邮箱:", @"简介:"];
-        NSArray *placeholders = @[@"请输入姓名", @"请输入地区", @"请输入年龄", @"请输入星座", @"请输入身高", @"请输入三围", @"请输入通告", @"请输入邮箱", @"请输入简介"];
         UIView *view = [[UIView alloc] init];
         view.backgroundColor = RGBColor(50, 50, 50);
         [self addSubview:view];
@@ -57,7 +56,7 @@
         label.backgroundColor = Subject_color;
         label.font = [UIFont systemFontOfSize:14];
         label.textColor = [UIColor whiteColor];
-        label.text = titles[0];
+        label.text = @"姓名:";
         [self addSubview:label];
         [label makeConstraints:^(MASConstraintMaker *make) {
             make.top.offset(60);
@@ -66,29 +65,42 @@
             make.width.offset(40);
         }];
         
-        UITextField *tf = [[UITextField alloc] init];
-        tf.backgroundColor = Subject_color;
-        tf.font = [UIFont systemFontOfSize:14];
-        tf.textColor = [UIColor whiteColor];
-        tf.delegate = self;
-        tf.placeholder = placeholders[0];
-        [tf setValue:RGBColor(100, 100, 100) forKeyPath:@"_placeholderLabel.textColor"];
-        [self addSubview:tf];
-        [_tfs addObject:tf];
-        [tf makeConstraints:^(MASConstraintMaker *make) {
+        UILabel *label1 = [[UILabel alloc] init];
+        label1.backgroundColor = Subject_color;
+        label1.font = [UIFont systemFontOfSize:14];
+        label1.textColor = [UIColor whiteColor];
+        label1.text = model.authentication;
+        [self addSubview:label1];
+        [label1 makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(label.mas_centerY);
             make.height.offset(30);
             make.left.equalTo(label.mas_right).offset(5);
             make.right.offset(0);
         }];
-
-        for (NSInteger i=0; i<4; i++) {
+        NSArray *titles;
+        NSArray *contents;
+        if (model.address.length && model.constellation.length) {
+            titles = @[@"地区:", @"年龄:", @"星座:", @"身高:"];
+            contents = @[model.address, model.age, model.constellation, model.height];
+        }else if (model.address.length) {
+            titles = @[@"地区:", @"年龄:", @"身高:"];
+            contents = @[model.address, model.age, model.height];
+        }else if (model.constellation.length) {
+            titles = @[@"地区:", @"年龄:", @"星座:"];
+            contents = @[model.address, model.age, model.constellation];
+        }else {
+            titles = @[@"地区:", @"年龄:"];
+            contents = @[model.address, model.age];
+        }
+        UILabel *lastLabel;
+        for (NSInteger i=0; i<titles.count; i++) {
             UILabel *label = [[UILabel alloc] init];
             label.backgroundColor = Subject_color;
             label.font = [UIFont systemFontOfSize:14];
             label.textColor = [UIColor whiteColor];
-            label.text = titles[i+1];
+            label.text = titles[i];
             [self addSubview:label];
+            lastLabel = label;
             [label makeConstraints:^(MASConstraintMaker *make) {
                 make.top.offset(100+40*(i/2));
                 make.height.offset(40);
@@ -96,16 +108,13 @@
                 make.width.offset(40);
             }];
             
-            UITextField *tf = [[UITextField alloc] init];
-            tf.backgroundColor = Subject_color;
-            tf.font = [UIFont systemFontOfSize:14];
-            tf.textColor = [UIColor whiteColor];
-            tf.placeholder = placeholders[i+1];
-            tf.delegate = self;
-            [tf setValue:RGBColor(100, 100, 100) forKeyPath:@"_placeholderLabel.textColor"];
-            [self addSubview:tf];
-            [_tfs addObject:tf];
-            [tf makeConstraints:^(MASConstraintMaker *make) {
+            UILabel *label1 = [[UILabel alloc] init];
+            label1.backgroundColor = Subject_color;
+            label1.font = [UIFont systemFontOfSize:14];
+            label1.textColor = [UIColor whiteColor];
+            label1.text = contents[i];
+            [self addSubview:label1];
+            [label1 makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(label.mas_centerY);
                 make.height.offset(30);
                 make.left.equalTo(label.mas_right).offset(5);
@@ -113,30 +122,45 @@
             }];
         }
         
-        for (NSInteger i=0; i<4; i++) {
+        NSMutableArray *titles1 = [NSMutableArray array];
+        NSMutableArray *contents1 = [NSMutableArray array];
+        [titles1 addObject:@"三围:"];
+        [contents1 addObject:model.bwh];
+        if (model.announce.length) {
+            [titles1 addObject:@"通告:"];
+            [contents1 addObject:model.announce];
+        }
+        [titles1 addObject:@"邮箱:"];
+        [contents1 addObject:model.email];
+        if (model.info.length) {
+            [titles1 addObject:@"简介:"];
+            [contents1 addObject:model.info];
+        }
+        CGFloat h = 140;
+        if (titles.count>2) {
+            h += 40;
+        }
+        for (NSInteger i=0; i<titles1.count; i++) {
             UILabel *label = [[UILabel alloc] init];
             label.backgroundColor = Subject_color;
             label.font = [UIFont systemFontOfSize:14];
             label.textColor = [UIColor whiteColor];
-            label.text = titles[5+i];
+            label.text = titles1[i];
             [self addSubview:label];
             [label makeConstraints:^(MASConstraintMaker *make) {
-                make.top.offset(180+(i*40));
+                make.top.offset(h+i*40);
                 make.height.offset(40);
                 make.left.equalTo(10);
                 make.width.offset(40);
             }];
             
-            UITextField *tf = [[UITextField alloc] init];
-            tf.backgroundColor = Subject_color;
-            tf.font = [UIFont systemFontOfSize:14];
-            tf.textColor = [UIColor whiteColor];
-            tf.placeholder = placeholders[i+5];
-            tf.delegate = self;
-            [tf setValue:RGBColor(100, 100, 100) forKeyPath:@"_placeholderLabel.textColor"];
-            [self addSubview:tf];
-            [_tfs addObject:tf];
-            [tf makeConstraints:^(MASConstraintMaker *make) {
+            UILabel *label1 = [[UILabel alloc] init];
+            label1.backgroundColor = Subject_color;
+            label1.font = [UIFont systemFontOfSize:14];
+            label1.textColor = [UIColor whiteColor];
+            label1.text = contents1[i];
+            [self addSubview:label1];
+            [label1 makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(label.mas_centerY);
                 make.height.offset(30);
                 make.left.equalTo(label.mas_right).offset(5);
@@ -148,48 +172,5 @@
     return self;
 }
 
-- (void)setModel:(YWMovieCardModel *)model {
-    _model = model;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    
-    return YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    switch ([_tfs indexOfObject:textField]) {
-        case 0:
-            _model.authentication = textField.text;
-            break;
-        case 1:
-            _model.address = textField.text;
-            break;
-        case 2:
-            _model.age = textField.text;
-            break;
-        case 3:
-            _model.constellation = textField.text;
-            break;
-        case 4:
-            _model.height = textField.text;
-            break;
-        case 5:
-            _model.bwh = textField.text;
-            break;
-        case 6:
-            _model.announce = textField.text;
-            break;
-        case 7:
-            _model.email = textField.text;
-            break;
-        case 8:
-            _model.info = textField.text;
-            break;
-        default:
-            break;
-    }
-}
 
 @end

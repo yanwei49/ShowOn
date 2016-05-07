@@ -20,8 +20,10 @@
 #import "YWHttpGlobalDefine.h"
 #import "YWDataBaseManager.h"
 #import "YWUserModel.h"
+#import "YWPreViewHeadView.h"
+#import "YWMovieCardMovieTableViewCell.h"
 
-@interface YWPreviewMovieCardViewController()<UITableViewDataSource, UITableViewDelegate, YWMovieCardTableViewCellDelegate, UIActionSheetDelegate>
+@interface YWPreviewMovieCardViewController()<UITableViewDataSource, UITableViewDelegate, YWMovieCardMovieTableViewCellDelegate, UIActionSheetDelegate>
 
 @end
 
@@ -35,7 +37,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"预览";
-    [self createRightItemWithTitle:@"完成"];
+//    [self createRightItemWithTitle:@"完成"];
     _httpManager = [YWHttpManager shareInstance];
     
     [self createSubView];
@@ -43,11 +45,38 @@
 
 #pragma mark - subview
 - (void)createSubView {
+    NSInteger cnt=1;
+    if (_model.address.length || _model.constellation.length) {
+        cnt += 2;
+    }else {
+        cnt += 1;
+    }
+    cnt += 2;
+    if (_model.announce.length) {
+        cnt += 1;
+    }
+    if (_model.info.length) {
+        cnt += 1;
+    }
+    CGFloat height = 40*cnt+60;
+    YWPreViewHeadView *headView = [[YWPreViewHeadView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, height) model:_model];
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 70)];
+    view.backgroundColor = Subject_color;
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(20, 20, kScreenWidth-40, 30)];
+    button.backgroundColor = RGBColor(30, 30, 30);
+    [button setTitleColor:RGBColor(255, 194, 0) forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(actionDown) forControlEvents:UIControlEventTouchUpInside];
+    button.titleLabel.font = [UIFont systemFontOfSize:15];
+    [button setTitle:@"生成" forState:UIControlStateNormal];
+    [view addSubview:button];
+    
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    [_tableView registerClass:[YWMovieCardTableViewCell class] forCellReuseIdentifier:@"cell"];
-    _tableView.backgroundColor = Subject_color;
+    [_tableView registerClass:[YWMovieCardMovieTableViewCell class] forCellReuseIdentifier:@"cell"];
+    _tableView.backgroundColor = RGBColor(50, 50, 50);
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.tableFooterView = [[UIView alloc] init];
+    _tableView.tableHeaderView = headView;
+    _tableView.tableFooterView = view;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
@@ -58,21 +87,26 @@
 
 #pragma mark - action
 - (void)actionRightItem:(UIButton *)button {
+    _isShare = NO;
     if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
         UIAlertController *sheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [sheet addAction:[UIAlertAction actionWithTitle:@"分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             _isShare = YES;
             [self requestCommitMovieCard];
         }]];
-        [sheet addAction:[UIAlertAction actionWithTitle:@"保存" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [sheet addAction:[UIAlertAction actionWithTitle:@"上传" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self requestCommitMovieCard];
         }]];
         [sheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:sheet animated:YES completion:nil];
     }else {
-        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"分享", @"保存", nil];
+        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"分享", @"上传", nil];
         [sheet showInView:self.view];
     }
+}
+
+- (void)actionDown {
+    [self actionRightItem:nil];
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -87,15 +121,23 @@
 
 #pragma mark - request
 - (void)requestCommitMovieCard {
-    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"authentication": _model.authentication, @"address": _model.address, @"bwh": _model.bwh, @"age": _model.age, @"constellation": _model.constellation, @"height": _model.height, @"announce": _model.announce, @"email": _model.email, @"info": _model.info, @"trendsId": _model.trends.trendsId};
+    NSMutableArray *ids = [NSMutableArray array];
+    for (YWTrendsModel *trends in _model.trends) {
+        [ids addObject:trends.trendsId];
+    }
+    NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"authentication": _model.authentication, @"address": _model.address, @"bwh": _model.bwh, @"age": _model.age, @"constellation": _model.constellation, @"height": _model.height, @"announce": _model.announce, @"email": _model.email, @"info": _model.info, @"trendsId": (ids.count==1)?ids.firstObject:[ids componentsJoinedByString:@"|"]};
+    if (!_isShare) {
+        [SVProgressHUD showInfoWithStatus:@"上传中..."];
+    }
     [_httpManager requestCommitMovieCard:parameters success:^(id responseObject) {
         if (_isShare) {
             [self requestShare];
         }else {
             [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
-            [self.navigationController popViewControllerAnimated:YES];
+            [self.navigationController popToRootViewControllerAnimated:YES];
         }
     } otherFailure:^(id responseObject) {
+        [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
     } failure:^(NSError *error) {
     }];
 }
@@ -114,17 +156,25 @@
     [UMSocialData defaultData].extConfig.wechatTimelineData.title =  title;
 }
 
+#pragma mark - YWMovieCardMovieTableViewCellDelegate
+- (void)movieCardMovieTableViewCellDidSelectPlay:(YWMovieCardMovieTableViewCell *)cell {
+    NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+    [moviePlayerViewController rotateVideoViewWithDegrees:90];
+    [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+}
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return _model.trends.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    YWMovieCardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    YWMovieCardMovieTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.delegate = self;
-    cell.model = _model;
+    cell.trends = _model.trends[indexPath.row];
     
     return cell;
 }
@@ -134,12 +184,12 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [YWMovieCardTableViewCell cellHeightWithModel:_model];
+    return [YWMovieCardMovieTableViewCell cellHeightWithModel:_model.trends[indexPath.row]];
 }
 
 #pragma mark - YWMovieCardTableViewCellDelegate
-- (void)movieCardTableViewCellDidSelectPlayingButton:(YWMovieCardTableViewCell *)cell {
-    NSString *urlStr = [cell.model.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+- (void)movieCardTableViewCellDidSelectPlayingButton:(YWTrendsModel *)trend {
+    NSString *urlStr = [trend.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:urlStr];
     MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
     [moviePlayerViewController rotateVideoViewWithDegrees:90];

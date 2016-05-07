@@ -341,7 +341,6 @@
  */
 - (void)requestMovieList:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
 
-
 /**
  *  提交视频名片
  *
@@ -350,5 +349,24 @@
  *  @param failure    失败block
  */
 - (void)requestCommitMovieCard:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
+
+/**
+ *  提交个人简介视频
+ *
+ *  @param parameters 请求参数
+ *  @param success    成功block
+ *  @param failure    失败block
+ */
+- (void)requestWriteCasting:(NSDictionary *)parameters coverImage:(UIImage *)image movieUrl:(NSURL *)movieUrl success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
+
+/**
+ *  个人简介视频模板列表
+ *
+ *  @param parameters 请求参数
+ *  @param success    成功block
+ *  @param failure    失败block
+ */
+- (void)requestInfoMovieTemplateList:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
+
 
 @end
