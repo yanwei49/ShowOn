@@ -35,7 +35,7 @@
         }];
         
         _imageView = [[UIImageView alloc] init];
-        _imageView.backgroundColor = RGBColor(30, 30, 30);
+        _imageView.backgroundColor = RGBColor(42, 42, 42);
         _imageView.layer.masksToBounds = YES;
         _imageView.layer.cornerRadius = 5;
         [view addSubview:_imageView];
@@ -116,7 +116,7 @@
 #pragma mark - get set
 - (void)setUser:(YWUserModel *)user {
     _user = user;
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:user.casting.movieCoverImage] placeholderImage:kPlaceholderMoiveImage];
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:user.casting.movieCoverImage?:@""] placeholderImage:kPlaceholderMoiveImage];
     _recorderButton.hidden = ([user.userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userId])?NO:YES;
     _supportLabel.text = user.casting.movieSupports.length?user.casting.movieSupports:@"0";
     _supportButton.selected = user.casting.movieIsSupport.integerValue?YES:NO;

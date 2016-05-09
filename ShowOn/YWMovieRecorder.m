@@ -221,10 +221,11 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 -(void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error{
     DebugLog(@"视频录制完成.");
-    _model.recorderVideoUrl = outputFileURL;
-    if ([_delegate respondsToSelector:@selector(movieRecorderDown:)]) {
-        [_delegate movieRecorderDown:self];
-    }
+//    _model.recorderVideoUrl = outputFileURL;
+//    if ([_delegate respondsToSelector:@selector(movieRecorderDown:)]) {
+//        [_delegate movieRecorderDown:self];
+//    }
+    [self saveSuccess:outputFileURL];
     //视频录入完成之后在后台将视频存储到相簿
     _enableRotation=YES;
     _playButton.hidden = NO;

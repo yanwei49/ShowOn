@@ -46,9 +46,9 @@
     user.userCommentNums = [dict objectForKey:@"userCommentNums"]?:@"";
     user.userSupportNums = [dict objectForKey:@"userSupportNums"]?:@"";
     user.userDistrict = [dict objectForKey:@"district"];
+    user.casting = [self movieWithDict:[dict objectForKey:@"casting"]];
     user.userTrends = [self trendsWithArray:[dict objectForKey:@"userTrends"]];
     user.userRelationType = [[dict objectForKey:@"relationTypeId"] integerValue];
-    user.casting = [self movieWithDict:[dict objectForKey:@"casting"]];
     
     return user;
 }
@@ -62,6 +62,15 @@
     movie.movieName = [dict objectForKey:@"videoName"];
     movie.movieCoverImage = [dict objectForKey:@"videoCoverImage"];
     movie.movieTemplate = [self templateWithDict:[dict objectForKey:@"videoTemplate"]];
+    if (!movie.movieName) {
+        movie.movieName = [dict objectForKey:@"movieName"];
+    }
+    if (!movie.movieUrl) {
+        movie.movieUrl = [dict objectForKey:@"movieUrl"];
+    }
+    if (!movie.movieCoverImage) {
+        movie.movieCoverImage = [dict objectForKey:@"movieCoverImage"];
+    }
     
     return movie;
 }

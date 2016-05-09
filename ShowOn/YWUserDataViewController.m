@@ -378,7 +378,7 @@
 
 - (void)requestSupportWithCasting {
     if ([[YWDataBaseManager shareInstance] loginUser].userId) {
-        NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": _user.casting.movieId, @"praiseTypeId": @(2), @"state": @(!_user.casting.movieIsSupport.integerValue)};
+        NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": _user.casting.movieId, @"praiseTypeId": @(3), @"state": @(!_user.casting.movieIsSupport.integerValue)};
         [_httpManager requestSupport:parameters success:^(id responseObject) {
             _user.casting.movieIsSupport = _user.casting.movieIsSupport.integerValue?@"0":@"1";
             _user.casting.movieSupports = [NSString stringWithFormat:@"%ld", (long)_user.casting.movieSupports.integerValue?(long)_user.casting.movieSupports.integerValue+1:(long)_user.casting.movieSupports.integerValue-1];
@@ -447,8 +447,7 @@
 }
 
 #pragma mark - UIImagePickerController Delegate
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     _headImage = image;
     _headView.headImage = _headImage;
@@ -456,8 +455,7 @@
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     //关闭模态视图
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }

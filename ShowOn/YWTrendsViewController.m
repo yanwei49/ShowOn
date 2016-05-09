@@ -95,6 +95,7 @@
     [_tableView registerClass:[YWFocusTableViewCell class] forCellReuseIdentifier:@"cell"];
     [_tableView registerClass:[YWRepeatDetailTableViewCell class] forCellReuseIdentifier:@"cell1"];
     [_tableView registerClass:[YWMovieCardTableViewCell class] forCellReuseIdentifier:@"cell2"];
+    [_tableView registerClass:[YWCastingTableViewCell class] forCellReuseIdentifier:@"castingCell"];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableFooterView = [[UIView alloc] init];

@@ -30,6 +30,8 @@
     [super viewDidLoad];
     self.title = @"casting模板";
     [self createRightItemWithTitle:@"录制"];
+    _httpManager = [YWHttpManager shareInstance];
+    _dataSource = [[NSMutableArray alloc] init];
     _selectIndex = 0;
     
     [self createSubViews];
@@ -65,7 +67,7 @@
     [_httpManager requestInfoMovieTemplateList:nil success:^(id responseObject) {
         [_dataSource removeAllObjects];
         YWParser *parser = [[YWParser alloc] init];
-        NSArray *array = [parser movieWithArray:responseObject[@"castingList"]];
+        NSArray *array = [parser movieWithArray:responseObject[@"casting"]];
         [_dataSource addObjectsFromArray:array];
         [_collectionView reloadData];
     } otherFailure:^(id responseObject) {

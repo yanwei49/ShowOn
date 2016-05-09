@@ -103,9 +103,9 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
         [SVProgressHUD showSuccessWithStatus:responseObject[@"msg"]];
     } otherFailure:^(id responseObject) {
-        
+        [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
     } failure:^(NSError *error) {
-        
+        [SVProgressHUD showErrorWithStatus:@"网络错误"];
     }];
 }
 

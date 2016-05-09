@@ -56,8 +56,8 @@
 #define Commit_Movie_Method                   @"juer/dynamic/videoCard?json"                //提交视频名片
 #define Share_Movie_Method                    @"juer/dynamic/cardShare?json"                //视频名片分享
 #define User_Protocol_Method                  @"juer/dynamic/protocol?json"                 //用户协议
-#define Save_Casting_Method                   @"juer/?json"                 //保存个人简介视频
-#define Info_Movie_Template_Method            @"juer/?json"                 //个人简介视频模板
+#define Save_Casting_Method                   @"juer/user/introduceVideo?json"              //保存个人简介视频
+#define Info_Movie_Template_Method            @"juer/user/introduceVideoTemplate?json"      //个人简介视频模板
 
 
 #endif

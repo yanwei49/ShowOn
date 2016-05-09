@@ -28,6 +28,7 @@
         
         _imageView = [[UIImageView alloc] init];
         _imageView.backgroundColor = RGBColor(30, 30, 30);
+        _imageView.clipsToBounds = YES;
         [self.contentView addSubview:_imageView];
         [_imageView makeConstraints:^(MASConstraintMaker *make) {
             make.top.left.bottom.right.offset(0);
@@ -47,6 +48,8 @@
         
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.backgroundColor = RGBColor(30, 30, 30);
+        _nameLabel.textColor = [UIColor whiteColor];
+        _nameLabel.textAlignment = NSTextAlignmentCenter;
         _nameLabel.font = [UIFont systemFontOfSize:13];
         [self.contentView addSubview:_nameLabel];
         [_nameLabel makeConstraints:^(MASConstraintMaker *make) {
