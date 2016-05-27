@@ -46,6 +46,6 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) NSString  *userSupportNums;                //点赞数
 @property (nonatomic, strong) NSArray   *userTrends;                     //用户动态列表
 @property (nonatomic, assign) FriendRelationType  userRelationType;      //关系类型
-@property (nonatomic, assign) YWMovieModel *casting;                     //视频简介
+@property (nonatomic, strong) YWMovieModel *casting;                     //视频简介
 
 @end

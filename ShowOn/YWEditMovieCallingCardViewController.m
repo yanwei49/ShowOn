@@ -21,8 +21,11 @@
 #import "YWPreviewMovieCardViewController.h"
 #import "YWMovieCardModel.h"
 #import "YWMovieModel.h"
+#import "YWSelectCastingViewController.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import "MPMoviePlayerViewController+Rotation.h"
 
-@interface YWEditMovieCallingCardViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIActionSheetDelegate>
+@interface YWEditMovieCallingCardViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIActionSheetDelegate, YWMovieCallingCardInfosViewDelegate>
 
 @end
 
@@ -46,6 +49,7 @@
     _movieCard = [[YWMovieCardModel alloc] init];
     _dataSource = [[NSMutableArray alloc] init];
     _selectTrends = [[NSMutableArray alloc] init];
+    _movieCard = _mc?:_movieCard;
     
     [self createSubViews];
     [self requestMovieList];
@@ -138,6 +142,7 @@
         return;
     }
     YWPreviewMovieCardViewController *vc = [[YWPreviewMovieCardViewController alloc] init];
+    vc.user = _user;
     vc.model = _movieCard;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -201,6 +206,48 @@
     [UMSocialData defaultData].extConfig.wechatTimelineData.title =  title;
 }
 
+- (void)requestSupportWithCasting {
+    if ([[YWDataBaseManager shareInstance] loginUser].userId) {
+        NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": _user.casting.movieId, @"praiseTypeId": @(3), @"state": @(!_user.casting.movieIsSupport.integerValue)};
+        [_httpManager requestSupport:parameters success:^(id responseObject) {
+            _user.casting.movieIsSupport = _user.casting.movieIsSupport.integerValue?@"0":@"1";
+            _user.casting.movieSupports = [NSString stringWithFormat:@"%ld", (long)_user.casting.movieIsSupport.integerValue?(long)_user.casting.movieSupports.integerValue+1:(long)_user.casting.movieSupports.integerValue-1];
+            [_collectionView reloadData];
+        } otherFailure:^(id responseObject) {
+            
+        } failure:^(NSError *error) {
+            
+        }];
+    }
+}
+
+#pragma mark - YWMovieCallingCardInfosViewDelegate
+- (void)movieCallingCardInfosViewDidSelectPlayButton {
+    if (_user.casting.movieUrl.length) {
+        NSString *urlStr = [_user.casting.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSURL *url = [NSURL URLWithString:urlStr];
+        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [moviePlayerViewController rotateVideoViewWithDegrees:90];
+        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    }else {
+        if (([_user.userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userId])) {
+            YWSelectCastingViewController *vc = [[YWSelectCastingViewController alloc] init];
+            vc.user = _user;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
+}
+
+- (void)movieCallingCardInfosViewDidSelectRecorderButton {
+    YWSelectCastingViewController *vc = [[YWSelectCastingViewController alloc] init];
+    vc.user = _user;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)movieCallingCardInfosViewDidSelectSupportButton {
+    [self requestSupportWithCasting];
+}
+
 #pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return _dataSource.count;
@@ -218,12 +265,14 @@
     if (kind == UICollectionElementKindSectionHeader) {
         _reusableview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"head" forIndexPath:indexPath];
         _reusableview.model = _mc?:_movieCard;
-        _reusableview.userInteractionEnabled = _mc?NO:YES;
+        _reusableview.delegate = self;
+        _reusableview.user = _user;
+        _reusableview.isEdit = _mc?NO:YES;
    
         return _reusableview;
     }else {
         UICollectionReusableView *reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"foot" forIndexPath:indexPath];
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(20, 20, kScreenWidth-40, 30)];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(20, 20, kScreenWidth-40, 40)];
         button.backgroundColor = RGBColor(30, 30, 30);
         [button setTitleColor:RGBColor(255, 194, 0) forState:UIControlStateNormal];
         [button addTarget:self action:@selector(actionPreView) forControlEvents:UIControlEventTouchUpInside];
@@ -246,7 +295,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(kScreenWidth, 340);
+    return CGSizeMake(kScreenWidth, 340+200);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {

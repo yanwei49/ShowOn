@@ -55,22 +55,13 @@
 
 - (YWMovieModel *)movieWithDict:(NSDictionary *)dict {
     YWMovieModel *movie = [[YWMovieModel alloc] init];
-    movie.movieId = [dict objectForKey:@"movieId"];
+    movie.movieId = [dict objectForKey:@"videoId"];
     movie.movieUrl = [dict objectForKey:@"videoUrl"];
-    movie.movieIsSupport = [dict objectForKey:@"movieIsSupport"];
-    movie.movieSupports = [dict objectForKey:@"movieSupports"];
+    movie.movieIsSupport = [dict objectForKey:@"videoIsSupport"];
+    movie.movieSupports = [dict objectForKey:@"videoSupports"];
     movie.movieName = [dict objectForKey:@"videoName"];
     movie.movieCoverImage = [dict objectForKey:@"videoCoverImage"];
     movie.movieTemplate = [self templateWithDict:[dict objectForKey:@"videoTemplate"]];
-    if (!movie.movieName) {
-        movie.movieName = [dict objectForKey:@"movieName"];
-    }
-    if (!movie.movieUrl) {
-        movie.movieUrl = [dict objectForKey:@"movieUrl"];
-    }
-    if (!movie.movieCoverImage) {
-        movie.movieCoverImage = [dict objectForKey:@"movieCoverImage"];
-    }
     
     return movie;
 }

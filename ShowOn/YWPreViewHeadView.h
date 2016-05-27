@@ -9,8 +9,19 @@
 #import <UIKit/UIKit.h>
 
 @class YWMovieCardModel;
+@class YWUserModel;
+@protocol YWPreViewHeadViewDelegate <NSObject>
+
+- (void)preViewHeadViewDidSelectPlayButton;
+- (void)preViewHeadViewDidSelectRecorderButton;
+- (void)preViewHeadViewDidSelectSupportButton;
+
+@end
 @interface YWPreViewHeadView : UIView
 
 - (instancetype)initWithFrame:(CGRect)frame model:(YWMovieCardModel *)model;
+
+@property (nonatomic, strong) YWUserModel *user;
+@property (nonatomic, assign) id<YWPreViewHeadViewDelegate> delegate;
 
 @end

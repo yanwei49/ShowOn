@@ -64,15 +64,17 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     }
     //添加一个音频输入设备
     AVCaptureDevice *audioCaptureDevice=[[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
-    
+//    AVCaptureDevice *audioCaptureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
+
     NSError *error=nil;
     //根据输入设备初始化设备输入对象，用于获得输入数据
-    _captureDeviceInput=[[AVCaptureDeviceInput alloc]initWithDevice:captureDevice error:&error];
+    _captureDeviceInput=[[AVCaptureDeviceInput alloc] initWithDevice:captureDevice error:&error];
     if (error) {
         DebugLog(@"取得设备输入对象时出错，错误原因：%@",error.localizedDescription);
         return;
     }
-    AVCaptureDeviceInput *audioCaptureDeviceInput=[[AVCaptureDeviceInput alloc]initWithDevice:audioCaptureDevice error:&error];
+    AVCaptureDeviceInput *audioCaptureDeviceInput=[[AVCaptureDeviceInput alloc] initWithDevice:audioCaptureDevice error:&error];
+//    AVCaptureDeviceInput *audioCaptureDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:audioDeviceerror:&error];
     if (error) {
         DebugLog(@"取得设备输入对象时出错，错误原因：%@",error.localizedDescription);
         return;
@@ -164,7 +166,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
             [[NSUserDefaults standardUserDefaults] setObject:@"100" forKey:@"RECORDER_COUNT"];
         }
         captureConnection.videoOrientation=[_captureVideoPreviewLayer connection].videoOrientation;
-        NSString *outputFielPath=[NSTemporaryDirectory() stringByAppendingString:[NSString stringWithFormat:@"myMovie%ld.mov", [[[NSUserDefaults standardUserDefaults] objectForKey:@"RECORDER_COUNT"] integerValue]+1]];
+        NSString *outputFielPath=[NSTemporaryDirectory() stringByAppendingString:[NSString stringWithFormat:@"myMovie%ld.mov", (long)[[[NSUserDefaults standardUserDefaults] objectForKey:@"RECORDER_COUNT"] integerValue]+1]];
         [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%ld", [[[NSUserDefaults standardUserDefaults] objectForKey:@"RECORDER_COUNT"] integerValue]+1] forKey:@"RECORDER_COUNT"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         NSURL *fileUrl=[NSURL fileURLWithPath:outputFielPath];

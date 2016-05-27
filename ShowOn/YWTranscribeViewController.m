@@ -188,7 +188,7 @@
         make.top.equalTo(_recorderView.mas_top).offset(5);
     }];
 
-    NSArray  *modelTitles = @[@"顺序模式", @"景别模式"];
+    NSArray  *modelTitles = @[@"顺序模式", @"人物模式"];
     _modelItemView = [[YWCustomSegView alloc] initWithItemTitles:modelTitles];
     _modelItemView.hiddenLineView = NO;
     _modelItemView.hiddenBottomLineView = YES;

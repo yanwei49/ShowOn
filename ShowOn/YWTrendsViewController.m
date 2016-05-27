@@ -137,6 +137,7 @@
     if (_movieCardDataSource.count) {
         vc.mc = _movieCardDataSource.firstObject;
     }
+    vc.user = _user;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -147,7 +148,7 @@
         [self trendsCategoryView:_categoryView didSelectCategoryWithIndex:_trendsType];
     }else {
         [_dataSource addObjectsFromArray:_movieCardDataSource];
-        if (!_isFriendTrendsList) {
+        if ([_user.userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userId]) {
             _tableView.tableFooterView = _footView;
         }
         [_tableView reloadData];
@@ -161,6 +162,9 @@
         if (!_currentPage) {
             [_allTrendsArray removeAllObjects];
             [_movieCardDataSource removeAllObjects];
+        }
+        if (!_user) {
+            _user = [[YWDataBaseManager shareInstance] loginUser];
         }
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser trendsWithArray:responseObject[@"trendsList"]];
@@ -196,9 +200,13 @@
             [_allTrendsArray removeAllObjects];
             [_movieCardDataSource removeAllObjects];
         }
+        if (!_user) {
+            _user = [[YWDataBaseManager shareInstance] loginUser];
+        }
         YWParser *parser = [[YWParser alloc] init];
         NSArray *array = [parser trendsWithArray:responseObject[@"trendsList"]];
         NSArray *movieCard = [parser movieCardWithArray:responseObject[@"movieCardList"]];
+        _user.casting = [parser movieWithDict:responseObject[@"casting"]];
         [_movieCardDataSource addObjectsFromArray:movieCard];
         [_allTrendsArray addObjectsFromArray:array];
         [self noContentViewShowWithState:_allTrendsArray.count?NO:YES];
@@ -223,7 +231,7 @@
 }
 
 - (void)requestSupportWithCasting {
-    if ([[YWDataBaseManager shareInstance] loginUser].userId) {
+    if ([[YWDataBaseManager shareInstance] loginUser].userId && _user.casting.movieId) {
         NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": _user.casting.movieId, @"praiseTypeId": @(2), @"state": @(!_user.casting.movieIsSupport.integerValue)};
         [_httpManager requestSupport:parameters success:^(id responseObject) {
             _user.casting.movieIsSupport = _user.casting.movieIsSupport.integerValue?@"0":@"1";
@@ -246,9 +254,11 @@
         [moviePlayerViewController rotateVideoViewWithDegrees:90];
         [self presentViewController:moviePlayerViewController animated:YES completion:nil];
     }else {
-        YWSelectCastingViewController *vc = [[YWSelectCastingViewController alloc] init];
-        vc.user = _user;
-        [self.navigationController pushViewController:vc animated:YES];
+        if (([_user.userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userId])) {
+            YWSelectCastingViewController *vc = [[YWSelectCastingViewController alloc] init];
+            vc.user = _user;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
 }
 
@@ -296,7 +306,8 @@
             YWMovieCardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell2"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.delegate = self;
-            cell.model = _dataSource[indexPath.row];
+            cell.index = indexPath.row-1;
+            cell.model = _dataSource[indexPath.row-1];
             
             return cell;
         }
@@ -319,10 +330,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_segmentedControl && !_segmentedControl.selectedSegmentIndex) {
-        if (!_segmentedControl.selectedSegmentIndex) {
+        if (!indexPath.row) {
             return 200;
         }else {
-            return [YWMovieCardTableViewCell cellHeightWithModel:_dataSource[indexPath.row]];
+            return [YWMovieCardTableViewCell cellHeightWithModel:_dataSource[indexPath.row-1] withIndex:indexPath.row-1];
         }
     }else {
         if ([_dataSource[indexPath.row] trendsType].integerValue == 3) {

@@ -56,6 +56,7 @@
     YWTrendsCategoryView   *_userCategoryView;
     UIImage                *_headImage;
     UIView                 *_footView;
+    NSMutableArray         *_movieCardDataSource;
 }
 
 - (void)viewDidLoad {
@@ -74,6 +75,7 @@
     _constellationArray = @[@"白羊座", @"金牛座", @"双子座", @"巨蟹座", @"狮子座", @"处女座", @"天秤座", @"天蝎座", @"射手座", @"摩羯座", @"水瓶座", @"双鱼座"];
     _trendsArray = [[NSMutableArray alloc] init];
     _allTrendsArray = [[NSMutableArray alloc] init];
+    _movieCardDataSource = [[NSMutableArray alloc] init];
     _itemSelectIndex = 0;
 
     [[IQKeyboardManager sharedManager] setEnable:YES];
@@ -312,6 +314,10 @@
 
 - (void)actionMovieCard {
     YWEditMovieCallingCardViewController *vc = [[YWEditMovieCallingCardViewController alloc] init];
+    if (_movieCardDataSource.count) {
+        vc.mc = _movieCardDataSource.firstObject;
+    }
+    vc.user = _user;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -321,8 +327,11 @@
     [_httpManager requestUserDetail:parameters success:^(id responseObject) {
         [_allTrendsArray removeAllObjects];
         [_trendsArray removeAllObjects];
+        [_movieCardDataSource removeAllObjects];
         YWParser *parser = [[YWParser alloc] init];
         NSString *userId = _user.userId;
+        NSArray *movieCard = [parser movieCardWithArray:responseObject[@"movieCardList"]];
+        [_movieCardDataSource addObjectsFromArray:movieCard];
         _user = [parser userWithDict:responseObject[@"user"]];
         _user.userId = userId;
         [_allTrendsArray addObjectsFromArray:_user.userTrends];
@@ -381,7 +390,7 @@
         NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": _user.casting.movieId, @"praiseTypeId": @(3), @"state": @(!_user.casting.movieIsSupport.integerValue)};
         [_httpManager requestSupport:parameters success:^(id responseObject) {
             _user.casting.movieIsSupport = _user.casting.movieIsSupport.integerValue?@"0":@"1";
-            _user.casting.movieSupports = [NSString stringWithFormat:@"%ld", (long)_user.casting.movieSupports.integerValue?(long)_user.casting.movieSupports.integerValue+1:(long)_user.casting.movieSupports.integerValue-1];
+            _user.casting.movieSupports = [NSString stringWithFormat:@"%ld", (long)_user.casting.movieIsSupport.integerValue?(long)_user.casting.movieSupports.integerValue+1:(long)_user.casting.movieSupports.integerValue-1];
             [_tableView reloadData];
         } otherFailure:^(id responseObject) {
             
@@ -478,9 +487,11 @@
         [moviePlayerViewController rotateVideoViewWithDegrees:90];
         [self presentViewController:moviePlayerViewController animated:YES completion:nil];
     }else {
-        YWSelectCastingViewController *vc = [[YWSelectCastingViewController alloc] init];
-        vc.user = _user;
-        [self.navigationController pushViewController:vc animated:YES];
+        if (([_user.userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userId])) {
+            YWSelectCastingViewController *vc = [[YWSelectCastingViewController alloc] init];
+            vc.user = _user;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
 }
 

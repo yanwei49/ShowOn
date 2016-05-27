@@ -128,6 +128,11 @@
     }
 }
 
+- (void)setVolum:(NSInteger)volum {
+    _volum = volum;
+    _player.volume = volum;
+}
+
 - (void)setUrl:(NSURL *)url {
     _url = url;
     _isPlay = NO;
@@ -293,7 +298,11 @@
                 [_delegate moviePlayViewPlayWithState:_playOrPause.selected];
             }
         }else {
-            self.urlStr = _urlStr;
+            if (_url) {
+                self.url = _url;
+            }else if (_urlStr.length) {
+                self.urlStr = _urlStr;
+            }
             [_player play];
             if ([_delegate respondsToSelector:@selector(moviePlayViewPlayWithState:)]) {
                 [_delegate moviePlayViewPlayWithState:_playOrPause.selected];

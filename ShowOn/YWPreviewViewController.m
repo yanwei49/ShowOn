@@ -37,7 +37,7 @@
 
 - (void)actionPlay {
     MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:_movieUrl];
-    [moviePlayerViewController rotateVideoViewWithDegrees:90];
+//    [moviePlayerViewController rotateVideoViewWithDegrees:90];
     [self presentViewController:moviePlayerViewController animated:YES completion:nil];
 }
 
@@ -106,12 +106,12 @@
 #pragma mark - private
 - (NSURL *)movieMerge {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self mergeAndSaveComplete:^(id responseObject) {
+        [self mergeAndSaveCompletes:^(id responseObject) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [SVProgressHUD showSuccessWithStatus:@"合成成功"];
                 self.view.userInteractionEnabled = YES;
                 _movieUrl = responseObject;
-                _coverImageView.image = [self rotation:[YWTools thumbnailImageRequestUrl:_movieUrl time:0]];
+                _coverImageView.image = [YWTools thumbnailImageRequestUrl:_movieUrl time:0];
             });
             
             return responseObject;
@@ -138,8 +138,8 @@
             if (model.subsectionVideoSort.integerValue == i+1) {
                 if (model.recorderVideoUrl) {
                     movieUrl = model.recorderVideoUrl;
-                }else if(model.subsectionVideoUrl.length) {
-                    movieUrl = [NSURL URLWithString:model.subsectionVideoUrl];
+//                }else if(model.subsectionVideoUrl.length) {
+//                    movieUrl = [NSURL URLWithString:model.subsectionVideoUrl];
                 }else if (model.subsectionRecorderVideoUrl.length) {
                     movieUrl = [NSURL URLWithString:model.subsectionRecorderVideoUrl];
                 }
@@ -169,11 +169,8 @@
     AVMutableCompositionTrack *firstTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
     [firstTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, firstAsset.duration) ofTrack:[[firstAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
     //AUDIO TRACK
-    if(audioAssets.count){
-        AVAsset *audioAsset = audioAssets.firstObject;
-        AVMutableCompositionTrack *AudioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-        [AudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, audioAsset.duration) ofTrack:[[audioAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
-    }
+    AVMutableCompositionTrack *AudioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+    [AudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, firstAsset.duration) ofTrack:[[firstAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
     
     //FIXING ORIENTATION//
     AVMutableVideoCompositionLayerInstruction *firstlayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:firstTrack];
@@ -204,11 +201,8 @@
         AVMutableCompositionTrack *nextTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
         [nextTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, nextAsset.duration) ofTrack:[[nextAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:time error:nil];
         //AUDIO TRACK
-        if(audioAssets.count>i){
-            AVAsset *audioAsset = audioAssets[i];
-            AVMutableCompositionTrack *AudioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-            [AudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, audioAsset.duration) ofTrack:[[audioAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:time error:nil];
-        }
+        AVMutableCompositionTrack *AudioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+        [AudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, nextAsset.duration) ofTrack:[[nextAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:time error:nil];
         time = CMTimeAdd(time, nextAsset.duration);
         //FIXING ORIENTATION//
         AVMutableVideoCompositionLayerInstruction *nextLayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:nextTrack];
@@ -261,6 +255,161 @@
              [self exportDidFinish:exporter];
          });
      }];
+}
+
+/*!
+ @method mergeAndExportVideosAtFileURLs:
+ 
+ @param fileURLArray
+ 包含所有视频分段的文件URL数组，必须是[NSURL fileURLWithString:...]得到的
+ 
+ @discussion
+ 将所有分段视频合成为一段完整视频，并且裁剪为正方形
+ */
+- (void)mergeAndSaveCompletes:(NSURL * (^) (id responseObject))complete {
+    NSMutableArray *vedioAssets = [NSMutableArray array];
+    NSMutableArray *fileURLArray = [NSMutableArray array];
+    NSMutableArray *oFileURLArray = [NSMutableArray array];
+    for (NSInteger i=0; i<_template.templateSubsectionVideos.count; i++) {
+        NSURL *movieUrl;
+        NSURL *audioUrl;
+        NSURL *oMovieUrl;
+        for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
+            if (model.subsectionAudioUrl.length) {
+                audioUrl = [NSURL URLWithString:model.subsectionAudioUrl];
+            }
+            if (model.subsectionVideoSort.integerValue == i+1) {
+                if (model.recorderVideoUrl) {
+                    movieUrl = model.recorderVideoUrl;
+                    NSString *urlStr = [model.subsectionVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                    oMovieUrl = [NSURL URLWithString:urlStr];
+//                }else if(model.subsectionVideoUrl.length) {
+//                    movieUrl = [NSURL URLWithString:model.subsectionVideoUrl];
+                }else if (model.subsectionRecorderVideoUrl.length) {
+                    movieUrl = [NSURL URLWithString:model.subsectionRecorderVideoUrl];
+                    oMovieUrl = [NSURL URLWithString:model.subsectionVideoUrl];
+                }
+                break;
+            }
+        }
+        if (!movieUrl) {
+            break;
+        }else {
+            _movieUrl = movieUrl;
+            [fileURLArray addObject:movieUrl];
+            [oFileURLArray addObject:oMovieUrl];
+            AVAsset *asset = [AVAsset assetWithURL:movieUrl];
+            [vedioAssets addObject:asset];
+        }
+    }
+    if (vedioAssets.count<=1) {
+        return;
+    }
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSError *error = nil;
+        
+        CGSize renderSize = CGSizeMake(0, 0);
+        
+        NSMutableArray *layerInstructionArray = [[NSMutableArray alloc] init];
+        
+        AVMutableComposition *mixComposition = [[AVMutableComposition alloc] init];
+        
+        CMTime totalDuration = kCMTimeZero;
+        
+        //先去assetTrack 也为了取renderSize
+        NSMutableArray *assetTrackArray = [[NSMutableArray alloc] init];
+        NSMutableArray *assetArray = [[NSMutableArray alloc] init];
+        NSMutableArray *oAssetArray = [[NSMutableArray alloc] init];
+        for (NSInteger i=0;i<fileURLArray.count;i++) {
+            NSURL *fileURL = fileURLArray[i];
+            NSURL *oFileURL = oFileURLArray[i];
+            AVAsset *asset = [AVAsset assetWithURL:fileURL];
+            AVAsset *oAsset = [AVAsset assetWithURL:oFileURL];
+            
+            if (!asset) {
+                continue;
+            }
+            
+            [assetArray addObject:asset];
+            [oAssetArray addObject:oAsset];
+            AVAssetTrack *assetTrack = [[asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+            [assetTrackArray addObject:assetTrack];
+            
+            renderSize.width = MAX(renderSize.width, assetTrack.naturalSize.height);
+            renderSize.height = MAX(renderSize.height, assetTrack.naturalSize.width);
+        }
+        
+        CGFloat renderW = MIN(renderSize.width, renderSize.height);
+        
+        for (int i = 0; i < [assetArray count] && i < [assetTrackArray count]; i++) {
+            
+            AVAsset *asset = [assetArray objectAtIndex:i];
+            AVAssetTrack *assetTrack = [assetTrackArray objectAtIndex:i];
+            AVAsset *oAsset = [oAssetArray objectAtIndex:i];
+
+            AVMutableCompositionTrack *audioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+            [audioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration)
+                                ofTrack:[[oAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0]
+                                 atTime:totalDuration
+                                  error:nil];
+            
+            AVMutableCompositionTrack *videoTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+            
+            [videoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration)
+                                ofTrack:assetTrack
+                                 atTime:totalDuration
+                                  error:&error];
+            
+            //fix orientationissue
+            AVMutableVideoCompositionLayerInstruction *layerInstruciton = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoTrack];
+            
+            totalDuration = CMTimeAdd(totalDuration, asset.duration);
+            
+            CGFloat rate;
+            rate = renderW / MIN(assetTrack.naturalSize.width, assetTrack.naturalSize.height);
+            
+            CGAffineTransform layerTransform = CGAffineTransformMake(assetTrack.preferredTransform.a, assetTrack.preferredTransform.b, assetTrack.preferredTransform.c, assetTrack.preferredTransform.d, assetTrack.preferredTransform.tx * rate, assetTrack.preferredTransform.ty * rate);
+            layerTransform = CGAffineTransformConcat(layerTransform, CGAffineTransformMake(1, 0, 0, 1, 0, -(assetTrack.naturalSize.width - assetTrack.naturalSize.height) / 2.0));//向上移动取中部影响
+            layerTransform = CGAffineTransformScale(layerTransform, rate, rate);//放缩，解决前后摄像结果大小不对称
+            
+            [layerInstruciton setTransform:layerTransform atTime:kCMTimeZero];
+            [layerInstruciton setOpacity:0.0 atTime:totalDuration];
+            
+            //data
+            [layerInstructionArray addObject:layerInstruciton];
+        }
+        
+        //get save path
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *myPathDocs =  [documentsDirectory stringByAppendingPathComponent:
+                                 [NSString stringWithFormat:@"mergeVideo-%ld.mov",[[[NSUserDefaults standardUserDefaults] objectForKey:@"MOVIE_COUNT"] integerValue]+1]];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%ld", [[[NSUserDefaults standardUserDefaults] objectForKey:@"MOVIE_COUNT"] integerValue]+1] forKey:@"MOVIE_COUNT"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSURL *url = [NSURL fileURLWithPath:myPathDocs];
+        
+        //export
+        AVMutableVideoCompositionInstruction *mainInstruciton = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+        mainInstruciton.timeRange = CMTimeRangeMake(kCMTimeZero, totalDuration);
+        mainInstruciton.layerInstructions = layerInstructionArray;
+        AVMutableVideoComposition *mainCompositionInst = [AVMutableVideoComposition videoComposition];
+        mainCompositionInst.instructions = @[mainInstruciton];
+        mainCompositionInst.frameDuration = CMTimeMake(1, 30);
+        mainCompositionInst.renderSize = CGSizeMake(renderW, renderW);
+        
+        AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetMediumQuality];
+        exporter.videoComposition = mainCompositionInst;
+        exporter.outputURL = url;
+        exporter.outputFileType = AVFileTypeMPEG4;
+        exporter.shouldOptimizeForNetworkUse = YES;
+        [exporter exportAsynchronouslyWithCompletionHandler:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                complete(exporter.outputURL);
+                [self exportDidFinish:exporter];
+            });
+        }];
+    });
 }
 
 -(void)exportDidFinish:(AVAssetExportSession*)session {

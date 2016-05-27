@@ -66,7 +66,7 @@
     [_tableView reloadData];
 }
 
-+ (CGFloat)cellHeightWithModel:(YWMovieCardModel *)model {
++ (CGFloat)cellHeightWithModel:(YWMovieCardModel *)model withIndex:(NSInteger)index {
     NSInteger cnt = 0;
     NSArray *array = @[model.authentication?:@"", model.age?:@"", model.address?:@"", model.constellation?:@"", model.height?:@"", model.bwh?:@"", model.announce?:@"", model.email?:@""];
     for (NSInteger i=0; i<array.count; i++) {
@@ -74,7 +74,10 @@
             cnt += 1;
         }
     }
-    CGFloat height = 40*cnt;
+    CGFloat height = 0;
+    if (!index) {
+        height += 40*cnt;
+    }
     for (YWTrendsModel *trend in model.trends) {
         height += 210;
         CGRect rect = [trend.trendsContent boundingRectWithSize:CGSizeMake(kScreenWidth-20, 100000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14]} context:nil];
@@ -94,31 +97,42 @@
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (_index) {
+        return _model.trends.count;
+    }
     return _titles.count+_model.trends.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < _titles.count) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-        cell.backgroundColor = RGBColor(50, 50, 50);
-        cell.textLabel.text = _titles[indexPath.row];
-        cell.textLabel.textColor = [UIColor whiteColor];
-        cell.textLabel.font = [UIFont systemFontOfSize:15];
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
-        label.font = [UIFont systemFontOfSize:14];
-        label.textAlignment = NSTextAlignmentRight;
-        label.backgroundColor = RGBColor(50, 50, 50);
-        label.textColor = [UIColor whiteColor];
-        label.text = _contents[indexPath.row];
-        cell.accessoryView = label;
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(20, 39.5, kScreenWidth-20, 0.5)];
-        line.backgroundColor = RGBColor(30, 30, 30);
-        [cell.contentView addSubview:line];
-    
-        return cell;
+    if (!_index) {
+        if (indexPath.row < _titles.count) {
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+            cell.backgroundColor = RGBColor(50, 50, 50);
+            cell.textLabel.text = _titles[indexPath.row];
+            cell.textLabel.textColor = [UIColor whiteColor];
+            cell.textLabel.font = [UIFont systemFontOfSize:15];
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+            label.font = [UIFont systemFontOfSize:14];
+            label.textAlignment = NSTextAlignmentRight;
+            label.backgroundColor = RGBColor(50, 50, 50);
+            label.textColor = [UIColor whiteColor];
+            label.text = _contents[indexPath.row];
+            cell.accessoryView = label;
+            UIView *line = [[UIView alloc] initWithFrame:CGRectMake(20, 39.5, kScreenWidth-20, 0.5)];
+            line.backgroundColor = RGBColor(30, 30, 30);
+            [cell.contentView addSubview:line];
+            
+            return cell;
+        }else {
+            YWMovieCardMovieTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"movieCell"];
+            cell.trends = _model.trends[indexPath.row-_titles.count];
+            cell.delegate = self;
+            
+            return cell;
+        }
     }else {
         YWMovieCardMovieTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"movieCell"];
-        cell.trends = _model.trends[indexPath.row-_titles.count];
+        cell.trends = _model.trends[indexPath.row];
         cell.delegate = self;
         
         return cell;
@@ -130,6 +144,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_index) {
+        return [YWMovieCardMovieTableViewCell cellHeightWithModel:_model.trends[indexPath.row]];
+    }
     return (indexPath.row < _titles.count)?40:[YWMovieCardMovieTableViewCell cellHeightWithModel:_model.trends[indexPath.row-_titles.count]];
 }
 

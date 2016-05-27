@@ -20,8 +20,9 @@
 @interface YWMovieCardTableViewCell : UITableViewCell
 
 @property (nonatomic, assign) id<YWMovieCardTableViewCellDelegate> delegate;
+@property (nonatomic, assign) NSInteger index;
 @property (nonatomic, strong) YWMovieCardModel *model;
 
-+ (CGFloat)cellHeightWithModel:(YWMovieCardModel *)model;
++ (CGFloat)cellHeightWithModel:(YWMovieCardModel *)model withIndex:(NSInteger)index;
 
 @end

@@ -22,8 +22,9 @@
 #import "YWUserModel.h"
 #import "YWPreViewHeadView.h"
 #import "YWMovieCardMovieTableViewCell.h"
+#import "YWSelectCastingViewController.h"
 
-@interface YWPreviewMovieCardViewController()<UITableViewDataSource, UITableViewDelegate, YWMovieCardMovieTableViewCellDelegate, UIActionSheetDelegate>
+@interface YWPreviewMovieCardViewController()<UITableViewDataSource, UITableViewDelegate, YWMovieCardMovieTableViewCellDelegate, UIActionSheetDelegate, YWPreViewHeadViewDelegate>
 
 @end
 
@@ -59,11 +60,13 @@
         cnt += 1;
     }
     CGFloat height = 40*cnt+60;
-    YWPreViewHeadView *headView = [[YWPreViewHeadView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, height) model:_model];
+    YWPreViewHeadView *headView = [[YWPreViewHeadView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, height+200) model:_model];
+    headView.user = _user;
+    headView.delegate = self;
     
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 70)];
     view.backgroundColor = Subject_color;
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(20, 20, kScreenWidth-40, 30)];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(20, 20, kScreenWidth-40, 40)];
     button.backgroundColor = RGBColor(30, 30, 30);
     [button setTitleColor:RGBColor(255, 194, 0) forState:UIControlStateNormal];
     [button addTarget:self action:@selector(actionDown) forControlEvents:UIControlEventTouchUpInside];
@@ -109,16 +112,6 @@
     [self actionRightItem:nil];
 }
 
-#pragma mark - UIActionSheetDelegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        _isShare = YES;
-        [self requestCommitMovieCard];
-    }else if (buttonIndex == 1) {
-        [self requestCommitMovieCard];
-    }
-}
-
 #pragma mark - request
 - (void)requestCommitMovieCard {
     NSMutableArray *ids = [NSMutableArray array];
@@ -154,6 +147,58 @@
     [UMSocialData defaultData].extConfig.wechatTimelineData.url =  url;
     [UMSocialData defaultData].extConfig.wechatSessionData.title =  title;
     [UMSocialData defaultData].extConfig.wechatTimelineData.title =  title;
+}
+
+- (void)requestSupportWithCasting {
+    if ([[YWDataBaseManager shareInstance] loginUser].userId) {
+        NSDictionary *parameters = @{@"userId": [[YWDataBaseManager shareInstance] loginUser].userId, @"praiseTargetId": _user.casting.movieId, @"praiseTypeId": @(3), @"state": @(!_user.casting.movieIsSupport.integerValue)};
+        [_httpManager requestSupport:parameters success:^(id responseObject) {
+            _user.casting.movieIsSupport = _user.casting.movieIsSupport.integerValue?@"0":@"1";
+            _user.casting.movieSupports = [NSString stringWithFormat:@"%ld", (long)_user.casting.movieIsSupport.integerValue?(long)_user.casting.movieSupports.integerValue+1:(long)_user.casting.movieSupports.integerValue-1];
+            [_tableView reloadData];
+        } otherFailure:^(id responseObject) {
+            
+        } failure:^(NSError *error) {
+            
+        }];
+    }
+}
+
+#pragma mark - YWPreViewHeadViewDelegate
+- (void)preViewHeadViewDidSelectPlayButton {
+    if (_user.casting.movieUrl.length) {
+        NSString *urlStr = [_user.casting.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSURL *url = [NSURL URLWithString:urlStr];
+        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [moviePlayerViewController rotateVideoViewWithDegrees:90];
+        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    }else {
+        if (([_user.userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userId])) {
+            YWSelectCastingViewController *vc = [[YWSelectCastingViewController alloc] init];
+            vc.user = _user;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
+}
+
+- (void)preViewHeadViewDidSelectRecorderButton {
+    YWSelectCastingViewController *vc = [[YWSelectCastingViewController alloc] init];
+    vc.user = _user;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)preViewHeadViewDidSelectSupportButton {
+    [self requestSupportWithCasting];
+}
+
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        _isShare = YES;
+        [self requestCommitMovieCard];
+    }else if (buttonIndex == 1) {
+        [self requestCommitMovieCard];
+    }
 }
 
 #pragma mark - YWMovieCardMovieTableViewCellDelegate

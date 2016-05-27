@@ -1871,7 +1871,6 @@
 				TargetAttributes = {
 					56FE99C51C0FBAB8007BA29B = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = XQB22UNR8H;
 					};
 					56FE99DE1C0FBAB8007BA29B = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -2399,8 +2398,8 @@
 			baseConfigurationReference = 28C9BEA80C5B71E2D4466F42 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Xiamen Juer Technology Co.,Ltd (UC2U8A44SM)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Xiamen Juer Technology Co.,Ltd (UC2U8A44SM)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2417,9 +2416,10 @@
 					"$(PROJECT_DIR)/ShowOn/umeng_ios_social_sdk_4.2.1_arm64_custom/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
 					"$(PROJECT_DIR)/ShowOn/umeng_ios_social_sdk_4.2.1_arm64_custom/UMSocial_Sdk_Extra_Frameworks/Wechat",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.qunongzhuang.Juer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yw.Juer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "47b8e478-6fa5-4cf5-9de3-2cb0abe6f2ac";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -2428,8 +2428,8 @@
 			baseConfigurationReference = 8C97BF3F733B43EAC44E94D0 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Xiamen Juer Technology Co.,Ltd (UC2U8A44SM)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Xiamen Juer Technology Co.,Ltd (UC2U8A44SM)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2446,9 +2446,10 @@
 					"$(PROJECT_DIR)/ShowOn/umeng_ios_social_sdk_4.2.1_arm64_custom/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
 					"$(PROJECT_DIR)/ShowOn/umeng_ios_social_sdk_4.2.1_arm64_custom/UMSocial_Sdk_Extra_Frameworks/Wechat",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.qunongzhuang.Juer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yw.Juer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "47b8e478-6fa5-4cf5-9de3-2cb0abe6f2ac";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
