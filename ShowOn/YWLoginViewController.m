@@ -18,6 +18,9 @@
 #import "YWDataBaseManager.h"
 #import "YWFriendListManager.h"
 #import <RongIMKit/RongIMKit.h>
+//#import "UMSocialQQHandler.h"
+#import <TencentOpenAPI/QQApiInterface.h>
+#import "WXApi.h"
 
 @interface YWLoginViewController ()<UITextFieldDelegate>
 
@@ -149,9 +152,22 @@
         make.height.offset(80);
     }];
     
-    NSArray *titles = @[@"微信登录", @"QQ登录", @"微博登录"];
-    NSArray *imageNames = @[@"wechat.png", @"qq.png", @"weibo.png"];
-    for (NSInteger i=0; i<3; i++) {
+    NSArray *titles;
+    NSArray *imageNames;
+    if ([QQApiInterface isQQInstalled] && [WXApi isWXAppInstalled]) {
+        titles = @[@"微信登录", @"QQ登录", @"微博登录"];
+        imageNames= @[@"wechat.png", @"qq.png", @"weibo.png"];
+    }else if ([QQApiInterface isQQInstalled] && ![WXApi isWXAppInstalled]) {
+        titles = @[@"QQ登录", @"微博登录"];
+        imageNames= @[@"qq.png", @"weibo.png"];
+    }else if (![QQApiInterface isQQInstalled] && [WXApi isWXAppInstalled]) {
+        titles = @[@"微信登录", @"微博登录"];
+        imageNames= @[@"wechat.png", @"weibo.png"];
+    }else if (![QQApiInterface isQQInstalled] && ![WXApi isWXAppInstalled]) {
+        titles = @[@"微博登录"];
+        imageNames= @[@"weibo.png"];
+    }
+    for (NSInteger i=0; i<titles.count; i++) {
         UIButton *button = [[UIButton alloc] init];
         button.backgroundColor = Subject_color;
         button.tag = 100+i;
@@ -161,9 +177,16 @@
             make.bottom.top.offset(0);
             make.centerY.equalTo(_otherLoginMethodBackgroundView.mas_centerY);
             make.width.offset(60);
-            i==1?make.centerX.equalTo(_otherLoginMethodBackgroundView.mas_centerX):nil;
-            i==0?make.right.equalTo(_otherLoginMethodBackgroundView.mas_centerX).offset(-70):nil;
-            i==2?make.left.equalTo(_otherLoginMethodBackgroundView.mas_centerX).offset(70):nil;
+            if (titles.count==1) {
+                make.centerX.equalTo(_otherLoginMethodBackgroundView.mas_centerX);
+            }else if (titles.count==2) {
+                i==0?make.centerX.equalTo(_otherLoginMethodBackgroundView.mas_centerX).offset(-40):nil;
+                i==1?make.centerX.equalTo(_otherLoginMethodBackgroundView.mas_centerX).offset(40):nil;
+            }else {
+                i==0?make.centerX.equalTo(_otherLoginMethodBackgroundView.mas_centerX).offset(-80):nil;
+                i==1?make.centerX.equalTo(_otherLoginMethodBackgroundView.mas_centerX):nil;
+                i==2?make.centerX.equalTo(_otherLoginMethodBackgroundView.mas_centerX).offset(80):nil;
+            }
         }];
         
         UIImageView *imageView = [[UIImageView alloc] init];
