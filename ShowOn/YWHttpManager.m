@@ -48,6 +48,34 @@ static YWHttpManager * manager;
     [[_httpManager operationQueue] cancelAllOperations];
 }
 
+-(void)getNetWorkNotificationCenterWithState:(void (^)(bool isWIFI))netWorkState {
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusNotReachable:
+            {
+                netWorkState(NO);
+//                [CHObjectClass showMastToast:@"网络无连接!"];
+                break;
+            }
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+            {
+                netWorkState(NO);
+//                [CHObjectClass showMastToast:@"您正在使用WIFI网络"];
+                break;
+            }
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+            {
+                netWorkState(NO);
+//                [CHObjectClass showMastToast:@"您正在使用2G/3G网络"];
+                break;
+            }
+            default:
+                break;
+        }
+    }];
+}
+
 - (void) responseObjectParser:(id)responseObject success:(void (^) (id responseObject))success otherFailure:(void (^)(id responseObject))otherFailure {
     NSDictionary *resultDic = responseObject;
     NSInteger responseKey = [[resultDic objectForKey:@"code"] integerValue];

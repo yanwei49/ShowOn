@@ -36,9 +36,19 @@
 }
 
 - (void)actionPlay {
-    MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:_movieUrl];
-//    [moviePlayerViewController rotateVideoViewWithDegrees:90];
-    [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    if ([self checkNewWorkIsWifi]) {
+        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:_movieUrl];
+        //    [moviePlayerViewController rotateVideoViewWithDegrees:90];
+        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    }else {
+        UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"你当前网络不是WiFi，是否播放" message:nil delegate:nil cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+        [alter show];
+        [alter clickedButtonAtIndex:^(NSInteger buttonIndex) {
+            MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:_movieUrl];
+            //    [moviePlayerViewController rotateVideoViewWithDegrees:90];
+            [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+        }];
+    }
 }
 
 - (void)createSubViews {
@@ -303,6 +313,7 @@
         }
     }
     if (vedioAssets.count<=1) {
+        complete(_movieUrl);
         return;
     }
 

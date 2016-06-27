@@ -126,22 +126,26 @@
 
 #pragma mark - action
 - (void)actionRightItem:(UIButton *)button {
-    if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
-        UIAlertController *sheet = [UIAlertController alertControllerWithTitle:@"举报" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        [sheet addAction:[UIAlertAction actionWithTitle:@"带有色情或政治内容" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            [self requestReport:0];
-        }]];
-        [sheet addAction:[UIAlertAction actionWithTitle:@"其    他" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            [self requestReport:0];
-        }]];
-        [sheet addAction:[UIAlertAction actionWithTitle:@"取    消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-            
-        }]];
-        [self presentViewController:sheet animated:YES completion:nil];
+    if ([[YWDataBaseManager shareInstance] loginUser]) {
+        if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
+            UIAlertController *sheet = [UIAlertController alertControllerWithTitle:@"举报" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+            [sheet addAction:[UIAlertAction actionWithTitle:@"带有色情或政治内容" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                [self requestReport:0];
+            }]];
+            [sheet addAction:[UIAlertAction actionWithTitle:@"其    他" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                [self requestReport:0];
+            }]];
+            [sheet addAction:[UIAlertAction actionWithTitle:@"取    消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+                
+            }]];
+            [self presentViewController:sheet animated:YES completion:nil];
+        }else {
+            UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"举报" delegate:self cancelButtonTitle:@"取    消" destructiveButtonTitle:nil otherButtonTitles:@"带有色情或政治内容", @"其    他", nil];
+            sheet.tag = 110;
+            [sheet showInView:self.view];
+        }
     }else {
-        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"举报" delegate:self cancelButtonTitle:@"取    消" destructiveButtonTitle:nil otherButtonTitles:@"带有色情或政治内容", @"其    他", nil];
-        sheet.tag = 110;
-        [sheet showInView:self.view];
+        [self login];
     }
 }
 
@@ -426,12 +430,25 @@
 
 - (void)repeatDetailTableViewCellDidSelectPlaying:(YWRepeatDetailTableViewCell *)cell {
     if (cell.trends.trendsMovie.movieUrl.length) {
-        NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSURL *url = [NSURL URLWithString:urlStr];
-        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-        [moviePlayerViewController rotateVideoViewWithDegrees:90];
-        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
-        [self requestPlayModelId:cell.trends.trendsId withType:2];
+        if ([self checkNewWorkIsWifi]) {
+            NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+            [moviePlayerViewController rotateVideoViewWithDegrees:90];
+            [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+            [self requestPlayModelId:cell.trends.trendsId withType:2];
+        }else {
+            UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"你当前网络不是WiFi，是否播放" message:nil delegate:nil cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+            [alter show];
+            [alter clickedButtonAtIndex:^(NSInteger buttonIndex) {
+                NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                NSURL *url = [NSURL URLWithString:urlStr];
+                MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+                [moviePlayerViewController rotateVideoViewWithDegrees:90];
+                [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+                [self requestPlayModelId:cell.trends.trendsId withType:2];
+            }];
+        }
     }else {
         if ([[YWDataBaseManager shareInstance] loginUser]) {
             YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
@@ -472,12 +489,25 @@
 
 - (void)focusTableViewCellDidSelectPlaying:(YWFocusTableViewCell *)cell {
     if (cell.trends.trendsMovie.movieUrl.length) {
-        NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSURL *url = [NSURL URLWithString:urlStr];
-        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-        [moviePlayerViewController rotateVideoViewWithDegrees:90];
-        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
-        [self requestPlayModelId:cell.trends.trendsId withType:2];
+        if ([self checkNewWorkIsWifi]) {
+            NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+            [moviePlayerViewController rotateVideoViewWithDegrees:90];
+            [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+            [self requestPlayModelId:cell.trends.trendsId withType:2];
+        }else {
+            UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"你当前网络不是WiFi，是否播放" message:nil delegate:nil cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+            [alter show];
+            [alter clickedButtonAtIndex:^(NSInteger buttonIndex) {
+                NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                NSURL *url = [NSURL URLWithString:urlStr];
+                MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+                [moviePlayerViewController rotateVideoViewWithDegrees:90];
+                [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+                [self requestPlayModelId:cell.trends.trendsId withType:2];
+            }];
+        }
     }else {
         if ([[YWDataBaseManager shareInstance] loginUser]) {
             YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];

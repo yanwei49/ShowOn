@@ -10,8 +10,10 @@
 #define GoFarmApp_TLHttpGlobalDefine_h
 
 
-#define kHostURL               @"http://120.25.146.161/"
-//#define kHostURL               @"http://192.168.1.134:8080/"
+//#define kHostURL               @"http://120.25.146.161/"
+#define kHostURL               @"http://www.juerapp.com/"
+//#define kHostURL               @"http://xazhb85.uicp.io/"
+
 #define HOST_URL(methodName)   [NSString stringWithFormat:@"%@%@",kHostURL,methodName]
 
 #define BUNDLE_VERSION                        [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey]

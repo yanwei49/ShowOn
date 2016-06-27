@@ -167,11 +167,23 @@
 #pragma mark - YWPreViewHeadViewDelegate
 - (void)preViewHeadViewDidSelectPlayButton {
     if (_user.casting.movieUrl.length) {
-        NSString *urlStr = [_user.casting.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSURL *url = [NSURL URLWithString:urlStr];
-        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-        [moviePlayerViewController rotateVideoViewWithDegrees:90];
-        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+        if ([self checkNewWorkIsWifi]) {
+            NSString *urlStr = [_user.casting.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+            [moviePlayerViewController rotateVideoViewWithDegrees:90];
+            [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+        }else {
+            UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"你当前网络不是WiFi，是否播放" message:nil delegate:nil cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+            [alter show];
+            [alter clickedButtonAtIndex:^(NSInteger buttonIndex) {
+                NSString *urlStr = [_user.casting.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                NSURL *url = [NSURL URLWithString:urlStr];
+                MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+                [moviePlayerViewController rotateVideoViewWithDegrees:90];
+                [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+            }];
+        }
     }else {
         if (([_user.userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userId])) {
             YWSelectCastingViewController *vc = [[YWSelectCastingViewController alloc] init];
@@ -203,11 +215,23 @@
 
 #pragma mark - YWMovieCardMovieTableViewCellDelegate
 - (void)movieCardMovieTableViewCellDidSelectPlay:(YWMovieCardMovieTableViewCell *)cell {
-    NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURL *url = [NSURL URLWithString:urlStr];
-    MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-    [moviePlayerViewController rotateVideoViewWithDegrees:90];
-    [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    if ([self checkNewWorkIsWifi]) {
+        NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSURL *url = [NSURL URLWithString:urlStr];
+        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [moviePlayerViewController rotateVideoViewWithDegrees:90];
+        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    }else {
+        UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"你当前网络不是WiFi，是否播放" message:nil delegate:nil cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+        [alter show];
+        [alter clickedButtonAtIndex:^(NSInteger buttonIndex) {
+            NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+            [moviePlayerViewController rotateVideoViewWithDegrees:90];
+            [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+        }];
+    }
 }
 
 #pragma mark - UITableViewDelegate
@@ -234,11 +258,23 @@
 
 #pragma mark - YWMovieCardTableViewCellDelegate
 - (void)movieCardTableViewCellDidSelectPlayingButton:(YWTrendsModel *)trend {
-    NSString *urlStr = [trend.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURL *url = [NSURL URLWithString:urlStr];
-    MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-    [moviePlayerViewController rotateVideoViewWithDegrees:90];
-    [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    if ([self checkNewWorkIsWifi]) {
+        NSString *urlStr = [trend.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSURL *url = [NSURL URLWithString:urlStr];
+        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [moviePlayerViewController rotateVideoViewWithDegrees:90];
+        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    }else {
+        UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"你当前网络不是WiFi，是否播放" message:nil delegate:nil cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+        [alter show];
+        [alter clickedButtonAtIndex:^(NSInteger buttonIndex) {
+            NSString *urlStr = [trend.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+            [moviePlayerViewController rotateVideoViewWithDegrees:90];
+            [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+        }];
+    }
 }
 
 @end

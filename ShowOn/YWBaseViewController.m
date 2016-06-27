@@ -11,6 +11,7 @@
 #import "YWHttpManager.h"
 #import "YWParser.h"
 #import "YWNavigationController.h"
+#import "UIAlertView+Block.h"
 
 @interface YWBaseViewController ()<UIAlertViewDelegate>
 
@@ -21,6 +22,7 @@
     
     YWHttpManager       *_httpManager;
     UILabel             *_noContentLabel;
+    BOOL                 _isWIFI;
 }
 
 - (void)viewDidLoad {
@@ -32,6 +34,14 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [YWNoCotentView showNoCotentViewWithState:NO];
+    [_httpManager getNetWorkNotificationCenterWithState:^(bool isWIFI) {
+        _isWIFI = isWIFI;
+    }];
+}
+
+- (BOOL)checkNewWorkIsWifi {
+//    _isWIFI = YES;
+    return _isWIFI;
 }
 
 #pragma mark - create right/left item

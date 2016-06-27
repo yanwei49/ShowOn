@@ -15,7 +15,6 @@
 #import "YWDataBaseManager.h"
 #import "YWUserModel.h"
 #import "YWTemplateTrendsTableViewCell.h"
-#import "YWTranscribeViewController.h"
 #import "YWTrendsDetailViewController.h"
 #import "YWTrendsModel.h"
 #import "YWCommentModel.h"
@@ -291,26 +290,30 @@
         }
     }else {
         if (!indexPath.section) {
-            if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
-                UIAlertController *sheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-                [sheet addAction:[UIAlertAction actionWithTitle:@"去录制" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
-                    vc.template = _template;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }]];
-                [sheet addAction:[UIAlertAction actionWithTitle:@"评论模板" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
-                    YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
-                    nv.title = @"写评论";
-                    vc.type = 4;
-                    vc.template = _template;
-                    [self presentViewController:nv animated:YES completion:nil];
-                }]];
-                [sheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
-                [self presentViewController:sheet animated:YES completion:nil];
+            if ([[YWDataBaseManager shareInstance] loginUser]) {
+                if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
+                    UIAlertController *sheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+                    [sheet addAction:[UIAlertAction actionWithTitle:@"去录制" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+                        vc.template = _template;
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }]];
+                    [sheet addAction:[UIAlertAction actionWithTitle:@"评论模板" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
+                        YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
+                        nv.title = @"写评论";
+                        vc.type = 4;
+                        vc.template = _template;
+                        [self presentViewController:nv animated:YES completion:nil];
+                    }]];
+                    [sheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+                    [self presentViewController:sheet animated:YES completion:nil];
+                }else {
+                    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"去录制", @"评论模板", nil];
+                    [sheet showInView:self.view];
+                }
             }else {
-                UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"去录制", @"评论模板", nil];
-                [sheet showInView:self.view];
+                [self login];
             }
         }else {
             YWTrendsDetailViewController *vc = [[YWTrendsDetailViewController alloc] init];
@@ -332,42 +335,59 @@
 
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (actionSheet.tag == 120) {
-        if (_commentIsSelf) {
-            if (buttonIndex == 0) {
-                [self requestDeleteCommnet];
-            }else if (buttonIndex == 1) {
-                [self commentComment];
+    if (![[YWDataBaseManager shareInstance] loginUser]) {
+        [self login];
+    }else {
+        if (actionSheet.tag == 120) {
+            if (_commentIsSelf) {
+                if (buttonIndex == 0) {
+                    [self requestDeleteCommnet];
+                }else if (buttonIndex == 1) {
+                    [self commentComment];
+                }
+            }else {
+                if (buttonIndex == 0) {
+                    [self commentComment];
+                }
             }
         }else {
             if (buttonIndex == 0) {
-                [self commentComment];
+                YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
+                vc.template = _template;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else if (buttonIndex == 1) {
+                YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
+                YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
+                nv.title = @"写评论";
+                vc.type = 4;
+                vc.template = _template;
+                [self presentViewController:nv animated:YES completion:nil];
             }
-        }
-    }else {
-        if (buttonIndex == 0) {
-            YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
-            vc.template = _template;
-            [self.navigationController pushViewController:vc animated:YES];
-        }else if (buttonIndex == 1) {
-            YWWriteCommentViewController *vc = [[YWWriteCommentViewController alloc] init];
-            YWNavigationController *nv = [[YWNavigationController alloc] initWithRootViewController:vc];
-            nv.title = @"写评论";
-            vc.type = 4;
-            vc.template = _template;
-            [self presentViewController:nv animated:YES completion:nil];
         }
     }
 }
 
 #pragma mark - YWHotTableViewCellDelegate
 - (void)hotTableViewCellDidSelectPlay:(YWHotTableViewCell *)cell {
-    NSString *urlStr = [cell.template.templateVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURL *url = [NSURL URLWithString:urlStr];
-    MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-    [moviePlayerViewController rotateVideoViewWithDegrees:0];
-    [self presentViewController:moviePlayerViewController animated:YES completion:nil];
-    [self requestPlayModelId:cell.template.templateId withType:1];
+    if ([self checkNewWorkIsWifi]) {
+        NSString *urlStr = [cell.template.templateVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSURL *url = [NSURL URLWithString:urlStr];
+        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [moviePlayerViewController rotateVideoViewWithDegrees:0];
+        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+        [self requestPlayModelId:cell.template.templateId withType:1];
+    }else {
+        UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"你当前网络不是WiFi，是否播放" message:nil delegate:nil cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+        [alter show];
+        [alter clickedButtonAtIndex:^(NSInteger buttonIndex) {
+            NSString *urlStr = [cell.template.templateVideoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+            [moviePlayerViewController rotateVideoViewWithDegrees:0];
+            [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+            [self requestPlayModelId:cell.template.templateId withType:1];
+        }];
+    }
 }
 
 #pragma mark - YWMovieCommentTableViewCellDelegate
@@ -403,12 +423,25 @@
 
 - (void)repeatTableViewCellDidSelectPlaying:(YWRepeatTableViewCell *)cell {
     if (cell.trends.trendsMovie.movieUrl.length) {
-        NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSURL *url = [NSURL URLWithString:urlStr];
-        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-        [moviePlayerViewController rotateVideoViewWithDegrees:90];
-        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
-        [self requestPlayModelId:cell.trends.trendsId withType:2];
+        if ([self checkNewWorkIsWifi]) {
+            NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+            [moviePlayerViewController rotateVideoViewWithDegrees:90];
+            [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+            [self requestPlayModelId:cell.trends.trendsId withType:2];
+        }else {
+            UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"你当前网络不是WiFi，是否播放" message:nil delegate:nil cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+            [alter show];
+            [alter clickedButtonAtIndex:^(NSInteger buttonIndex) {
+                NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                NSURL *url = [NSURL URLWithString:urlStr];
+                MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+                [moviePlayerViewController rotateVideoViewWithDegrees:90];
+                [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+                [self requestPlayModelId:cell.trends.trendsId withType:2];
+            }];
+        }
     }else {
         if ([[YWDataBaseManager shareInstance] loginUser]) {
             YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
@@ -450,12 +483,25 @@
 
 - (void)templateTrendsTableViewCellDidSelectPlaying:(YWTemplateTrendsTableViewCell *)cell {
     if (cell.trends.trendsMovie.movieUrl.length) {
-        NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSURL *url = [NSURL URLWithString:urlStr];
-        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-        [moviePlayerViewController rotateVideoViewWithDegrees:90];
-        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
-        [self requestPlayModelId:cell.trends.trendsId withType:2];
+        if ([self checkNewWorkIsWifi]) {
+            NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+            [moviePlayerViewController rotateVideoViewWithDegrees:90];
+            [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+            [self requestPlayModelId:cell.trends.trendsId withType:2];
+        }else {
+            UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"你当前网络不是WiFi，是否播放" message:nil delegate:nil cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+            [alter show];
+            [alter clickedButtonAtIndex:^(NSInteger buttonIndex) {
+                NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                NSURL *url = [NSURL URLWithString:urlStr];
+                MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+                [moviePlayerViewController rotateVideoViewWithDegrees:90];
+                [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+                [self requestPlayModelId:cell.trends.trendsId withType:2];
+            }];
+        }
     }else {
         if ([[YWDataBaseManager shareInstance] loginUser]) {
             YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];

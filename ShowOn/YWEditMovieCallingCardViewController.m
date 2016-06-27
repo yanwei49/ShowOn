@@ -224,11 +224,23 @@
 #pragma mark - YWMovieCallingCardInfosViewDelegate
 - (void)movieCallingCardInfosViewDidSelectPlayButton {
     if (_user.casting.movieUrl.length) {
-        NSString *urlStr = [_user.casting.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSURL *url = [NSURL URLWithString:urlStr];
-        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-        [moviePlayerViewController rotateVideoViewWithDegrees:90];
-        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+        if ([self checkNewWorkIsWifi]) {
+            NSString *urlStr = [_user.casting.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+            [moviePlayerViewController rotateVideoViewWithDegrees:90];
+            [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+        }else {
+            UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"你当前网络不是WiFi，是否播放" message:nil delegate:nil cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+            [alter show];
+            [alter clickedButtonAtIndex:^(NSInteger buttonIndex) {
+                NSString *urlStr = [_user.casting.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                NSURL *url = [NSURL URLWithString:urlStr];
+                MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+                [moviePlayerViewController rotateVideoViewWithDegrees:90];
+                [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+            }];
+        }
     }else {
         if (([_user.userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userId])) {
             YWSelectCastingViewController *vc = [[YWSelectCastingViewController alloc] init];

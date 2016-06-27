@@ -284,7 +284,7 @@
     if (!_timeCount--) {
         _sendVerificationButton.userInteractionEnabled = YES;
         [_sendVerificationButton setTitle:@"发送验证码" forState:UIControlStateNormal];
-        _sendVerificationButton.backgroundColor = [UIColor orangeColor];
+        _sendVerificationButton.backgroundColor = RGBColor(255, 192, 1);
         _timeCount = 60;
     }else {
         _sendVerificationButton.userInteractionEnabled = NO;

@@ -241,11 +241,23 @@
 }
 
 - (void)actionPlay:(UIButton *)button {
-    NSString *urlStr = [!_trends?_template.templateVideoUrl:_trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURL *url = [NSURL URLWithString:urlStr];
-    MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-    [moviePlayerViewController rotateVideoViewWithDegrees:!_trends?0:90];
-    [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    if ([self checkNewWorkIsWifi]) {
+        NSString *urlStr = [!_trends?_template.templateVideoUrl:_trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSURL *url = [NSURL URLWithString:urlStr];
+        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+        [moviePlayerViewController rotateVideoViewWithDegrees:!_trends?0:90];
+        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+    }else {
+        UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"你当前网络不是WiFi，是否播放" message:nil delegate:nil cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+        [alter show];
+        [alter clickedButtonAtIndex:^(NSInteger buttonIndex) {
+            NSString *urlStr = [!_trends?_template.templateVideoUrl:_trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+            [moviePlayerViewController rotateVideoViewWithDegrees:!_trends?0:90];
+            [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+        }];
+    }
 }
 
 - (void)actionRestart:(UIButton *)button {

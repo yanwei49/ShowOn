@@ -29,4 +29,7 @@
 //播放接口（type：1.模板   2.动态）
 - (void)requestPlayModelId:(NSString *)modelId withType:(NSInteger)type;
 
+//检测是否是WiFi
+- (BOOL)checkNewWorkIsWifi;
+
 @end

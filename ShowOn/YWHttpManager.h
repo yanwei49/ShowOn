@@ -16,6 +16,9 @@
 //取消网络请求
 - (void)cancelRequest;
 
+//检测网络
+-(void)getNetWorkNotificationCenterWithState:(void (^)(bool isWIFI))netWorkState;
+
 /**
  *  注册
  *
@@ -232,15 +235,6 @@
  *  @param failure    失败block
  */
 - (void)requestRepeat:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
-
-/**
- *  分享
- *
- *  @param parameters 请求参数
- *  @param success    成功block
- *  @param failure    失败block
- */
-- (void)requestShare:(NSDictionary *)parameters success:(void (^) (id responseObject))success otherFailure:(void (^) (id responseObject))otherFailure failure:(void (^) (NSError * error))failure;
 
 /**
  *  图文列表

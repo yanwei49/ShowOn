@@ -161,12 +161,25 @@
 
 - (void)collectionTableViewCellDidSelectPlaying:(YWCollectionTableViewCell *)cell {
     if (cell.trends.trendsMovie.movieUrl.length) {
-        NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSURL *url = [NSURL URLWithString:urlStr];
-        MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-        [moviePlayerViewController rotateVideoViewWithDegrees:90];
-        [self presentViewController:moviePlayerViewController animated:YES completion:nil];
-        [self requestPlayModelId:cell.trends.trendsId withType:2];
+        if ([self checkNewWorkIsWifi]) {
+            NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+            [moviePlayerViewController rotateVideoViewWithDegrees:90];
+            [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+            [self requestPlayModelId:cell.trends.trendsId withType:2];
+        }else {
+            UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"你当前网络不是WiFi，是否播放" message:nil delegate:nil cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+            [alter show];
+            [alter clickedButtonAtIndex:^(NSInteger buttonIndex) {
+                NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                NSURL *url = [NSURL URLWithString:urlStr];
+                MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
+                [moviePlayerViewController rotateVideoViewWithDegrees:90];
+                [self presentViewController:moviePlayerViewController animated:YES completion:nil];
+                [self requestPlayModelId:cell.trends.trendsId withType:2];
+            }];
+        }
     }else {
         YWTranscribeViewController *vc = [[YWTranscribeViewController alloc] init];
         vc.trends = cell.trends;
