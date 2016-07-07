@@ -119,7 +119,7 @@
         YWTrendsDetailViewController *hotVC = [[YWTrendsDetailViewController alloc] init];
         hotVC.trends = [_dataSource[indexPath.row] trends];
         [self.navigationController pushViewController:hotVC animated:YES];
-    }else {
+    }else if ([_dataSource[indexPath.row] supportType].integerValue == 2) {
         if ([_dataSource[indexPath.row] comments].commentTrends.trendsId.length) {
             YWTrendsDetailViewController *hotVC = [[YWTrendsDetailViewController alloc] init];
             YWCommentModel *comments = [_dataSource[indexPath.row] comments];

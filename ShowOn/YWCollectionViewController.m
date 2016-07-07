@@ -165,7 +165,7 @@
             NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             NSURL *url = [NSURL URLWithString:urlStr];
             MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-            [moviePlayerViewController rotateVideoViewWithDegrees:90];
+//            [moviePlayerViewController rotateVideoViewWithDegrees:90];
             [self presentViewController:moviePlayerViewController animated:YES completion:nil];
             [self requestPlayModelId:cell.trends.trendsId withType:2];
         }else {
@@ -175,7 +175,7 @@
                 NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 NSURL *url = [NSURL URLWithString:urlStr];
                 MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-                [moviePlayerViewController rotateVideoViewWithDegrees:90];
+//                [moviePlayerViewController rotateVideoViewWithDegrees:90];
                 [self presentViewController:moviePlayerViewController animated:YES completion:nil];
                 [self requestPlayModelId:cell.trends.trendsId withType:2];
             }];

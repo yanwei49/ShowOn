@@ -60,7 +60,7 @@ static YWHttpManager * manager;
             }
             case AFNetworkReachabilityStatusReachableViaWiFi:
             {
-                netWorkState(NO);
+                netWorkState(YES);
 //                [CHObjectClass showMastToast:@"您正在使用WIFI网络"];
                 break;
             }

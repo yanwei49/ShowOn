@@ -148,7 +148,7 @@
         [self trendsCategoryView:_categoryView didSelectCategoryWithIndex:_trendsType];
     }else {
         [_dataSource addObjectsFromArray:_movieCardDataSource];
-        if ([_user.userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userId]) {
+        if ([_user.userId isEqualToString:[[YWDataBaseManager shareInstance] loginUser].userId] && _segmentedControl) {
             _tableView.tableFooterView = _footView;
         }
         [_tableView reloadData];
@@ -252,7 +252,7 @@
             NSString *urlStr = [_user.casting.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             NSURL *url = [NSURL URLWithString:urlStr];
             MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-            [moviePlayerViewController rotateVideoViewWithDegrees:90];
+//            [moviePlayerViewController rotateVideoViewWithDegrees:90];
             [self presentViewController:moviePlayerViewController animated:YES completion:nil];
         }else {
             UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"你当前网络不是WiFi，是否播放" message:nil delegate:nil cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
@@ -261,7 +261,7 @@
                 NSString *urlStr = [_user.casting.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 NSURL *url = [NSURL URLWithString:urlStr];
                 MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-                [moviePlayerViewController rotateVideoViewWithDegrees:90];
+//                [moviePlayerViewController rotateVideoViewWithDegrees:90];
                 [self presentViewController:moviePlayerViewController animated:YES completion:nil];
             }];
         }
@@ -299,7 +299,7 @@
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (!_segmentedControl.selectedSegmentIndex) {
+    if (_segmentedControl && !_segmentedControl.selectedSegmentIndex) {
         return _dataSource.count+1;
     }else {
         return _dataSource.count;
@@ -421,7 +421,7 @@
             NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             NSURL *url = [NSURL URLWithString:urlStr];
             MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-            [moviePlayerViewController rotateVideoViewWithDegrees:90];
+//            [moviePlayerViewController rotateVideoViewWithDegrees:90];
             [self presentViewController:moviePlayerViewController animated:YES completion:nil];
             [self requestPlayModelId:cell.trends.trendsId withType:2];
         }else {
@@ -431,7 +431,7 @@
                 NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 NSURL *url = [NSURL URLWithString:urlStr];
                 MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-                [moviePlayerViewController rotateVideoViewWithDegrees:90];
+//                [moviePlayerViewController rotateVideoViewWithDegrees:90];
                 [self presentViewController:moviePlayerViewController animated:YES completion:nil];
                 [self requestPlayModelId:cell.trends.trendsId withType:2];
             }];
@@ -470,7 +470,7 @@
             NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             NSURL *url = [NSURL URLWithString:urlStr];
             MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-            [moviePlayerViewController rotateVideoViewWithDegrees:90];
+//            [moviePlayerViewController rotateVideoViewWithDegrees:90];
             [self presentViewController:moviePlayerViewController animated:YES completion:nil];
             [self requestPlayModelId:cell.trends.trendsId withType:2];
         }else {
@@ -480,7 +480,7 @@
                 NSString *urlStr = [cell.trends.trendsMovie.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 NSURL *url = [NSURL URLWithString:urlStr];
                 MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-                [moviePlayerViewController rotateVideoViewWithDegrees:90];
+//                [moviePlayerViewController rotateVideoViewWithDegrees:90];
                 [self presentViewController:moviePlayerViewController animated:YES completion:nil];
                 [self requestPlayModelId:cell.trends.trendsId withType:2];
             }];
@@ -498,7 +498,7 @@
         NSString *urlStr = [@"" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURL *url = [NSURL URLWithString:urlStr];
         MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-        [moviePlayerViewController rotateVideoViewWithDegrees:90];
+//        [moviePlayerViewController rotateVideoViewWithDegrees:90];
         [self presentViewController:moviePlayerViewController animated:YES completion:nil];
     }else {
         UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"你当前网络不是WiFi，是否播放" message:nil delegate:nil cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
@@ -507,7 +507,7 @@
             NSString *urlStr = [@"" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             NSURL *url = [NSURL URLWithString:urlStr];
             MPMoviePlayerViewController *moviePlayerViewController=[[MPMoviePlayerViewController alloc]initWithContentURL:url];
-            [moviePlayerViewController rotateVideoViewWithDegrees:90];
+//            [moviePlayerViewController rotateVideoViewWithDegrees:90];
             [self presentViewController:moviePlayerViewController animated:YES completion:nil];
         }];
     }

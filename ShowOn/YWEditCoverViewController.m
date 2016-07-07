@@ -176,7 +176,7 @@
         for (NSInteger i=0; i<(int)CMTimeGetSeconds(urlAsset.duration); i++) {
             UIImage *image = [self thumbnailImageRequestUrl:_user.casting.movieRecorderUrl time:10*i];
             UIImage *rotationImage = [self fixOrientation:image];
-            [_coverImages addObject:rotationImage];
+            [_coverImages addObject:_isCasting?[self rotation:rotationImage]:rotationImage];
         }
     }else {
         for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
@@ -185,7 +185,7 @@
                 for (NSInteger i=0; i<(int)CMTimeGetSeconds(urlAsset.duration); i++) {
                     UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i];
                     UIImage *rotationImage = [self fixOrientation:image];
-                    [_coverImages addObject:rotationImage];
+                    [_coverImages addObject:_isCasting?[self rotation:rotationImage]:rotationImage];
                 }
             }
         }

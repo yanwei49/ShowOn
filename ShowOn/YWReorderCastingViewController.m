@@ -146,6 +146,7 @@
     if (_user.casting.movieRecorderUrl) {
         YWEditCoverViewController *vc = [[YWEditCoverViewController alloc] init];
         vc.user = _user;
+        vc.isCasting = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }else {
         [self showAlterWithTitle:@"请录制视频"];

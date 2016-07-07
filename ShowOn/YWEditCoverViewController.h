@@ -17,6 +17,7 @@
 @property (nonatomic, strong) YWTrendsModel *trends;
 @property (nonatomic, strong) YWMovieTemplateModel *template;
 @property (nonatomic, assign) BOOL recorderState;
+@property (nonatomic, assign) BOOL isCasting;
 @property (nonatomic, strong) YWUserModel *user;
 
 @end
