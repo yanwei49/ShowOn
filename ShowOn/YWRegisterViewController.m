@@ -113,6 +113,7 @@
     _passwordTextField.layer.borderWidth = 1;
     _passwordTextField.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _passwordTextField.placeholder = @" 请输入6-12位数字或字母密码";
+    _passwordTextField.secureTextEntry = YES;
     _passwordTextField.font = [UIFont systemFontOfSize:16];
     _passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.view addSubview:_passwordTextField];
@@ -131,6 +132,7 @@
     _repeatPasswordTextField.layer.masksToBounds = YES;
     _repeatPasswordTextField.layer.borderWidth = 1;
     _repeatPasswordTextField.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    _repeatPasswordTextField.secureTextEntry = YES;
     _repeatPasswordTextField.placeholder = @" 确认密码";
     _repeatPasswordTextField.font = [UIFont systemFontOfSize:16];
     _repeatPasswordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;

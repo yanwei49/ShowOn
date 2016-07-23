@@ -359,7 +359,7 @@
             model = _dataSource3[0];
         }
         if (model) {
-            _playView.urlStr = model.subsectionRecorderVideoUrl?:model.subsectionVideoUrl;
+            _playView.urlStr = model.subsectionRecorderVideoUrl.length?model.subsectionRecorderVideoUrl:model.subsectionVideoUrl;
             //        _playView.urlStr = _template.templateVideoUrl;
             model.subsectionVideoPerformanceStatus = model.subsectionVideoPerformanceStatus.integerValue==1?@"1":@"0";
             _recorderView.model = model;

@@ -98,7 +98,7 @@
     subsectionVideo.subsectionVideoTime = [dict objectForKey:@"timeLength"];
     subsectionVideo.subsectionAudioUrl = [dict objectForKey:@"subsectionAudioUrl"];
     subsectionVideo.subsectionRecorderVideoUrl = [dict objectForKey:@"subsectionVideoUrl"];
-    if (subsectionVideo.subsectionRecorderVideoUrl.length) {
+    if (![subsectionVideo.subsectionRecorderVideoUrl isKindOfClass:[NSNull class]] && subsectionVideo.subsectionRecorderVideoUrl.length) {
         subsectionVideo.subsectionVideoPerformanceStatus = @"1";
     }
     
@@ -150,7 +150,7 @@
     article.articleAuthorName = [dict objectForKey:@"author"];
     article.articleCoverImage = [dict objectForKey:@"coverImage"];
     article.articleTime = [dict objectForKey:@"pubdate"];
-    article.articleUrl = [dict objectForKey:@""];
+    article.articleUrl = [dict objectForKey:@"url"];
     
     return article;
 }

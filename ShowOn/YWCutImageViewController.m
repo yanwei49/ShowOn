@@ -9,7 +9,7 @@
 #import "YWCutImageViewController.h"
 #import "YWTools.h"
 
-@interface YWCutImageViewController ()
+@interface YWCutImageViewController ()<UIScrollViewDelegate>
 
 @end
 
@@ -33,16 +33,28 @@
     _imageView.image = _image;
     [self.view addSubview:_imageView];
     [_imageView makeConstraints:^(MASConstraintMaker *make) {
-        make.right.left.offset(0);
-        make.centerY.equalTo(self.view.mas_centerY);
+        make.left.offset(0);
+        make.width.offset(kScreenWidth);
+        make.top.offset((kScreenHeight-kScreenWidth*0.8)/2);
         make.height.offset(kScreenWidth*0.8);
     }];
     
+    UIScrollView *sv = [[UIScrollView alloc] init];
+    sv.delegate = self;
+    sv.maximumZoomScale=2.0;
+    sv.minimumZoomScale=0.5;
+    [self.view addSubview:sv];
+    [sv makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.offset(0);
+        make.width.offset(kScreenWidth);
+        make.height.offset(kScreenHeight);
+    }];
+ 
     _cutView = [[UIView alloc] initWithFrame:CGRectMake(kScreenWidth/2-100, kScreenHeight/2-100, 200, 200)];
     _cutView.backgroundColor = [UIColor lightGrayColor];
     [_cutView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(actionPan:)]];
     _cutView.alpha = 0.5;
-    [self.view addSubview:_cutView];
+    [sv addSubview:_cutView];
 }
 
 - (void)obtainCutImage {
@@ -63,6 +75,20 @@
     CGPoint point = [pan translationInView:self.view];
     pan.view.center = CGPointMake(pan.view.center.x + point.x, pan.view.center.y + point.y);
     [pan setTranslation:CGPointMake(0, 0) inView:self.view];
+}
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+}
+
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+//    _imageView.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2, [UIScreen mainScreen].bounds.size.height/2);
+}
+
+//告诉scrollview要缩放的是哪个子控件
+-(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    return _cutView;
 }
 
 

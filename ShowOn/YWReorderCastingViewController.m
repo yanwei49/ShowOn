@@ -17,6 +17,8 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "MPMoviePlayerViewController+Rotation.h"
 #import "YWTools.h"
+#import "AFHTTPRequestOperationManager.h"
+#import "AFHTTPSessionManager.h"
 
 #define kRecordAudioFile @"myRecord.caf"
 
@@ -45,6 +47,7 @@
     
     [self createSubViews];
     [self setAudioSession];
+    [self requestDownloadMovie];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -66,7 +69,7 @@
     [self.view addSubview:sv];
     sv.contentSize = CGSizeMake(kScreenWidth, 250*3+30);
     
-    _playView = [[YWMoviePlayView alloc] initWithFrame:CGRectMake(5, 5, kScreenWidth-10, 250) playUrl:_user.casting.movieUrl];
+    _playView = [[YWMoviePlayView alloc] initWithFrame:CGRectMake(5, 5, kScreenWidth-10, 250) playUrl:nil];
     _playView.backgroundColor = Subject_color;
     _playView.layer.masksToBounds = YES;
     _playView.delegate = self;
@@ -139,6 +142,26 @@
 //    _downPlayView.layer.borderColor = RGBColor(30, 30, 30).CGColor;
 //    _downPlayView.layer.borderWidth = 1;
 //    [sv addSubview:_downPlayView];
+}
+
+#pragma mark - request
+- (void)requestDownloadMovie {
+    self.view.userInteractionEnabled = NO;
+    [SVProgressHUD showWithStatus:@"获取视频中..."];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSString *docDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString  *fullPath = [NSString stringWithFormat:@"%@/%@", docDir, @"castingTemplate.mp4"];
+    NSURL *url = [NSURL URLWithString:[_user.casting.movieUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLSessionDownloadTask *task = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+        self.view.userInteractionEnabled = YES;
+        return [NSURL fileURLWithPath:fullPath];
+    } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+        self.view.userInteractionEnabled = YES;
+        [SVProgressHUD showSuccessWithStatus:@"获取视频成功"];
+        _playView.url = filePath;
+    }];
+    [task resume];
 }
 
 #pragma mark - action

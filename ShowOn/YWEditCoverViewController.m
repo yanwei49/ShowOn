@@ -75,6 +75,8 @@
     _coverImageView.layer.masksToBounds = YES;
     _coverImageView.layer.cornerRadius = 5;
     _coverImageView.image = nil;
+    _coverImageView.clipsToBounds = YES;
+    _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:_coverImageView];
     [_coverImageView makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view.mas_centerX);
@@ -114,6 +116,7 @@
     for (NSInteger i=0; i<images.count; i++) {
         UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(120*i, 10, 120, 80)];
         iv.contentMode = UIViewContentModeScaleAspectFill;
+        iv.clipsToBounds = YES;
         iv.backgroundColor = RGBColor(30, 30, 30);
         iv.image = images[i];
         [_coverImageSV addSubview:iv];
@@ -182,8 +185,8 @@
         for (YWSubsectionVideoModel *model in _template.templateSubsectionVideos) {
             if (model.recorderVideoUrl) {
                 AVURLAsset *urlAsset=[AVURLAsset assetWithURL:model.recorderVideoUrl];
-                for (NSInteger i=0; i<(int)CMTimeGetSeconds(urlAsset.duration); i++) {
-                    UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:10*i];
+                for (NSInteger i=0; i<=urlAsset.duration.value/urlAsset.duration.timescale; i++) {
+                    UIImage *image = [self thumbnailImageRequestUrl:model.recorderVideoUrl time:i];
                     UIImage *rotationImage = [self fixOrientation:image];
                     [_coverImages addObject:_isCasting?[self rotation:rotationImage]:rotationImage];
                 }

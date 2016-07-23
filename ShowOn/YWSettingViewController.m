@@ -29,7 +29,7 @@
     [super viewDidLoad];
     self.title = @"设置";
     self.view.backgroundColor = Subject_color;
-    _dataSource = [[NSMutableArray alloc] initWithArray:@[@"黑名单", @"清楚缓存", @"建议反馈", @"关于角儿（用户使用协议）"]];
+    _dataSource = [[NSMutableArray alloc] initWithArray:@[@"黑名单", @"清除缓存", @"建议反馈", @"关于角儿（用户使用协议）"]];
     
     [self createSubViews];
 }

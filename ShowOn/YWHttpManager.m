@@ -226,7 +226,7 @@ static YWHttpManager * manager;
     [self setDefaultHeaders];
     [_httpManager POST:HOST_URL(Save_User_Detail_Method) parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         if (image) {
-            [formData appendPartWithFileData:UIImagePNGRepresentation(image) name:@"img" fileName:@"test.png" mimeType:@"image/png"];
+            [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.5) name:@"img" fileName:@"test.png" mimeType:@"image/png"];
         }
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self responseObjectParser:responseObject success:success otherFailure:otherFailure];
@@ -395,20 +395,6 @@ static YWHttpManager * manager;
         if (movieUrl) {
             NSData *data = [NSData dataWithContentsOfURL:movieUrl];
             [formData appendPartWithFileData:data name:@"video" fileName:@"video.mov" mimeType:@"video/quicktime"];
-//        }else {
-//            for (NSInteger i=0; i<recorderMovies.count; i++) {
-//                YWSubsectionVideoModel *model = recorderMovies[i];
-//                if (model.recorderVideoUrl) {
-//                    NSError *error;
-//                    NSData *data = [NSData dataWithContentsOfURL:model.recorderVideoUrl options:NSDataReadingMappedIfSafe error:&error];
-//                    if (error) {
-//                        DebugLog(@"%@====", error);
-//                    }
-//                    if (data) {
-//                        [formData appendPartWithFileData:data name:@"video" fileName:[NSString stringWithFormat:@"video%@-%@-%@.mov", model.subsectionVideoType, model.subsectionVideoSort, model.subSort] mimeType:@"video/quicktime"];
-//                    }
-//                }
-//            }
         }
         for (NSInteger i=0; i<recorderMovies.count; i++) {
             YWSubsectionVideoModel *model = recorderMovies[i];
@@ -424,7 +410,7 @@ static YWHttpManager * manager;
             }
         }
         if (image) {
-            [formData appendPartWithFileData:UIImagePNGRepresentation(image) name:@"img" fileName:@"test.png" mimeType:@"image/png"];
+            [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.5) name:@"img" fileName:@"test.png" mimeType:@"image/png"];
         }
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self responseObjectParser:responseObject success:success otherFailure:otherFailure];

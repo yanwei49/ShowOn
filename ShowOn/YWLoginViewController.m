@@ -258,18 +258,50 @@
 }
 
 - (void)actionOtherLoginMethod:(UIButton *)button {
-    switch (button.tag-100) {
-        case 0:
-            [self weixinLogin];
-            break;
-        case 1:
-            [self qqLogin];
-            break;
-        case 2:
-            [self weiboLogin];
-            break;
-        default:
-            break;
+    if ([QQApiInterface isQQInstalled] && [WXApi isWXAppInstalled]) {
+        switch (button.tag-100) {
+            case 0:
+                [self weixinLogin];
+                break;
+            case 1:
+                [self qqLogin];
+                break;
+            case 2:
+                [self weiboLogin];
+                break;
+            default:
+                break;
+        }
+    }else if ([QQApiInterface isQQInstalled] && ![WXApi isWXAppInstalled]) {
+        switch (button.tag-100) {
+            case 0:
+                [self qqLogin];
+                break;
+            case 1:
+                [self weiboLogin];
+                break;
+            default:
+                break;
+        }
+    }else if (![QQApiInterface isQQInstalled] && [WXApi isWXAppInstalled]) {
+        switch (button.tag-100) {
+            case 0:
+                [self weixinLogin];
+                break;
+            case 1:
+                [self weiboLogin];
+                break;
+            default:
+                break;
+        }
+    }else if (![QQApiInterface isQQInstalled] && ![WXApi isWXAppInstalled]) {
+        switch (button.tag-100) {
+            case 0:
+                [self weiboLogin];
+                break;
+            default:
+                break;
+        }
     }
 }
 

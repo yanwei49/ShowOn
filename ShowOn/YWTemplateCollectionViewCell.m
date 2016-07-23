@@ -159,7 +159,7 @@ static CGFloat cnt = 0;
     NSURL *url;
     if (subsectionVideo.recorderVideoUrl) {
         url = subsectionVideo.recorderVideoUrl;
-    }else if (subsectionVideo.subsectionRecorderVideoUrl && subsectionVideo.subsectionRecorderVideoUrl.length) {
+    }else if (![subsectionVideo.subsectionRecorderVideoUrl isKindOfClass:[NSNull class]] && subsectionVideo.subsectionRecorderVideoUrl && subsectionVideo.subsectionRecorderVideoUrl.length) {
         NSString *urlStr = subsectionVideo.subsectionRecorderVideoUrl;
         urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         url = [NSURL URLWithString:urlStr];

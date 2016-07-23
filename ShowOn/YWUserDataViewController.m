@@ -245,7 +245,7 @@
 
 - (void)actionDown:(UIButton *)button {
     _dataPickerBackView.hidden = YES;
-    UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
+    UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0]];
     UITextField *tf = (UITextField *)cell.accessoryView;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setLocale:[NSLocale currentLocale]];
@@ -523,7 +523,7 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    if (_selectIndex == 2) {
+    if (_selectIndex == 3) {
         return _sexArray.count;
     }else {
         return _constellationArray.count;
@@ -531,7 +531,7 @@
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    if (_selectIndex == 2) {
+    if (_selectIndex == 3) {
         return _sexArray[row];
     }else {
         return _constellationArray[row];
@@ -542,7 +542,7 @@
     pickerView.hidden = YES;
     UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_selectIndex inSection:0]];
     UITextField *tf = (UITextField *)cell.accessoryView;
-    tf.text = (_selectIndex == 2)?_sexArray[row]:_constellationArray[row];
+    tf.text = (_selectIndex == 3)?_sexArray[row]:_constellationArray[row];
 }
 
 #pragma mark - UITableViewDelegate
@@ -655,12 +655,12 @@
     [self hiddenPickView];
     _selectIndex = index;
     switch (index) {
-        case 2:
-        case 5:
+        case 3:
+        case 6:
             _pickerView.hidden = NO;
             [_pickerView reloadAllComponents];
             break;
-        case 4:
+        case 5:
             _dataPickerBackView.hidden = NO;
             break;
         default:
