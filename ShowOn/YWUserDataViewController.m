@@ -350,13 +350,13 @@
 
 - (void)requestSaveUserDetails {
     NSMutableArray *array = [NSMutableArray array];
-    for (NSInteger i=0; i<8; i++) {
+    for (NSInteger i=0; i<9; i++) {
         UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
         UITextField *tf = (UITextField *)cell.accessoryView;
         [array addObject:tf.text?:@""];
     }
     [SVProgressHUD showWithStatus:@"修改中..."];
-    NSDictionary *parameters = @{@"userId": _user.userId, @"nickName": array[0], @"introduction": array[1], @"sex": [array[2] isEqualToString:@"女"]?@"2":@"1", @"district": array[3], @"birthday": array[4], @"constellation": array[5], @"height": array[6], @"bwh": array[7]};
+    NSDictionary *parameters = @{@"userId": _user.userId, @"nickName": array[1], @"introduction": array[2], @"sex": [array[3] isEqualToString:@"女"]?@"2":@"1", @"district": array[4], @"birthday": array[5], @"constellation": array[6], @"height": array[7], @"bwh": array[8]};
     [_httpManager requestSaveUserDetails:parameters image:_headImage success:^(id responseObject) {
         YWParser *parser = [[YWParser alloc] init];
         _user = [parser userWithDict:responseObject[@"user"]];
